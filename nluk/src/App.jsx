@@ -148,7 +148,7 @@ const START_HERE = [
 // ─── App ──────────────────────────────────────────────────────────
 export default function App() {
   const [lang, setLang] = useState(() => ls('nluk_lang', 'en'))
-  const [tab, setTab] = useState('home')
+  const [tab, setTab] = useState('guides')
   const [nav, setNav] = useState([])
   const [guide, setGuide] = useState(null)
   const [cert, setCert] = useState(null)
@@ -226,7 +226,6 @@ export default function App() {
   }, [])
 
   const TABS = [
-    { id: 'home', icon: '🏠', label: ui.home },
     { id: 'guides', icon: '📖', label: ui.guides },
     { id: 'work', icon: '💼', label: ui.work },
     { id: 'saves', icon: '🆓', label: ui.saves },
@@ -269,58 +268,47 @@ export default function App() {
       {/* SCROLLABLE CONTENT */}
       <main className="app-scroll" ref={scrollRef}>
 
-        {/* ── HOME ── */}
-        {tab === 'home' && !showLang && (
-          <div className="page-enter">
-
-            {/* Hero */}
-            <div className="hero">
-              <div className="hero-badge">🇬🇧 Free · Private · 12 Languages · No account needed</div>
-              <h2 className="hero-title">Welcome to<br />your new life. 🤝</h2>
-              <p className="hero-sub">Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.</p>
-            </div>
-
-            {/* BRP notice */}
-            <div className="notice">
-              <p className="notice-text">⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.</p>
-            </div>
-
-            {/* Daily tip */}
-            {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
-
-            {/* Start Here — priority checklist */}
-            <div className="section-label">Start Here</div>
-            <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
-              {START_HERE.map((id, i) => {
-                const g = GUIDE_MAP[id]
-                if (!g) return null
-                const gc = t18(g.content, lang)
-                return (
-                  <button key={id} className="list-row" onClick={() => { setGuide(g); push('gd') }} aria-label={gc.title}>
-                    <div className="start-num">{i + 1}</div>
-                    <div className="list-row-content">
-                      <div className="list-row-title">{g.icon} {gc.title}</div>
-                      <div className="list-row-sub">{gc.summary}</div>
-                    </div>
-                    <span className="list-row-arrow">{af}</span>
-                  </button>
-                )
-              })}
-            </div>
-
-            <button className="btn btn-outline btn-block" style={{ margin: '0 20px 16px', width: 'calc(100% - 40px)' }}
-              onClick={() => switchTab('guides')}>
-              View all {GUIDES.length} guides →
-            </button>
-
-            <div className="disclaimer" style={{ margin: '0 20px 8px' }}>{ui.disclaimer}</div>
-            <div style={{ height: 12 }} />
-          </div>
-        )}
-
         {/* ── GUIDES ── */}
         {tab === 'guides' && (
           <div className="page-enter">
+
+            {/* Compact welcome — only when not searching */}
+            {!search && catFilter === 'All' && (
+              <>
+                <div className="hero">
+                  <div className="hero-badge">🇬🇧 Free · Private · {LANGS.length} Languages · No account needed</div>
+                  <h2 className="hero-title">Welcome to<br />your new life. 🤝</h2>
+                  <p className="hero-sub">Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.</p>
+                </div>
+
+                <div className="notice">
+                  <p className="notice-text">⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.</p>
+                </div>
+
+                {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
+
+                <div className="section-label">Start Here</div>
+                <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
+                  {START_HERE.map((id, i) => {
+                    const g = GUIDE_MAP[id]
+                    if (!g) return null
+                    const gc = t18(g.content, lang)
+                    return (
+                      <button key={id} className="list-row" onClick={() => { setGuide(g); push('gd') }} aria-label={gc.title}>
+                        <div className="start-num">{i + 1}</div>
+                        <div className="list-row-content">
+                          <div className="list-row-title">{g.icon} {gc.title}</div>
+                          <div className="list-row-sub">{gc.summary}</div>
+                        </div>
+                        <span className="list-row-arrow">{af}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+                <div className="section-label">All Guides</div>
+              </>
+            )}
+
             <div className="search-bar">
               <span style={{ color: 'var(--t3)' }}>🔍</span>
               <input className="search-input" placeholder={ui.search} value={search}
