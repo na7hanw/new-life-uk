@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import {
-  LANGS, UI, STATUSES, CATEGORIES, RECS, TIPS,
-  GUIDES, GUIDE_MAP, SAVES, JOBS, CERTS, CAREERS, GEMS,
-  SOS_NUMBERS, HELPLINES, GITHUB_URL,
+  LANGS, UI, CATEGORIES, TIPS,
+  GUIDES, GUIDE_MAP, GUIDE_PRIORITY, SAVES, JOBS, CERTS, CAREERS, GEMS,
+  SOS_NUMBERS, GITHUB_URL,
 } from './data/content.js'
 
 // ─── Helpers ──────────────────────────────────────────────────────
@@ -98,7 +98,7 @@ function JobCard({ j, lang, ui }) {
         <div className="job-info">
           <div className="job-role-row">
             <span className="job-role">{jc.role}</span>
-            {j.visa && <span className="pill pill-blue">Visa</span>}
+            {j.visa && <span className="pill pill-blue">Sponsorship</span>}
           </div>
           <div className="job-pay">{j.pay}</div>
         </div>
@@ -118,7 +118,9 @@ function JobCard({ j, lang, ui }) {
           {j.docs?.length > 0 && (
             <div className="job-section">
               <div className="job-section-label">📋 {ui.docsNeeded || "What you'll need"}</div>
-              {j.docs.map(d => <div key={d} className="job-doc-item">• {d}</div>)}
+              <div className="job-docs-row">
+                {j.docs.map(d => <span key={d} className="job-doc-chip">{d}</span>)}
+              </div>
             </div>
           )}
 
@@ -138,16 +140,9 @@ function JobCard({ j, lang, ui }) {
   )
 }
 
-// ─── Quick Action items ───────────────────────────────────────────
-const QA_ITEMS = [
-  { icon: '📱', labelKey: 'qaEvisa', id: 'evisa' },
-  { icon: '🔗', labelKey: 'qaShare', id: 'sharecode' },
-  { icon: '🏦', labelKey: 'qaBank', id: 'bank' },
-  { icon: '🏥', labelKey: 'qaGP', id: 'gp' },
-  { icon: '💷', labelKey: 'qaBenefits', id: 'uc' },
-  { icon: '🪪', labelKey: 'qaID', id: 'citizen-card' },
-  { icon: '🛂', labelKey: 'qaTravel', id: 'ctd' },
-  { icon: '🛡', labelKey: 'qaSafety', id: 'safety' },
+// ─── Start Here — priority-ordered guide IDs for newly granted refugees ──
+const START_HERE = [
+  'move-on', 'bank', 'uc', 'gp', 'ni', 'evisa', 'sharecode', 'housing-help',
 ]
 
 // ─── App ──────────────────────────────────────────────────────────
@@ -155,7 +150,6 @@ export default function App() {
   const [lang, setLang] = useState(() => ls('nluk_lang', 'en'))
   const [tab, setTab] = useState('home')
   const [nav, setNav] = useState([])
-  const [status, setStat] = useState(() => ls('nluk_status', '') || null)
   const [guide, setGuide] = useState(null)
   const [cert, setCert] = useState(null)
   const [career, setCareer] = useState(null)
@@ -174,10 +168,6 @@ export default function App() {
   // Persist state
   useEffect(() => { lsSet('nluk_lang', lang); document.documentElement.lang = lang }, [lang])
   useEffect(() => { lsSet('nluk_dark', String(dark)) }, [dark])
-  useEffect(() => {
-    if (status) lsSet('nluk_status', status)
-    else { try { localStorage.removeItem('nluk_status') } catch {} }
-  }, [status])
   useEffect(() => { lsSet('nluk_wtab', workTab) }, [workTab])
 
   // Derived
@@ -188,18 +178,23 @@ export default function App() {
   const ab = L.rtl ? '→' : '←'
   const af = L.rtl ? '‹' : '›'
 
-  // Bug fix: use tipList.length not hardcoded 8
-  const tipList = TIPS[status || 'refugee'] || TIPS.refugee
+  const tipList = TIPS.refugee
   const tip = tipList[tipIdx % tipList.length]
 
-  const recs = status ? (RECS[status] || []).map(id => GUIDE_MAP[id]).filter(Boolean) : []
-
-  const filtered = useMemo(() => GUIDES.filter(g => {
+  const filtered = useMemo(() => {
     const q = search.toLowerCase()
-    const c = t18(g.content, lang)
-    return (catFilter === 'All' || g.cat === catFilter) &&
-      (!q || c.title?.toLowerCase().includes(q) || c.summary?.toLowerCase().includes(q))
-  }), [search, catFilter, lang])
+    const list = GUIDES.filter(g => {
+      const c = t18(g.content, lang)
+      return (catFilter === 'All' || g.cat === catFilter) &&
+        (!q || c.title?.toLowerCase().includes(q) || c.summary?.toLowerCase().includes(q))
+    })
+    // Sort by GUIDE_PRIORITY, unknowns go to end
+    return list.sort((a, b) => {
+      const ia = GUIDE_PRIORITY.indexOf(a.id)
+      const ib = GUIDE_PRIORITY.indexOf(b.id)
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
+    })
+  }, [search, catFilter, lang])
 
   const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))], [filtered])
 
@@ -285,83 +280,38 @@ export default function App() {
               <p className="hero-sub">Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.</p>
             </div>
 
-            {/* BRP notice — always relevant */}
+            {/* BRP notice */}
             <div className="notice">
               <p className="notice-text">⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.</p>
             </div>
 
-            {/* Status selection */}
-            <div className="section-label">{ui.visaQ}</div>
-            <div className="status-grid" role="radiogroup" aria-label={ui.visaQ}>
-              {STATUSES.map(s => (
-                <button
-                  key={s.id}
-                  className={`status-card ${status === s.id ? 'active' : ''}`}
-                  onClick={() => setStat(status === s.id ? null : s.id)}
-                  role="radio"
-                  aria-checked={status === s.id}
-                >
-                  <span className="status-card-emoji">{s.emoji}</span>
-                  <span className="status-card-label">{ui.status[s.id] || s.id}</span>
-                  {status === s.id && <span className="status-card-check">✓</span>}
-                </button>
-              ))}
-            </div>
-
-            {/* Tip or prompt */}
+            {/* Daily tip */}
             {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
-            {!status && <div className="prompt-box">👆 {ui.visaQ}</div>}
 
-            {/* For You — priority steps when status is set */}
-            {status && recs.length > 0 && (
-              <>
-                <div className="section-label">{ui.forYou}</div>
-                <div className="card card-flush">
-                  {recs.slice(0, 5).map(g => {
-                    const gc = t18(g.content, lang)
-                    return (
-                      <button key={g.id} className="list-row" onClick={() => { setGuide(g); push('gd') }} aria-label={gc.title}>
-                        <span className="list-row-icon">{g.icon}</span>
-                        <div className="list-row-content">
-                          <div className="list-row-title">{gc.title}</div>
-                          <div className="list-row-sub">{gc.summary}</div>
-                        </div>
-                        <span className="list-row-arrow">{af}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </>
-            )}
-
-            {/* Quick Actions — 2-column for bigger tap targets */}
-            <div className="section-label">{ui.quickActions}</div>
-            <div className="qa-grid">
-              {QA_ITEMS.map(q => (
-                <button key={q.id} className="qa-btn"
-                  onClick={() => { const g = GUIDE_MAP[q.id]; if (g) { setGuide(g); push('gd') } }}
-                  aria-label={ui[q.labelKey]}>
-                  <span className="qa-icon">{q.icon}</span>
-                  <span className="qa-label">{ui[q.labelKey]}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Helplines */}
-            <div className="section-label">{ui.helplines}</div>
-            <div className="card" style={{ margin: '0 20px 12px' }}>
-              <div style={{ padding: '4px 16px' }}>
-                {HELPLINES.map(h => (
-                  <div key={h.name} className="helpline-row">
-                    <div>
-                      <div className="helpline-name">{h.name}</div>
-                      <div className="helpline-hours">{h.hours}</div>
+            {/* Start Here — priority checklist */}
+            <div className="section-label">Start Here</div>
+            <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
+              {START_HERE.map((id, i) => {
+                const g = GUIDE_MAP[id]
+                if (!g) return null
+                const gc = t18(g.content, lang)
+                return (
+                  <button key={id} className="list-row" onClick={() => { setGuide(g); push('gd') }} aria-label={gc.title}>
+                    <div className="start-num">{i + 1}</div>
+                    <div className="list-row-content">
+                      <div className="list-row-title">{g.icon} {gc.title}</div>
+                      <div className="list-row-sub">{gc.summary}</div>
                     </div>
-                    <a href={`tel:${h.phone}`} className="btn btn-primary btn-sm" aria-label={`Call ${h.name}`}>📞 {h.num}</a>
-                  </div>
-                ))}
-              </div>
+                    <span className="list-row-arrow">{af}</span>
+                  </button>
+                )
+              })}
             </div>
+
+            <button className="btn btn-outline btn-block" style={{ margin: '0 20px 16px', width: 'calc(100% - 40px)' }}
+              onClick={() => switchTab('guides')}>
+              View all {GUIDES.length} guides →
+            </button>
 
             <div className="disclaimer" style={{ margin: '0 20px 8px' }}>{ui.disclaimer}</div>
             <div style={{ height: 12 }} />
@@ -434,6 +384,8 @@ export default function App() {
                 <QuickLinks links={guide.links} label={`🔗 ${ui.applyLinks || 'Quick Links'}`} />
               )}
 
+              <ShareBar title={gc.title} ui={ui} />
+
               {(guide.cost || guide.time) && (
                 <>
                   <div className="section-label">{ui.keyInfo}</div>
@@ -459,8 +411,6 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="section-label">{ui.share}</div>
-              <ShareBar title={gc.title} ui={ui} />
               <div style={{ height: 20 }} />
             </article>
           )
@@ -563,6 +513,8 @@ export default function App() {
                 <QuickLinks links={cert.studyLinks} label={`📚 ${ui.studyLinks || 'Study Resources'}`} />
               )}
 
+              <ShareBar title={cc.title} ui={ui} />
+
               <div className="section-label">{ui.freeRoute}</div>
               <div className="card" style={{ margin: '0 20px 12px' }}>
                 <div style={{ padding: '12px 16px', fontSize: '.95rem', color: 'var(--gn)', lineHeight: 1.65, fontWeight: 600 }}>
@@ -582,8 +534,6 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="section-label">{ui.share}</div>
-              <ShareBar title={cc.title} ui={ui} />
               <div style={{ height: 20 }} />
             </article>
           )
@@ -613,6 +563,8 @@ export default function App() {
                 <QuickLinks links={career.links} label={`🔗 ${ui.applyLinks || 'Apply'}`} />
               )}
 
+              <ShareBar title={pc.title} ui={ui} />
+
               <div className="section-label">{ui.steps}</div>
               <div className="card" style={{ margin: '0 20px 12px' }}>
                 <div style={{ padding: '6px 16px' }}>
@@ -625,8 +577,6 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="section-label">{ui.share}</div>
-              <ShareBar title={pc.title} ui={ui} />
               <div style={{ height: 20 }} />
             </article>
           )
@@ -716,7 +666,6 @@ export default function App() {
                 {[
                   ['nluk_lang', 'Language preference'],
                   ['nluk_dark', 'Dark/light mode'],
-                  ['nluk_status', 'Visa situation (optional)'],
                   ['nluk_wtab', 'Last work tab viewed'],
                 ].map(([k, v]) => (
                   <div key={k} style={{ fontSize: '.8rem', color: 'var(--t2)', padding: '2px 0' }}>
@@ -734,7 +683,7 @@ export default function App() {
                   style={{ marginTop: 12 }}
                   onClick={() => {
                     try {
-                      ['nluk_lang','nluk_dark','nluk_status','nluk_wtab'].forEach(k => localStorage.removeItem(k))
+                      ['nluk_lang','nluk_dark','nluk_wtab'].forEach(k => localStorage.removeItem(k))
                       window.location.reload()
                     } catch {}
                   }}

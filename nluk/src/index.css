@@ -777,7 +777,16 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   letter-spacing: .06em;
   margin-bottom: 8px;
 }
-.job-doc-item { font-size: .85rem; color: var(--t2); padding: 2px 0; line-height: 1.5; }
+.job-docs-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.job-doc-chip {
+  font-size: .75rem;
+  background: var(--bg3);
+  color: var(--t2);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-weight: 600;
+  line-height: 1.3;
+}
 .job-apply-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1060,11 +1069,51 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   letter-spacing: .07em;
 }
 
+/* ─── Start Here Numbers ─── */
+.start-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--ac);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dark .start-num { color: #032318; }
+
 /* ─── Hover states (desktop) ─── */
 @media (hover: hover) {
   .list-row:hover { background: var(--bg3); }
-  .qa-btn:hover  { background: var(--bg3); border-color: var(--ac); }
   .content-card:hover { border-color: var(--ac); }
-  .status-card:hover { border-color: var(--ac); }
   .lang-item:hover { border-color: var(--ac); background: var(--ac2); }
+}
+
+/* ─── Responsive — tablet & desktop ─── */
+@media (min-width: 600px) {
+  .app-root { max-width: 620px; }
+  .modal-content { max-width: 620px; }
+  .lang-overlay { max-width: 620px; }
+  .hero-title { font-size: 1.7rem; }
+  .job-apply-grid { grid-template-columns: repeat(3, 1fr); }
+  .share-bar { gap: 10px; }
+}
+@media (min-width: 900px) {
+  .app-root { max-width: 720px; }
+  .modal-content { max-width: 720px; }
+  .lang-overlay { max-width: 720px; }
+  .hero { padding: 32px 32px 34px; }
+  .hero-title { font-size: 1.9rem; }
+  .list-row { padding: 16px 20px; }
+  .detail-header { padding: 16px 24px 32px; }
+  .quick-links-row { padding: 4px 24px 10px; }
+  .section-label { padding: 20px 24px 8px; }
+  .card { margin: 0 24px 14px; }
+}
+@media (min-width: 1200px) {
+  .app-root { max-width: 800px; }
+  .lang-grid { grid-template-columns: repeat(3, 1fr); }
 }
