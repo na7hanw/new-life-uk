@@ -680,6 +680,10 @@ export default function App() {
               </div>
             </div>
 
+            <div className="version-badge" aria-label="App version and data verification date">
+              🛡 v2.1.0 · Data verified March 2026
+            </div>
+
             <div className="footer-disc">
               <strong>Last verified: March 2026</strong><br />
               {ui.disclaimer}<br /><br />
