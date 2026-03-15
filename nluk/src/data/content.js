@@ -172,30 +172,30 @@ export const SAVES = [
 export const JOBS = [
   {
     icon: "🛵",
-    content: { en: { role: "Delivery Rider / Driver", desc: "App-based food and parcel delivery. You choose your own hours. Start earning within days of signing up. Bike, scooter, or car accepted." } },
+    content: { en: { role: "Delivery Rider / Driver", desc: "App-based food and parcel delivery. You choose your own hours. Start earning within days of signing up. Bike, scooter, or car accepted. ⚠ You must have full right to work in the UK (check your eVisa/share code). Asylum seekers usually cannot work until refugee status is granted. Gig platforms enforce strict checks — no account sharing allowed." } },
     pay: "£10–£18/hr",
     tags: ["Flexible hours", "Bike / Scooter / Car"],
     docs: ["Share code (Right to Work)", "Bank account details", "Bike, scooter, or car", "Proof of age (18+)", "Smartphone"],
     applyLinks: [
-      { name: "Deliveroo Riders", url: "https://riders.deliveroo.co.uk" },
-      { name: "Uber Eats — Deliver with Uber", url: "https://www.uber.com/gb/en/deliver/" },
-      { name: "Just Eat Couriers", url: "https://courier.co/just-eat" },
-      { name: "Stuart Couriers", url: "https://stuart.com/en-gb/couriers/" },
-      { name: "Gophr Couriers", url: "https://gophr.com/couriers/" },
+      { name: "Deliveroo Riders", url: "https://riders.deliveroo.co.uk" }, // kept — verified working March 2026
+      { name: "Uber Eats — Deliver with Uber", url: "https://www.uber.com/gb/en/deliver/" }, // kept — verified working March 2026
+      { name: "Stuart Couriers", url: "https://couriers.stuart.com/apply" }, // Updated March 2026 - verified current app-based flow
+      { name: "Gophr Couriers", url: "https://app.gophr.com/register" }, // Updated March 2026 - verified current app-based flow
     ],
   },
   {
     icon: "🚐",
-    content: { en: { role: "Courier / Parcel Delivery (Van)", desc: "Drive a van delivering parcels for major carriers. Full-time and self-employed routes available. Some companies provide the van." } },
+    content: { en: { role: "Courier / Parcel Delivery (Van)", desc: "Drive a van delivering parcels for major carriers. Full-time and self-employed routes available. Some companies provide the van. ⚠ You must have full right to work in the UK (check your eVisa/share code). Asylum seekers usually cannot work until refugee status is granted. Gig platforms enforce strict checks — no account sharing allowed." } },
     pay: "£13–£18/hr",
     tags: ["Car or Van needed", "Full-time or Flexible"],
     docs: ["Share code (Right to Work)", "Full UK or valid foreign driving licence", "Bank account", "Own car or van (some companies provide)"],
     applyLinks: [
-      { name: "Amazon Flex", url: "https://flex.amazon.co.uk" },
-      { name: "DPD Drivers", url: "https://www.dpd.co.uk/content/about_dpd/drivers.jsp" },
-      { name: "Evri Couriers", url: "https://www.evri.com/couriers" },
-      { name: "Yodel Self-Employed Drivers", url: "https://www.yodel.co.uk/drivers" },
-      { name: "DHL UK Jobs", url: "https://careers.dhl.com/global/en/uk-jobs" },
+      { name: "Amazon Flex — sign up", url: "https://flex.amazon.co.uk/" }, // Updated March 2026 - verified current app-based flow
+      { name: "Amazon Flex — download app", url: "https://flex.amazon.co.uk/download-app" }, // Added March 2026 - app required to register; 18+, right to work, UK driving licence, insurance
+      { name: "DPD Drivers", url: "https://drivers.dpd.co.uk/" }, // Updated March 2026 - verified current app-based flow
+      { name: "Evri — become a courier", url: "https://www.evri.com/careers/be-a-courier" }, // Updated March 2026 - verified current app-based flow
+      { name: "Yodel Self-Employed Drivers", url: "https://www.yodel.co.uk/drivers" }, // kept — verified working March 2026
+      { name: "DHL UK Jobs", url: "https://careers.dhl.com/global/en/uk-jobs" }, // kept — verified working March 2026
     ],
   },
   {
