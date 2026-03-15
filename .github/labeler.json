@@ -1,0 +1,7 @@
+{
+  "content": ["nluk/src/data/**"],
+  "ui": ["nluk/src/**/*.jsx", "nluk/src/**/*.css"],
+  "ci": [".github/workflows/**"],
+  "dependencies": ["nluk/package*.json"],
+  "documentation": ["*.md", "docs/**"]
+}
