@@ -28,7 +28,7 @@ export const JOBS = [
       { name: "DPD Drivers", url: "https://drivers.dpd.co.uk/" }, // Updated March 2026 - verified current app-based flow
       { name: "Evri — become a courier", url: "https://www.evri.com/careers/be-a-courier" }, // Updated March 2026 - verified current app-based flow
       { name: "Yodel Self-Employed Drivers", url: "https://www.yodel.co.uk/drivers" }, // kept — verified working March 2026
-      { name: "DHL UK Jobs", url: "https://careers.dhl.com/global/en/uk-jobs" }, // kept — verified working March 2026
+      { name: "DHL UK Jobs", url: "https://careers.dhl.com/global/en/dhl-uk" }, // updated March 2026
     ],
   },
   {
@@ -39,7 +39,7 @@ export const JOBS = [
     docs: ["Share code (Right to Work)", "Proof of address", "Safety boots (some sites provide them)", "Proof of NI number (helpful)"],
     applyLinks: [
       { name: "Amazon Jobs UK", url: "https://hiring.amazon.co.uk" },
-      { name: "Royal Mail Jobs", url: "https://www.royalmailgroup.com/en/careers/" },
+      { name: "Royal Mail Jobs", url: "https://careers.royalmailgroup.com/gb/en" },
       { name: "Ocado Warehouse Jobs", url: "https://jobs.ocado.com" },
       { name: "Lidl Warehouse Jobs", url: "https://www.careers.lidl.co.uk" },
       { name: "Search all warehouse jobs (Indeed)", url: "https://uk.indeed.com/jobs?q=warehouse+operative&l=United+Kingdom" },
@@ -55,7 +55,7 @@ export const JOBS = [
     applyLinks: [
       { name: "NHS Jobs — Band 2/3 HCA roles", url: "https://www.jobs.nhs.uk/candidate/search?keywords=healthcare+assistant&radius=20" },
       { name: "Care UK", url: "https://jobs.careuk.com" },
-      { name: "HC-One Care Homes", url: "https://www.hc-one.co.uk/join-hc-one/our-opportunities/" },
+      { name: "HC-One Care Homes", url: "https://apply.hc-one.co.uk/" },
       { name: "Barchester Healthcare", url: "https://www.barchester.com/jobs" },
       { name: "Reed Health & Care", url: "https://www.reed.co.uk/jobs/health-care-jobs" },
     ],
@@ -109,9 +109,9 @@ export const JOBS = [
     docs: ["Share code (Right to Work)", "References (helpful but not always required)", "DBS check for some roles (healthcare / schools — employer arranges)"],
     applyLinks: [
       { name: "OCS Group Jobs", url: "https://www.ocsgroup.com/join-us/" },
-      { name: "ISS UK Careers", url: "https://www.uk.issworld.com/en-gb/careers" },
+      { name: "ISS UK Careers", url: "https://www.issworld.com/en-gb/career/your-career-at-iss/uk-jobs" },
       { name: "Mitie Careers", url: "https://www.mitie.com/careers/" },
-      { name: "Sodexo UK Jobs", url: "https://uk.sodexo.com/home/careers.html" },
+      { name: "Sodexo UK Jobs", url: "https://www.sodexojobs.co.uk/" },
       { name: "Indeed Cleaning Jobs", url: "https://uk.indeed.com/jobs?q=cleaning+operative" },
     ],
   },
@@ -125,7 +125,7 @@ export const JOBS = [
       { name: "G4S UK Careers", url: "https://www.g4s.com/en-gb/careers" },
       { name: "Securitas UK Jobs", url: "https://www.securitas.com/gb/en/careers/" },
       { name: "Corps Security Careers", url: "https://www.corpssecurity.co.uk/careers/" },
-      { name: "Compass Group Security Jobs", url: "https://www.compass-group.co.uk/careers/" },
+      { name: "Compass Group Security Jobs", url: "https://www.compass-group.co.uk/jobs/" },
       { name: "Indeed Security Officer Jobs", url: "https://uk.indeed.com/jobs?q=security+officer" },
     ],
   },
@@ -181,10 +181,10 @@ export const JOBS = [
     applyLinks: [
       { name: "NHS Jobs — Support Worker", url: "https://www.jobs.nhs.uk/candidate/search?keywords=support+worker&radius=20" },
       { name: "Indeed — Support Worker Jobs", url: "https://uk.indeed.com/jobs?q=support+worker" },
-      { name: "Mencap Careers", url: "https://www.mencap.org.uk/support-us/work-mencap" },
-      { name: "National Autistic Society Jobs", url: "https://www.autism.org.uk/what-we-do/employment/working-for-us" },
-      { name: "Turning Point Careers", url: "https://www.turning-point.co.uk/about-us/work-for-us.html" },
-      { name: "Voyage Care Jobs", url: "https://www.voyagecare.com/recruitment/" },
+      { name: "Mencap Careers", url: "https://jobs.mencap.org.uk/" },
+      { name: "National Autistic Society Jobs", url: "https://www.autism.org.uk/get-involved/work-for-us" },
+      { name: "Turning Point Careers", url: "https://careers.turning-point.co.uk/" },
+      { name: "Voyage Care Jobs", url: "https://careers.voyagecare.com/" },
     ],
   },
   {
@@ -213,7 +213,7 @@ export const JOBS = [
     applyLinks: [
       { name: "Drive with Uber UK", url: "https://www.uber.com/gb/en/drive/" },
       { name: "Drive with Bolt UK", url: "https://bolt.eu/en-gb/drive/" },
-      { name: "Addison Lee Driver Jobs", url: "https://www.addisonlee.com/drive-for-us/" },
+      { name: "Addison Lee Driver Jobs", url: "https://www.addisonlee.com/become-an-addisonlee-driver/" },
       { name: "Ola UK Drivers", url: "https://driver.olacabs.com/gb/en/registration" },
       { name: "Apply for PHV licence (GOV.UK)", url: "https://www.gov.uk/apply-for-taxi-licence" },
     ],
