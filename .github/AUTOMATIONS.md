@@ -10,7 +10,7 @@ This project uses multiple free GitHub integrations to catch bugs early, reduce 
 - **CodeQL** (`codeql-analysis.yml`) — Static security analysis
 - **i18n Check** (`i18n-check.yml`) — Verify all guides have English content
 - **Bundle Size Guard** (`bundle-size.yml`) — Fail if JS exceeds budget
-- **Netlify Preview** (`netlify-preview.yml`) — Deploy PR previews
+- **Cloudflare Pages Preview** (`cloudflare-preview.yml`) — Deploy PR previews
 
 ### Scheduled Checks (Daily/Weekly)
 - **Link Health** (`link-health.yml`) — Auto-opens issue if any URL is 404
@@ -38,7 +38,31 @@ This project uses multiple free GitHub integrations to catch bugs early, reduce 
 
 ## Setup Instructions
 
-### 1. Snyk (Dependency Vulnerability Scanning)
+### 1. Cloudflare Pages (PR Preview Deployments)
+
+**Why:** Gives every pull request a live preview URL so reviewers can test changes before merging. Cloudflare Pages has no bandwidth limits on the free tier.
+
+**Setup:**
+```bash
+# 1. Go to https://dash.cloudflare.com and sign in
+# 2. Pages → Create a project → Connect to Git → select na7hanw/new-life-uk
+# 3. Configure build settings:
+#    - Framework preset: None
+#    - Build command:    npm run build
+#    - Build output:     dist
+#    - Root directory:   nluk
+#    - Node.js version:  20 (set in Environment Variables: NODE_VERSION=20)
+# 4. Deploy — your site will be live at https://new-life-uk.pages.dev/
+#
+# For PR preview deployments via GitHub Actions:
+# 5. Cloudflare Dashboard → My Profile → API Tokens → Create Token
+#    - Use "Edit Cloudflare Workers" template, then add "Cloudflare Pages: Edit" permission
+# 6. Add to GitHub Secrets (Settings → Secrets and variables → Actions):
+#    - CLOUDFLARE_API_TOKEN — the token from step 5
+#    - CLOUDFLARE_ACCOUNT_ID — your account ID (shown in Cloudflare Dashboard right sidebar)
+```
+
+### 2. Snyk (Dependency Vulnerability Scanning)
 
 **Why:** Finds vulnerabilities that Dependabot might miss. Complements `npm audit`.
 
@@ -69,10 +93,11 @@ This project uses multiple free GitHub integrations to catch bugs early, reduce 
 # 5. Add to GitHub Secrets:
 #    - Name: SENTRY_DSN
 #    - Value: (paste your DSN)
-# 6. In Netlify dashboard, add environment variable:
+# 6. In Cloudflare Pages dashboard, add environment variable:
+#    - Project → Settings → Environment Variables
 #    - Key: VITE_SENTRY_DSN
 #    - Value: (paste your DSN)
-#    - Scope: Builds
+#    - Environment: Production (and Preview if wanted)
 # 7. Redeploy (or push a new commit to trigger build)
 # 8. Test: Visit the deployed app, open DevTools console, and type:
 #    Sentry.captureException(new Error("Test error"))
@@ -162,7 +187,7 @@ Check https://sentry.io — you should see the message/error appear immediately.
 | Tool | Tier | Cost | Notes |
 |------|------|------|-------|
 | GitHub Actions | Free | $0 | 2,000 free minutes/month per account |
-| Netlify | Starter | $0 | Covers 300 build minutes/month |
+| Cloudflare Pages | Free | $0 | Unlimited bandwidth, 500 builds/month |
 | Dependabot | Built-in | $0 | GitHub native, always free |
 | Mergify | Free | $0 | Free tier covers unlimited repos |
 | Husky | Open source | $0 | Local only, no cloud cost |
