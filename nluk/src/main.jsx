@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import { AppProvider } from './context/AppContext.jsx'
 import App from './App.jsx'
 import './index.css'
@@ -28,11 +29,13 @@ class ErrorBoundary extends Component {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <HashRouter>
-        <AppProvider>
-          <App />
-        </AppProvider>
-      </HashRouter>
+      <HelmetProvider>
+        <HashRouter>
+          <AppProvider>
+            <App />
+          </AppProvider>
+        </HashRouter>
+      </HelmetProvider>
     </ErrorBoundary>
   </React.StrictMode>
 )

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useApp } from './context/AppContext.jsx'
 import { LANGS } from './data/ui-strings.js'
@@ -24,6 +24,20 @@ export default function App() {
   const isDetail = /^\/(guide|cert|career)\//.test(location.pathname)
 
   const [workTab] = useState(() => ls('nluk_wtab', 'jobs'))
+  const [routeAnn, setRouteAnn] = useState('')
+
+  useEffect(() => {
+    const p = location.pathname
+    const ann =
+      p === '/'            ? 'Guides' :
+      p.startsWith('/guide/') ? 'Guide detail' :
+      p.startsWith('/work')   ? 'Work and jobs' :
+      p.startsWith('/cert/')  ? 'Certificate detail' :
+      p.startsWith('/career/')? 'Career path detail' :
+      p === '/saves'      ? 'Saved resources' :
+      p === '/more'       ? 'More and settings' : ''
+    setRouteAnn(ann)
+  }, [location.pathname])
 
   const TABS = [
     { id: 'guides', path: '/', icon: '📖', label: ui.guides },
@@ -43,6 +57,9 @@ export default function App() {
 
   return (
     <div className={`app-root ${dark ? 'dark' : ''} ${fontClass}`} dir={dir}>
+
+      {/* SCREEN READER ROUTE ANNOUNCER */}
+      <span className="sr-only" aria-live="polite" aria-atomic="true">{routeAnn}</span>
 
       {/* LANGUAGE OVERLAY */}
       {showLang && (

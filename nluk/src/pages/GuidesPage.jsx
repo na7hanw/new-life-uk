@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext.jsx'
 import { GUIDES, GUIDE_PRIORITY, CATEGORIES } from '../data/guides.js'
@@ -11,9 +11,16 @@ export default function GuidesPage() {
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('All')
   const [tipIdx, setTipIdx] = useState(0)
+  const guideBtnRefs = useRef({})
 
   useEffect(() => {
     setTipIdx(Math.floor(Math.random() * TIPS.refugee.length))
+    // Restore focus to the last guide the user navigated away from
+    const last = sessionStorage.getItem('nluk_last_guide')
+    if (last) {
+      sessionStorage.removeItem('nluk_last_guide')
+      requestAnimationFrame(() => { guideBtnRefs.current[last]?.focus() })
+    }
   }, [])
 
   const tipList = TIPS.refugee
@@ -82,7 +89,10 @@ export default function GuidesPage() {
             {filtered.filter(g => g.cat === cat).map(g => {
               const gc = t18(g.content, lang)
               return (
-                <button key={g.id} className="list-row" onClick={() => navigate(`/guide/${g.id}`)} aria-label={gc.title}>
+                <button key={g.id} className="list-row"
+                  ref={el => { guideBtnRefs.current[g.id] = el }}
+                  onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
+                  aria-label={gc.title}>
                   <span className="list-row-icon">{g.icon}</span>
                   <div className="list-row-content">
                     <div className="list-row-title">{gc.title}</div>

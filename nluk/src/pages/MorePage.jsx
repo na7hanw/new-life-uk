@@ -90,7 +90,7 @@ export default function MorePage() {
       </div>
 
       <div className="version-badge" aria-label="App version and data verification date">
-        🛡 v2.1.0 · Data verified March 2026
+        🛡 v2.2.0 · Data verified March 2026
       </div>
 
       <div className="footer-disc">

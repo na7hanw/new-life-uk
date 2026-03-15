@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useApp } from '../context/AppContext.jsx'
 import { GUIDE_MAP } from '../data/guides.js'
 import { t18 } from '../lib/utils.js'
@@ -24,6 +25,10 @@ export default function GuideDetail() {
 
   return (
     <article className="page-enter">
+      <Helmet>
+        <title>{gc.title} — New Life UK</title>
+        <meta name="description" content={gc.summary} />
+      </Helmet>
       <div className="detail-header">
         <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
         <div className="detail-hero">
