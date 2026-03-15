@@ -86,7 +86,7 @@ export default function App() {
           <div className="header-brand"><Logo size={26} /><h1>{ui.app}</h1></div>
           <div className="header-actions">
             <button className="btn-settings" onClick={() => setSettings(true)} aria-label={ui.settings}>⚙</button>
-            <button className="btn-sos" onClick={() => setSOS(true)} aria-label="Emergency SOS">{ui.sos}</button>
+            <button className="btn-sos" onClick={() => { navigator?.vibrate?.(15); setSOS(true) }} aria-label="Emergency SOS">{ui.sos}</button>
           </div>
         </header>
       )}
@@ -124,7 +124,7 @@ export default function App() {
       {!showLang && !showSOS && (
         <button
           className="floating-sos"
-          onClick={() => setSOS(true)}
+          onClick={() => { navigator?.vibrate?.(15); setSOS(true) }}
           aria-label={ui.sosLabel || 'Open emergency contacts'}
           aria-haspopup="dialog"
         >{ui.sos}</button>

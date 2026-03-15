@@ -69,6 +69,16 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   --shadow2: 0 8px 28px rgba(0,0,0,.40);
 }
 
+/* Guide "last verified" footer */
+.guide-updated {
+  text-align: center;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--gn);
+  padding: 4px 20px 24px;
+  opacity: .75;
+}
+
 /* Screen-reader only utility — visually hidden but accessible */
 .sr-only {
   position: absolute;

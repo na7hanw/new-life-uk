@@ -50,3 +50,47 @@ export const GUIDE_PRIORITY = [
   'renting', 'schools', 'mental', 'safety', 'tax', 'driving',
   'proof-address', 'travel', 'family-reunion', 'nrpf', 'women-support', 'community',
 ];
+
+// ─── Global data-verified date ─────────────────────────────────
+export const GUIDE_DATA_DATE = 'March 2026'
+
+// ─── Per-guide last-updated overrides ──────────────────────────
+export const GUIDE_LAST_UPDATED = {
+  'evisa':             'February 2026',
+  'sharecode':         'February 2026',
+  'ctd':               'March 2026',
+  'travel':            'March 2026',
+  'family-reunion':    'September 2025',
+  'employment-rights': 'April 2026',
+  'ilr':               'January 2026',
+  'uc':                'March 2026',
+  'move-on':           'March 2026',
+  'women-support':     'March 2026',
+}
+
+// ─── Fuzzy-search keywords (alias terms users type instead of UK jargon) ──
+export const GUIDE_KEYWORDS = {
+  'gp':            ['doctor', 'dentist', 'hospital', 'medicine', 'sick', 'ill', 'health', 'nurse', 'prescription'],
+  'uc':            ['benefits', 'money', 'income', 'welfare', 'payment', 'poverty', 'allowance', 'JSA', 'ESA', 'PIP'],
+  'ni':            ['NINO', 'NIN', 'tax number', 'national insurance number', 'employment number'],
+  'evisa':         ['BRP', 'biometric', 'visa', 'immigration status', 'UKVI', 'Home Office', 'status'],
+  'sharecode':     ['work permit', 'proof', 'employer', 'landlord', 'rent', 'right to work', 'right to rent'],
+  'nrpf':          ['benefits', 'public funds', 'restrictions', 'welfare', 'cannot claim', 'no money'],
+  'ilr':           ['permanent', 'settled status', 'indefinite', 'citizenship', 'remain', 'settlement', 'stay'],
+  'mental':        ['depression', 'anxiety', 'trauma', 'therapy', 'counselling', 'stress', 'PTSD', 'sad'],
+  'bank':          ['money', 'finance', 'account', 'card', 'savings', 'revolut', 'monzo', 'starling'],
+  'housing-help':  ['homeless', 'shelter', 'accommodation', 'council house', 'social housing', 'eviction'],
+  're-qualify':    ['degree', 'qualifications', 'diploma', 'university', 'professional', 'credential'],
+  'safety':        ['police', 'scam', 'fraud', 'abuse', 'crime', 'danger', 'trafficking', 'exploitation'],
+  'tax':           ['PAYE', 'HMRC', 'payslip', 'income', 'self employed', 'freelance', 'salary'],
+  'move-on':       ['56 days', 'asylum support', 'NASS', 'hostel', 'move out', 'transition', 'new start'],
+  'work-rights':   ['job', 'work', 'employment', 'hours', 'contract', 'permission to work'],
+  'driving':       ['car', 'licence', 'drive', 'test', 'foreign licence', 'provisional', 'learner'],
+  'ctd':           ['passport', 'travel document', 'convention', 'abroad', 'fly', 'flight'],
+  'travel':        ['abroad', 'holiday', 'fly', 'flight', 'passport', 'overseas'],
+  'renting':       ['flat', 'house', 'rent', 'landlord', 'tenancy', 'deposit', 'room'],
+  'women-support': ['women', 'girls', 'female', 'domestic abuse', 'FGM', 'maternity', 'pregnancy', 'violence'],
+  'schools':       ['children', 'kids', 'school', 'education', 'EAL', 'English', 'free school meals'],
+  'family-reunion':['family', 'spouse', 'wife', 'husband', 'children', 'bring family', 'reunite'],
+  'community':     ['friends', 'social', 'volunteer', 'mosque', 'church', 'library', 'activities'],
+}

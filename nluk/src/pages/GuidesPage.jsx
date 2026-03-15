@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.jsx'
-import { GUIDES, GUIDE_PRIORITY, CATEGORIES } from '../data/guides.js'
+import { GUIDES, GUIDE_PRIORITY, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.js'
 import { LANGS, TIPS } from '../data/ui-strings.js'
 import { t18 } from '../lib/utils.js'
 
@@ -26,20 +27,35 @@ export default function GuidesPage() {
   const tipList = TIPS.refugee
   const tip = tipList[tipIdx % tipList.length]
 
+  // Fuse.js index — built once, searches title + summary + keyword aliases
+  const fuseIndex = useMemo(() => new Fuse(
+    GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] })),
+    {
+      keys: [
+        { name: 'content.en.title',   weight: 3 },
+        { name: 'content.en.summary', weight: 1 },
+        { name: '_kw',                weight: 2 },
+      ],
+      threshold: 0.38,
+      ignoreLocation: true,
+      minMatchCharLength: 2,
+    }
+  ), [])
+
   const filtered = useMemo(() => {
-    const q = search.toLowerCase()
-    const list = GUIDES.filter(g => {
-      const c = t18(g.content, lang)
-      return (catFilter === 'All' || g.cat === catFilter) &&
-        (!q || c.title?.toLowerCase().includes(q) || c.summary?.toLowerCase().includes(q))
-    })
-    // Sort by GUIDE_PRIORITY, unknowns go to end
-    return list.sort((a, b) => {
-      const ia = GUIDE_PRIORITY.indexOf(a.id)
-      const ib = GUIDE_PRIORITY.indexOf(b.id)
-      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
-    })
-  }, [search, catFilter, lang])
+    let list
+    if (search.trim()) {
+      list = fuseIndex.search(search).map(r => r.item)
+    } else {
+      list = [...GUIDES].sort((a, b) => {
+        const ia = GUIDE_PRIORITY.indexOf(a.id)
+        const ib = GUIDE_PRIORITY.indexOf(b.id)
+        return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
+      })
+    }
+    if (catFilter !== 'All') list = list.filter(g => g.cat === catFilter)
+    return list
+  }, [search, catFilter, fuseIndex])
 
   const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))], [filtered])
 
