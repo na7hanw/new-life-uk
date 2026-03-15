@@ -140,10 +140,6 @@ function JobCard({ j, lang, ui }) {
   )
 }
 
-// ─── Start Here — priority-ordered guide IDs for newly granted refugees ──
-const START_HERE = [
-  'move-on', 'bank', 'uc', 'gp', 'ni', 'evisa', 'sharecode', 'housing-help',
-]
 
 // ─── App ──────────────────────────────────────────────────────────
 export default function App() {
@@ -286,26 +282,6 @@ export default function App() {
                 </div>
 
                 {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
-
-                <div className="section-label">Start Here</div>
-                <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
-                  {START_HERE.map((id, i) => {
-                    const g = GUIDE_MAP[id]
-                    if (!g) return null
-                    const gc = t18(g.content, lang)
-                    return (
-                      <button key={id} className="list-row" onClick={() => { setGuide(g); push('gd') }} aria-label={gc.title}>
-                        <div className="start-num">{i + 1}</div>
-                        <div className="list-row-content">
-                          <div className="list-row-title">{g.icon} {gc.title}</div>
-                          <div className="list-row-sub">{gc.summary}</div>
-                        </div>
-                        <span className="list-row-arrow">{af}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-                <div className="section-label">All Guides</div>
               </>
             )}
 
@@ -374,17 +350,12 @@ export default function App() {
 
               <ShareBar title={gc.title} ui={ui} />
 
-              {(guide.cost || guide.time) && (
-                <>
-                  <div className="section-label">{ui.keyInfo}</div>
-                  <div className="card" style={{ margin: '0 20px 12px' }}>
-                    <div style={{ padding: '6px 16px' }}>
-                      {guide.cost && <div className="info-row"><span className="info-label">💰 {ui.cost}</span><span className="info-value">{guide.cost}</span></div>}
-                      {guide.time && <div className="info-row"><span className="info-label">⏱ {ui.time}</span><span className="info-value">{guide.time}</span></div>}
-                      {guide.bring?.length > 0 && <div className="info-row"><span className="info-label">🎒 {ui.bring}</span><div className="info-value">{guide.bring.join(' · ')}</div></div>}
-                    </div>
-                  </div>
-                </>
+              {(guide.cost || guide.time || guide.bring?.length > 0) && (
+                <div className="key-info-strip">
+                  {guide.cost && <span className="key-chip">💰 {guide.cost}</span>}
+                  {guide.time && <span className="key-chip">⏱ {guide.time}</span>}
+                  {guide.bring?.map(b => <span key={b} className="key-chip">📋 {b}</span>)}
+                </div>
               )}
 
               <div className="section-label">{ui.steps}</div>
