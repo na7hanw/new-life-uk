@@ -17,11 +17,7 @@ export default function GuideDetail() {
 
   const guide = GUIDE_MAP[id]
 
-  const englishContent = guide ? t18(guide.content, 'en') : null
-  const hasNativeTranslation = guide ? !!guide.content[lang] : false
-  const nativeContent = guide ? t18(guide.content, lang) : null
-
-  const [gc, setGc] = useState(nativeContent)
+  const [gc, setGc] = useState(() => guide ? t18(guide.content, lang) : null)
   const [translating, setTranslating] = useState(false)
   const [wasTranslated, setWasTranslated] = useState(false)
 
@@ -30,6 +26,11 @@ export default function GuideDetail() {
   }, [guide, navigate])
 
   useEffect(() => {
+    if (!guide) return
+    const englishContent = t18(guide.content, 'en')
+    const hasNativeTranslation = !!guide.content[lang]
+    const nativeContent = t18(guide.content, lang)
+
     if (!englishContent) return
     if (lang === 'en' || hasNativeTranslation) {
       setGc(nativeContent)
@@ -47,8 +48,7 @@ export default function GuideDetail() {
       }
     })
     return () => { cancelled = true }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang, id])
+  }, [lang, id, guide])
 
   if (!guide) return null
 

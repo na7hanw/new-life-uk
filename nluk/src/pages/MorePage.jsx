@@ -8,6 +8,7 @@ import { translateContentObject, clearTranslationCache } from '../lib/translate.
 function GemCard({ gem, lang, ui }) {
   const native = t18(gem.content, lang)
   const needsTranslation = lang !== 'en' && !gem.content[lang]
+  const gemId = gem.content.en.title
 
   const [content, setContent] = useState(native)
   const [translating, setTranslating] = useState(false)
@@ -22,8 +23,9 @@ function GemCard({ gem, lang, ui }) {
       if (!cancelled) { setContent(translated); setTranslating(false); setWasTranslated(true) }
     })
     return () => { cancelled = true }
+  // gemId is the stable identifier for the gem item; native is derived from lang+gem so not needed separately
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang, gem])
+  }, [lang, gemId])
 
   return (
     <div className={`content-card${translating ? ' translating' : ''}`}>

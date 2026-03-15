@@ -6,12 +6,16 @@
 
 const STORE_KEY = 'nluk_tx3'
 
+// FNV-1a 32-bit hash constants
+const FNV_OFFSET = 2166136261
+const FNV_PRIME  = 16777619
+
 // FNV-1a 32-bit hash (fast, collision-resistant for short strings)
 function fnv1a(str) {
-  let h = 2166136261
+  let h = FNV_OFFSET
   for (let i = 0; i < str.length; i++) {
     h ^= str.charCodeAt(i)
-    h = Math.imul(h, 16777619) >>> 0
+    h = Math.imul(h, FNV_PRIME) >>> 0
   }
   return h.toString(36)
 }

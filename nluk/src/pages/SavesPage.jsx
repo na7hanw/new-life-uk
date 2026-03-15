@@ -7,6 +7,7 @@ import { translateContentObject } from '../lib/translate.js'
 function SaveCard({ save, lang, ui }) {
   const native = t18(save.content, lang)
   const needsTranslation = lang !== 'en' && !save.content[lang]
+  const saveId = save.content.en.title
 
   const [content, setContent] = useState(native)
   const [translating, setTranslating] = useState(false)
@@ -21,8 +22,9 @@ function SaveCard({ save, lang, ui }) {
       if (!cancelled) { setContent(translated); setTranslating(false); setWasTranslated(true) }
     })
     return () => { cancelled = true }
+  // saveId is the stable identifier for the save item; native is derived from lang+save so not needed separately
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang, save])
+  }, [lang, saveId])
 
   return (
     <div className={`content-card${translating ? ' translating' : ''}`}>
