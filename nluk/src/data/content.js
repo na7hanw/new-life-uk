@@ -338,6 +338,20 @@ export const JOBS = [
       { name: "Caterer.com Hotel Jobs", url: "https://www.caterer.com/jobs/hotel" },
     ],
   },
+  // Added March 2026 - refugee-friendly job agencies / agency link
+  {
+    icon: "🤝",
+    content: { en: { role: "Refugee Employment Support Organisations", desc: "Specialist organisations that connect refugees directly to employers and free employment support. These are some of the fastest routes into work — start here before applying cold. Free CV help, interview coaching, and employer introductions." } },
+    pay: "Free support",
+    tags: ["Free service", "Refugee-specific", "Employer introductions"],
+    docs: ["Refugee status document or BRP", "Share code (Right to Work)", "CV (they will help you build one)"],
+    applyLinks: [
+      { name: "Refugee Employment Network", url: "https://refugeeemploymentnetwork.org/" }, // Added March 2026 - agency link
+      { name: "Breaking Barriers — Jobs & Training", url: "https://breaking-barriers.co.uk/refugee-support/employment/" }, // Added March 2026 - agency link
+      { name: "Tent UK — Major Employers Hiring Refugees", url: "https://www.tent.org/uk" }, // Added March 2026 - agency link
+      { name: "IRC UK — Employment Support", url: "https://www.rescue.org/uk/employment-support-refugees-uk" }, // Added March 2026 - agency link
+    ],
+  },
 ];
 
 // ─── CERTS ───────────────────────────────────────────────────────
