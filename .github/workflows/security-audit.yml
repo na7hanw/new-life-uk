@@ -1,8 +1,12 @@
-name: Weekly Security Audit
+name: Security Audit
 
 on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   schedule:
-    # Every Monday at 08:00 UTC
+    # Every Monday at 08:00 UTC (catches issues even without new pushes)
     - cron: '0 8 * * 1'
   workflow_dispatch:
 
