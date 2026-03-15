@@ -179,6 +179,8 @@ export const JOBS = [
     applyLinks: [
       { name: "Deliveroo Riders", url: "https://riders.deliveroo.co.uk" }, // kept — verified working March 2026
       { name: "Uber Eats — Deliver with Uber", url: "https://www.uber.com/gb/en/deliver/" }, // kept — verified working March 2026
+      { name: "Just Eat — Become a courier", url: "https://couriers.just-eat.co.uk/" }, // re-added March 2026 - verified current signup flow
+      { name: "Bolt Food — Become a courier", url: "https://bolt.eu/en-gb/couriers/" }, // Added March 2026 - major UK platform
       { name: "Stuart Couriers", url: "https://couriers.stuart.com/apply" }, // Updated March 2026 - verified current app-based flow
       { name: "Gophr Couriers", url: "https://app.gophr.com/register" }, // Updated March 2026 - verified current app-based flow
     ],
@@ -201,7 +203,7 @@ export const JOBS = [
   {
     icon: "📦",
     content: { en: { role: "Warehouse Operative", desc: "Picking, packing, and sorting goods. No experience needed. Amazon, supermarkets, and logistics firms are always hiring. Overtime and night shifts available." } },
-    pay: "£11.44–£14/hr",
+    pay: "£12.71–£14/hr",
     tags: ["No experience needed", "Overtime available"],
     docs: ["Share code (Right to Work)", "Proof of address", "Safety boots (some sites provide them)", "Proof of NI number (helpful)"],
     applyLinks: [
@@ -257,7 +259,7 @@ export const JOBS = [
   {
     icon: "🍴",
     content: { en: { role: "Kitchen Porter / Food Production", desc: "Washing up, cleaning, and basic food prep in restaurants, hotels, and food factories. Free Food Hygiene Level 2 certificate available via Jobcentre." } },
-    pay: "£11.44–£12/hr",
+    pay: "£12.71–£13/hr",
     tags: ["No experience needed", "Free Food Hygiene cert via Jobcentre"],
     docs: ["Share code (Right to Work)", "Food Hygiene Level 2 certificate (free via Jobcentre)", "References (helpful but rarely required)"],
     applyLinks: [
@@ -271,7 +273,7 @@ export const JOBS = [
   {
     icon: "🧹",
     content: { en: { role: "Cleaning / Facilities Operative", desc: "Hotels, offices, hospitals, schools, and transport hubs always need cleaning staff. Large agencies hire immediately — often start same week." } },
-    pay: "£11.44–£13/hr",
+    pay: "£12.71–£13.50/hr",
     tags: ["No experience needed", "Flexible hours"],
     docs: ["Share code (Right to Work)", "References (helpful but not always required)", "DBS check for some roles (healthcare / schools — employer arranges)"],
     applyLinks: [
@@ -313,7 +315,7 @@ export const JOBS = [
   {
     icon: "☕",
     content: { en: { role: "Barista / Café Staff", desc: "Coffee shops, cafés, and quick-service restaurants. Full training provided on the job. Starbucks, Costa, Caffè Nero, and Pret hire frequently." } },
-    pay: "£11.44–£13/hr",
+    pay: "£12.71–£13.50/hr",
     tags: ["No experience needed", "Training provided"],
     docs: ["Share code (Right to Work)", "Food Hygiene cert (helpful — free via Jobcentre)", "Smart/uniform appearance"],
     applyLinks: [
@@ -327,7 +329,7 @@ export const JOBS = [
   {
     icon: "🏨",
     content: { en: { role: "Hotel & Hospitality Staff", desc: "Housekeeping, reception, and food service in hotels. Housekeeping needs no experience. Reception benefits from English skills. Tips possible in many roles." } },
-    pay: "£11.44–£14/hr",
+    pay: "£12.71–£14/hr",
     tags: ["No experience for housekeeping", "Tips possible"],
     docs: ["Share code (Right to Work)", "References (helpful)", "Smart appearance"],
     applyLinks: [
@@ -336,6 +338,53 @@ export const JOBS = [
       { name: "IHG (Holiday Inn / Crowne Plaza) Jobs", url: "https://careers.ihg.com" },
       { name: "Marriott UK Careers", url: "https://careers.marriott.com" },
       { name: "Caterer.com Hotel Jobs", url: "https://www.caterer.com/jobs/hotel" },
+    ],
+  },
+  {
+    icon: "🫂",
+    content: { en: { role: "Support Worker / Care Worker", desc: "One of the most in-demand and beginner-friendly jobs in the UK. Support people with disabilities, mental health challenges, or elderly care needs in residential homes, supported housing, or in the community. No prior UK experience needed — your employer trains you fully via the free Care Certificate. Visa sponsorship widely available." } },
+    pay: "£12.71–£15/hr",
+    tags: ["No experience needed", "Visa sponsorship available", "Career progression"],
+    docs: ["Share code (Right to Work)", "Enhanced DBS check (employer arranges, free)", "Two references", "Care Certificate (fully employer-funded on the job)"],
+    visa: true,
+    applyLinks: [
+      { name: "NHS Jobs — Support Worker", url: "https://www.jobs.nhs.uk/candidate/search?keywords=support+worker&radius=20" },
+      { name: "Indeed — Support Worker Jobs", url: "https://uk.indeed.com/jobs?q=support+worker" },
+      { name: "Mencap Careers", url: "https://www.mencap.org.uk/support-us/work-mencap" },
+      { name: "National Autistic Society Jobs", url: "https://www.autism.org.uk/what-we-do/employment/working-for-us" },
+      { name: "Turning Point Careers", url: "https://www.turning-point.co.uk/about-us/work-for-us.html" },
+      { name: "Voyage Care Jobs", url: "https://www.voyagecare.com/recruitment/" },
+    ],
+  },
+  {
+    icon: "🛒",
+    content: { en: { role: "Supermarket / Retail Assistant", desc: "Tesco, Sainsbury's, Asda, Aldi, and Lidl are always hiring. Shelf stacking, checkout, click-and-collect, or bakery. Most roles start immediately with no UK experience. Night shifts and weekend premium pay available." } },
+    pay: "£12.71–£14.50/hr",
+    tags: ["No experience needed", "Immediate start", "Shift premiums"],
+    docs: ["Share code (Right to Work)", "Proof of age (18+ for alcohol sections)", "Bank account details"],
+    applyLinks: [
+      { name: "Tesco Jobs", url: "https://www.tesco-careers.com/en/search/" },
+      { name: "Sainsbury's Jobs", url: "https://jobs.sainsburys.co.uk" },
+      { name: "Asda Jobs", url: "https://www.asda.jobs" },
+      { name: "Aldi UK Jobs", url: "https://www.aldi.co.uk/about-aldi/careers" },
+      { name: "Lidl UK Jobs", url: "https://www.careers.lidl.co.uk" },
+      { name: "Morrisons Careers", url: "https://www.morrisons.jobs" },
+      { name: "M&S Jobs", url: "https://careers.marksandspencer.com" },
+      { name: "Indeed — Supermarket Jobs", url: "https://uk.indeed.com/jobs?q=supermarket+assistant" },
+    ],
+  },
+  {
+    icon: "🚕",
+    content: { en: { role: "Private Hire / Taxi Driver (Uber, Bolt, Addison Lee)", desc: "Flexible driving work — use your own car or lease one. Requires a local council PHV licence (4–12 weeks to get). Uber and Bolt pay bonuses during your first months. Good English helpful for ratings. ⚠ You must have full right to work in the UK. Standard car insurance is NOT valid — you need hire and reward cover." } },
+    pay: "£13–£20/hr (after costs)",
+    tags: ["Own car or lease", "PHV licence required", "Flexible hours"],
+    docs: ["Share code (Right to Work)", "Full UK or valid foreign driving licence (3+ years)", "PHV council licence (see Certs tab)", "Hire and reward insurance", "Enhanced DBS (council arranges)", "D4 medical (council arranges)"],
+    applyLinks: [
+      { name: "Drive with Uber UK", url: "https://www.uber.com/gb/en/drive/" },
+      { name: "Drive with Bolt UK", url: "https://bolt.eu/en-gb/drive/" },
+      { name: "Addison Lee Driver Jobs", url: "https://www.addisonlee.com/drive-for-us/" },
+      { name: "Ola UK Drivers", url: "https://driver.olacabs.com/gb/en/registration" },
+      { name: "Apply for PHV licence (GOV.UK)", url: "https://www.gov.uk/apply-for-taxi-licence" },
     ],
   },
   // Added March 2026 - refugee-friendly job agencies / agency link
