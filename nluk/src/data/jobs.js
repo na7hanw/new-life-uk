@@ -11,7 +11,6 @@ export const JOBS = [
       { name: "Deliveroo Riders", url: "https://riders.deliveroo.co.uk" }, // kept — verified working March 2026
       { name: "Uber Eats — Deliver with Uber", url: "https://www.uber.com/gb/en/deliver/" }, // kept — verified working March 2026
       { name: "Just Eat — Become a courier", url: "https://couriers.just-eat.co.uk/" }, // re-added March 2026 - verified current signup flow
-      { name: "Bolt Food — Become a courier", url: "https://bolt.eu/en-gb/couriers/" }, // Added March 2026 - major UK platform
       { name: "Stuart Couriers", url: "https://couriers.stuart.com/apply" }, // Updated March 2026 - verified current app-based flow
       { name: "Gophr Couriers", url: "https://app.gophr.com/register" }, // Updated March 2026 - verified current app-based flow
     ],
@@ -27,7 +26,7 @@ export const JOBS = [
       { name: "Amazon Flex — download app", url: "https://flex.amazon.co.uk/download-app" }, // Added March 2026 - app required to register; 18+, right to work, UK driving licence, insurance
       { name: "DPD Drivers", url: "https://drivers.dpd.co.uk/" }, // Updated March 2026 - verified current app-based flow
       { name: "Evri — become a courier", url: "https://www.evri.com/careers/be-a-courier" }, // Updated March 2026 - verified current app-based flow
-      { name: "Yodel Self-Employed Drivers", url: "https://www.yodel.co.uk/drivers" }, // kept — verified working March 2026
+      { name: "Yodel Self-Employed Drivers", url: "https://www.yodeldriver.co.uk" }, // updated March 2026 — moved to dedicated subdomain
       { name: "DHL UK Jobs", url: "https://careers.dhl.com/global/en/dhl-uk" }, // updated March 2026
     ],
   },
