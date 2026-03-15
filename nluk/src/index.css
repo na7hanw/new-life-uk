@@ -1102,34 +1102,6 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 }
 .settings-row:last-child { border-bottom: none; }
 
-/* ─── Floating SOS — the most important element in the app ─── */
-.floating-sos {
-  position: fixed;
-  bottom: calc(70px + env(safe-area-inset-bottom));
-  right: 20px;
-  z-index: 150;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: var(--rd);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: .75rem;
-  font-weight: 900;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  box-shadow: 0 4px 22px rgba(196,28,28,.45);
-  transition: transform .12s;
-  animation: sosPulse 2.8s ease-in-out infinite;
-}
-.floating-sos:active { transform: scale(.88); }
-
-@keyframes sosPulse {
-  0%, 100% { box-shadow: 0 4px 22px rgba(196,28,28,.45); }
-  50%       { box-shadow: 0 4px 32px rgba(196,28,28,.65); }
-}
 
 /* ─── Prompt Box ─── */
 .prompt-box {

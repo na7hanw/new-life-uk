@@ -122,16 +122,6 @@ export default function App() {
         </nav>
       )}
 
-      {/* FLOATING SOS — always visible except when modal open or lang overlay shown */}
-      {!showLang && !showSOS && (
-        <button
-          className="floating-sos"
-          onClick={() => { navigator?.vibrate?.(15); setSOS(true) }}
-          aria-label={ui.sosLabel || 'Open emergency contacts'}
-          aria-haspopup="dialog"
-        >{ui.sos}</button>
-      )}
-
       {/* SOS MODAL — focus-trapped, no backdrop dismiss (safety-critical) */}
       <SOSModal showSOS={showSOS} setSOS={setSOS} ui={ui} SOS_NUMBERS={SOS_NUMBERS} />
 
