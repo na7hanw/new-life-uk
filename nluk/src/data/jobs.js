@@ -37,9 +37,9 @@ export const JOBS = [
     tags: ["No experience needed", "Overtime available"],
     docs: ["Share code (Right to Work)", "Proof of address", "Safety boots (some sites provide them)", "Proof of NI number (helpful)"],
     applyLinks: [
-      { name: "Amazon Jobs UK", url: "https://hiring.amazon.co.uk" },
+      { name: "Amazon Jobs UK", url: "https://www.amazon.jobs/en/search?country=GBR" },
       { name: "Royal Mail Jobs", url: "https://careers.royalmailgroup.com/gb/en" },
-      { name: "Ocado Warehouse Jobs", url: "https://jobs.ocado.com" },
+      { name: "Ocado Warehouse Jobs", url: "https://careers.ocadogroup.com/teams/drivers-and-warehouse/warehouse" },
       { name: "Lidl Warehouse Jobs", url: "https://www.careers.lidl.co.uk" },
       { name: "Search all warehouse jobs (Indeed)", url: "https://uk.indeed.com/jobs?q=warehouse+operative&l=United+Kingdom" },
     ],
