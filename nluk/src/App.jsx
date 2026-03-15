@@ -157,6 +157,7 @@ export default function App() {
   const [showLang, setShowLang] = useState(() => !ls('nluk_lang', ''))
   const [dark, setDark] = useState(() => ls('nluk_dark', '') === 'true')
   const scrollRef = useRef(null)
+  const sosModalRef = useRef(null)
 
   // Bug fix: use dynamic array length instead of hardcoded 8
   const [tipIdx] = useState(() => Math.floor(Math.random() * 100))
@@ -170,6 +171,28 @@ export default function App() {
   }, [lang])
   useEffect(() => { lsSet('nluk_dark', String(dark)) }, [dark])
   useEffect(() => { lsSet('nluk_wtab', workTab) }, [workTab])
+
+  // SOS modal focus trap + keyboard handler (safety-critical)
+  useEffect(() => {
+    if (!showSOS) return
+    const el = sosModalRef.current
+    if (!el) return
+    const focusable = el.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    first?.focus()
+    const trap = (e) => {
+      if (e.key === 'Escape') { setSOS(false); return }
+      if (e.key !== 'Tab') return
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus() }
+      }
+    }
+    el.addEventListener('keydown', trap)
+    return () => el.removeEventListener('keydown', trap)
+  }, [showSOS])
 
   // Derived
   const L = LANGS.find(l => l.code === lang) || LANGS[0]
@@ -691,29 +714,48 @@ export default function App() {
         </nav>
       )}
 
-      {/* FLOATING SOS — Bug fix: always visible (even in detail), except when SOS modal open or lang overlay shown */}
+      {/* FLOATING SOS — always visible except when modal open or lang overlay shown */}
       {!showLang && !showSOS && (
-        <button className="floating-sos" onClick={() => setSOS(true)} aria-label="Emergency SOS">{ui.sos}</button>
+        <button
+          className="floating-sos"
+          onClick={() => setSOS(true)}
+          aria-label={ui.sosLabel || 'Open emergency contacts'}
+          aria-haspopup="dialog"
+        >{ui.sos}</button>
       )}
 
-      {/* SOS MODAL — no backdrop dismiss (safety-critical) */}
+      {/* SOS MODAL — focus-trapped, no backdrop dismiss (safety-critical) */}
       {showSOS && (
-        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Emergency contacts">
-          <div className="modal-content">
-            <div className="modal-handle" />
-            <h2 className="modal-title">🚨 {ui.sos}</h2>
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="sos-modal-title"
+          aria-describedby="sos-modal-desc"
+        >
+          <div className="modal-content" ref={sosModalRef}>
+            <div className="modal-handle" aria-hidden="true" />
+            <h2 id="sos-modal-title" className="modal-title">🚨 {ui.sos}</h2>
+            <p id="sos-modal-desc" style={{ fontSize: '.85rem', color: 'var(--t2)', marginBottom: 8, lineHeight: 1.55 }}>
+              {ui.sosDesc || 'All numbers below are free to call, 24/7.'}
+            </p>
             {SOS_NUMBERS.map(s => (
               <a key={s.name} href={`tel:${s.phone}`}
                 style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 0', borderBottom: '1px solid var(--bd)' }}
-                aria-label={`Call ${s.name}: ${s.num}`}>
+                aria-label={`Call ${s.name} on ${s.num}: ${s.note}`}>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--tx)' }}>{s.name}</div>
                   <div style={{ fontSize: '.85rem', color: 'var(--t2)', marginTop: 2 }}>{s.note}</div>
                 </div>
-                <span className="btn btn-danger btn-sm">{s.num}</span>
+                <span className="btn btn-danger btn-sm" aria-hidden="true">{s.num}</span>
               </a>
             ))}
-            <button className="btn btn-ghost btn-block" style={{ marginTop: 12 }} onClick={() => setSOS(false)}>{ui.close}</button>
+            <button
+              className="btn btn-ghost btn-block"
+              style={{ marginTop: 12 }}
+              onClick={() => setSOS(false)}
+              aria-label={ui.close || 'Close emergency contacts'}
+            >{ui.close}</button>
           </div>
         </div>
       )}
