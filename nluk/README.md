@@ -39,14 +39,17 @@ npm run build
 ```
 This creates a `dist` folder.
 
-### Step 7: Deploy to Netlify (free)
-1. Go to https://app.netlify.com
-2. Sign up with your email
-3. Click "Add new site" → "Deploy manually"
-4. Drag the `dist` folder onto the page
-5. Wait 10 seconds — your site is live!
-6. Click "Site settings" → "Change site name" → type "newlifeuk"
-7. Your site is now at: **newlifeuk.netlify.app**
+### Step 7: Deploy to Cloudflare Pages (free)
+1. Go to https://pages.cloudflare.com
+2. Sign up or log in with your Cloudflare account
+3. Click "Create a project" → "Connect to Git"
+4. Select this repository
+5. Set the build configuration:
+   - **Build command**: `npm run build`
+   - **Build output directory**: `dist`
+   - **Root directory**: `nluk`
+6. Click "Save and Deploy" — your site is live!
+7. Your site is now at: **new-life-uk.pages.dev**
 
 ## Done. Share the link everywhere.
 
@@ -54,20 +57,15 @@ This creates a `dist` folder.
 
 ## How to Update Content
 
-Content is split across files in `src/data/`:
-- **`guides.js`** — step-by-step guides
-- **`jobs.js`** — jobs, certifications, career paths
-- **`emergency.js`** — SOS emergency numbers
-- **`saves.js`** — free stuff / hidden gems
-- **`ui-strings.js`** — UI labels and translations
+All content is in one file: `src/data/content.js`
 
 ### To edit a guide:
-1. Open `src/data/guides.js` in any text editor
+1. Open `src/data/content.js` in any text editor
 2. Find the guide by searching for its title
 3. Edit the text
 4. Save the file
 5. Run `npm run build`
-6. Re-upload the `dist` folder to Netlify
+6. Push changes to GitHub — Cloudflare Pages will redeploy automatically
 
 ### To add a translation for a guide:
 Each guide has this structure:
@@ -81,15 +79,15 @@ content: {
 Just add a new language key with the translated content.
 
 ### To fix a broken link:
-Search for the old URL in `src/data/guides.js`, replace it with the new one.
+Search for the old URL in `content.js`, replace it with the new one.
 
 ---
 
 ## Custom Domain (Optional, £0-£10/year)
 1. Buy a domain (e.g., newlifeuk.org) for about £8-10/year
-2. In Netlify: Site settings → Domain management → Add custom domain
-3. Follow Netlify's instructions to point your domain
-4. Netlify provides free HTTPS automatically
+2. In Cloudflare Pages: Settings → Custom domains → Set up a custom domain
+3. Follow Cloudflare's instructions to point your domain
+4. Cloudflare provides free HTTPS automatically
 
 ---
 
@@ -107,10 +105,10 @@ External links go to gov.uk, nhs.uk, and other official sites.
 
 ## Architecture Notes
 
-- **Framework**: React 19 + Vite (fast, modern, zero-config)
-- **Hosting**: Netlify free tier (100GB bandwidth, custom domain, HTTPS)
+- **Framework**: React 18 + Vite (fast, modern, zero-config)
+- **Hosting**: Cloudflare Pages (free tier, global CDN, custom domain, HTTPS)
 - **PWA**: Optional install-to-homescreen via vite-plugin-pwa
-- **Data**: i18n-ready structure in `src/data/` (guides, jobs, emergency, saves, ui-strings)
+- **Data**: i18n-ready structure in `src/data/content.js`
 - **Styling**: CSS variables for theme, responsive typography
 - **Accessibility**: Semantic HTML, ARIA labels, keyboard navigation
 - **Sharing**: WhatsApp, Telegram, Facebook, copy-link on every guide
@@ -124,10 +122,5 @@ src/
 ├── App.jsx           ← Main app with all components
 ├── index.css         ← All styles (CSS variables)
 └── data/
-    ├── guides.js     ← Step-by-step guides
-    ├── jobs.js       ← Jobs, certifications, career paths
-    ├── emergency.js  ← SOS emergency numbers
-    ├── saves.js      ← Free stuff / hidden gems
-    ├── ui-strings.js ← UI labels and translations
-    └── content.js    ← Barrel re-export (backward compatibility)
+    └── content.js    ← ALL content, translations, links
 ```
