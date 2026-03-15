@@ -1181,6 +1181,7 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   text-transform: uppercase;
   letter-spacing: .07em;
 }
+.dark .cat-header { color: var(--t2); }
 
 /* ─── Start Here Numbers ─── */
 .start-num {

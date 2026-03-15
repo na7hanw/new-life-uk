@@ -1,14 +1,14 @@
 export const CATEGORIES = {
-  "Digital Status": { emoji: "📱", color: "#0D9488" },
-  "Money": { emoji: "💷", color: "#16A34A" },
-  "Healthcare": { emoji: "🏥", color: "#0891B2" },
-  "Housing": { emoji: "🏠", color: "#D97706" },
-  "Work": { emoji: "💼", color: "#2563EB" },
-  "Family & Kids": { emoji: "👨‍👩‍👧", color: "#E11D48" },
-  "Documents & ID": { emoji: "📄", color: "#7C3AED" },
+  "Digital Status": { emoji: "📱", color: "#0F766E" },
+  "Money": { emoji: "💷", color: "#166534" },
+  "Healthcare": { emoji: "🏥", color: "#0E7490" },
+  "Housing": { emoji: "🏠", color: "#92400E" },
+  "Work": { emoji: "💼", color: "#1D4ED8" },
+  "Family & Kids": { emoji: "👨‍👩‍👧", color: "#9F1239" },
+  "Documents & ID": { emoji: "📄", color: "#6D28D9" },
   "Travel": { emoji: "✈️", color: "#1D4ED8" },
-  "Settle & Stay": { emoji: "🏅", color: "#CA8A04" },
-  "Community": { emoji: "🤝", color: "#0D9488" },
+  "Settle & Stay": { emoji: "🏅", color: "#78350F" },
+  "Community": { emoji: "🤝", color: "#0F766E" },
 };
 
 export const GUIDES = [

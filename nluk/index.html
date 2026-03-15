@@ -14,7 +14,15 @@
   <title>New Life UK — Free Survival Guide</title>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!--pre-render: shown before JS executes to give early FCP/LCP-->
+    <div aria-hidden="true" style="position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:16px 20px;background:#F5F1EB;border-bottom:1px solid #DDD7CF;border-radius:0 0 22px 22px;z-index:300">
+      <div style="display:flex;align-items:center;gap:10px">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#0A5F3E"/><text x="14" y="19" text-anchor="middle" font-size="14" fill="white">🌱</text></svg>
+        <h1 style="font-size:1.05rem;font-weight:800;font-family:system-ui,-apple-system,sans-serif;color:#1A1410;margin:0">New Life UK</h1>
+      </div>
+    </div>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

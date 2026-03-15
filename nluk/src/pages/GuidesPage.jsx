@@ -107,14 +107,13 @@ export default function GuidesPage() {
               return (
                 <button key={g.id} className="list-row"
                   ref={el => { guideBtnRefs.current[g.id] = el }}
-                  onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
-                  aria-label={gc.title}>
-                  <span className="list-row-icon">{g.icon}</span>
+                  onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}>
+                  <span className="list-row-icon" aria-hidden="true">{g.icon}</span>
                   <div className="list-row-content">
                     <div className="list-row-title">{gc.title}</div>
                     <div className="list-row-sub">{gc.summary}</div>
                   </div>
-                  <span className="list-row-arrow">{af}</span>
+                  <span className="list-row-arrow" aria-hidden="true">{af}</span>
                 </button>
               )
             })}
