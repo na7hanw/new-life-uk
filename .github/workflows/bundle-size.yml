@@ -21,19 +21,15 @@ jobs:
           cache: 'npm'
           cache-dependency-path: nluk/package-lock.json
 
+      - name: Install and build
+        working-directory: nluk
+        run: npm ci && npm run build
+
       - name: Check bundle size
         uses: andresz1/size-limit-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           directory: nluk
-          skip_step: install
+          skip_step: build
         env:
           CI: true
-
-      - name: Install and build for size check
-        working-directory: nluk
-        run: npm ci && npm run build
-
-      - name: Report bundle sizes
-        working-directory: nluk
-        run: npx size-limit

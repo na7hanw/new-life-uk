@@ -32,8 +32,8 @@ jobs:
             --config .lychee.toml
             --verbose
             --no-progress
-            '**/*.md'
-            '.github/**/*.md'
+            **/*.md
+            .github/**/*.md
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,7 +45,7 @@ jobs:
             --config .lychee.toml
             --verbose
             --no-progress
-            './nluk/dist/**/*.html'
+            ./nluk/dist/**/*.html
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

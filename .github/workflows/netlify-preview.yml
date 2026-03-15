@@ -32,7 +32,7 @@ jobs:
       - name: Deploy preview to Netlify
         uses: nwtgck/actions-netlify@v3
         with:
-          publish-dir: ./nluk/dist
+          publish-dir: dist
           production-deploy: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "PR #${{ github.event.number }} — ${{ github.event.pull_request.title }}"
