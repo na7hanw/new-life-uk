@@ -1,27 +1,36 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.jsx'
-import { CAREERS } from '../data/jobs.js'
+import { CAREER_MAP } from '../data/jobs.js'
 import { t18 } from '../lib/utils.js'
 import QuickLinks from '../components/QuickLinks.jsx'
 import ShareBar from '../components/ShareBar.jsx'
 import StepText from '../components/StepText.jsx'
 
 export default function CareerDetail() {
-  const { idx } = useParams()
+  const { id } = useParams()
   const navigate = useNavigate()
   const { lang, ui, ab } = useApp()
 
-  const career = CAREERS[parseInt(idx)]
+  const career = CAREER_MAP[id]
 
   useEffect(() => {
-    if (!career) navigate('/work/careers')
+    if (!career) navigate('/work/career')
   }, [career, navigate])
 
   if (!career) return null
 
   const pc = t18(career.content, lang)
   const st = t18(career.steps, lang)
+
+  if (!pc.title) return (
+    <article className="page-enter">
+      <div className="detail-header">
+        <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
+      </div>
+      <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>Content unavailable</div>
+    </article>
+  )
 
   return (
     <article className="page-enter">

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-
 import { useApp } from './context/AppContext.jsx'
 import { LANGS } from './data/ui-strings.js'
 import { SOS_NUMBERS } from './data/emergency.js'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { ls } from './lib/utils.js'
 import Logo from './components/Logo.jsx'
 import SOSModal from './components/SOSModal.jsx'
@@ -93,17 +94,19 @@ export default function App() {
 
       {/* SCROLLABLE CONTENT */}
       <main className="app-scroll">
+        <ErrorBoundary>
         <Routes>
           <Route path="/" element={<GuidesPage />} />
           <Route path="/guide/:id" element={<GuideDetail />} />
           <Route path="/work" element={<Navigate to="/work/jobs" replace />} />
           <Route path="/work/:subtab" element={<WorkHub />} />
-          <Route path="/cert/:idx" element={<CertDetail />} />
-          <Route path="/career/:idx" element={<CareerDetail />} />
+          <Route path="/cert/:id" element={<CertDetail />} />
+          <Route path="/career/:id" element={<CareerDetail />} />
           <Route path="/saves" element={<SavesPage />} />
           <Route path="/more" element={<MorePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </ErrorBoundary>
       </main>
 
       {/* TAB BAR */}

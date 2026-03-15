@@ -90,8 +90,52 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   border: 0;
 }
 
+/* TTS "Listen" button */
+.tts-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 20px 12px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--ac3);
+  background: transparent;
+  color: var(--ac3);
+  font-size: .875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.tts-btn:hover { background: var(--ac3); color: #fff; }
+.tts-btn.tts-speaking { background: var(--rd); border-color: var(--rd); color: #fff; }
+
+/* Skeleton pulse loader */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.skeleton {
+  background: var(--s2);
+  border-radius: 8px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+/* Offline available badge */
+.offline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--gn);
+  background: rgba(34,197,94,.1);
+  border: 1px solid rgba(34,197,94,.3);
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
 /* RTL and Ethiopic font overrides */
-[dir="rtl"] { font-family: 'Noto Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif; }
+[dir="rtl"] { font-family: 'Noto Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif; line-height: 1.85; }
 .eth-font  { font-family: 'Noto Sans Ethiopic', 'Plus Jakarta Sans', system-ui, sans-serif; }
 
 /* ─── Layout ─── */

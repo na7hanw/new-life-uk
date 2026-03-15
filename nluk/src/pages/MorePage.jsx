@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useApp } from '../context/AppContext.jsx'
 import { GEMS } from '../data/saves.js'
 import { LANGS } from '../data/ui-strings.js'
@@ -6,6 +7,13 @@ import { t18 } from '../lib/utils.js'
 
 export default function MorePage() {
   const { lang, ui, L, dark, setDark, setShowLang } = useApp()
+  const [offline, setOffline] = useState(false)
+
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(() => setOffline(true)).catch(() => {})
+    }
+  }, [])
 
   return (
     <div className="page-enter">
@@ -91,6 +99,7 @@ export default function MorePage() {
 
       <div className="version-badge" aria-label="App version and data verification date">
         🛡 v2.2.0 · Data verified March 2026
+        {offline && <span className="offline-badge" style={{ marginLeft: 8 }}>📴 Available Offline</span>}
       </div>
 
       <div className="footer-disc">

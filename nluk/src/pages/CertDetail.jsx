@@ -1,18 +1,18 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.jsx'
-import { CERTS } from '../data/jobs.js'
+import { CERT_MAP } from '../data/jobs.js'
 import { t18 } from '../lib/utils.js'
 import QuickLinks from '../components/QuickLinks.jsx'
 import ShareBar from '../components/ShareBar.jsx'
 import StepText from '../components/StepText.jsx'
 
 export default function CertDetail() {
-  const { idx } = useParams()
+  const { id } = useParams()
   const navigate = useNavigate()
   const { lang, ui, ab } = useApp()
 
-  const cert = CERTS[parseInt(idx)]
+  const cert = CERT_MAP[id]
 
   useEffect(() => {
     if (!cert) navigate('/work/certs')
@@ -22,6 +22,15 @@ export default function CertDetail() {
 
   const cc = t18(cert.content, lang)
   const st = t18(cert.steps, lang)
+
+  if (!cc.title) return (
+    <article className="page-enter">
+      <div className="detail-header">
+        <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
+      </div>
+      <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>Content unavailable</div>
+    </article>
+  )
 
   return (
     <article className="page-enter">

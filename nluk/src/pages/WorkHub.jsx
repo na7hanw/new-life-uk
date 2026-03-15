@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 import { useApp } from '../context/AppContext.jsx'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.js'
 import { t18, lsSet } from '../lib/utils.js'
@@ -8,6 +9,21 @@ export default function WorkHub() {
   const { subtab = 'jobs' } = useParams()
   const navigate = useNavigate()
   const { lang, ui, af } = useApp()
+  const certBtnRefs = useRef({})
+  const careerBtnRefs = useRef({})
+
+  useEffect(() => {
+    const lastCert = sessionStorage.getItem('nluk_last_cert')
+    if (lastCert && subtab === 'certs') {
+      sessionStorage.removeItem('nluk_last_cert')
+      requestAnimationFrame(() => { certBtnRefs.current[lastCert]?.focus() })
+    }
+    const lastCareer = sessionStorage.getItem('nluk_last_career')
+    if (lastCareer && subtab === 'career') {
+      sessionStorage.removeItem('nluk_last_career')
+      requestAnimationFrame(() => { careerBtnRefs.current[lastCareer]?.focus() })
+    }
+  }, [subtab])
 
   const handleSubtab = (id) => {
     lsSet('nluk_wtab', id)
@@ -35,10 +51,12 @@ export default function WorkHub() {
 
       {subtab === 'certs' && (
         <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
-          {CERTS.map((c, i) => {
+          {CERTS.map((c) => {
             const cc = t18(c.content, lang)
             return (
-              <button key={i} className="list-row" onClick={() => navigate(`/cert/${i}`)}
+              <button key={c.id} className="list-row"
+                ref={el => { certBtnRefs.current[c.id] = el }}
+                onClick={() => { sessionStorage.setItem('nluk_last_cert', c.id); navigate(`/cert/${c.id}`) }}
                 aria-label={cc.title} style={{ alignItems: 'flex-start' }}>
                 <span className="list-row-icon">{c.icon}</span>
                 <div className="list-row-content">
@@ -59,10 +77,12 @@ export default function WorkHub() {
 
       {subtab === 'career' && (
         <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
-          {CAREERS.map((p, i) => {
+          {CAREERS.map((p) => {
             const pc = t18(p.content, lang)
             return (
-              <button key={pc.title} className="list-row" onClick={() => navigate(`/career/${i}`)}
+              <button key={p.id} className="list-row"
+                ref={el => { careerBtnRefs.current[p.id] = el }}
+                onClick={() => { sessionStorage.setItem('nluk_last_career', p.id); navigate(`/career/${p.id}`) }}
                 aria-label={pc.title} style={{ alignItems: 'flex-start' }}>
                 <span className="list-row-icon">{p.icon}</span>
                 <div className="list-row-content">

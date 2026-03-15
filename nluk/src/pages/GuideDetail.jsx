@@ -1,12 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.jsx'
 import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE } from '../data/guides.js'
 import { t18 } from '../lib/utils.js'
 import QuickLinks from '../components/QuickLinks.jsx'
 import ShareBar from '../components/ShareBar.jsx'
 import StepText from '../components/StepText.jsx'
-import { useEffect } from 'react'
+import TTSButton from '../components/TTSButton.jsx'
 
 export default function GuideDetail() {
   const { id } = useParams()
@@ -22,6 +23,15 @@ export default function GuideDetail() {
   if (!guide) return null
 
   const gc = t18(guide.content, lang)
+
+  if (!gc.title) return (
+    <article className="page-enter">
+      <div className="detail-header">
+        <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
+      </div>
+      <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>Content unavailable</div>
+    </article>
+  )
 
   return (
     <article className="page-enter">
@@ -45,6 +55,8 @@ export default function GuideDetail() {
       )}
 
       <ShareBar title={gc.title} ui={ui} />
+
+      <TTSButton lang={lang} title={gc.title} summary={gc.summary} steps={gc.steps} />
 
       {(guide.cost || guide.time || guide.bring?.length > 0) && (
         <div className="key-info-strip">
