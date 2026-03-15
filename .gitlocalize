@@ -1,0 +1,54 @@
+version: 1
+
+translationFiles:
+  - sourceLanguage: en
+    sourceFile: nluk/src/data/guides.js
+    translationLanguages:
+      - ar
+      - fa
+      - ur
+      - am
+      - ti
+      - so
+      - om
+      - uk
+      - ro
+      - pl
+      - fr
+
+  - sourceLanguage: en
+    sourceFile: nluk/src/data/jobs.js
+    translationLanguages:
+      - ar
+      - fa
+      - ur
+      - am
+      - ti
+      - so
+      - om
+      - uk
+      - ro
+      - pl
+      - fr
+
+  - sourceLanguage: en
+    sourceFile: nluk/src/data/emergency.js
+    translationLanguages:
+      - ar
+      - fa
+      - ur
+      - am
+      - ti
+      - so
+      - om
+      - uk
+      - ro
+      - pl
+      - fr
+
+# Files to skip from translation
+ignoreFiles:
+  - nluk/src/data/dev.js
+  - nluk/src/components/**
+  - nluk/src/hooks/**
+  - nluk/src/utils/**

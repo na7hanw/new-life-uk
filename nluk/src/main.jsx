@@ -2,21 +2,45 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
+import * as Sentry from '@sentry/react'
 import { AppProvider } from './context/AppContext.jsx'
 import App from './App.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import './index.css'
 
+// Initialize Sentry for error tracking in production
+// Set VITE_SENTRY_DSN environment variable in production deploys
+const dsn = import.meta.env.VITE_SENTRY_DSN
+if (dsn) {
+  Sentry.init({
+    dsn,
+    environment: import.meta.env.MODE,
+    integrations: [
+      Sentry.replayIntegration({
+        maskAllText: true,
+        blockAllMedia: true,
+      }),
+    ],
+    tracesSampleRate: import.meta.env.MODE === 'production' ? 0.1 : 1.0,
+    replaysSessionSampleRate: import.meta.env.MODE === 'production' ? 0.1 : 0.5,
+    replaysOnErrorSampleRate: 1.0,
+  })
+}
+
+const SentryErrorBoundary = dsn ? Sentry.ErrorBoundary : ({ children }) => children
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ErrorBoundary>
-      <HelmetProvider>
-        <HashRouter>
-          <AppProvider>
-            <App />
-          </AppProvider>
-        </HashRouter>
-      </HelmetProvider>
-    </ErrorBoundary>
+    <SentryErrorBoundary fallback={<div>An error occurred. Please reload the page.</div>} showDialog>
+      <ErrorBoundary>
+        <HelmetProvider>
+          <HashRouter>
+            <AppProvider>
+              <App />
+            </AppProvider>
+          </HashRouter>
+        </HelmetProvider>
+      </ErrorBoundary>
+    </SentryErrorBoundary>
   </React.StrictMode>
 )

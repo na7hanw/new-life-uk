@@ -54,12 +54,17 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) — content edits (broken links, new guid
 
 ## Automations
 
+All automations are **free** and designed to catch bugs early, reduce manual work, and keep dependencies secure.
+
+**See [AUTOMATIONS.md](.github/AUTOMATIONS.md) for full setup instructions** (Sentry, Snyk, GitLocalize, Mergify, Husky).
+
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
 | CI | push / PR | Lint, test, build, security audit |
 | Lighthouse | push / PR | Performance & accessibility scores |
 | CodeQL | push / PR / weekly | Static security analysis |
 | Security Audit | push / PR / weekly | `npm audit` full report |
+| Snyk | push / PR / daily | Dependency vulnerability scanning |
 | i18n Check | push / PR (guides.js) | All guides have English content |
 | Bundle Size | PR | Fail if JS bundle grows > budget |
 | Link Health | daily | Opens issue if any URL returns 404 |
@@ -67,6 +72,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) — content edits (broken links, new guid
 | Release Drafter | push to main | Auto-generates changelog |
 | Stale Bot | daily | Closes inactive issues/PRs |
 | Dependabot | weekly | Keeps dependencies up to date |
+| **Sentry** | **production** | **Runtime error monitoring** |
+| **Mergify** | **auto** | **Auto-merges safe Dependabot PRs** |
+| **Husky** | **pre-commit** | **Local linting before commit** |
+| **GitLocalize** | **manual** | **Volunteer translation management** |
 
 ## Security
 

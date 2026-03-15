@@ -1,0 +1,30 @@
+defaults:
+  actions:
+    update:
+      method: squash
+      commit_message: title+body
+
+pull_request_rules:
+  # Auto-merge Dependabot patch + minor version updates
+  - name: Auto-merge Dependabot patch/minor updates
+    conditions:
+      - author: dependabot[bot]
+      - or:
+          - check-success=Build & Test
+          - check-success=Lighthouse
+      - -title~=(breaking|major)
+    actions:
+      merge:
+        method: squash
+        commit_message: title+body
+      delete_head_branch: {}
+
+  # Auto-update stale PRs
+  - name: Auto-update stale PR branches
+    conditions:
+      - or:
+          - author: dependabot[bot]
+          - label: dependencies
+      - 'check-failure!=Build & Test'
+    actions:
+      update: {}

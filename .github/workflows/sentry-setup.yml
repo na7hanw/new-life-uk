@@ -1,0 +1,57 @@
+name: Sentry Project Setup
+
+on:
+  workflow_dispatch:
+  # Auto-run once per repo if SENTRY_AUTH_TOKEN is set but SENTRY_DSN is not
+  schedule:
+    - cron: '0 0 1 * *'  # Run once per month as fallback
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  setup:
+    name: Create Sentry project & configure DSN
+    runs-on: ubuntu-latest
+    if: secrets.SENTRY_AUTH_TOKEN != ''
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check if DSN secret already exists
+        id: check_dnsn
+        run: |
+          if [ -z "${{ secrets.SENTRY_DSN }}" ]; then
+            echo "dnsn_missing=true" >> $GITHUB_OUTPUT
+          else
+            echo "dnsn_missing=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Sentry project
+        if: steps.check_dnsn.outputs.dnsn_missing == 'true'
+        id: sentry
+        run: |
+          echo "1. Go to https://sentry.io and create a free account"
+          echo "2. Create an Organization (or use the default)"
+          echo "3. Install the Sentry CLI:"
+          echo "   npm install -g @sentry/cli"
+          echo "4. Authenticate:"
+          echo "   sentry-cli login"
+          echo "5. Create the project in your terminal:"
+          echo "   sentry-cli projects create --org <ORG_SLUG> --name new-life-uk --platform javascript-react"
+          echo "6. Get your DSN from the project Settings"
+          echo "7. Add SENTRY_DSN as a GitHub secret"
+          echo ""
+          echo "Once you've completed the above, this workflow will be skipped automatically."
+
+      - name: Summary
+        run: |
+          echo "## Sentry Setup Required"
+          echo ""
+          echo "To enable production error monitoring, complete the steps printed above."
+          echo "Once done, add these as GitHub repository secrets:"
+          echo "- SENTRY_AUTH_TOKEN: Your Sentry API key"
+          echo "- SENTRY_DSN: Your project's DSN"
+          echo ""
+          echo "After setting the secrets, re-run this workflow manually to verify."

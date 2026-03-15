@@ -15,6 +15,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # VITE_SENTRY_DSN will be injected from Netlify environment variables (set in Site Settings)
+  # if not defined, Sentry monitoring will be disabled gracefully
 
 # Content Security Policy — technically enforces the privacy promise
 # (no data can be sent to any external server)
