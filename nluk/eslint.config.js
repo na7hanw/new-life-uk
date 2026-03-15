@@ -14,7 +14,7 @@ export default [
     },
     settings: {
       // Pin explicitly — 'detect' crashes ESLint v10 flat config
-      react: { version: '18.3' },
+      react: { version: '19.2' },
     },
     languageOptions: {
       ecmaVersion: 2022,
