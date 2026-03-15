@@ -162,7 +162,12 @@ export default function App() {
   const [tipIdx] = useState(() => Math.floor(Math.random() * 100))
 
   // Persist state
-  useEffect(() => { lsSet('nluk_lang', lang); document.documentElement.lang = lang }, [lang])
+  useEffect(() => {
+    const L2 = LANGS.find(l => l.code === lang) || LANGS[0]
+    lsSet('nluk_lang', lang)
+    document.documentElement.lang = lang
+    document.documentElement.dir = L2.rtl ? 'rtl' : 'ltr'
+  }, [lang])
   useEffect(() => { lsSet('nluk_dark', String(dark)) }, [dark])
   useEffect(() => { lsSet('nluk_wtab', workTab) }, [workTab])
 
