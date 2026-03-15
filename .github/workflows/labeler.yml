@@ -16,7 +16,7 @@ jobs:
       - uses: actions/labeler@v5
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          configuration-path: .github/labeler.json
+          configuration-path: .github/labeler.yml
 
   # Also auto-assign size labels based on lines changed
   size:

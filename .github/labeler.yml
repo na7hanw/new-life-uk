@@ -1,0 +1,23 @@
+content:
+  - changed-files:
+    - any-glob-to-any-file: 'nluk/src/data/**'
+
+ui:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'nluk/src/**/*.jsx'
+      - 'nluk/src/**/*.css'
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file: '.github/workflows/**'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file: 'nluk/package*.json'
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.md'
+      - 'docs/**'
