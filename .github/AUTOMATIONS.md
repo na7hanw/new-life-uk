@@ -10,7 +10,7 @@ This project uses multiple free GitHub integrations to catch bugs early, reduce 
 - **CodeQL** (`codeql-analysis.yml`) — Static security analysis
 - **i18n Check** (`i18n-check.yml`) — Verify all guides have English content
 - **Bundle Size Guard** (`bundle-size.yml`) — Fail if JS exceeds budget
-- **Netlify Preview** (`netlify-preview.yml`) — Deploy PR previews
+- **Cloudflare Pages** — PR preview deployments are created automatically by the Cloudflare Pages Git integration (no workflow required)
 
 ### Scheduled Checks (Daily/Weekly)
 - **Link Health** (`link-health.yml`) — Auto-opens issue if any URL is 404
@@ -69,10 +69,11 @@ This project uses multiple free GitHub integrations to catch bugs early, reduce 
 # 5. Add to GitHub Secrets:
 #    - Name: SENTRY_DSN
 #    - Value: (paste your DSN)
-# 6. In Netlify dashboard, add environment variable:
-#    - Key: VITE_SENTRY_DSN
+# 6. Add the DSN as an environment variable in the Cloudflare Pages dashboard:
+#    - Pages project → Settings → Environment variables → Add variable
+#    - Name: VITE_SENTRY_DSN
 #    - Value: (paste your DSN)
-#    - Scope: Builds
+#    - Scope: Production (and optionally Preview)
 # 7. Redeploy (or push a new commit to trigger build)
 # 8. Test: Visit the deployed app, open DevTools console, and type:
 #    Sentry.captureException(new Error("Test error"))
@@ -162,7 +163,7 @@ Check https://sentry.io — you should see the message/error appear immediately.
 | Tool | Tier | Cost | Notes |
 |------|------|------|-------|
 | GitHub Actions | Free | $0 | 2,000 free minutes/month per account |
-| Netlify | Starter | $0 | Covers 300 build minutes/month |
+| Cloudflare Pages | Free | $0 | Unlimited requests, 500 builds/month free |
 | Dependabot | Built-in | $0 | GitHub native, always free |
 | Mergify | Free | $0 | Free tier covers unlimited repos |
 | Husky | Open source | $0 | Local only, no cloud cost |

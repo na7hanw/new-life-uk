@@ -100,7 +100,7 @@ jobs:
               `### How to fix`,
               `1. Find the updated URL for each broken link`,
               `2. Edit the URL directly in the data file`,
-              `3. Commit and push — Netlify will redeploy automatically`,
+              `3. Commit and push — Cloudflare Pages will redeploy automatically`,
               ``,
               `_Auto-generated ${today} by the [Data Link Health Check](.github/workflows/link-health.yml) workflow._`,
             ].join('\n');
