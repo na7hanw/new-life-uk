@@ -4,142 +4,14 @@ import {
   GUIDES, GUIDE_MAP, GUIDE_PRIORITY, SAVES, JOBS, CERTS, CAREERS, GEMS,
   SOS_NUMBERS, GITHUB_URL,
 } from './data/content.js'
-
-// ─── Helpers ──────────────────────────────────────────────────────
-const ls = (k, d) => { try { return localStorage.getItem(k) || d } catch { return d } }
-const lsSet = (k, v) => { try { localStorage.setItem(k, v) } catch {} }
-const t18 = (obj, lang) => obj?.[lang] || obj?.en || {}
-
-// ─── Logo ─────────────────────────────────────────────────────────
-const Logo = ({ size = 28 }) => (
-  <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
-    <rect width="40" height="40" rx="10" fill="#0A5F3E" />
-    <path d="M8 26H32" stroke="#A7F3D0" strokeWidth="2" strokeLinecap="round" />
-    <path d="M20 14C14.48 14 10 18.48 10 24H30C30 18.48 25.52 14 20 14Z" fill="#A7F3D0" opacity=".25" />
-    <path d="M14 24C14 20.69 16.69 18 20 18C23.31 18 26 20.69 26 24" stroke="#A7F3D0" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="20" y1="10" x2="20" y2="13" stroke="#FDE68A" strokeWidth="2" strokeLinecap="round" />
-    <line x1="27" y1="13" x2="25.5" y2="15" stroke="#FDE68A" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="13" y1="13" x2="14.5" y2="15" stroke="#FDE68A" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-)
-
-// ─── Share Bar ────────────────────────────────────────────────────
-function ShareBar({ title, ui }) {
-  const [copied, setCopied] = useState(false)
-  const url = window.location.href
-  const text = `${title} — New Life UK\n${url}`
-  const share = (platform) => {
-    const urls = {
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(text)}`,
-      telegram: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title + ' — New Life UK')}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title)}`,
-    }
-    if (platform === 'copy') {
-      navigator.clipboard?.writeText(url).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
-    } else {
-      window.open(urls[platform], '_blank', 'noopener,noreferrer')
-    }
-  }
-  return (
-    <div className="share-bar">
-      <button className="share-btn share-whatsapp" onClick={() => share('whatsapp')} aria-label="Share on WhatsApp">💬 {ui.shareWhatsapp || 'WhatsApp'}</button>
-      <button className="share-btn share-telegram" onClick={() => share('telegram')} aria-label="Share on Telegram">✈️ {ui.shareTelegram || 'Telegram'}</button>
-      <button className="share-btn share-facebook" onClick={() => share('facebook')} aria-label="Share on Facebook">📘 {ui.shareFacebook || 'Facebook'}</button>
-      <button className="share-btn share-copy" onClick={() => share('copy')} aria-label="Copy link">🔗 {copied ? (ui.copied || 'Copied!') : (ui.shareCopy || 'Copy link')}</button>
-    </div>
-  )
-}
-
-// ─── Step Text — makes URLs in step strings clickable ─────────────
-function StepText({ text }) {
-  // Matches [label](url) and bare https:// URLs
-  const rx = /(\[([^\]]+)\]\((https?:\/\/[^)]+)\))|(https?:\/\/[^\s,;)]+)/g
-  const parts = []
-  let last = 0, m
-  while ((m = rx.exec(text)) !== null) {
-    if (m.index > last) parts.push(text.slice(last, m.index))
-    if (m[1]) {
-      parts.push(<a key={m.index} href={m[3]} target="_blank" rel="noopener noreferrer" className="step-link">{m[2]}</a>)
-    } else {
-      const raw = m[4].replace(/[.)]+$/, '') // trim trailing punctuation
-      parts.push(<a key={m.index} href={raw} target="_blank" rel="noopener noreferrer" className="step-link">{raw.replace(/^https?:\/\//, '')}</a>)
-    }
-    last = m.index + m[0].length
-  }
-  if (last < text.length) parts.push(text.slice(last))
-  return <>{parts}</>
-}
-
-// ─── Quick Links — horizontal scrolling pill row ─────────────────
-function QuickLinks({ links, label }) {
-  if (!links?.length) return null
-  return (
-    <div className="quick-links-wrap">
-      {label && <div className="section-label">{label}</div>}
-      <div className="quick-links-row">
-        {links.map(lk => (
-          <a key={lk.url} href={lk.url} target="_blank" rel="noopener noreferrer" className="quick-link-pill">
-            {lk.name} →
-          </a>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ─── Job Card ────────────────────────────────────────────────────
-function JobCard({ j, lang, ui }) {
-  const [open, setOpen] = useState(false)
-  const jc = (j.content?.[lang] || j.content?.en || {})
-  return (
-    <div className={`job-card ${open ? 'job-card--open' : ''}`}>
-      <button className="job-header" onClick={() => setOpen(o => !o)} aria-expanded={open}>
-        <span className="job-icon">{j.icon}</span>
-        <div className="job-info">
-          <div className="job-role-row">
-            <span className="job-role">{jc.role}</span>
-            {j.visa && <span className="pill pill-blue">Sponsorship</span>}
-          </div>
-          <div className="job-pay">{j.pay}</div>
-        </div>
-        <span className="job-chevron">{open ? '▲' : '▼'}</span>
-      </button>
-
-      {j.tags && (
-        <div className="job-tags">
-          {j.tags.map(t => <span key={t} className="job-tag">{t}</span>)}
-        </div>
-      )}
-
-      {open && (
-        <div className="job-body">
-          <p className="job-desc">{jc.desc}</p>
-
-          {j.docs?.length > 0 && (
-            <div className="job-section">
-              <div className="job-section-label">📋 {ui.docsNeeded || "What you'll need"}</div>
-              <div className="job-docs-row">
-                {j.docs.map(d => <span key={d} className="job-doc-chip">{d}</span>)}
-              </div>
-            </div>
-          )}
-
-          <div className="job-section">
-            <div className="job-section-label">🔗 {ui.jobsApplyTo || "Where to apply"}</div>
-            <div className="job-apply-grid">
-              {j.applyLinks?.map(lk => (
-                <a key={lk.url} href={lk.url} target="_blank" rel="noopener noreferrer" className="job-apply-chip">
-                  {lk.name}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
+import { ls, lsSet, t18 } from './lib/utils.js'
+import Logo from './components/Logo.jsx'
+import ShareBar from './components/ShareBar.jsx'
+import StepText from './components/StepText.jsx'
+import QuickLinks from './components/QuickLinks.jsx'
+import JobCard from './components/JobCard.jsx'
+import SOSModal from './components/SOSModal.jsx'
+import TabBar from './components/TabBar.jsx'
 
 // ─── App ──────────────────────────────────────────────────────────
 export default function App() {
@@ -157,7 +29,6 @@ export default function App() {
   const [showLang, setShowLang] = useState(() => !ls('nluk_lang', ''))
   const [dark, setDark] = useState(() => ls('nluk_dark', '') === 'true')
   const scrollRef = useRef(null)
-  const sosModalRef = useRef(null)
 
   // Bug fix: use dynamic array length instead of hardcoded 8
   const [tipIdx] = useState(() => Math.floor(Math.random() * 100))
@@ -171,28 +42,6 @@ export default function App() {
   }, [lang])
   useEffect(() => { lsSet('nluk_dark', String(dark)) }, [dark])
   useEffect(() => { lsSet('nluk_wtab', workTab) }, [workTab])
-
-  // SOS modal focus trap + keyboard handler (safety-critical)
-  useEffect(() => {
-    if (!showSOS) return
-    const el = sosModalRef.current
-    if (!el) return
-    const focusable = el.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
-    const first = focusable[0]
-    const last = focusable[focusable.length - 1]
-    first?.focus()
-    const trap = (e) => {
-      if (e.key === 'Escape') { setSOS(false); return }
-      if (e.key !== 'Tab') return
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last?.focus() }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first?.focus() }
-      }
-    }
-    el.addEventListener('keydown', trap)
-    return () => el.removeEventListener('keydown', trap)
-  }, [showSOS])
 
   // Derived
   const L = LANGS.find(l => l.code === lang) || LANGS[0]
@@ -705,18 +554,7 @@ export default function App() {
       </main>
 
       {/* TAB BAR */}
-      {!isDetail && !showLang && (
-        <nav className="tab-bar" role="tablist" aria-label="Main navigation">
-          {TABS.map(t => (
-            <button key={t.id} className={`tab-btn ${tab === t.id ? 'active' : ''}`}
-              onClick={() => switchTab(t.id)} role="tab" aria-selected={tab === t.id} aria-label={t.label}>
-              {tab === t.id && <div className="tab-dot" />}
-              <span className="tab-icon">{t.icon}</span>
-              <span>{t.label}</span>
-            </button>
-          ))}
-        </nav>
-      )}
+      <TabBar tabs={TABS} activeTab={tab} onSwitch={switchTab} isDetail={isDetail} showLang={showLang} />
 
       {/* FLOATING SOS — always visible except when modal open or lang overlay shown */}
       {!showLang && !showSOS && (
@@ -729,40 +567,7 @@ export default function App() {
       )}
 
       {/* SOS MODAL — focus-trapped, no backdrop dismiss (safety-critical) */}
-      {showSOS && (
-        <div
-          className="modal-backdrop"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="sos-modal-title"
-          aria-describedby="sos-modal-desc"
-        >
-          <div className="modal-content" ref={sosModalRef}>
-            <div className="modal-handle" aria-hidden="true" />
-            <h2 id="sos-modal-title" className="modal-title">🚨 {ui.sos}</h2>
-            <p id="sos-modal-desc" style={{ fontSize: '.85rem', color: 'var(--t2)', marginBottom: 8, lineHeight: 1.55 }}>
-              {ui.sosDesc || 'All numbers below are free to call, 24/7.'}
-            </p>
-            {SOS_NUMBERS.map(s => (
-              <a key={s.name} href={`tel:${s.phone}`}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 0', borderBottom: '1px solid var(--bd)' }}
-                aria-label={`Call ${s.name} on ${s.num}: ${s.note}`}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--tx)' }}>{s.name}</div>
-                  <div style={{ fontSize: '.85rem', color: 'var(--t2)', marginTop: 2 }}>{s.note}</div>
-                </div>
-                <span className="btn btn-danger btn-sm" aria-hidden="true">{s.num}</span>
-              </a>
-            ))}
-            <button
-              className="btn btn-ghost btn-block"
-              style={{ marginTop: 12 }}
-              onClick={() => setSOS(false)}
-              aria-label={ui.close || 'Close emergency contacts'}
-            >{ui.close}</button>
-          </div>
-        </div>
-      )}
+      <SOSModal showSOS={showSOS} setSOS={setSOS} ui={ui} SOS_NUMBERS={SOS_NUMBERS} />
 
       {/* SETTINGS MODAL */}
       {showSettings && (
