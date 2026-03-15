@@ -1,0 +1,45 @@
+name: Bug report
+description: Something is broken or incorrect
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for helping improve New Life UK.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area?
+      options:
+        - Guide content (wrong info / broken link)
+        - App crashes or won't load
+        - Feature not working
+        - Translation issue
+        - Accessibility issue
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What's wrong?
+      placeholder: Describe what you expected vs what happened.
+    validations:
+      required: true
+
+  - type: input
+    id: guide
+    attributes:
+      label: Which guide or page? (if applicable)
+      placeholder: e.g. "Universal Credit guide", "/work/certs"
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device / browser
+      options:
+        - Android (Chrome)
+        - iPhone (Safari)
+        - Desktop browser
+        - Other

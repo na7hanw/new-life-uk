@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest a new guide topic or app improvement
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve for refugees?
+      placeholder: Describe the situation a newly-arrived refugee would face.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to see?
+      placeholder: New guide topic, language support, UI improvement, etc.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: How urgent is this for new arrivals?
+      options:
+        - Critical — needed in first 56 days
+        - Important — needed in first 6 months
+        - Nice to have

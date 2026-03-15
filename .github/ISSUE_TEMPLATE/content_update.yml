@@ -1,0 +1,37 @@
+name: Content update
+description: A link is broken or information is outdated
+labels: ["content", "needs-verification"]
+body:
+  - type: markdown
+    attributes:
+      value: Keeping content accurate is critical for our users. Thank you.
+
+  - type: input
+    id: guide
+    attributes:
+      label: Which guide?
+      placeholder: e.g. "Universal Credit", "eVisa"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: What's currently wrong?
+      placeholder: Quote the incorrect step or broken link.
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct
+    attributes:
+      label: What should it say / what is the correct link?
+      placeholder: Include official GOV.UK or charity source if possible.
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source URL (GOV.UK or official charity)
+      placeholder: https://www.gov.uk/...
