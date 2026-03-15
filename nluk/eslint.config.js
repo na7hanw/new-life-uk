@@ -35,6 +35,9 @@ export default [
         clearTimeout: 'readonly',
         setInterval: 'readonly',
         clearInterval: 'readonly',
+        fetch: 'readonly',
+        AbortController: 'readonly',
+        Promise: 'readonly',
       },
     },
     rules: {

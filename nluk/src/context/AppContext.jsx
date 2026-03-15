@@ -4,8 +4,24 @@ import { ls, lsSet } from '../lib/utils.js'
 
 const AppContext = createContext(null)
 
+// Detect the best supported language from the browser's preferences
+function detectBrowserLang() {
+  const supported = new Set(LANGS.map(l => l.code))
+  const candidates = navigator.languages?.length ? navigator.languages : [navigator.language || 'en']
+  for (const full of candidates) {
+    const code = full.toLowerCase().slice(0, 2)
+    if (supported.has(code)) return code
+  }
+  return 'en'
+}
+
 export function AppProvider({ children }) {
-  const [lang, setLang] = useState(() => ls('nluk_lang', 'en'))
+  const [lang, setLang] = useState(() => {
+    const saved = ls('nluk_lang', '')
+    if (saved) return saved
+    // Auto-detect browser language on first visit
+    return detectBrowserLang()
+  })
   const [dark, setDark] = useState(() => ls('nluk_dark', '') === 'true')
   const [showSOS, setSOS] = useState(false)
   const [showLang, setShowLang] = useState(() => !ls('nluk_lang', ''))

@@ -5,6 +5,7 @@ import { useApp } from '../context/AppContext.jsx'
 import { GUIDES, GUIDE_PRIORITY, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.js'
 import { LANGS, TIPS } from '../data/ui-strings.js'
 import { t18 } from '../lib/utils.js'
+import { translate } from '../lib/translate.js'
 
 export default function GuidesPage() {
   const { lang, ui, dir, af } = useApp()
@@ -13,9 +14,11 @@ export default function GuidesPage() {
   const [catFilter, setCatFilter] = useState('All')
   const [tipIdx, setTipIdx] = useState(0)
   const guideBtnRefs = useRef({})
+  const [translatedTip, setTranslatedTip] = useState('')
 
   useEffect(() => {
-    setTipIdx(Math.floor(Math.random() * TIPS.refugee.length))
+    const idx = Math.floor(Math.random() * TIPS.refugee.length)
+    setTipIdx(idx)
     // Restore focus to the last guide the user navigated away from
     const last = sessionStorage.getItem('nluk_last_guide')
     if (last) {
@@ -25,7 +28,19 @@ export default function GuidesPage() {
   }, [])
 
   const tipList = TIPS.refugee
-  const tip = tipList[tipIdx % tipList.length]
+  const tipEn = tipList[tipIdx % tipList.length]
+
+  // Auto-translate the tip when language changes
+  useEffect(() => {
+    if (!tipEn) return
+    setTranslatedTip(tipEn)
+    if (lang === 'en') return
+    let cancelled = false
+    translate(tipEn, lang).then(t => { if (!cancelled) setTranslatedTip(t) })
+    return () => { cancelled = true }
+  }, [tipEn, lang])
+
+  const tip = translatedTip || tipEn
 
   // Fuse.js index — built once, searches title + summary + keyword aliases
   const fuseIndex = useMemo(() => new Fuse(

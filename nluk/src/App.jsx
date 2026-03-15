@@ -18,8 +18,24 @@ import MorePage from './pages/MorePage.jsx'
 export default function App() {
   const { lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, ui, dir, fontClass } = useApp()
   const [showSettings, setSettings] = useState(false)
+  const [installPrompt, setInstallPrompt] = useState(null)
+  const [installDone, setInstallDone] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+
+  // Capture the PWA beforeinstallprompt event so we can show our own button
+  useEffect(() => {
+    const handler = (e) => { e.preventDefault(); setInstallPrompt(e) }
+    window.addEventListener('beforeinstallprompt', handler)
+    return () => window.removeEventListener('beforeinstallprompt', handler)
+  }, [])
+
+  const handleInstall = async () => {
+    if (!installPrompt) return
+    installPrompt.prompt()
+    const { outcome } = await installPrompt.userChoice
+    if (outcome === 'accepted') { setInstallDone(true); setInstallPrompt(null) }
+  }
 
   const isDetail = /^\/(guide|cert|career)\//.test(location.pathname)
   const [routeAnn, setRouteAnn] = useState('')
@@ -154,6 +170,14 @@ export default function App() {
               <span style={{ fontWeight: 700 }}>{dark ? ui.darkMode : ui.lightMode}</span>
               <button className="btn btn-primary btn-sm" onClick={() => setDark(d => !d)}>{dark ? ui.lightMode : ui.darkMode}</button>
             </div>
+            {(installPrompt || installDone) && (
+              <div className="settings-row">
+                <span style={{ fontWeight: 700 }}>{ui.installApp}</span>
+                <button className="btn btn-outline btn-sm" onClick={handleInstall} disabled={installDone}>
+                  {installDone ? ui.installDone : '📲 Install'}
+                </button>
+              </div>
+            )}
             <h3 className="modal-title" style={{ marginTop: 16, marginBottom: 4 }}>{ui.language}</h3>
             {LANGS.map(l => (
               <button key={l.code} className="settings-row" onClick={() => { setLang(l.code); setSettings(false) }} aria-label={l.native}>

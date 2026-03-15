@@ -3,6 +3,44 @@ import { useApp } from '../context/AppContext.jsx'
 import { GEMS } from '../data/saves.js'
 import { GITHUB_URL } from '../data/emergency.js'
 import { t18 } from '../lib/utils.js'
+import { translateContentObject, clearTranslationCache } from '../lib/translate.js'
+
+function GemCard({ gem, lang, ui }) {
+  const native = t18(gem.content, lang)
+  const needsTranslation = lang !== 'en' && !gem.content[lang]
+
+  const [content, setContent] = useState(native)
+  const [translating, setTranslating] = useState(false)
+  const [wasTranslated, setWasTranslated] = useState(false)
+
+  useEffect(() => {
+    if (!needsTranslation) { setContent(native); setWasTranslated(false); return }
+    let cancelled = false
+    setTranslating(true)
+    setContent(native)
+    translateContentObject(native, lang).then(translated => {
+      if (!cancelled) { setContent(translated); setTranslating(false); setWasTranslated(true) }
+    })
+    return () => { cancelled = true }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang, gem])
+
+  return (
+    <div className={`content-card${translating ? ' translating' : ''}`}>
+      <div className="content-card-header">
+        <span className="content-card-icon">{gem.icon}</span>
+        <span className="content-card-title">{content.title}</span>
+      </div>
+      <p className="content-card-body">{content.desc}</p>
+      {wasTranslated && <span className="auto-translated-badge">{ui.autoTranslated}</span>}
+      {gem.url && (
+        <a href={gem.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
+          🔗 <span>{ui.openLink}</span> →
+        </a>
+      )}
+    </div>
+  )
+}
 
 export default function MorePage() {
   const { lang, ui, L, dark, setDark, setShowLang } = useApp()
@@ -20,23 +58,9 @@ export default function MorePage() {
         <h2 style={{ fontSize: '1.15rem', fontWeight: 800 }}>{ui.gemsTitle}</h2>
         <p style={{ fontSize: '.9rem', color: 'var(--t2)', marginTop: 4, lineHeight: 1.55 }}>{ui.gemsSub}</p>
       </div>
-      {GEMS.map(g => {
-        const gc = t18(g.content, lang)
-        return (
-          <div key={gc.title} className="content-card">
-            <div className="content-card-header">
-              <span className="content-card-icon">{g.icon}</span>
-              <span className="content-card-title">{gc.title}</span>
-            </div>
-            <p className="content-card-body">{gc.desc}</p>
-            {g.url && (
-              <a href={g.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
-                🔗 <span>{ui.openLink}</span> →
-              </a>
-            )}
-          </div>
-        )
-      })}
+      {GEMS.map(g => (
+        <GemCard key={g.content.en.title} gem={g} lang={lang} ui={ui} />
+      ))}
 
       <div className="section-label">{ui.theme}</div>
       <div className="card" style={{ margin: '0 20px 12px' }}>
@@ -70,6 +94,7 @@ export default function MorePage() {
             ['nluk_lang', 'Language preference'],
             ['nluk_dark', 'Dark/light mode'],
             ['nluk_wtab', 'Last work tab viewed'],
+            ['nluk_tx3',  'Cached translations (auto-translate)'],
           ].map(([k, v]) => (
             <div key={k} style={{ fontSize: '.8rem', color: 'var(--t2)', padding: '2px 0' }}>
               <code style={{ background: 'var(--s2)', borderRadius: 4, padding: '1px 5px', marginRight: 6 }}>{k}</code>{v}
@@ -87,6 +112,7 @@ export default function MorePage() {
             onClick={() => {
               try {
                 ['nluk_lang','nluk_dark','nluk_wtab'].forEach(k => localStorage.removeItem(k))
+                clearTranslationCache()
                 window.location.reload()
               } catch {}
             }}
@@ -97,7 +123,7 @@ export default function MorePage() {
       </div>
 
       <div className="version-badge" aria-label="App version and data verification date">
-        🛡 v2.2.0 · Data verified March 2026
+        🛡 v2.3.0 · Data verified March 2026
         {offline && <span className="offline-badge" style={{ marginLeft: 8 }}>📴 Available Offline</span>}
       </div>
 
