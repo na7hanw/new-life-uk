@@ -2,8 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext.jsx'
 import { GUIDES, GUIDE_PRIORITY, CATEGORIES } from '../data/guides.js'
-import { LANGS } from '../data/ui-strings.js'
-import { TIPS } from '../data/ui-strings.js'
+import { LANGS, TIPS } from '../data/ui-strings.js'
 import { t18 } from '../lib/utils.js'
 
 export default function GuidesPage() {
