@@ -10,6 +10,18 @@ export default defineConfig({
   test: {
     environment: 'node',
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          const reactPkgs = ['react', 'react-dom', 'react-router-dom', 'scheduler']
+          if (reactPkgs.some(pkg => id.includes(`node_modules/${pkg}`))) return 'vendor-react'
+          if (id.includes('node_modules/fuse.js')) return 'vendor-fuse'
+          if (id.includes('node_modules/@sentry')) return 'vendor-sentry'
+        }
+      }
+    }
+  },
   plugins: [
     react(),
     compression({ algorithm: 'brotliCompress', ext: '.br' }),
@@ -27,8 +39,9 @@ export default defineConfig({
         orientation: 'portrait',
         start_url: '/',
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
         ]
       }
     })

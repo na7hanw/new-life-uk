@@ -1,3 +1,9 @@
+// Load Google Fonts asynchronously — avoids render-blocking
+const fontLink = document.createElement('link')
+fontLink.rel = 'stylesheet'
+fontLink.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;600;700&family=Noto+Sans+Ethiopic:wght@400;600;700&display=swap'
+document.head.appendChild(fontLink)
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
@@ -30,7 +36,7 @@ if (dsn) {
 const SentryErrorBoundary = dsn ? Sentry.ErrorBoundary : ({ children }) => children
 
 // Report Core Web Vitals — sent to Sentry if enabled, otherwise console in dev
-import('web-vitals').then(({ onCLS, onFCP, onLCP, onFID, onTTFB }) => {
+import('web-vitals').then(({ onCLS, onFCP, onLCP, onINP, onTTFB }) => {
   const report = (metric) => {
     if (dsn) {
       Sentry.metrics?.increment(`web_vitals.${metric.name.toLowerCase()}`, metric.value)
@@ -39,7 +45,7 @@ import('web-vitals').then(({ onCLS, onFCP, onLCP, onFID, onTTFB }) => {
       console.debug('[Web Vitals]', metric.name, metric.value.toFixed(1), metric.rating)
     }
   }
-  onCLS(report); onFCP(report); onLCP(report); onFID(report); onTTFB(report)
+  onCLS(report); onFCP(report); onLCP(report); onINP(report); onTTFB(report)
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(

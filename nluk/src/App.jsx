@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useApp } from './context/AppContext.jsx'
 import { LANGS } from './data/ui-strings.js'
@@ -6,13 +6,14 @@ import { SOS_NUMBERS } from './data/emergency.js'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import Logo from './components/Logo.jsx'
 import SOSModal from './components/SOSModal.jsx'
-import GuidesPage from './pages/GuidesPage.jsx'
-import GuideDetail from './pages/GuideDetail.jsx'
-import WorkHub from './pages/WorkHub.jsx'
-import CertDetail from './pages/CertDetail.jsx'
-import CareerDetail from './pages/CareerDetail.jsx'
-import SavesPage from './pages/SavesPage.jsx'
-import MorePage from './pages/MorePage.jsx'
+
+const GuidesPage   = lazy(() => import('./pages/GuidesPage.jsx'))
+const GuideDetail  = lazy(() => import('./pages/GuideDetail.jsx'))
+const WorkHub      = lazy(() => import('./pages/WorkHub.jsx'))
+const CertDetail   = lazy(() => import('./pages/CertDetail.jsx'))
+const CareerDetail = lazy(() => import('./pages/CareerDetail.jsx'))
+const SavesPage    = lazy(() => import('./pages/SavesPage.jsx'))
+const MorePage     = lazy(() => import('./pages/MorePage.jsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
@@ -92,6 +93,7 @@ export default function App() {
       {/* SCROLLABLE CONTENT */}
       <main className="app-scroll">
         <ErrorBoundary>
+        <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<GuidesPage />} />
           <Route path="/guide/:id" element={<GuideDetail />} />
@@ -103,6 +105,7 @@ export default function App() {
           <Route path="/more" element={<MorePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
         </ErrorBoundary>
       </main>
 
