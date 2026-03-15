@@ -18,10 +18,10 @@ We will respond within 48 hours and aim to release a fix within 7 days for high-
 ## Security Design
 
 This app is designed with a minimal attack surface:
-- **No backend / no server** — fully static, deployed to Netlify CDN
+- **No backend / no server** — fully static, deployed to Cloudflare Pages CDN
 - **No user accounts** — no authentication, no sessions
 - **No data collection** — localStorage only (language + theme preference)
 - **No external API calls** — all content is bundled at build time
 - **Strict CSP** — `script-src 'self'`, `connect-src 'self'`, `frame-src 'none'`
 - **No cookies** — nothing to steal
-- **HTTPS only** — enforced by Netlify
+- **HTTPS only** — enforced by Cloudflare
