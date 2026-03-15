@@ -108,15 +108,17 @@ export default function App() {
 
       {/* TAB BAR */}
       {!isDetail && !showLang && (
-        <nav className="tab-bar" role="tablist" aria-label="Main navigation">
-          {TABS.map(t => (
-            <button key={t.id} className={`tab-btn ${isTabActive(t.path) ? 'active' : ''}`}
-              onClick={() => switchTab(t.path)} role="tab" aria-selected={isTabActive(t.path)} aria-label={t.label}>
-              {isTabActive(t.path) && <div className="tab-dot" />}
-              <span className="tab-icon">{t.icon}</span>
-              <span>{t.label}</span>
-            </button>
-          ))}
+        <nav className="tab-bar" aria-label="Main navigation">
+          <div role="tablist" style={{ display: 'contents' }}>
+            {TABS.map(t => (
+              <button key={t.id} className={`tab-btn ${isTabActive(t.path) ? 'active' : ''}`}
+                onClick={() => switchTab(t.path)} role="tab" aria-selected={isTabActive(t.path)} aria-label={t.label}>
+                {isTabActive(t.path) && <div className="tab-dot" />}
+                <span className="tab-icon">{t.icon}</span>
+                <span>{t.label}</span>
+              </button>
+            ))}
+          </div>
         </nav>
       )}
 
@@ -135,8 +137,14 @@ export default function App() {
 
       {/* SETTINGS MODAL */}
       {showSettings && (
-        <div className="modal-backdrop" onClick={() => setSettings(false)} role="dialog" aria-label={ui.settings}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <div className="modal-backdrop" role="presentation"
+          onClick={() => setSettings(false)}
+          onKeyDown={e => e.key === 'Escape' && setSettings(false)}>
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+          <div className="modal-content" role="dialog" aria-modal="true" aria-label={ui.settings}
+            tabIndex={-1}
+            onClick={e => e.stopPropagation()}
+            onKeyDown={e => e.stopPropagation()}>
             <div className="modal-handle" />
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
               <h2 className="modal-title" style={{ margin: 0 }}>⚙ {ui.settings}</h2>
