@@ -6,7 +6,7 @@ A free, multilingual PWA that helps refugees and asylum seekers navigate life in
 [![Security Audit](https://github.com/na7hanw/new-life-uk/actions/workflows/security-audit.yml/badge.svg)](https://github.com/na7hanw/new-life-uk/actions/workflows/security-audit.yml)
 [![CodeQL](https://github.com/na7hanw/new-life-uk/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/na7hanw/new-life-uk/actions/workflows/codeql-analysis.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/na7hanw/new-life-uk/badge)](https://securityscorecards.dev/viewer/?uri=github.com/na7hanw/new-life-uk)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/new-life-uk/deploy-status)](https://app.netlify.com/sites/new-life-uk/deploys)
+[![Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?logo=cloudflare)](https://new-life-uk.pages.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Features
@@ -27,7 +27,7 @@ A free, multilingual PWA that helps refugees and asylum seekers navigate life in
 | PWA | vite-plugin-pwa + Workbox |
 | Styling | CSS modules |
 | Testing | Vitest |
-| Deploy | Netlify (CDN, HTTPS, CSP headers) |
+| Deploy | Cloudflare Pages (CDN, HTTPS, CSP headers) |
 | CI | GitHub Actions |
 
 ## Getting started
