@@ -217,7 +217,7 @@ export const JOBS = [
   {
     icon: "🧡",
     content: { en: { role: "Healthcare Assistant (HCA)", desc: "Support patients and residents in NHS hospitals, GP surgeries, or care homes. Care Certificate training is FREE from your employer. Visa sponsorship available for eligible candidates." } },
-    pay: "£11.44–£14/hr",
+    pay: "£12.71–£14/hr",
     tags: ["Visa sponsorship available", "Career path to nursing"],
     docs: ["Share code (Right to Work)", "Enhanced DBS check (employer arranges, usually free)", "Two references", "Care Certificate (employer funds this for you)"],
     visa: true,
