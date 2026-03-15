@@ -30,7 +30,7 @@ if (dsn) {
 const SentryErrorBoundary = dsn ? Sentry.ErrorBoundary : ({ children }) => children
 
 // Report Core Web Vitals — sent to Sentry if enabled, otherwise console in dev
-import('web-vitals').then(({ onCLS, onFCP, onLCP, onFID, onTTFB }) => {
+import('web-vitals').then(({ onCLS, onFCP, onLCP, onINP, onTTFB }) => {
   const report = (metric) => {
     if (dsn) {
       Sentry.metrics?.increment(`web_vitals.${metric.name.toLowerCase()}`, metric.value)
@@ -39,7 +39,7 @@ import('web-vitals').then(({ onCLS, onFCP, onLCP, onFID, onTTFB }) => {
       console.debug('[Web Vitals]', metric.name, metric.value.toFixed(1), metric.rating)
     }
   }
-  onCLS(report); onFCP(report); onLCP(report); onFID(report); onTTFB(report)
+  onCLS(report); onFCP(report); onLCP(report); onINP(report); onTTFB(report)
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
