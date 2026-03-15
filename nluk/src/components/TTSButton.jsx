@@ -16,7 +16,7 @@ const LANG_VOICE = {
   fr: 'fr-FR',
 }
 
-export default function TTSButton({ lang, title, summary, steps }) {
+export default function TTSButton({ lang, title, summary, steps, ui = {} }) {
   const [speaking, setSpeaking] = useState(false)
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
 
@@ -61,13 +61,16 @@ export default function TTSButton({ lang, title, summary, steps }) {
 
   if (!supported) return null
 
+  const listenLabel = ui.ttsListen || '🔊 Listen'
+  const stopLabel   = ui.ttsStop   || '⏹ Stop'
+
   return (
     <button
       className={`tts-btn ${speaking ? 'tts-speaking' : ''}`}
       onClick={speaking ? stop : speak}
-      aria-label={speaking ? 'Stop reading aloud' : 'Listen to this guide'}
+      aria-label={speaking ? stopLabel : listenLabel}
     >
-      {speaking ? '⏹ Stop' : '🔊 Listen'}
+      {speaking ? stopLabel : listenLabel}
     </button>
   )
 }

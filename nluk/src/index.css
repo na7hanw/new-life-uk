@@ -9,7 +9,7 @@
 body {
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -92,6 +92,21 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   opacity: .75;
 }
 
+/* Skip-to-content link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 8px;
+  padding: 8px 16px;
+  background: var(--ac);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0 0 8px 8px;
+  z-index: 9999;
+  transition: top .15s;
+}
+.skip-link:focus { top: 0; }
+
 /* Screen-reader only utility — visually hidden but accessible */
 .sr-only {
   position: absolute;
@@ -148,8 +163,8 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 }
 
 /* RTL and Ethiopic font overrides */
-[dir="rtl"] { font-family: 'Noto Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif; line-height: 1.85; }
-.eth-font  { font-family: 'Noto Sans Ethiopic', 'Plus Jakarta Sans', system-ui, sans-serif; }
+[dir="rtl"] { font-family: 'Arabic UI Text', 'Geeza Pro', 'Segoe UI', system-ui, sans-serif; line-height: 1.85; }
+.eth-font  { font-family: 'Kefa', 'Noto Sans Ethiopic', system-ui, sans-serif; }
 
 /* ─── Layout ─── */
 .app-root {
@@ -285,6 +300,16 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: none; }
+}
+
+/* Lazy-load suspense fallback */
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  font-size: .95rem;
+  color: var(--t3);
 }
 
 /* ─── Hero ─── */

@@ -29,12 +29,20 @@ function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }) {
   return (
     <div
       className="modal-backdrop"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="sos-modal-title"
-      aria-describedby="sos-modal-desc"
+      role="presentation"
+      onClick={() => setSOS(false)}
     >
-      <div className="modal-content" ref={sosModalRef}>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+      <div
+        className="modal-content"
+        ref={sosModalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="sos-modal-title"
+        aria-describedby="sos-modal-desc"
+        onClick={e => e.stopPropagation()}
+        onKeyDown={e => e.stopPropagation()}
+      >
         <div className="modal-handle" aria-hidden="true" />
         <h2 id="sos-modal-title" className="modal-title">🚨 {ui.sos}</h2>
         <p id="sos-modal-desc" style={{ fontSize: '.85rem', color: 'var(--t2)', marginBottom: 8, lineHeight: 1.55 }}>

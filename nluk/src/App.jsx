@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { Suspense, lazy, useState, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useApp } from './context/AppContext.jsx'
 import { LANGS } from './data/ui-strings.js'
@@ -6,13 +6,17 @@ import { SOS_NUMBERS } from './data/emergency.js'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import Logo from './components/Logo.jsx'
 import SOSModal from './components/SOSModal.jsx'
+
+// Eagerly load the home page for instant first paint
 import GuidesPage from './pages/GuidesPage.jsx'
 import GuideDetail from './pages/GuideDetail.jsx'
-import WorkHub from './pages/WorkHub.jsx'
-import CertDetail from './pages/CertDetail.jsx'
-import CareerDetail from './pages/CareerDetail.jsx'
-import SavesPage from './pages/SavesPage.jsx'
-import MorePage from './pages/MorePage.jsx'
+
+// Lazy-load heavier routes for faster initial bundle
+const WorkHub     = lazy(() => import('./pages/WorkHub.jsx'))
+const CertDetail  = lazy(() => import('./pages/CertDetail.jsx'))
+const CareerDetail = lazy(() => import('./pages/CareerDetail.jsx'))
+const SavesPage   = lazy(() => import('./pages/SavesPage.jsx'))
+const MorePage    = lazy(() => import('./pages/MorePage.jsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
@@ -56,6 +60,9 @@ export default function App() {
   return (
     <div className={`app-root ${dark ? 'dark' : ''} ${fontClass}`} dir={dir}>
 
+      {/* SKIP-TO-CONTENT for keyboard navigation */}
+      <a href="#main-content" className="skip-link">{ui.skipToContent || 'Skip to content'}</a>
+
       {/* SCREEN READER ROUTE ANNOUNCER */}
       <span className="sr-only" aria-live="polite" aria-atomic="true">{routeAnn}</span>
 
@@ -90,8 +97,9 @@ export default function App() {
       )}
 
       {/* SCROLLABLE CONTENT */}
-      <main className="app-scroll">
+      <main className="app-scroll" id="main-content">
         <ErrorBoundary>
+        <Suspense fallback={<div className="page-loading" aria-live="polite">{ui.loading || 'Loading…'}</div>}>
         <Routes>
           <Route path="/" element={<GuidesPage />} />
           <Route path="/guide/:id" element={<GuideDetail />} />
@@ -103,6 +111,7 @@ export default function App() {
           <Route path="/more" element={<MorePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
         </ErrorBoundary>
       </main>
 

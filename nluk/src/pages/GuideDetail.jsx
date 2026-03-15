@@ -56,7 +56,7 @@ export default function GuideDetail() {
 
       <ShareBar title={gc.title} ui={ui} />
 
-      <TTSButton lang={lang} title={gc.title} summary={gc.summary} steps={gc.steps} />
+      <TTSButton lang={lang} title={gc.title} summary={gc.summary} steps={gc.steps} ui={ui} />
 
       {(guide.cost || guide.time || guide.bring?.length > 0) && (
         <div className="key-info-strip">

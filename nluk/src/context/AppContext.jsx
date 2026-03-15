@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { LANGS, UI } from '../data/ui-strings.js'
 import { ls, lsSet } from '../lib/utils.js'
+import i18n from '../i18n.js'
 
 const AppContext = createContext(null)
 
@@ -15,6 +16,8 @@ export function AppProvider({ children }) {
     lsSet('nluk_lang', lang)
     document.documentElement.lang = lang
     document.documentElement.dir = L2.rtl ? 'rtl' : 'ltr'
+    // Keep i18next in sync so components using useTranslation() reflect the new language
+    i18n.changeLanguage(lang)
   }, [lang])
 
   useEffect(() => { lsSet('nluk_dark', String(dark)) }, [dark])
