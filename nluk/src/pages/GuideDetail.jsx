@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.jsx'
-import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE } from '../data/guides.js'
+import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL } from '../data/guides.js'
 import { t18 } from '../lib/utils.js'
 import QuickLinks from '../components/QuickLinks.jsx'
 import ShareBar from '../components/ShareBar.jsx'
@@ -81,6 +81,14 @@ export default function GuideDetail() {
       <div className="guide-updated">
         ✓ Verified {GUIDE_LAST_UPDATED[id] || GUIDE_DATA_DATE}
       </div>
+
+      {GUIDE_SOURCE_URL[id] && (
+        <div style={{ textAlign: 'center', paddingBottom: 24 }}>
+          <a href={GUIDE_SOURCE_URL[id]} target="_blank" rel="noopener noreferrer" className="source-link">
+            📄 View Official Source
+          </a>
+        </div>
+      )}
     </article>
   )
 }

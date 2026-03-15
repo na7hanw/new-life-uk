@@ -69,6 +69,19 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   --shadow2: 0 8px 28px rgba(0,0,0,.40);
 }
 
+/* Official source link */
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--t2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.source-link:hover { color: var(--ac3); }
+
 /* Guide "last verified" footer */
 .guide-updated {
   text-align: center;

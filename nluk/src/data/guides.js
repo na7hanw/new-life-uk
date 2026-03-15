@@ -94,3 +94,30 @@ export const GUIDE_KEYWORDS = {
   'family-reunion':['family', 'spouse', 'wife', 'husband', 'children', 'bring family', 'reunite'],
   'community':     ['friends', 'social', 'volunteer', 'mosque', 'church', 'library', 'activities'],
 }
+
+// ─── Official source URLs (GOV.UK / NHS / authoritative charity) ─────────
+export const GUIDE_SOURCE_URL = {
+  'evisa':          'https://www.gov.uk/evisa',
+  'sharecode':      'https://www.gov.uk/view-prove-immigration-status',
+  'nrpf':           'https://www.gov.uk/guidance/public-funds',
+  'gp':             'https://www.nhs.uk/nhs-services/gps/how-to-register-with-a-gp-surgery/',
+  'mental':         'https://www.nhs.uk/mental-health/',
+  'bank':           'https://www.gov.uk/guidance/help-for-refugees-in-the-uk',
+  'uc':             'https://www.gov.uk/universal-credit',
+  'ni':             'https://www.gov.uk/apply-national-insurance-number',
+  'housing-help':   'https://www.gov.uk/homelessness-help-from-council',
+  'renting':        'https://www.gov.uk/private-renting',
+  're-qualify':     'https://www.gov.uk/guidance/recognition-of-overseas-qualifications',
+  'safety':         'https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online',
+  'tax':            'https://www.gov.uk/income-tax',
+  'move-on':        'https://www.gov.uk/asylum-support/moving-on',
+  'work-rights':    'https://www.gov.uk/asylum-seeker-and-refugee-rights-and-responsibilities',
+  'driving':        'https://www.gov.uk/driving-licence-fees',
+  'ctd':            'https://www.gov.uk/travel-document',
+  'travel':         'https://www.gov.uk/foreign-travel-advice',
+  'women-support':  'https://www.gov.uk/guidance/domestic-abuse-how-to-get-help',
+  'schools':        'https://www.gov.uk/school-admissions',
+  'family-reunion': 'https://www.gov.uk/family-permit',
+  'community':      'https://www.gov.uk/volunteering/overview',
+  'ilr':            'https://www.gov.uk/indefinite-leave-to-remain',
+}
