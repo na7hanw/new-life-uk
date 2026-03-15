@@ -1,0 +1,36 @@
+name: Weekly Security Audit
+
+on:
+  schedule:
+    # Every Monday at 08:00 UTC
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Dependency security audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: nluk/package-lock.json
+
+      - name: Install dependencies
+        working-directory: nluk
+        run: npm ci
+
+      - name: Full audit report
+        working-directory: nluk
+        run: |
+          echo "=== NPM Audit Report ===" && \
+          npm audit --audit-level=none 2>&1 || true
+
+      - name: Fail on high/critical vulnerabilities
+        working-directory: nluk
+        run: npm audit --audit-level=high

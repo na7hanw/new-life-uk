@@ -1,0 +1,39 @@
+name: Bundle Size
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  size:
+    name: Check bundle size
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: nluk/package-lock.json
+
+      - name: Check bundle size
+        uses: andresz1/size-limit-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          directory: nluk
+          skip_step: install
+        env:
+          CI: true
+
+      - name: Install and build for size check
+        working-directory: nluk
+        run: npm ci && npm run build
+
+      - name: Report bundle sizes
+        working-directory: nluk
+        run: npx size-limit

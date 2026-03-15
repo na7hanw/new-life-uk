@@ -4,7 +4,6 @@ import { useApp } from './context/AppContext.jsx'
 import { LANGS } from './data/ui-strings.js'
 import { SOS_NUMBERS } from './data/emergency.js'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
-import { ls } from './lib/utils.js'
 import Logo from './components/Logo.jsx'
 import SOSModal from './components/SOSModal.jsx'
 import GuidesPage from './pages/GuidesPage.jsx'
@@ -17,14 +16,12 @@ import MorePage from './pages/MorePage.jsx'
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
-  const { lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, ui, L, dir, fontClass } = useApp()
+  const { lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, ui, dir, fontClass } = useApp()
   const [showSettings, setSettings] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
   const isDetail = /^\/(guide|cert|career)\//.test(location.pathname)
-
-  const [workTab] = useState(() => ls('nluk_wtab', 'jobs'))
   const [routeAnn, setRouteAnn] = useState('')
 
   useEffect(() => {

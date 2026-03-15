@@ -25,7 +25,11 @@ jobs:
         working-directory: nluk
         run: npm ci
 
-      - name: Run tests
+      - name: Lint (ESLint + jsx-a11y accessibility rules)
+        working-directory: nluk
+        run: npm run lint
+
+      - name: Run tests (content integrity + schema validation)
         working-directory: nluk
         run: npm test
 

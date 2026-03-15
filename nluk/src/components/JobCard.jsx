@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { t18 } from '../lib/utils.js'
 
 function JobCard({ j, lang, ui }) {
   const [open, setOpen] = useState(false)

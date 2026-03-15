@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useApp } from '../context/AppContext.jsx'
 import { GEMS } from '../data/saves.js'
-import { LANGS } from '../data/ui-strings.js'
 import { GITHUB_URL } from '../data/emergency.js'
 import { t18 } from '../lib/utils.js'
 
