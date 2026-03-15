@@ -1,0 +1,102 @@
+import { useState, useMemo, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useApp } from '../context/AppContext.jsx'
+import { GUIDES, GUIDE_PRIORITY, CATEGORIES } from '../data/guides.js'
+import { LANGS } from '../data/ui-strings.js'
+import { TIPS } from '../data/ui-strings.js'
+import { t18 } from '../lib/utils.js'
+
+export default function GuidesPage() {
+  const { lang, ui, dir, af } = useApp()
+  const navigate = useNavigate()
+  const [search, setSearch] = useState('')
+  const [catFilter, setCatFilter] = useState('All')
+  const [tipIdx, setTipIdx] = useState(0)
+
+  useEffect(() => {
+    setTipIdx(Math.floor(Math.random() * TIPS.refugee.length))
+  }, [])
+
+  const tipList = TIPS.refugee
+  const tip = tipList[tipIdx % tipList.length]
+
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase()
+    const list = GUIDES.filter(g => {
+      const c = t18(g.content, lang)
+      return (catFilter === 'All' || g.cat === catFilter) &&
+        (!q || c.title?.toLowerCase().includes(q) || c.summary?.toLowerCase().includes(q))
+    })
+    // Sort by GUIDE_PRIORITY, unknowns go to end
+    return list.sort((a, b) => {
+      const ia = GUIDE_PRIORITY.indexOf(a.id)
+      const ib = GUIDE_PRIORITY.indexOf(b.id)
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
+    })
+  }, [search, catFilter, lang])
+
+  const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))], [filtered])
+
+  return (
+    <div className="page-enter">
+
+      {/* Compact welcome — only when not searching */}
+      {!search && catFilter === 'All' && (
+        <>
+          <div className="hero">
+            <div className="hero-badge">🇬🇧 Free · Private · {LANGS.length} Languages · No account needed</div>
+            <h2 className="hero-title">Welcome to<br />your new life. 🤝</h2>
+            <p className="hero-sub">Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.</p>
+          </div>
+
+          <div className="notice">
+            <p className="notice-text">⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.</p>
+          </div>
+
+          {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
+        </>
+      )}
+
+      <div className="search-bar">
+        <span style={{ color: 'var(--t3)' }}>🔍</span>
+        <input className="search-input" placeholder={ui.search} value={search}
+          onChange={e => setSearch(e.target.value)} dir={dir} aria-label={ui.search} />
+        {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
+      </div>
+      <div className="chip-bar" role="tablist">
+        {['All', ...Object.keys(CATEGORIES)].map(c => (
+          <button key={c} className={`chip ${catFilter === c ? 'active' : ''}`}
+            onClick={() => setCatFilter(c)} role="tab" aria-selected={catFilter === c}>
+            {c !== 'All' && CATEGORIES[c] ? `${CATEGORIES[c].emoji} ${c}` : c}
+          </button>
+        ))}
+      </div>
+      {filtered.length === 0 && (
+        <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>{ui.noResults}</div>
+      )}
+      {cats.map(cat => (
+        <div key={cat}>
+          <div className="cat-header" style={{ color: CATEGORIES[cat]?.color }}>
+            {CATEGORIES[cat]?.emoji} {cat}
+          </div>
+          <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
+            {filtered.filter(g => g.cat === cat).map(g => {
+              const gc = t18(g.content, lang)
+              return (
+                <button key={g.id} className="list-row" onClick={() => navigate(`/guide/${g.id}`)} aria-label={gc.title}>
+                  <span className="list-row-icon">{g.icon}</span>
+                  <div className="list-row-content">
+                    <div className="list-row-title">{gc.title}</div>
+                    <div className="list-row-sub">{gc.summary}</div>
+                  </div>
+                  <span className="list-row-arrow">{af}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      ))}
+      <div style={{ height: 8 }} />
+    </div>
+  )
+}

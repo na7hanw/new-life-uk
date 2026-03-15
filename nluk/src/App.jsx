@@ -1,109 +1,45 @@
-import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
-import {
-  LANGS, UI, CATEGORIES, TIPS,
-  GUIDES, GUIDE_MAP, GUIDE_PRIORITY, SAVES, JOBS, CERTS, CAREERS, GEMS,
-  SOS_NUMBERS, GITHUB_URL,
-} from './data/content.js'
-import { ls, lsSet, t18 } from './lib/utils.js'
+import { useState } from 'react'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { useApp } from './context/AppContext.jsx'
+import { LANGS } from './data/ui-strings.js'
+import { SOS_NUMBERS } from './data/emergency.js'
+import { ls } from './lib/utils.js'
 import Logo from './components/Logo.jsx'
-import ShareBar from './components/ShareBar.jsx'
-import StepText from './components/StepText.jsx'
-import QuickLinks from './components/QuickLinks.jsx'
-import JobCard from './components/JobCard.jsx'
 import SOSModal from './components/SOSModal.jsx'
-import TabBar from './components/TabBar.jsx'
+import GuidesPage from './pages/GuidesPage.jsx'
+import GuideDetail from './pages/GuideDetail.jsx'
+import WorkHub from './pages/WorkHub.jsx'
+import CertDetail from './pages/CertDetail.jsx'
+import CareerDetail from './pages/CareerDetail.jsx'
+import SavesPage from './pages/SavesPage.jsx'
+import MorePage from './pages/MorePage.jsx'
 
-// ─── App ──────────────────────────────────────────────────────────
+// ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
-  const [lang, setLang] = useState(() => ls('nluk_lang', 'en'))
-  const [tab, setTab] = useState('guides')
-  const [nav, setNav] = useState([])
-  const [guide, setGuide] = useState(null)
-  const [cert, setCert] = useState(null)
-  const [career, setCareer] = useState(null)
-  const [showSOS, setSOS] = useState(false)
+  const { lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, ui, L, dir, fontClass } = useApp()
   const [showSettings, setSettings] = useState(false)
-  const [search, setSearch] = useState('')
-  const [catFilter, setCatFilter] = useState('All')
-  const [workTab, setWorkTab] = useState(() => ls('nluk_wtab', 'jobs'))
-  const [showLang, setShowLang] = useState(() => !ls('nluk_lang', ''))
-  const [dark, setDark] = useState(() => ls('nluk_dark', '') === 'true')
-  const scrollRef = useRef(null)
+  const location = useLocation()
+  const navigate = useNavigate()
 
-  // Bug fix: use dynamic array length instead of hardcoded 8
-  const [tipIdx] = useState(() => Math.floor(Math.random() * 100))
+  const isDetail = /^\/(guide|cert|career)\//.test(location.pathname)
 
-  // Persist state
-  useEffect(() => {
-    const L2 = LANGS.find(l => l.code === lang) || LANGS[0]
-    lsSet('nluk_lang', lang)
-    document.documentElement.lang = lang
-    document.documentElement.dir = L2.rtl ? 'rtl' : 'ltr'
-  }, [lang])
-  useEffect(() => { lsSet('nluk_dark', String(dark)) }, [dark])
-  useEffect(() => { lsSet('nluk_wtab', workTab) }, [workTab])
-
-  // Derived
-  const L = LANGS.find(l => l.code === lang) || LANGS[0]
-  const ui = UI[lang] || UI.en
-  const dir = L.rtl ? 'rtl' : 'ltr'
-  const fontClass = L.ar ? '' : L.eth ? 'eth-font' : ''
-  const ab = L.rtl ? '→' : '←'
-  const af = L.rtl ? '‹' : '›'
-
-  const tipList = TIPS.refugee
-  const tip = tipList[tipIdx % tipList.length]
-
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase()
-    const list = GUIDES.filter(g => {
-      const c = t18(g.content, lang)
-      return (catFilter === 'All' || g.cat === catFilter) &&
-        (!q || c.title?.toLowerCase().includes(q) || c.summary?.toLowerCase().includes(q))
-    })
-    // Sort by GUIDE_PRIORITY, unknowns go to end
-    return list.sort((a, b) => {
-      const ia = GUIDE_PRIORITY.indexOf(a.id)
-      const ib = GUIDE_PRIORITY.indexOf(b.id)
-      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
-    })
-  }, [search, catFilter, lang])
-
-  const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))], [filtered])
-
-  const isDetail = ['gd', 'cd', 'cpd'].includes(tab)
-
-  const push = useCallback(t2 => {
-    // Cap nav stack to avoid unbounded growth
-    setNav(p => [...p.slice(-10), tab])
-    setTab(t2)
-    scrollRef.current?.scrollTo(0, 0)
-  }, [tab])
-
-  const back = useCallback(() => {
-    const prev = nav[nav.length - 1] || 'home'
-    setNav(n => n.slice(0, -1))
-    setGuide(null)
-    setCert(null)
-    setCareer(null)
-    setTab(prev)
-  }, [nav])
-
-  const switchTab = useCallback(id => {
-    setNav([])
-    setGuide(null)
-    setCert(null)
-    setCareer(null)
-    setTab(id)
-    scrollRef.current?.scrollTo(0, 0)
-  }, [])
+  const [workTab] = useState(() => ls('nluk_wtab', 'jobs'))
 
   const TABS = [
-    { id: 'guides', icon: '📖', label: ui.guides },
-    { id: 'work', icon: '💼', label: ui.work },
-    { id: 'saves', icon: '🆓', label: ui.saves },
-    { id: 'more', icon: '☰', label: ui.more },
+    { id: 'guides', path: '/', icon: '📖', label: ui.guides },
+    { id: 'work', path: '/work/jobs', icon: '💼', label: ui.work },
+    { id: 'saves', path: '/saves', icon: '🆓', label: ui.saves },
+    { id: 'more', path: '/more', icon: '☰', label: ui.more },
   ]
+
+  const isTabActive = (path) => {
+    if (path === '/') return location.pathname === '/'
+    return location.pathname.startsWith(path.replace('/jobs', ''))
+  }
+
+  const switchTab = (path) => {
+    navigate(path)
+  }
 
   return (
     <div className={`app-root ${dark ? 'dark' : ''} ${fontClass}`} dir={dir}>
@@ -139,422 +75,33 @@ export default function App() {
       )}
 
       {/* SCROLLABLE CONTENT */}
-      <main className="app-scroll" ref={scrollRef}>
-
-        {/* ── GUIDES ── */}
-        {tab === 'guides' && (
-          <div className="page-enter">
-
-            {/* Compact welcome — only when not searching */}
-            {!search && catFilter === 'All' && (
-              <>
-                <div className="hero">
-                  <div className="hero-badge">🇬🇧 Free · Private · {LANGS.length} Languages · No account needed</div>
-                  <h2 className="hero-title">Welcome to<br />your new life. 🤝</h2>
-                  <p className="hero-sub">Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.</p>
-                </div>
-
-                <div className="notice">
-                  <p className="notice-text">⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.</p>
-                </div>
-
-                {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
-              </>
-            )}
-
-            <div className="search-bar">
-              <span style={{ color: 'var(--t3)' }}>🔍</span>
-              <input className="search-input" placeholder={ui.search} value={search}
-                onChange={e => setSearch(e.target.value)} dir={dir} aria-label={ui.search} />
-              {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
-            </div>
-            <div className="chip-bar" role="tablist">
-              {['All', ...Object.keys(CATEGORIES)].map(c => (
-                <button key={c} className={`chip ${catFilter === c ? 'active' : ''}`}
-                  onClick={() => setCatFilter(c)} role="tab" aria-selected={catFilter === c}>
-                  {c !== 'All' && CATEGORIES[c] ? `${CATEGORIES[c].emoji} ${c}` : c}
-                </button>
-              ))}
-            </div>
-            {filtered.length === 0 && (
-              <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>{ui.noResults}</div>
-            )}
-            {cats.map(cat => (
-              <div key={cat}>
-                <div className="cat-header" style={{ color: CATEGORIES[cat]?.color }}>
-                  {CATEGORIES[cat]?.emoji} {cat}
-                </div>
-                <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
-                  {filtered.filter(g => g.cat === cat).map(g => {
-                    const gc = t18(g.content, lang)
-                    return (
-                      <button key={g.id} className="list-row" onClick={() => { setGuide(g); push('gd') }} aria-label={gc.title}>
-                        <span className="list-row-icon">{g.icon}</span>
-                        <div className="list-row-content">
-                          <div className="list-row-title">{gc.title}</div>
-                          <div className="list-row-sub">{gc.summary}</div>
-                        </div>
-                        <span className="list-row-arrow">{af}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
-            <div style={{ height: 8 }} />
-          </div>
-        )}
-
-        {/* ── GUIDE DETAIL ── */}
-        {tab === 'gd' && guide && (() => {
-          const gc = t18(guide.content, lang)
-          return (
-            <article className="page-enter">
-              <div className="detail-header">
-                <button className="back-btn" onClick={back}>{ab} {ui.back}</button>
-                <div className="detail-hero">
-                  <span className="detail-icon">{guide.icon}</span>
-                  <div>
-                    <h2 className="detail-title">{gc.title}</h2>
-                    <p className="detail-summary">{gc.summary}</p>
-                  </div>
-                </div>
-              </div>
-
-              {guide.links?.length > 0 && (
-                <QuickLinks links={guide.links} label={`🔗 ${ui.applyLinks || 'Quick Links'}`} />
-              )}
-
-              <ShareBar title={gc.title} ui={ui} />
-
-              {(guide.cost || guide.time || guide.bring?.length > 0) && (
-                <div className="key-info-strip">
-                  {guide.cost && <span className="key-chip">💰 {guide.cost}</span>}
-                  {guide.time && <span className="key-chip">⏱ {guide.time}</span>}
-                  {guide.bring?.map(b => <span key={b} className="key-chip">📋 {b}</span>)}
-                </div>
-              )}
-
-              <div className="section-label">{ui.steps}</div>
-              <div className="card" style={{ margin: '0 20px 12px' }}>
-                <div style={{ padding: '6px 16px' }}>
-                  {gc.steps?.map((s, i) => (
-                    <div key={i} className="step-row">
-                      <div className="step-num">{i + 1}</div>
-                      {s.startsWith('⚠') ? <div className="step-warn"><StepText text={s} /></div> : <div className="step-text"><StepText text={s} /></div>}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ height: 20 }} />
-            </article>
-          )
-        })()}
-
-        {/* ── WORK ── */}
-        {tab === 'work' && !cert && !career && (
-          <div className="page-enter">
-            <div className="sub-tabs" role="tablist">
-              {[
-                { id: 'jobs', label: `🛵 ${ui.jobsTab}` },
-                { id: 'certs', label: `📋 ${ui.certsTab}` },
-                { id: 'career', label: `🚀 ${ui.careerTab}` },
-              ].map(t => (
-                <button key={t.id} className={`sub-tab ${workTab === t.id ? 'active' : ''}`}
-                  onClick={() => setWorkTab(t.id)} role="tab" aria-selected={workTab === t.id}>
-                  {t.label}
-                </button>
-              ))}
-            </div>
-
-            {workTab === 'jobs' && JOBS.map((j, i) => (
-              <JobCard key={i} j={j} lang={lang} ui={ui} />
-            ))}
-
-            {workTab === 'certs' && (
-              <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
-                {CERTS.map((c, i) => {
-                  const cc = t18(c.content, lang)
-                  return (
-                    <button key={i} className="list-row" onClick={() => { setCert(c); push('cd') }}
-                      aria-label={cc.title} style={{ alignItems: 'flex-start' }}>
-                      <span className="list-row-icon">{c.icon}</span>
-                      <div className="list-row-content">
-                        <div className="list-row-title">{cc.title}</div>
-                        <div className="list-row-sub">{cc.sector}</div>
-                        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 5 }}>
-                          <span className="pill pill-green">{c.time}</span>
-                          <span className="pill pill-amber">{c.cost}</span>
-                        </div>
-                        <span className="pill-free">{ui.freeRoute}</span>
-                      </div>
-                      <span className="list-row-arrow">{af}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
-            {workTab === 'career' && (
-              <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
-                {CAREERS.map(p => {
-                  const pc = t18(p.content, lang)
-                  return (
-                    <button key={pc.title} className="list-row" onClick={() => { setCareer(p); push('cpd') }}
-                      aria-label={pc.title} style={{ alignItems: 'flex-start' }}>
-                      <span className="list-row-icon">{p.icon}</span>
-                      <div className="list-row-content">
-                        <div className="list-row-title">{pc.title}</div>
-                        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 3 }}>
-                          {p.tags.map(t => <span key={t} className="career-tag">{t}</span>)}
-                        </div>
-                        <div style={{ fontSize: '.9rem', fontWeight: 800, color: 'var(--gn)', marginTop: 3 }}>{pc.salary}</div>
-                      </div>
-                      <span className="list-row-arrow">{af}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-            <div style={{ height: 8 }} />
-          </div>
-        )}
-
-        {/* ── CERT DETAIL ── */}
-        {tab === 'cd' && cert && (() => {
-          const cc = t18(cert.content, lang)
-          const st = t18(cert.steps, lang)
-          return (
-            <article className="page-enter">
-              <div className="detail-header">
-                <button className="back-btn" onClick={back}>{ab} {ui.back}</button>
-                <div className="detail-hero">
-                  <span className="detail-icon">{cert.icon}</span>
-                  <div>
-                    <h2 className="detail-title">{cc.title}</h2>
-                    <p className="detail-summary">{cc.sector}</p>
-                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 6 }}>
-                      <span className="pill pill-light">{cert.time}</span>
-                      <span className="pill pill-light">{cert.cost}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {cert.links?.length > 0 && (
-                <QuickLinks links={cert.links} label={`🔗 ${ui.applyLinks || 'Apply / Sign Up'}`} />
-              )}
-              {cert.studyLinks?.length > 0 && (
-                <QuickLinks links={cert.studyLinks} label={`📚 ${ui.studyLinks || 'Study Resources'}`} />
-              )}
-
-              <ShareBar title={cc.title} ui={ui} />
-
-              <div className="section-label">{ui.freeRoute}</div>
-              <div className="card" style={{ margin: '0 20px 12px' }}>
-                <div style={{ padding: '12px 16px', fontSize: '.95rem', color: 'var(--gn)', lineHeight: 1.65, fontWeight: 600 }}>
-                  ✅ {cert.freeRoute}
-                </div>
-              </div>
-
-              <div className="section-label">{ui.steps}</div>
-              <div className="card" style={{ margin: '0 20px 12px' }}>
-                <div style={{ padding: '6px 16px' }}>
-                  {(Array.isArray(st) ? st : []).map((s, i) => (
-                    <div key={i} className="step-row">
-                      <div className="step-num">{i + 1}</div>
-                      {s.startsWith('⚠') ? <div className="step-warn"><StepText text={s} /></div> : <div className="step-text"><StepText text={s} /></div>}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ height: 20 }} />
-            </article>
-          )
-        })()}
-
-        {/* ── CAREER DETAIL ── */}
-        {tab === 'cpd' && career && (() => {
-          const pc = t18(career.content, lang)
-          const st = t18(career.steps, lang)
-          return (
-            <article className="page-enter">
-              <div className="detail-header">
-                <button className="back-btn" onClick={back}>{ab} {ui.back}</button>
-                <div className="detail-hero">
-                  <span className="detail-icon">{career.icon}</span>
-                  <div>
-                    <h2 className="detail-title">{pc.title}</h2>
-                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 5 }}>
-                      {career.tags.map(t => <span key={t} className="pill pill-light">{t}</span>)}
-                    </div>
-                    <div className="detail-salary">{pc.salary}</div>
-                  </div>
-                </div>
-              </div>
-
-              {career.links?.length > 0 && (
-                <QuickLinks links={career.links} label={`🔗 ${ui.applyLinks || 'Apply'}`} />
-              )}
-
-              <ShareBar title={pc.title} ui={ui} />
-
-              <div className="section-label">{ui.steps}</div>
-              <div className="card" style={{ margin: '0 20px 12px' }}>
-                <div style={{ padding: '6px 16px' }}>
-                  {(Array.isArray(st) ? st : []).map((s, i) => (
-                    <div key={i} className="step-row">
-                      <div className="step-num">{i + 1}</div>
-                      <div className="step-text"><StepText text={s} /></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ height: 20 }} />
-            </article>
-          )
-        })()}
-
-        {/* ── SAVES ── */}
-        {tab === 'saves' && (
-          <div className="page-enter">
-            <div style={{ padding: '16px 20px 8px' }}>
-              <h2 style={{ fontSize: '1.15rem', fontWeight: 800 }}>{ui.savesTitle}</h2>
-              <p style={{ fontSize: '.9rem', color: 'var(--t2)', marginTop: 4, lineHeight: 1.55 }}>{ui.savesSub}</p>
-            </div>
-            {SAVES.map(s => {
-              const sc = t18(s.content, lang)
-              return (
-                <div key={sc.title} className="content-card">
-                  <div className="content-card-header">
-                    <span className="content-card-icon">{s.icon}</span>
-                    <span className="content-card-title">{sc.title}</span>
-                  </div>
-                  <p className="content-card-body">{sc.desc}</p>
-                  {s.url && (
-                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
-                      🔗 <span>{ui.openLink}</span> →
-                    </a>
-                  )}
-                </div>
-              )
-            })}
-            <div style={{ height: 8 }} />
-          </div>
-        )}
-
-        {/* ── MORE ── */}
-        {tab === 'more' && (
-          <div className="page-enter">
-            <div style={{ padding: '16px 20px 8px' }}>
-              <h2 style={{ fontSize: '1.15rem', fontWeight: 800 }}>{ui.gemsTitle}</h2>
-              <p style={{ fontSize: '.9rem', color: 'var(--t2)', marginTop: 4, lineHeight: 1.55 }}>{ui.gemsSub}</p>
-            </div>
-            {GEMS.map(g => {
-              const gc = t18(g.content, lang)
-              return (
-                <div key={gc.title} className="content-card">
-                  <div className="content-card-header">
-                    <span className="content-card-icon">{g.icon}</span>
-                    <span className="content-card-title">{gc.title}</span>
-                  </div>
-                  <p className="content-card-body">{gc.desc}</p>
-                  {g.url && (
-                    <a href={g.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
-                      🔗 <span>{ui.openLink}</span> →
-                    </a>
-                  )}
-                </div>
-              )
-            })}
-
-            <div className="section-label">{ui.theme}</div>
-            <div className="card" style={{ margin: '0 20px 12px' }}>
-              <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontWeight: 700 }}>{dark ? ui.darkMode : ui.lightMode}</span>
-                <button className="btn btn-primary btn-sm" onClick={() => setDark(!dark)}>
-                  {dark ? ui.lightMode : ui.darkMode}
-                </button>
-              </div>
-            </div>
-
-            <div className="section-label">{ui.language}</div>
-            <div className="card" style={{ margin: '0 20px 12px' }}>
-              <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontWeight: 700 }}>{L.flag} {L.native}</span>
-                <button className="btn btn-outline btn-sm" onClick={() => setShowLang(true)}>{ui.change}</button>
-              </div>
-            </div>
-
-            <div className="section-label">🔒 {ui.privacy || 'Privacy & Data'}</div>
-            <div className="card" style={{ margin: '0 20px 12px' }}>
-              <div style={{ padding: '14px 16px' }}>
-                <p style={{ fontWeight: 700, marginBottom: 8, fontSize: '.95rem' }}>
-                  {ui.privacyTitle || 'Your Privacy'}
-                </p>
-                <p style={{ fontSize: '.875rem', color: 'var(--t2)', lineHeight: 1.6, marginBottom: 10 }}>
-                  {ui.privacyBody || 'This app stores only your language, theme, and visa status in your device\'s local storage. No personal data is ever collected, transmitted, or shared. No analytics. No cookies. No servers. Fully GDPR compliant.'}
-                </p>
-                <p style={{ fontSize: '.8rem', fontWeight: 700, marginBottom: 4 }}>{ui.privacyLocal || 'Stored locally on your device only:'}</p>
-                {[
-                  ['nluk_lang', 'Language preference'],
-                  ['nluk_dark', 'Dark/light mode'],
-                  ['nluk_wtab', 'Last work tab viewed'],
-                ].map(([k, v]) => (
-                  <div key={k} style={{ fontSize: '.8rem', color: 'var(--t2)', padding: '2px 0' }}>
-                    <code style={{ background: 'var(--s2)', borderRadius: 4, padding: '1px 5px', marginRight: 6 }}>{k}</code>{v}
-                  </div>
-                ))}
-                <p style={{ fontSize: '.8rem', color: 'var(--gn)', fontWeight: 700, marginTop: 10 }}>
-                  ✅ {ui.privacyNone || 'Nothing ever sent to any server.'}
-                </p>
-                <p style={{ fontSize: '.8rem', color: 'var(--t3)', marginTop: 8, lineHeight: 1.55 }}>
-                  {ui.gdprRights || 'GDPR rights: right to access, rectify, erase. Clear your browser/app data at any time to remove all stored preferences.'}
-                </p>
-                <button
-                  className="btn btn-outline btn-sm"
-                  style={{ marginTop: 12 }}
-                  onClick={() => {
-                    try {
-                      ['nluk_lang','nluk_dark','nluk_wtab'].forEach(k => localStorage.removeItem(k))
-                      window.location.reload()
-                    } catch {}
-                  }}
-                >
-                  🗑 Clear all app data
-                </button>
-              </div>
-            </div>
-
-            <div className="version-badge" aria-label="App version and data verification date">
-              🛡 v2.1.0 · Data verified March 2026
-            </div>
-
-            <div className="footer-disc">
-              <strong>Last verified: March 2026</strong><br />
-              {ui.disclaimer}<br /><br />
-              Built with care for people who need it most.<br />
-              Found outdated info? Email{' '}
-              <a href="mailto:hello@newlifeuk.org" style={{ color: 'var(--ac3)', textDecoration: 'underline' }}>
-                hello@newlifeuk.org
-              </a>
-              <br /><br />
-              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--t2)', fontWeight: 700, fontSize: '.875rem', textDecoration: 'none' }}>
-                <span>⭐</span> {ui.sourceCode || 'View Source on GitHub'}
-              </a>
-            </div>
-            <div style={{ height: 12 }} />
-          </div>
-        )}
-
+      <main className="app-scroll">
+        <Routes>
+          <Route path="/" element={<GuidesPage />} />
+          <Route path="/guide/:id" element={<GuideDetail />} />
+          <Route path="/work" element={<Navigate to="/work/jobs" replace />} />
+          <Route path="/work/:subtab" element={<WorkHub />} />
+          <Route path="/cert/:idx" element={<CertDetail />} />
+          <Route path="/career/:idx" element={<CareerDetail />} />
+          <Route path="/saves" element={<SavesPage />} />
+          <Route path="/more" element={<MorePage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
       {/* TAB BAR */}
-      <TabBar tabs={TABS} activeTab={tab} onSwitch={switchTab} isDetail={isDetail} showLang={showLang} />
+      {!isDetail && !showLang && (
+        <nav className="tab-bar" role="tablist" aria-label="Main navigation">
+          {TABS.map(t => (
+            <button key={t.id} className={`tab-btn ${isTabActive(t.path) ? 'active' : ''}`}
+              onClick={() => switchTab(t.path)} role="tab" aria-selected={isTabActive(t.path)} aria-label={t.label}>
+              {isTabActive(t.path) && <div className="tab-dot" />}
+              <span className="tab-icon">{t.icon}</span>
+              <span>{t.label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
 
       {/* FLOATING SOS — always visible except when modal open or lang overlay shown */}
       {!showLang && !showSOS && (
@@ -580,7 +127,7 @@ export default function App() {
             </div>
             <div className="settings-row">
               <span style={{ fontWeight: 700 }}>{dark ? ui.darkMode : ui.lightMode}</span>
-              <button className="btn btn-primary btn-sm" onClick={() => setDark(!dark)}>{dark ? ui.lightMode : ui.darkMode}</button>
+              <button className="btn btn-primary btn-sm" onClick={() => setDark(d => !d)}>{dark ? ui.lightMode : ui.darkMode}</button>
             </div>
             <h3 className="modal-title" style={{ marginTop: 16, marginBottom: 4 }}>{ui.language}</h3>
             {LANGS.map(l => (
