@@ -10,14 +10,18 @@ This project uses multiple free GitHub integrations to catch bugs early, reduce 
 - **CodeQL** (`codeql-analysis.yml`) — Static security analysis
 - **i18n Check** (`i18n-check.yml`) — Verify all guides have English content
 - **Bundle Size Guard** (`bundle-size.yml`) — Fail if JS exceeds budget
+- **Test Coverage** (`coverage.yml`) — Post vitest coverage report as PR comment
 - **Cloudflare Pages** — PR preview deployments are created automatically by the Cloudflare Pages Git integration (no workflow required)
 
 ### Scheduled Checks (Daily/Weekly)
-- **Link Health** (`link-health.yml`) — Auto-opens issue if any URL is 404
+- **Link Health** (`link-health.yml`) — Auto-opens issue if any URL in `jobs.js`, `guides.js`, or `saves.js` is 404
 - **Security Audit** (`security-audit.yml`) — Full npm audit report (daily + weekly)
 - **OSSF Scorecard** (`scorecard.yml`) — Supply-chain security score
 - **Stale Bot** (`stale.yml`) — Auto-closes inactive issues/PRs
 - **Release Drafter** (`release-drafter.yml`) — Auto-generates changelog
+
+### Community
+- **Welcome Bot** (`welcome.yml`) — Welcomes first-time PR contributors and issue reporters with helpful guidance
 
 ### Dependency Management
 - **Dependabot** (`dependabot.yml`) — Auto-opens PRs for outdated packages

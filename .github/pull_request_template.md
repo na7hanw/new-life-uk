@@ -20,7 +20,7 @@ If you updated guide/cert/career data:
 
 ## Testing
 
-- [ ] `npm test` passes (10/10)
+- [ ] `npm test` passes
 - [ ] `npm run build` passes
 - [ ] Tested in browser (mobile viewport)
 

@@ -25,6 +25,7 @@ jobs:
           URLS=$(grep -ohE 'https://[^"]+' \
             nluk/src/data/jobs.js \
             nluk/src/data/guides.js \
+            nluk/src/data/saves.js \
             2>/dev/null | sort -u)
 
           BROKEN=""
@@ -91,7 +92,7 @@ jobs:
             const body = [
               `## 🔗 Broken Links Detected`,
               ``,
-              `The weekly link health check scanned **${checked} URLs** across \`nluk/src/data/jobs.js\` and \`nluk/src/data/guides.js\` and found the following returning **404 / 410**:`,
+              `The daily link health check scanned **${checked} URLs** across \`nluk/src/data/jobs.js\`, \`nluk/src/data/guides.js\`, and \`nluk/src/data/saves.js\` and found the following returning **404 / 410**:`,
               ``,
               `| Code | URL |`,
               `|------|-----|`,

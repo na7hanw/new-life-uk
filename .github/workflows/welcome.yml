@@ -1,0 +1,87 @@
+name: Welcome New Contributors
+
+on:
+  pull_request_target:
+    types: [opened]
+  issues:
+    types: [opened]
+
+jobs:
+  welcome:
+    name: Welcome message
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Welcome first-time PR contributor
+        if: github.event_name == 'pull_request_target'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Only post for first-time contributors
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              per_page: 5,
+            });
+
+            const authorPrs = prs.filter(pr =>
+              pr.user.login === context.payload.pull_request.user.login
+            );
+
+            // Only welcome if this is their first PR (the one just opened)
+            if (authorPrs.length > 1) return;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: [
+                `👋 Welcome, @${context.payload.pull_request.user.login}! Thanks for your first contribution to **New Life UK**.`,
+                ``,
+                `This app provides life-changing practical guidance to refugees and newcomers in the UK — every improvement matters. Here's a quick checklist to help your PR get merged quickly:`,
+                ``,
+                `- [ ] \`npm test\` passes locally (\`cd nluk && npm test\`)`,
+                `- [ ] \`npm run build\` passes (\`cd nluk && npm run build\`)`,
+                `- [ ] All new URLs use \`https://\` and link to official GOV.UK / NHS / trusted charity sources`,
+                `- [ ] Any new guide has been added to \`GUIDE_PRIORITY\`, \`GUIDE_SOURCE_URL\`, and \`GUIDE_LAST_UPDATED\` in \`guides.js\``,
+                ``,
+                `The CI will run automatically — you'll see green ✅ or red ❌ checks below within a minute.`,
+                ``,
+                `Thanks for helping make the UK more navigable for people who need it most. 🙏`,
+              ].join('\n'),
+            });
+
+      - name: Welcome first-time issue reporter
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              creator: context.payload.issue.user.login,
+              per_page: 5,
+            });
+
+            // Only welcome first-time issue reporters
+            if (issues.length > 1) return;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: [
+                `👋 Thanks for opening your first issue, @${context.payload.issue.user.login}!`,
+                ``,
+                `New Life UK helps refugees and newcomers navigate UK systems — reports like yours directly improve the app for people who rely on it.`,
+                ``,
+                `We'll take a look as soon as possible. If you've found a broken link or out-of-date information, feel free to submit a pull request too — contributions are very welcome!`,
+              ].join('\n'),
+            });
