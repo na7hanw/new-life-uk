@@ -29,6 +29,15 @@ jobs:
         working-directory: nluk
         run: npm run lint
 
+      - name: Type check (TypeScript — active after PR #28 merges)
+        working-directory: nluk
+        run: |
+          if [ -f tsconfig.json ]; then
+            npx tsc --noEmit
+          else
+            echo "No tsconfig.json found — skipping TypeScript type check"
+          fi
+
       - name: Run tests (content integrity + schema validation)
         working-directory: nluk
         run: npm test
