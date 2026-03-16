@@ -63,12 +63,12 @@ function GemCard({ gem, lang, ui }: { gem: GemItem; lang: string; ui: UiStrings 
 
 export default function MorePage() {
   const { lang, ui, L, dark, setDark, setShowLang } = useApp()
-  const [offline, setOffline] = useState(false)
+  const [offlineReady, setOfflineReady] = useState(false)
   const [consent, setConsent] = useState(() => ls(CONSENT_KEY, ''))
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then(() => setOffline(true)).catch(() => {})
+      navigator.serviceWorker.ready.then(() => setOfflineReady(true)).catch(() => {})
     }
   }, [])
 
@@ -206,7 +206,7 @@ export default function MorePage() {
 
       <div className="version-badge" aria-label="App version and data verification date">
         🛡 v2.3.0 · Data verified March 2026
-        {offline && <span className="offline-badge" style={{ marginLeft: 8 }}>📴 Available Offline</span>}
+        {offlineReady && <span className="offline-badge" style={{ marginLeft: 8 }}>📴 Available Offline</span>}
       </div>
 
       <div className="footer-disc">
