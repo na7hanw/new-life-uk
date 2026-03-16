@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import styles from './TTSButton.module.css'
 
 // Maps app language codes to BCP-47 voice tags preferred by Web Speech API
 const LANG_VOICE = {
@@ -63,7 +64,7 @@ export default function TTSButton({ lang, title, summary, steps }) {
 
   return (
     <button
-      className={`tts-btn ${speaking ? 'tts-speaking' : ''}`}
+      className={`${styles.ttsBtn} ${speaking ? styles.ttsSpeaking : ''}`}
       onClick={speaking ? stop : speak}
       aria-label={speaking ? 'Stop reading aloud' : 'Listen to this guide'}
     >

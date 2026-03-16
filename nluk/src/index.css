@@ -103,26 +103,7 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   border: 0;
 }
 
-/* TTS "Listen" button */
-.tts-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0 20px 12px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1.5px solid var(--ac3);
-  background: transparent;
-  color: var(--ac3);
-  font-size: .875rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background .15s, color .15s;
-}
-.tts-btn:hover { background: var(--ac3); color: #fff; }
-.tts-btn.tts-speaking { background: var(--rd); border-color: var(--rd); color: #fff; }
-
-/* Skeleton pulse loader */
+/* ─── Skeleton pulse loader ─── */
 @keyframes skeleton-pulse {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
@@ -813,99 +794,6 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 }
 .dark .sub-tab.active { color: var(--ac); background: rgba(61,214,140,.09); }
 
-/* ─── Job Cards ─── */
-.job-card {
-  background: var(--bg2);
-  border: 1px solid var(--bd);
-  border-radius: var(--radius);
-  margin: 0 20px 12px;
-  padding: 0;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  transition: border-color .2s;
-}
-.job-card--open { border-color: var(--ac); }
-.job-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  width: 100%;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  padding: 16px;
-  color: inherit;
-  font: inherit;
-}
-.job-header:focus-visible { outline: 2px solid var(--ac); outline-offset: -2px; }
-.job-icon { font-size: 1.5rem; flex-shrink: 0; }
-.job-info { flex: 1; }
-.job-role-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.job-role { font-size: 1rem; font-weight: 800; color: var(--tx); }
-.job-chevron { font-size: .7rem; color: var(--t3); flex-shrink: 0; align-self: center; transition: transform .2s; }
-.job-card--open .job-chevron { transform: rotate(180deg); }
-.job-pay { font-size: .9rem; font-weight: 800; color: var(--gn); margin-top: 2px; }
-.job-tags { display: flex; gap: 5px; flex-wrap: wrap; padding: 0 16px 12px; }
-.job-tag {
-  font-size: .75rem;
-  background: var(--bg3);
-  border-radius: 20px;
-  padding: 3px 10px;
-  color: var(--t3);
-  font-weight: 600;
-}
-.job-body {
-  border-top: 1px solid var(--bd);
-  padding: 16px;
-}
-.job-desc { font-size: .875rem; color: var(--t2); line-height: 1.55; margin: 0 0 14px; }
-.job-section { margin-bottom: 14px; }
-.job-section:last-child { margin-bottom: 0; }
-.job-section-label {
-  font-size: .7rem;
-  font-weight: 800;
-  color: var(--t3);
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  margin-bottom: 8px;
-}
-.job-docs-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.job-doc-chip {
-  font-size: .75rem;
-  background: var(--bg3);
-  color: var(--t2);
-  border-radius: 8px;
-  padding: 4px 10px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-.job-apply-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-.job-apply-chip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: var(--ac2);
-  color: var(--ac3);
-  border: 1.5px solid rgba(10,95,62,.1);
-  border-radius: 12px;
-  padding: 9px 8px;
-  font-weight: 700;
-  font-size: .78rem;
-  line-height: 1.3;
-  min-height: 44px;
-  transition: all .15s;
-  text-decoration: none;
-}
-.job-apply-chip:hover, .job-apply-chip:active { background: var(--ac); color: #fff; border-color: var(--ac); }
-.dark .job-apply-chip { color: var(--ac); border-color: rgba(61,214,140,.15); }
-.dark .job-apply-chip:hover { color: #032318; }
-
 /* ─── Step Links ─── */
 .step-link {
   color: var(--ac3);
@@ -986,34 +874,6 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 .helpline-row:last-child { border-bottom: none; }
 .helpline-name { font-size: .9rem; font-weight: 700; color: var(--tx); }
 .helpline-hours { font-size: .78rem; color: var(--t3); margin-top: 2px; }
-
-/* ─── Share Bar ─── */
-.share-bar {
-  display: flex;
-  gap: 8px;
-  padding: 10px 20px;
-  flex-wrap: wrap;
-}
-.share-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 24px;
-  font-size: .825rem;
-  font-weight: 700;
-  border: 1px solid var(--bd);
-  background: var(--bg2);
-  color: var(--t2);
-  transition: all .1s;
-  box-shadow: var(--shadow);
-}
-.share-btn:active { transform: scale(.95); }
-.share-whatsapp { color: #25D366; border-color: #25D366; }
-.share-telegram  { color: #0088CC; border-color: #0088CC; }
-.share-facebook  { color: #1877F2; border-color: #1877F2; }
-.share-copy      { color: var(--ac3); border-color: var(--ac); }
-.dark .share-copy { color: var(--ac); }
 
 /* ─── Modal ─── */
 .modal-backdrop {
@@ -1102,35 +962,6 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 }
 .settings-row:last-child { border-bottom: none; }
 
-/* ─── Floating SOS — the most important element in the app ─── */
-.floating-sos {
-  position: fixed;
-  bottom: calc(70px + env(safe-area-inset-bottom));
-  right: 20px;
-  z-index: 150;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: var(--rd);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: .75rem;
-  font-weight: 900;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  box-shadow: 0 4px 22px rgba(196,28,28,.45);
-  transition: transform .12s;
-  animation: sosPulse 2.8s ease-in-out infinite;
-}
-.floating-sos:active { transform: scale(.88); }
-
-@keyframes sosPulse {
-  0%, 100% { box-shadow: 0 4px 22px rgba(196,28,28,.45); }
-  50%       { box-shadow: 0 4px 32px rgba(196,28,28,.65); }
-}
-
 /* ─── Prompt Box ─── */
 .prompt-box {
   margin: 12px 20px 0;
@@ -1210,8 +1041,6 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   .modal-content { max-width: 620px; }
   .lang-overlay { max-width: 620px; }
   .hero-title { font-size: 1.7rem; }
-  .job-apply-grid { grid-template-columns: repeat(3, 1fr); }
-  .share-bar { gap: 10px; }
 }
 @media (min-width: 900px) {
   .app-root { max-width: 720px; }

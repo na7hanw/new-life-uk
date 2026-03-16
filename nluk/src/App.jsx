@@ -6,6 +6,7 @@ import { SOS_NUMBERS } from './data/emergency.js'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import Logo from './components/Logo.jsx'
 import SOSModal from './components/SOSModal.jsx'
+import FloatingSOS from './components/FloatingSOS.jsx'
 
 const GuidesPage   = lazy(() => import('./pages/GuidesPage.jsx'))
 const GuideDetail  = lazy(() => import('./pages/GuideDetail.jsx'))
@@ -127,12 +128,7 @@ export default function App() {
 
       {/* FLOATING SOS — always visible except when modal open or lang overlay shown */}
       {!showLang && !showSOS && (
-        <button
-          className="floating-sos"
-          onClick={() => { navigator?.vibrate?.(15); setSOS(true) }}
-          aria-label={ui.sosLabel || 'Open emergency contacts'}
-          aria-haspopup="dialog"
-        >{ui.sos}</button>
+        <FloatingSOS ui={ui} setSOS={setSOS} />
       )}
 
       {/* SOS MODAL — focus-trapped, no backdrop dismiss (safety-critical) */}

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import styles from './ShareBar.module.css'
 
 function ShareBar({ title, ui }) {
   const [copied, setCopied] = useState(false)
@@ -17,11 +18,11 @@ function ShareBar({ title, ui }) {
     }
   }
   return (
-    <div className="share-bar">
-      <button className="share-btn share-whatsapp" onClick={() => share('whatsapp')} aria-label="Share on WhatsApp">💬 {ui.shareWhatsapp || 'WhatsApp'}</button>
-      <button className="share-btn share-telegram" onClick={() => share('telegram')} aria-label="Share on Telegram">✈️ {ui.shareTelegram || 'Telegram'}</button>
-      <button className="share-btn share-facebook" onClick={() => share('facebook')} aria-label="Share on Facebook">📘 {ui.shareFacebook || 'Facebook'}</button>
-      <button className="share-btn share-copy" onClick={() => share('copy')} aria-label="Copy link">🔗 {copied ? (ui.copied || 'Copied!') : (ui.shareCopy || 'Copy link')}</button>
+    <div className={styles.shareBar}>
+      <button className={`${styles.shareBtn} ${styles.shareWhatsapp}`} onClick={() => share('whatsapp')} aria-label="Share on WhatsApp">💬 {ui.shareWhatsapp || 'WhatsApp'}</button>
+      <button className={`${styles.shareBtn} ${styles.shareTelegram}`} onClick={() => share('telegram')} aria-label="Share on Telegram">✈️ {ui.shareTelegram || 'Telegram'}</button>
+      <button className={`${styles.shareBtn} ${styles.shareFacebook}`} onClick={() => share('facebook')} aria-label="Share on Facebook">📘 {ui.shareFacebook || 'Facebook'}</button>
+      <button className={`${styles.shareBtn} ${styles.shareCopy}`} onClick={() => share('copy')} aria-label="Copy link">🔗 {copied ? (ui.copied || 'Copied!') : (ui.shareCopy || 'Copy link')}</button>
     </div>
   )
 }
