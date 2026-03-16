@@ -40,15 +40,15 @@ export default function WorkHub() {
   const visibleJobs = jobFilter === 'all'
     ? JOBS
     : JOBS.filter(j => {
-        const f = JOB_FILTERS.find(f => f.id === jobFilter)
-        return f?.tag && j.tags?.includes(f.tag)
+        const selectedFilter = JOB_FILTERS.find(f => f.id === jobFilter)
+        return selectedFilter?.tag && j.tags?.includes(selectedFilter.tag)
       })
 
   return (
     <div className="page-enter">
       <div className="sub-tabs" role="tablist">
         {[
-          { id: 'jobs', label: `🛵 ${ui.jobsTab}` },
+          { id: 'jobs', label: `💼 ${ui.jobsTab}` },
           { id: 'certs', label: `📋 ${ui.certsTab}` },
           { id: 'career', label: `🚀 ${ui.careerTab}` },
         ].map(t => (
