@@ -7,7 +7,7 @@
  */
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'
-import SOSModal from '../components/SOSModal.jsx'
+import SOSModal from '../components/SOSModal.tsx'
 
 const UI = {
   sos: 'Emergency Contacts',

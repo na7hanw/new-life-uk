@@ -1,13 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useEffect } from 'react'
-import { useApp } from '../context/AppContext.jsx'
-import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL } from '../data/guides.js'
-import { t18 } from '../lib/utils.js'
-import QuickLinks from '../components/QuickLinks.jsx'
-import ShareBar from '../components/ShareBar.jsx'
-import StepText from '../components/StepText.jsx'
-import TTSButton from '../components/TTSButton.jsx'
+import { useApp } from '../context/AppContext.tsx'
+import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL } from '../data/guides.ts'
+import { t18 } from '../lib/utils.ts'
+import QuickLinks from '../components/QuickLinks.tsx'
+import ShareBar from '../components/ShareBar.tsx'
+import StepText from '../components/StepText.tsx'
+import TTSButton from '../components/TTSButton.tsx'
 
 export default function GuideDetail() {
   const { id } = useParams()

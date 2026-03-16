@@ -1,6 +1,6 @@
-import { useApp } from '../context/AppContext.jsx'
-import { SAVES } from '../data/saves.js'
-import { t18 } from '../lib/utils.js'
+import { useApp } from '../context/AppContext.tsx'
+import { SAVES } from '../data/saves.ts'
+import { t18 } from '../lib/utils.ts'
 
 export default function SavesPage() {
   const { lang, ui } = useApp()

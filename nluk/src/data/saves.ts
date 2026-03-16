@@ -1,5 +1,7 @@
+import type { SaveItem } from '../types'
+
 // ─── SAVES (Free Stuff) ─────────────────────────────────────────
-export const SAVES = [
+export const SAVES: SaveItem[] = [
   { icon: "📱", content: { en: { title: "Free SIM Card — 40GB/month", desc: "National Databank: free Vodafone SIM with 40GB data + unlimited calls/texts per month for 6 months. Or O2: 25GB. Available to anyone on low income. No ID checks. Ask at your local library, O2 store, or charity." } }, url: "https://www.goodthingsfoundation.org/our-services/national-databank" },
   { icon: "💻", content: { en: { title: "Free Laptop or Tablet", desc: "Good Things Foundation's National Device Bank distributes free devices through libraries and charities. Ask your Refugee Council caseworker or local library." } }, url: "https://www.goodthingsfoundation.org/our-services/national-device-bank" },
   { icon: "💊", content: { en: { title: "Free Prescriptions", desc: "If you receive UC, Income Support, ESA, or Pension Credit — all NHS prescriptions are FREE. Pregnant women and new mothers also qualify. Get an HC2 certificate if on low income." } }, url: "https://www.nhs.uk/nhs-services/help-with-health-costs/" },
@@ -19,7 +21,7 @@ export const SAVES = [
 ];
 
 // ─── GEMS ────────────────────────────────────────────────────────
-export const GEMS = [
+export const GEMS: SaveItem[] = [
   { icon: "🎓", content: { en: { title: "Your Foreign Degree IS Valid", desc: "UK ENIC: £49 Statement of Comparability. Refugees with missing docs: refugee@ecctis.com." } }, url: "https://www.enic.org.uk/Qualifications/SOC/Default.aspx" },
   { icon: "💎", content: { en: { title: "Breaking Barriers — Free Career Help", desc: "UK's leading refugee employment charity. Free CV, interview coaching, employer introductions. London, Birmingham, Manchester, Glasgow." } }, url: "https://breaking-barriers.co.uk/" },
   { icon: "🚀", content: { en: { title: "Skills Bootcamps — 16 Weeks Free", desc: "Government training in shortage sectors. Guaranteed employer interview. 19+ with right to work." } }, url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },

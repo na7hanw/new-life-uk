@@ -1,4 +1,6 @@
-export const CATEGORIES = {
+import type { Guide } from '../types'
+
+export const CATEGORIES: Record<string, { emoji: string; color: string }> = {
   "Digital Status": { emoji: "📱", color: "#0D9488" },
   "Money": { emoji: "💷", color: "#16A34A" },
   "Healthcare": { emoji: "🏥", color: "#0891B2" },
@@ -11,7 +13,7 @@ export const CATEGORIES = {
   "Community": { emoji: "🤝", color: "#0D9488" },
 };
 
-export const GUIDES = [
+export const GUIDES: Guide[] = [
   { id: "evisa", cat: "Digital Status", icon: "📱", content: { en: { title: "Your eVisa & UKVI Account", summary: "BRPs expired Dec 2024. Your immigration status is now 100% digital.", steps: ["All BRPs expired 31 December 2024. Your status hasn't changed — only how you prove it.", "You can still use an expired BRP to access the online share code service for up to 18 months after its expiry date (until June 2026 for most people).", "Since June 2025, expired BRPs are NOT accepted for travel by airlines.", "Check your email for noreply@notifications.service.gov.uk — your UKVI account may already exist.", "No account? Visit gov.uk/evisa — free, takes 10 minutes.", "Link your passport to your UKVI account BEFORE travelling.", "From 25 Feb 2026, all new visa applicants receive eVisas only — no more vignette stickers.", "Screenshot your eVisa status page and save offline — essential without internet.", "⚠ ~300,000 UK residents still haven't set up their eVisa. Do it now."] } }, cost: "Free", time: "10 min", bring: ["Email address", "Passport or BRP number"], links: [{ name: "Set up eVisa (GOV.UK)", url: "https://www.gov.uk/evisa" }, { name: "Update UKVI details", url: "https://www.gov.uk/evisa/update-your-ukvi-account-details" }, { name: "eVisa help videos", url: "https://www.gov.uk/government/publications/updates-on-the-move-to-evisas/updates-on-the-move-to-evisas" }] },
   { id: "sharecode", cat: "Digital Status", icon: "🔗", content: { en: { title: "Share Codes", summary: "Prove your right to work, rent, or access services.", steps: ["Log in to UKVI → 'Prove your status'. Choose: Right to Work, Right to Rent, or General.", "Right to Work codes start with 'W'. Right to Rent codes start with 'R'. Don't mix them up.", "Codes valid 90 days. Generate a new one each time you need it.", "Give the code + your date of birth to your employer or landlord. They verify online.", "EU Settled Status: share code is your ONLY proof. No physical card exists.", "⚠ Never pay anyone for a share code. The GOV.UK service is always free."] } }, cost: "Free", time: "2 min", bring: ["UKVI account login"], links: [{ name: "Prove right to work (GOV.UK)", url: "https://www.gov.uk/prove-right-to-work" }, { name: "Prove right to rent (GOV.UK)", url: "https://www.gov.uk/prove-right-to-rent" }, { name: "Check someone's status (GOV.UK)", url: "https://www.gov.uk/view-right-to-work" }] },
   { id: "nrpf", cat: "Digital Status", icon: "⚠️", content: { en: { title: "No Recourse to Public Funds (NRPF)", summary: "NRPF restricts most benefits. Know what you CAN still access.", steps: ["NRPF means you cannot claim: Universal Credit, Housing Benefit, Child Tax Credit.", "You CAN still access: full NHS care, state schools, Statutory Sick Pay, child protection.", "Destitute with children? Your council MUST help under Section 17, Children Act 1989.", "Changed circumstances (illness, domestic abuse)? Apply to have NRPF removed.", "NRPF Network provides free specialist advice."] } }, cost: "Free", time: "Read now", bring: [], links: [{ name: "NRPF Network", url: "https://www.nrpfnetwork.org.uk" }, { name: "Find immigration adviser (GOV.UK)", url: "https://www.gov.uk/find-an-immigration-adviser" }] },
@@ -41,7 +43,7 @@ export const GUIDES = [
 ];
 
 // ─── Precomputed guide map ──────────────────────────────────────
-export const GUIDE_MAP = Object.fromEntries(GUIDES.map(g => [g.id, g]));
+export const GUIDE_MAP: Record<string, Guide> = Object.fromEntries(GUIDES.map(g => [g.id, g]));
 
 // ─── Priority order for Guides tab (refugee-first) ─────────────
 export const GUIDE_PRIORITY = [

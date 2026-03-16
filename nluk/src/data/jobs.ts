@@ -1,6 +1,8 @@
+import type { Job, Cert, Career } from '../types'
+
 // ─── JOBS ────────────────────────────────────────────────────────
 // Each job has applyLinks[] with per-employer apply links + docs[] required
-export const JOBS = [
+export const JOBS: Job[] = [
   {
     icon: "🛵",
     content: { en: { role: "Delivery Rider / Driver", desc: "App-based food and parcel delivery. You choose your own hours. Start earning within days of signing up. Bike, scooter, or car accepted. ⚠ You must have full right to work in the UK (check your eVisa/share code). Asylum seekers usually cannot work until refugee status is granted. Gig platforms enforce strict checks — no account sharing allowed." } },
@@ -501,8 +503,8 @@ const CERT_IDS = [
   'dbs-check', 'food-hygiene', 'cscs-card', 'sia-licence', 'first-aid',
   'forklift', 'hgv-licence', 'care-cert', 'personal-licence', 'phv-licence', 'driving-theory',
 ]
-CERT_IDS.forEach((id, i) => { CERTS[i].id = id })
-export const CERT_MAP = Object.fromEntries(CERTS.map(c => [c.id, c]))
+CERT_IDS.forEach((id, i) => { (CERTS[i] as Record<string, unknown>).id = id })
+export const CERT_MAP: Record<string, Cert> = Object.fromEntries((CERTS as unknown as Cert[]).map(c => [c.id, c]))
 
 // ─── CAREER PATHS ───────────────────────────────────────────────
 export const CAREERS = [
@@ -522,5 +524,5 @@ const CAREER_IDS = [
   'civil-engineering', 'tech-digital', 'finance', 'project-management',
   'healthcare', 'green-energy', 'translation', 'property-valuation', 'social-work',
 ]
-CAREER_IDS.forEach((id, i) => { CAREERS[i].id = id })
-export const CAREER_MAP = Object.fromEntries(CAREERS.map(c => [c.id, c]))
+CAREER_IDS.forEach((id, i) => { (CAREERS[i] as Record<string, unknown>).id = id })
+export const CAREER_MAP: Record<string, Career> = Object.fromEntries((CAREERS as unknown as Career[]).map(c => [c.id, c]))

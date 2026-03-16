@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
-import { useApp } from '../context/AppContext.jsx'
-import { JOBS, CERTS, CAREERS } from '../data/jobs.js'
-import { t18, lsSet } from '../lib/utils.js'
-import JobCard from '../components/JobCard.jsx'
+import { useApp } from '../context/AppContext.tsx'
+import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
+import { t18, lsSet } from '../lib/utils.ts'
+import JobCard from '../components/JobCard.tsx'
 
 export default function WorkHub() {
   const { subtab = 'jobs' } = useParams()

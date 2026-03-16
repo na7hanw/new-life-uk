@@ -4,9 +4,9 @@
  * Critical: this app gives life-changing advice; a broken link matters.
  */
 import { describe, it, expect } from 'vitest'
-import { GUIDES, GUIDE_PRIORITY } from '../data/guides.js'
-import { JOBS, CERTS, CAREERS } from '../data/jobs.js'
-import { SOS_NUMBERS } from '../data/emergency.js'
+import { GUIDES, GUIDE_PRIORITY } from '../data/guides.ts'
+import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
+import { SOS_NUMBERS } from '../data/emergency.ts'
 
 // ─── Guides ───────────────────────────────────────────────────────
 

@@ -1,9 +1,6 @@
-// ─── i18n-Ready Data Architecture ─────────────────────────────────
-// Every content object uses: { en: {...}, ar: {...}, ... }
-// Components resolve: content[lang] || content.en
-// To add a translation: add a new language key to any content object
+import type { Lang, UiStrings } from '../types'
 
-export const LANGS = [
+export const LANGS: Lang[] = [
   { code: "en", native: "English", flag: "🇬🇧", rtl: false },
   { code: "ar", native: "العربية", flag: "🇸🇦", rtl: true, ar: true },
   { code: "fa", native: "فارسی", flag: "🇮🇷", rtl: true, ar: true },
@@ -59,9 +56,9 @@ const UI_OVERRIDES = {
 };
 
 // Build merged UI object
-export const UI = {};
+export const UI: Record<string, UiStrings> = {};
 LANGS.forEach(({ code }) => {
-  const ov = UI_OVERRIDES[code] || {};
+  const ov = (UI_OVERRIDES as Record<string, Partial<UiStrings>>)[code] || {};
   UI[code] = { ...BASE_UI, ...ov, status: { ...BASE_UI.status, ...(ov.status || {}) } };
 });
 

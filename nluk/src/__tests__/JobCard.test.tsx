@@ -7,7 +7,7 @@
  */
 import { describe, it, expect, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'
-import JobCard from '../components/JobCard.jsx'
+import JobCard from '../components/JobCard.tsx'
 
 const JOB = {
   icon: '🏥',
