@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest'
 import { GUIDES, GUIDE_PRIORITY } from '../data/guides.js'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.js'
 import { SOS_NUMBERS } from '../data/emergency.js'
+import { APPS } from '../data/saves.js'
 
 // ─── Guides ───────────────────────────────────────────────────────
 
@@ -88,6 +89,35 @@ describe('SOS numbers', () => {
     for (const s of SOS_NUMBERS) {
       expect(s.name, 'SOS entry missing name').toBeTruthy()
       expect(s.phone, `${s.name} missing phone`).toBeTruthy()
+    }
+  })
+})
+
+// ─── Apps ─────────────────────────────────────────────────────────
+
+describe('apps — data integrity', () => {
+  it('APPS is non-empty', () => {
+    expect(APPS.length).toBeGreaterThan(0)
+  })
+
+  it('every app has an English title and description', () => {
+    for (const a of APPS) {
+      expect(a.content?.en?.title, 'app missing English title').toBeTruthy()
+      expect(a.content?.en?.desc, `${a.content?.en?.title} missing English desc`).toBeTruthy()
+    }
+  })
+
+  it('every app has an icon', () => {
+    for (const a of APPS) {
+      expect(a.icon, `${a.content?.en?.title} missing icon`).toBeTruthy()
+    }
+  })
+
+  it('all app URLs use https://', () => {
+    for (const a of APPS) {
+      if (a.url) {
+        expect(a.url, `${a.content?.en?.title} — URL not https`).toMatch(/^https:\/\//)
+      }
     }
   })
 })
