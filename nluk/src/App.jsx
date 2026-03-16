@@ -4,6 +4,7 @@ import { useApp } from './context/AppContext.jsx'
 import { LANGS } from './data/ui-strings.js'
 import { SOS_NUMBERS } from './data/emergency.js'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import ConsentBanner from './components/ConsentBanner.jsx'
 import Logo from './components/Logo.jsx'
 import SOSModal from './components/SOSModal.jsx'
 import GuidesPage from './pages/GuidesPage.jsx'
@@ -134,6 +135,9 @@ export default function App() {
 
       {/* SOS MODAL — focus-trapped, no backdrop dismiss (safety-critical) */}
       <SOSModal showSOS={showSOS} setSOS={setSOS} ui={ui} SOS_NUMBERS={SOS_NUMBERS} />
+
+      {/* CONSENT BANNER — shown once on first visit when Sentry is configured */}
+      <ConsentBanner ui={ui} />
 
       {/* SETTINGS MODAL */}
       {showSettings && (
