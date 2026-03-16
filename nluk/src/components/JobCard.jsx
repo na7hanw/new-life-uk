@@ -1,46 +1,47 @@
 import { useState } from 'react'
+import styles from './JobCard.module.css'
 
 function JobCard({ j, lang, ui }) {
   const [open, setOpen] = useState(false)
   const jc = (j.content?.[lang] || j.content?.en || {})
   return (
-    <div className={`job-card ${open ? 'job-card--open' : ''}`}>
-      <button className="job-header" onClick={() => setOpen(o => !o)} aria-expanded={open}>
-        <span className="job-icon">{j.icon}</span>
-        <div className="job-info">
-          <div className="job-role-row">
-            <span className="job-role">{jc.role}</span>
+    <div className={`${styles.jobCard} ${open ? styles.jobCardOpen : ''}`}>
+      <button className={styles.jobHeader} onClick={() => setOpen(o => !o)} aria-expanded={open}>
+        <span className={styles.jobIcon}>{j.icon}</span>
+        <div className={styles.jobInfo}>
+          <div className={styles.jobRoleRow}>
+            <span className={styles.jobRole}>{jc.role}</span>
             {j.visa && <span className="pill pill-blue">Sponsorship</span>}
           </div>
-          <div className="job-pay">{j.pay}</div>
+          <div className={styles.jobPay}>{j.pay}</div>
         </div>
-        <span className="job-chevron">{open ? '▲' : '▼'}</span>
+        <span className={styles.jobChevron}>{open ? '▲' : '▼'}</span>
       </button>
 
       {j.tags && (
-        <div className="job-tags">
-          {j.tags.map(t => <span key={t} className="job-tag">{t}</span>)}
+        <div className={styles.jobTags}>
+          {j.tags.map(t => <span key={t} className={styles.jobTag}>{t}</span>)}
         </div>
       )}
 
       {open && (
-        <div className="job-body">
-          <p className="job-desc">{jc.desc}</p>
+        <div className={styles.jobBody}>
+          <p className={styles.jobDesc}>{jc.desc}</p>
 
           {j.docs?.length > 0 && (
-            <div className="job-section">
-              <div className="job-section-label">📋 {ui.docsNeeded || "What you'll need"}</div>
-              <div className="job-docs-row">
-                {j.docs.map(d => <span key={d} className="job-doc-chip">{d}</span>)}
+            <div className={styles.jobSection}>
+              <div className={styles.jobSectionLabel}>📋 {ui.docsNeeded || "What you'll need"}</div>
+              <div className={styles.jobDocsRow}>
+                {j.docs.map(d => <span key={d} className={styles.jobDocChip}>{d}</span>)}
               </div>
             </div>
           )}
 
-          <div className="job-section">
-            <div className="job-section-label">🔗 {ui.jobsApplyTo || "Where to apply"}</div>
-            <div className="job-apply-grid">
+          <div className={styles.jobSection}>
+            <div className={styles.jobSectionLabel}>🔗 {ui.jobsApplyTo || "Where to apply"}</div>
+            <div className={styles.jobApplyGrid}>
               {j.applyLinks?.map(lk => (
-                <a key={lk.url} href={lk.url} target="_blank" rel="noopener noreferrer" className="job-apply-chip">
+                <a key={lk.url} href={lk.url} target="_blank" rel="noopener noreferrer" className={styles.jobApplyChip}>
                   {lk.name}
                 </a>
               ))}
