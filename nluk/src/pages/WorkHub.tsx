@@ -56,7 +56,7 @@ export default function WorkHub() {
             return (
               <button key={c.id} className="list-row"
                 ref={el => { certBtnRefs.current[c.id] = el }}
-                onClick={() => { sessionStorage.setItem('nluk_last_cert', c.id); navigate(`/cert/${c.id}`) }}
+                onClick={() => { sessionStorage.setItem('nluk_last_cert', c.id); navigate(`/cert/${c.id}`) }} // lgtm[js/clear-text-storage-of-sensitive-data] -- c.id is a public slug, not a credential
                 aria-label={cc.title} style={{ alignItems: 'flex-start' }}>
                 <span className="list-row-icon">{c.icon}</span>
                 <div className="list-row-content">

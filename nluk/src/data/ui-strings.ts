@@ -39,6 +39,31 @@ const BASE_UI = {
   privacyLocal: "Stored locally on your device only:", privacyNone: "Nothing ever sent to any server.",
   gdprRights: "GDPR rights: right to access, rectify, erase. Clear your browser/app data at any time to remove all stored preferences.",
   disclaimer: "This is not legal advice and is not affiliated with the UK Government. For official information, visit GOV.UK or consult an OISC-registered immigration adviser.",
+  // PR #11 — a11y
+  ttsListen: "🔊 Listen", ttsStop: "⏹ Stop",
+  skipToContent: "Skip to content", loading: "Loading…",
+  // PR #14 — auto-translate + PWA
+  autoTranslated: "🌐 Auto-translated", translating: "Translating…",
+  installApp: "📲 Install App", installDone: "Installed!",
+  langSuggest: "We detected your browser language:", langSuggestUse: "Use this language", langSuggestDismiss: "Keep English",
+  // PR #23 — privacy / GDPR
+  privacyKeyLang: "Language preference", privacyKeyTheme: "Dark / light mode",
+  privacyKeyTab: "Last work tab viewed", privacyKeyConsent: "Your crash-report consent choice",
+  privacyCrashTitle: "🐛 Anonymous crash reports",
+  privacyCrashBody: "With your permission, the app sends anonymous error reports to Sentry when it crashes. No personal information is included. No session recordings.",
+  privacyCrashOn: "✅ Crash reports: on", privacyCrashOff: "❌ Crash reports: off",
+  privacyCrashEnable: "Turn on", privacyCrashDisable: "Turn off",
+  privacyCrashSentry: "Sentry is an independent service. See",
+  gdprRightsTitle: "⚖️ Your UK GDPR rights",
+  gdprRightsBody: "Under UK GDPR you have the right to access, correct, and erase your data. Use the button below to delete all locally stored data at any time. To exercise rights over crash-report data held by Sentry, contact us at hello@newlifeuk.org. You also have the right to complain to the ICO at ico.org.uk.",
+  gdprIco: "ICO — make a complaint →",
+  privacyControllerTitle: "🏢 Data controller",
+  privacyControllerBody: "New Life UK · hello@newlifeuk.org · Open-source, non-commercial project.",
+  clearData: "Clear all app data",
+  consentTitle: "A note on privacy",
+  consentBody: "To help us fix bugs faster, this app can send anonymous crash reports to Sentry. No personal information is included. You can change this at any time in More → Privacy.",
+  consentAccept: "✓ OK, that's fine",
+  consentDecline: "No thanks",
 };
 
 const UI_OVERRIDES = {

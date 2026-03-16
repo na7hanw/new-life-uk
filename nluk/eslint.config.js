@@ -18,6 +18,17 @@ const sharedGlobals = {
   clearTimeout: 'readonly',
   setInterval: 'readonly',
   clearInterval: 'readonly',
+  // PR #14 — auto-translate uses fetch and AbortController
+  fetch: 'readonly',
+  AbortController: 'readonly',
+  Promise: 'readonly',
+  // DOM types used in TypeScript generics and interface declarations
+  Event: 'readonly',
+  HTMLButtonElement: 'readonly',
+  HTMLInputElement: 'readonly',
+  HTMLElement: 'readonly',
+  HTMLDivElement: 'readonly',
+  URL: 'readonly',
 }
 
 export default [
@@ -32,7 +43,7 @@ export default [
     },
     settings: {
       // Pin explicitly — 'detect' crashes ESLint v10 flat config
-      react: { version: '18.3' },
+      react: { version: '19.2' },
     },
     languageOptions: {
       ecmaVersion: 2022,
@@ -69,7 +80,7 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     settings: {
-      react: { version: '18.3' },
+      react: { version: '19.2' },
     },
     languageOptions: {
       parser: tsParser,

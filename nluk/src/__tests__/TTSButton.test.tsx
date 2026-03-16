@@ -40,7 +40,7 @@ describe('TTSButton — supported environment', () => {
       this.onend = null
       this.onerror = null
     })
-    global.SpeechSynthesisUtterance = MockUtterance
+    ;(globalThis as typeof globalThis & { SpeechSynthesisUtterance: unknown }).SpeechSynthesisUtterance = MockUtterance
 
     mockSpeech = {
       cancel: vi.fn(),
@@ -59,7 +59,7 @@ describe('TTSButton — supported environment', () => {
   afterEach(() => {
     cleanup()
     vi.restoreAllMocks()
-    delete global.SpeechSynthesisUtterance
+    delete (globalThis as typeof globalThis & { SpeechSynthesisUtterance?: unknown }).SpeechSynthesisUtterance
     try { delete window.speechSynthesis } catch (_) {
       Object.defineProperty(window, 'speechSynthesis', { value: undefined, configurable: true })
     }
@@ -70,7 +70,7 @@ describe('TTSButton — supported environment', () => {
     const btn = screen.getByRole('button')
     expect(btn).not.toBeNull()
     expect(btn.textContent).toContain('Listen')
-    expect(btn.getAttribute('aria-label')).toBe('Listen to this guide')
+    expect(btn.getAttribute('aria-label')).toBe('🔊 Listen')
   })
 
   it('calls speechSynthesis.speak when the Listen button is clicked', () => {
@@ -109,7 +109,7 @@ describe('TTSButton — supported environment', () => {
     await act(async () => { utter.onstart?.() })
     const btn = screen.getByRole('button')
     expect(btn.textContent).toContain('Stop')
-    expect(btn.getAttribute('aria-label')).toBe('Stop reading aloud')
+    expect(btn.getAttribute('aria-label')).toBe('⏹ Stop')
   })
 
   it('returns to Listen mode when speech ends naturally (onend fires)', async () => {

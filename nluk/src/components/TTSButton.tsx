@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import styles from './TTSButton.module.css'
+import type { UiStrings } from '../types'
 
 // Maps app language codes to BCP-47 voice tags preferred by Web Speech API
-const LANG_VOICE = {
+const LANG_VOICE: Record<string, string> = {
   en: 'en-GB',
   ar: 'ar-SA',
   fa: 'fa-IR',
@@ -17,9 +18,19 @@ const LANG_VOICE = {
   fr: 'fr-FR',
 }
 
-export default function TTSButton({ lang, title, summary, steps }) {
+interface TTSButtonProps {
+  lang: string
+  title: string
+  summary: string
+  steps?: string[]
+  ui?: Pick<UiStrings, 'ttsListen' | 'ttsStop'>
+}
+
+export default function TTSButton({ lang, title, summary, steps, ui = {} }: TTSButtonProps) {
   const [speaking, setSpeaking] = useState(false)
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
+  const listenLabel = ui.ttsListen || '🔊 Listen'
+  const stopLabel   = ui.ttsStop   || '⏹ Stop'
 
   // Stop speech on unmount
   useEffect(() => {
@@ -66,9 +77,9 @@ export default function TTSButton({ lang, title, summary, steps }) {
     <button
       className={`${styles.ttsBtn} ${speaking ? styles.ttsSpeaking : ''}`}
       onClick={speaking ? stop : speak}
-      aria-label={speaking ? 'Stop reading aloud' : 'Listen to this guide'}
+      aria-label={speaking ? stopLabel : listenLabel}
     >
-      {speaking ? '⏹ Stop' : '🔊 Listen'}
+      {speaking ? stopLabel : listenLabel}
     </button>
   )
 }

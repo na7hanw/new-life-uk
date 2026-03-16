@@ -2,58 +2,43 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import * as Sentry from '@sentry/react'
 import { AppProvider } from './context/AppContext.tsx'
 import App from './App.tsx'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
+import { initSentry } from './lib/sentry.ts'
 import './index.css'
 
-// Initialize Sentry for error tracking in production
-// Set VITE_SENTRY_DSN environment variable in production deploys
-const dsn = import.meta.env.VITE_SENTRY_DSN
-if (dsn) {
-  Sentry.init({
-    dsn,
-    environment: import.meta.env.MODE,
-    integrations: [
-      Sentry.replayIntegration({
-        maskAllText: true,
-        blockAllMedia: true,
-      }),
-    ],
-    tracesSampleRate: import.meta.env.MODE === 'production' ? 0.1 : 1.0,
-    replaysSessionSampleRate: import.meta.env.MODE === 'production' ? 0.1 : 0.5,
-    replaysOnErrorSampleRate: 1.0,
-  })
-}
+// Initialise Sentry only if the user has previously given consent (UK GDPR Art. 6(1)(a)).
+// The ConsentBanner component handles first-run consent and calls initSentry() when granted.
+const storedConsent = (() => { try { return localStorage.getItem('nluk_consent') } catch { return null } })()
+if (storedConsent === 'granted') void initSentry()
 
-const SentryErrorBoundary = dsn ? Sentry.ErrorBoundary : ({ children }) => children
-
-// Report Core Web Vitals — sent to Sentry if enabled, otherwise console in dev
-import('web-vitals').then(({ onCLS, onFCP, onLCP, onFID, onTTFB }) => {
-  const report = (metric) => {
-    if (dsn) {
-      Sentry.metrics?.increment(`web_vitals.${metric.name.toLowerCase()}`, metric.value)
-    } else if (import.meta.env.DEV) {
+// Report Core Web Vitals — console in dev only; Sentry captures perf automatically on init
+if (import.meta.env.DEV) {
+  import('web-vitals').then(vt => {
+    type Metric = { name: string; value: number; rating: string }
+    const report = (metric: Metric) => {
       // eslint-disable-next-line no-console
       console.debug('[Web Vitals]', metric.name, metric.value.toFixed(1), metric.rating)
     }
-  }
-  onCLS(report); onFCP(report); onLCP(report); onFID(report); onTTFB(report)
-})
+    if (vt.onCLS)  vt.onCLS(report)
+    if (vt.onFCP)  vt.onFCP(report)
+    if (vt.onLCP)  vt.onLCP(report)
+    if (vt.onINP)  vt.onINP(report)
+    if (vt.onTTFB) vt.onTTFB(report)
+  })
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <SentryErrorBoundary fallback={<div>An error occurred. Please reload the page.</div>} showDialog>
-      <ErrorBoundary>
-        <HelmetProvider>
-          <HashRouter>
-            <AppProvider>
-              <App />
-            </AppProvider>
-          </HashRouter>
-        </HelmetProvider>
-      </ErrorBoundary>
-    </SentryErrorBoundary>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <HashRouter>
+          <AppProvider>
+            <App />
+          </AppProvider>
+        </HashRouter>
+      </HelmetProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 )

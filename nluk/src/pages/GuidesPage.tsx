@@ -5,6 +5,7 @@ import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { LANGS, TIPS } from '../data/ui-strings.ts'
 import { t18 } from '../lib/utils.ts'
+import { translate } from '../lib/translate.ts'
 
 export default function GuidesPage() {
   const { lang, ui, dir, af } = useApp()
@@ -12,7 +13,8 @@ export default function GuidesPage() {
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('All')
   const [tipIdx, setTipIdx] = useState(0)
-  const guideBtnRefs = useRef({})
+  const [translatedTip, setTranslatedTip] = useState('')
+  const guideBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
   useEffect(() => {
     setTipIdx(Math.floor(Math.random() * TIPS.refugee.length))
@@ -25,7 +27,19 @@ export default function GuidesPage() {
   }, [])
 
   const tipList = TIPS.refugee
-  const tip = tipList[tipIdx % tipList.length]
+  const tipEn = tipList[tipIdx % tipList.length]
+
+  // Auto-translate the tip when language changes
+  useEffect(() => {
+    if (!tipEn) return
+    setTranslatedTip(tipEn)
+    if (lang === 'en') return
+    let cancelled = false
+    translate(tipEn, lang).then(t => { if (!cancelled) setTranslatedTip(t) })
+    return () => { cancelled = true }
+  }, [tipEn, lang])
+
+  const tip = translatedTip || tipEn
 
   // Fuse.js index — built once, searches title + summary + keyword aliases
   const fuseIndex = useMemo(() => new Fuse(
@@ -57,7 +71,7 @@ export default function GuidesPage() {
     return list
   }, [search, catFilter, fuseIndex])
 
-  const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))], [filtered])
+  const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))] as string[], [filtered])
 
   return (
     <div className="page-enter">

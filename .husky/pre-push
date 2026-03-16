@@ -1,0 +1,2 @@
+echo "Running tests before push..."
+cd nluk && npm test
