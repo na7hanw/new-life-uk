@@ -57,7 +57,7 @@ export default function GuidesPage() {
     return list
   }, [search, catFilter, fuseIndex])
 
-  const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))], [filtered])
+  const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))] as string[], [filtered])
 
   return (
     <div className="page-enter">

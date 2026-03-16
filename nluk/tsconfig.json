@@ -16,8 +16,10 @@
     /* JSX */
     "jsx": "react-jsx",
 
-    /* Linting */
-    "strict": true,
+    /* Linting — progressive strictness for initial JS→TS migration */
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true

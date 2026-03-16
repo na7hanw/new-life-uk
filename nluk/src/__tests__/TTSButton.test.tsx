@@ -40,7 +40,7 @@ describe('TTSButton — supported environment', () => {
       this.onend = null
       this.onerror = null
     })
-    global.SpeechSynthesisUtterance = MockUtterance
+    ;(globalThis as typeof globalThis & { SpeechSynthesisUtterance: unknown }).SpeechSynthesisUtterance = MockUtterance
 
     mockSpeech = {
       cancel: vi.fn(),
@@ -59,7 +59,7 @@ describe('TTSButton — supported environment', () => {
   afterEach(() => {
     cleanup()
     vi.restoreAllMocks()
-    delete global.SpeechSynthesisUtterance
+    delete (globalThis as typeof globalThis & { SpeechSynthesisUtterance?: unknown }).SpeechSynthesisUtterance
     try { delete window.speechSynthesis } catch (_) {
       Object.defineProperty(window, 'speechSynthesis', { value: undefined, configurable: true })
     }

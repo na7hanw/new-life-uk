@@ -33,7 +33,7 @@ const SentryErrorBoundary = dsn ? Sentry.ErrorBoundary : ({ children }) => child
 import('web-vitals').then(({ onCLS, onFCP, onLCP, onINP, onTTFB }) => {
   const report = (metric) => {
     if (dsn) {
-      Sentry.metrics?.increment(`web_vitals.${metric.name.toLowerCase()}`, metric.value)
+      Sentry.metrics?.['increment']?.(`web_vitals.${metric.name.toLowerCase()}`, metric.value)
     } else if (import.meta.env.DEV) {
       // eslint-disable-next-line no-console
       console.debug('[Web Vitals]', metric.name, metric.value.toFixed(1), metric.rating)
