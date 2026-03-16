@@ -53,19 +53,28 @@ describe('JobCard — collapsed', () => {
     expect(btn.getAttribute('aria-controls')).toBeTruthy()
   })
 
-  it('job body is not rendered when collapsed', () => {
+  it('body wrapper has data-state="closed" when collapsed', () => {
+    const { container } = render(<JobCard j={JOB} lang="en" ui={UI} />)
+    const wrapper = container.querySelector('[data-state]')
+    expect(wrapper?.getAttribute('data-state')).toBe('closed')
+  })
+
+  it('body content element (aria-controls target) is in the DOM even when collapsed', () => {
     render(<JobCard j={JOB} lang="en" ui={UI} />)
-    expect(screen.queryByText('Support nurses and doctors in a clinical setting.')).toBeNull()
+    const btn = screen.getByRole('button')
+    const controlsId = btn.getAttribute('aria-controls')
+    expect(document.getElementById(controlsId)).not.toBeNull()
   })
 })
 
 // ─── Expanded state ───────────────────────────────────────────────────────────
 
 describe('JobCard — expanded', () => {
-  it('renders job body content after clicking the toggle button', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+  it('body wrapper has data-state="open" after clicking the toggle button', () => {
+    const { container } = render(<JobCard j={JOB} lang="en" ui={UI} />)
     fireEvent.click(screen.getByRole('button'))
-    expect(screen.getByText('Support nurses and doctors in a clinical setting.')).not.toBeNull()
+    const wrapper = container.querySelector('[data-state]')
+    expect(wrapper?.getAttribute('data-state')).toBe('open')
   })
 
   it('sets aria-expanded="true" on the toggle button when open', () => {
@@ -78,7 +87,6 @@ describe('JobCard — expanded', () => {
     render(<JobCard j={JOB} lang="en" ui={UI} />)
     const btn = screen.getByRole('button')
     const controlsId = btn.getAttribute('aria-controls')
-    fireEvent.click(btn)
     const body = document.getElementById(controlsId)
     expect(body).not.toBeNull()
   })
@@ -88,9 +96,8 @@ describe('JobCard — expanded', () => {
     expect(screen.getByText('Sponsorship')).not.toBeNull()
   })
 
-  it('renders the apply link after expanding', () => {
+  it('renders the apply link in the DOM', () => {
     render(<JobCard j={JOB} lang="en" ui={UI} />)
-    fireEvent.click(screen.getByRole('button'))
     const link = screen.getByRole('link', { name: 'NHS Jobs' })
     expect(link.getAttribute('href')).toBe('https://www.jobs.nhs.uk/')
   })
@@ -99,12 +106,13 @@ describe('JobCard — expanded', () => {
 // ─── Toggle back to collapsed ─────────────────────────────────────────────────
 
 describe('JobCard — collapse after expand', () => {
-  it('hides the body again when the button is clicked a second time', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+  it('returns to data-state="closed" and aria-expanded="false" after second click', () => {
+    const { container } = render(<JobCard j={JOB} lang="en" ui={UI} />)
     const btn = screen.getByRole('button')
     fireEvent.click(btn)
     fireEvent.click(btn)
-    expect(screen.queryByText('Support nurses and doctors in a clinical setting.')).toBeNull()
+    const wrapper = container.querySelector('[data-state]')
+    expect(wrapper?.getAttribute('data-state')).toBe('closed')
     expect(btn.getAttribute('aria-expanded')).toBe('false')
   })
 })
