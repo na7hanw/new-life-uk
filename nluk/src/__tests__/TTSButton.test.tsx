@@ -60,7 +60,7 @@ describe('TTSButton — supported environment', () => {
     cleanup()
     vi.restoreAllMocks()
     delete (globalThis as typeof globalThis & { SpeechSynthesisUtterance?: unknown }).SpeechSynthesisUtterance
-    try { delete window.speechSynthesis } catch (_) {
+    try { delete window.speechSynthesis } catch {
       Object.defineProperty(window, 'speechSynthesis', { value: undefined, configurable: true })
     }
   })

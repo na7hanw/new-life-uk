@@ -1,10 +1,16 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styles from './ShareBar.module.css'
 
 function ShareBar({ title, ui }) {
   const [copied, setCopied] = useState(false)
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const url = window.location.href
   const text = `${title} — New Life UK\n${url}`
+
+  useEffect(() => {
+    return () => { if (copyTimer.current !== null) clearTimeout(copyTimer.current) }
+  }, [])
+
   const share = (platform) => {
     const urls = {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(text)}`,
@@ -12,7 +18,11 @@ function ShareBar({ title, ui }) {
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title)}`,
     }
     if (platform === 'copy') {
-      navigator.clipboard?.writeText(url).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
+      navigator.clipboard?.writeText(url).then(() => {
+        setCopied(true)
+        if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+        copyTimer.current = setTimeout(() => { setCopied(false); copyTimer.current = null }, 2000)
+      })
     } else {
       window.open(urls[platform], '_blank', 'noopener,noreferrer')
     }

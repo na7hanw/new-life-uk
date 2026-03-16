@@ -1,4 +1,5 @@
 import { Component, type ReactNode } from 'react'
+import { SENTRY_DSN } from '../lib/sentry.ts'
 
 interface ErrorBoundaryProps { children?: ReactNode }
 
@@ -6,6 +7,13 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps> {
   state = { hasError: false }
 
   static getDerivedStateFromError() { return { hasError: true } }
+
+  componentDidCatch(error: Error): void {
+    if (!SENTRY_DSN) return
+    import('@sentry/react').then(Sentry => {
+      if (Sentry.getClient()) Sentry.captureException(error)
+    }).catch(() => {})
+  }
 
   render() {
     if (this.state.hasError) {
