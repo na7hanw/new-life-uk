@@ -28,6 +28,7 @@ const sharedGlobals = {
   HTMLInputElement: 'readonly',
   HTMLElement: 'readonly',
   HTMLDivElement: 'readonly',
+  URL: 'readonly',
 }
 
 export default [
