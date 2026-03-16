@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useState, useId } from 'react'
 import styles from './JobCard.module.css'
 
 function JobCard({ j, lang, ui }) {
   const [open, setOpen] = useState(false)
+  const bodyId = useId()
   const jc = (j.content?.[lang] || j.content?.en || {})
   return (
     <div className={`${styles.jobCard} ${open ? styles.jobCardOpen : ''}`}>
-      <button className={styles.jobHeader} onClick={() => setOpen(o => !o)} aria-expanded={open}>
+      <button className={styles.jobHeader} onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls={bodyId}>
         <span className={styles.jobIcon}>{j.icon}</span>
         <div className={styles.jobInfo}>
           <div className={styles.jobRoleRow}>
@@ -25,7 +26,7 @@ function JobCard({ j, lang, ui }) {
       )}
 
       {open && (
-        <div className={styles.jobBody}>
+        <div id={bodyId} className={styles.jobBody}>
           <p className={styles.jobDesc}>{jc.desc}</p>
 
           {j.docs?.length > 0 && (
