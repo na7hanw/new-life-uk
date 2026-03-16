@@ -1,9 +1,15 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useApp } from '../context/AppContext.jsx'
-import { JOBS, CERTS, CAREERS } from '../data/jobs.js'
+import { JOBS, CERTS, CAREERS, REFUGEE_JOB_SUPPORT } from '../data/jobs.js'
 import { t18, lsSet } from '../lib/utils.js'
 import JobCard from '../components/JobCard.jsx'
+
+const JOB_FILTERS = [
+  { id: 'all',  label: 'All' },
+  { id: 'noexp', label: '✅ No experience', tag: 'No experience needed' },
+  { id: 'visa',  label: '🌍 Visa sponsorship', tag: 'Visa sponsorship available' },
+]
 
 export default function WorkHub() {
   const { subtab = 'jobs' } = useParams()
@@ -11,6 +17,7 @@ export default function WorkHub() {
   const { lang, ui, af } = useApp()
   const certBtnRefs = useRef({})
   const careerBtnRefs = useRef({})
+  const [jobFilter, setJobFilter] = useState('all')
 
   useEffect(() => {
     const lastCert = sessionStorage.getItem('nluk_last_cert')
@@ -30,6 +37,13 @@ export default function WorkHub() {
     navigate(`/work/${id}`)
   }
 
+  const visibleJobs = jobFilter === 'all'
+    ? JOBS
+    : JOBS.filter(j => {
+        const f = JOB_FILTERS.find(f => f.id === jobFilter)
+        return f?.tag && j.tags?.includes(f.tag)
+      })
+
   return (
     <div className="page-enter">
       <div className="sub-tabs" role="tablist">
@@ -45,9 +59,43 @@ export default function WorkHub() {
         ))}
       </div>
 
-      {subtab === 'jobs' && JOBS.map((j, i) => (
-        <JobCard key={i} j={j} lang={lang} ui={ui} />
-      ))}
+      {subtab === 'jobs' && (
+        <>
+          {/* Refugee employment support banner */}
+          <div className="card" style={{ margin: '0 20px 10px', background: 'var(--ac2)', border: '1.5px solid rgba(10,95,62,.15)' }}>
+            <div style={{ padding: '12px 16px' }}>
+              <div style={{ fontWeight: 800, fontSize: '.9rem', color: 'var(--ac3)', marginBottom: 5 }}>
+                🤝 Get free job support for refugees
+              </div>
+              <div style={{ fontSize: '.825rem', color: 'var(--t2)', lineHeight: 1.55, marginBottom: 8 }}>
+                Start here — these specialist charities connect you directly to employers. Free CV help, interview coaching, and employer introductions.
+              </div>
+              <div className="job-apply-grid">
+                {REFUGEE_JOB_SUPPORT.map(lk => (
+                  <a key={lk.url} href={lk.url} target="_blank" rel="noopener noreferrer"
+                    className="job-apply-chip" aria-label={`${lk.name} (opens in new tab)`}>
+                    {lk.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Filter chips */}
+          <div className="chip-bar" role="group" aria-label="Filter jobs">
+            {JOB_FILTERS.map(f => (
+              <button key={f.id} className={`chip ${jobFilter === f.id ? 'active' : ''}`}
+                onClick={() => setJobFilter(f.id)}>
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          {visibleJobs.map((j, i) => (
+            <JobCard key={i} j={j} lang={lang} ui={ui} />
+          ))}
+        </>
+      )}
 
       {subtab === 'certs' && (
         <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
@@ -57,8 +105,8 @@ export default function WorkHub() {
               <button key={c.id} className="list-row"
                 ref={el => { certBtnRefs.current[c.id] = el }}
                 onClick={() => { sessionStorage.setItem('nluk_last_cert', c.id); navigate(`/cert/${c.id}`) }}
-                aria-label={cc.title} style={{ alignItems: 'flex-start' }}>
-                <span className="list-row-icon">{c.icon}</span>
+                style={{ alignItems: 'flex-start' }}>
+                <span className="list-row-icon" aria-hidden="true">{c.icon}</span>
                 <div className="list-row-content">
                   <div className="list-row-title">{cc.title}</div>
                   <div className="list-row-sub">{cc.sector}</div>
@@ -68,7 +116,7 @@ export default function WorkHub() {
                   </div>
                   <span className="pill-free">{ui.freeRoute}</span>
                 </div>
-                <span className="list-row-arrow">{af}</span>
+                <span className="list-row-arrow" aria-hidden="true">{af}</span>
               </button>
             )
           })}
@@ -83,8 +131,8 @@ export default function WorkHub() {
               <button key={p.id} className="list-row"
                 ref={el => { careerBtnRefs.current[p.id] = el }}
                 onClick={() => { sessionStorage.setItem('nluk_last_career', p.id); navigate(`/career/${p.id}`) }}
-                aria-label={pc.title} style={{ alignItems: 'flex-start' }}>
-                <span className="list-row-icon">{p.icon}</span>
+                style={{ alignItems: 'flex-start' }}>
+                <span className="list-row-icon" aria-hidden="true">{p.icon}</span>
                 <div className="list-row-content">
                   <div className="list-row-title">{pc.title}</div>
                   <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 3 }}>
@@ -92,7 +140,7 @@ export default function WorkHub() {
                   </div>
                   <div style={{ fontSize: '.9rem', fontWeight: 800, color: 'var(--gn)', marginTop: 3 }}>{pc.salary}</div>
                 </div>
-                <span className="list-row-arrow">{af}</span>
+                <span className="list-row-arrow" aria-hidden="true">{af}</span>
               </button>
             )
           })}

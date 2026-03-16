@@ -45,6 +45,19 @@ export const JOBS = [
     ],
   },
   {
+    icon: "🏭",
+    content: { en: { role: "Factory / Food Production Worker", desc: "Production lines, packing, quality checking, and machine operating in food factories, manufacturers, and distribution centres. Staffing agencies (Manpower, Staffline, Adecco) can have you starting within 24–48 hours of registration — no experience, no qualifications, and minimal English needed for most line roles. Night shifts and bank holiday rates available." } },
+    pay: "£12.71–£14/hr",
+    tags: ["No experience needed", "Immediate start via agency", "Overtime available"],
+    docs: ["Share code (Right to Work)", "Bank account details", "Safety boots (most factories provide PPE on your start day)", "NI number (helpful but not essential on day one)"],
+    applyLinks: [
+      { name: "Manpower UK — find work", url: "https://www.manpower.co.uk/find-a-job" },
+      { name: "Staffline — job seekers", url: "https://www.staffline.co.uk/job-seekers/" },
+      { name: "Adecco UK — find a job", url: "https://www.adecco.co.uk/find-a-job" },
+      { name: "Indeed — Factory & production jobs", url: "https://uk.indeed.com/jobs?q=factory+production+operative" },
+    ],
+  },
+  {
     icon: "🧡",
     content: { en: { role: "Healthcare Assistant (HCA)", desc: "Support patients and residents in NHS hospitals, GP surgeries, or care homes. Care Certificate training is FREE from your employer. Visa sponsorship available for eligible candidates." } },
     pay: "£12.71–£14/hr",
@@ -203,6 +216,7 @@ export const JOBS = [
       { name: "Indeed — Supermarket Jobs", url: "https://uk.indeed.com/jobs?q=supermarket+assistant" },
     ],
   },
+  // Taxi / PHV
   {
     icon: "🚕",
     content: { en: { role: "Private Hire / Taxi Driver (Uber, Bolt, Addison Lee)", desc: "Flexible driving work — use your own car or lease one. Requires a local council PHV licence (4–12 weeks to get). Uber and Bolt pay bonuses during your first months. Good English helpful for ratings. ⚠ You must have full right to work in the UK. Standard car insurance is NOT valid — you need hire and reward cover." } },
@@ -217,20 +231,14 @@ export const JOBS = [
       { name: "Apply for PHV licence (GOV.UK)", url: "https://www.gov.uk/apply-for-taxi-licence" },
     ],
   },
-  // Added March 2026 - refugee-friendly job agencies / agency link
-  {
-    icon: "🤝",
-    content: { en: { role: "Refugee Employment Support Organisations", desc: "Specialist organisations that connect refugees directly to employers and free employment support. These are some of the fastest routes into work — start here before applying cold. Free CV help, interview coaching, and employer introductions." } },
-    pay: "Free support",
-    tags: ["Free service", "Refugee-specific", "Employer introductions"],
-    docs: ["Refugee status document or BRP", "Share code (Right to Work)", "CV (they will help you build one)"],
-    applyLinks: [
-      { name: "Refugee Employment Network", url: "https://refugeeemploymentnetwork.org/" }, // Added March 2026 - agency link
-      { name: "Breaking Barriers — Jobs & Training", url: "https://breaking-barriers.co.uk/refugee-support/employment/" }, // Added March 2026 - agency link
-      { name: "Tent UK — Major Employers Hiring Refugees", url: "https://www.tent.org/uk" }, // Added March 2026 - agency link
-      { name: "IRC UK — Employment Support", url: "https://www.rescue.org/uk/employment-support-refugees-uk" }, // Added March 2026 - agency link
-    ],
-  },
+];
+
+// ─── Refugee employment support organisations (shown as a banner, not a job card) ──────
+export const REFUGEE_JOB_SUPPORT = [
+  { name: "Refugee Employment Network", url: "https://refugeeemploymentnetwork.org/" },
+  { name: "Breaking Barriers — Jobs & Training", url: "https://breaking-barriers.co.uk/refugee-support/employment/" },
+  { name: "Tent UK — Major Employers Hiring Refugees", url: "https://www.tent.org/uk" },
+  { name: "IRC UK — Employment Support", url: "https://www.rescue.org/uk/employment-support-refugees-uk" },
 ];
 
 // ─── CERTS ───────────────────────────────────────────────────────
