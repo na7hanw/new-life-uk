@@ -6,7 +6,7 @@ import { SOS_NUMBERS } from './data/emergency.ts'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
 import Logo from './components/Logo.tsx'
 import SOSModal from './components/SOSModal.tsx'
-import FloatingSOS from './components/FloatingSOS.tsx'
+
 
 const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
 const GuideDetail  = lazy(() => import('./pages/GuideDetail.tsx'))
@@ -124,11 +124,6 @@ export default function App() {
             ))}
           </div>
         </nav>
-      )}
-
-      {/* FLOATING SOS — always visible except when modal open or lang overlay shown */}
-      {!showLang && !showSOS && (
-        <FloatingSOS ui={ui} setSOS={setSOS} />
       )}
 
       {/* SOS MODAL — focus-trapped, no backdrop dismiss (safety-critical) */}
