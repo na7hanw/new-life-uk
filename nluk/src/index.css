@@ -1264,8 +1264,6 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   .modal-content { max-width: 620px; }
   .lang-overlay { max-width: 620px; }
   .hero-title { font-size: 1.7rem; }
-  .job-apply-grid { grid-template-columns: repeat(3, 1fr); }
-  .share-bar { gap: 10px; }
 }
 @media (min-width: 900px) {
   .app-root { max-width: 720px; }
