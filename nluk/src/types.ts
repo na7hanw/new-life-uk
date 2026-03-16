@@ -3,6 +3,7 @@
  * Using z.infer keeps the runtime validation and compile-time types in sync.
  */
 import { z } from 'zod'
+import { type Dispatch, type SetStateAction } from 'react'
 
 // ─── Primitive schemas (mirrors schema.test.ts) ─────────────────────────────
 
@@ -208,7 +209,7 @@ export interface AppContextValue {
   lang: string
   setLang: (lang: string) => void
   dark: boolean
-  setDark: React.Dispatch<React.SetStateAction<boolean>>
+  setDark: Dispatch<SetStateAction<boolean>>
   showSOS: boolean
   setSOS: (show: boolean) => void
   showLang: boolean
