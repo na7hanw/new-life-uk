@@ -2,9 +2,38 @@ import js from '@eslint/js'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import a11yPlugin from 'eslint-plugin-jsx-a11y'
+import tsParser from '@typescript-eslint/parser'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+
+const sharedGlobals = {
+  window: 'readonly',
+  document: 'readonly',
+  navigator: 'readonly',
+  sessionStorage: 'readonly',
+  localStorage: 'readonly',
+  console: 'readonly',
+  requestAnimationFrame: 'readonly',
+  SpeechSynthesisUtterance: 'readonly',
+  setTimeout: 'readonly',
+  clearTimeout: 'readonly',
+  setInterval: 'readonly',
+  clearInterval: 'readonly',
+  // PR #14 — auto-translate uses fetch and AbortController
+  fetch: 'readonly',
+  AbortController: 'readonly',
+  Promise: 'readonly',
+  // DOM types used in TypeScript generics and interface declarations
+  Event: 'readonly',
+  HTMLButtonElement: 'readonly',
+  HTMLInputElement: 'readonly',
+  HTMLElement: 'readonly',
+  HTMLDivElement: 'readonly',
+  URL: 'readonly',
+}
 
 export default [
   js.configs.recommended,
+  // ── JS / JSX (legacy, kept for any remaining .js files) ──────────
   {
     files: ['src/**/*.{js,jsx}'],
     plugins: {
@@ -14,7 +43,7 @@ export default [
     },
     settings: {
       // Pin explicitly — 'detect' crashes ESLint v10 flat config
-      react: { version: '18.3' },
+      react: { version: '19.2' },
     },
     languageOptions: {
       ecmaVersion: 2022,
@@ -22,42 +51,76 @@ export default [
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
-      globals: {
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        sessionStorage: 'readonly',
-        localStorage: 'readonly',
-        console: 'readonly',
-        requestAnimationFrame: 'readonly',
-        SpeechSynthesisUtterance: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-      },
+      globals: sharedGlobals,
     },
     rules: {
-      // React — disable noisy rules not applicable to this app
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react/display-name': 'off',
       'react/no-unescaped-entities': 'warn',
-      // Hooks
       ...reactHooksPlugin.configs.recommended.rules,
-      // New in react-hooks v7 — flags valid setState-in-effect patterns
       'react-hooks/set-state-in-effect': 'off',
-      // Accessibility
       ...a11yPlugin.configs.recommended.rules,
-      // Downgrade rules that produce false positives with our design patterns
       'jsx-a11y/no-static-element-interactions': 'warn',
       'jsx-a11y/click-events-have-key-events': 'warn',
       'jsx-a11y/no-noninteractive-element-to-interactive-role': 'warn',
       'jsx-a11y/no-noninteractive-element-interactions': 'warn',
-      // General
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'no-console': 'warn',
       'no-empty': ['warn', { allowEmptyCatch: true }],
+    },
+  },
+  // ── TypeScript / TSX ────────────────────────────────────────────
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+      'jsx-a11y': a11yPlugin,
+      '@typescript-eslint': tsPlugin,
+    },
+    settings: {
+      react: { version: '19.2' },
+    },
+    languageOptions: {
+      parser: tsParser,
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+      globals: sharedGlobals,
+    },
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'react/display-name': 'off',
+      'react/no-unescaped-entities': 'warn',
+      ...reactHooksPlugin.configs.recommended.rules,
+      'react-hooks/set-state-in-effect': 'off',
+      ...a11yPlugin.configs.recommended.rules,
+      'jsx-a11y/no-static-element-interactions': 'warn',
+      'jsx-a11y/click-events-have-key-events': 'warn',
+      'jsx-a11y/no-noninteractive-element-to-interactive-role': 'warn',
+      'jsx-a11y/no-noninteractive-element-interactions': 'warn',
+      // Disable base rule in favour of TS-aware version
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-console': 'warn',
+      'no-empty': ['warn', { allowEmptyCatch: true }],
+      // Allow `any` during migration
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+  // ── Test files — add vitest/jest globals ────────────────────────
+  {
+    files: ['src/__tests__/**/*.{ts,tsx,js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...sharedGlobals,
+        global: 'readonly',
+        globalThis: 'readonly',
+      },
     },
   },
   {

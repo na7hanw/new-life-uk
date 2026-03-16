@@ -184,45 +184,6 @@ function serializeContent(guide) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
-async function translateFile(relPath) {
-  const fullPath = path.join(ROOT, relPath)
-  const rawSrc = readFileSync(fullPath, 'utf8')
-
-  // Dynamically import to get the data
-  const mod = await import(`file://${fullPath}?v=${Date.now()}`)
-  const items = mod.GUIDES || mod.CAREERS || []
-  if (!items.length) {
-    console.log(`  No items found in ${relPath}, skipping`)
-    return false
-  }
-
-  let changed = false
-
-  for (const lang of TARGET_LANGS) {
-    const langInfo = LANG_MAP[lang]
-    if (!langInfo) continue
-
-    // Check if Google API is needed for this language
-    if (!langInfo.mymemory && !GOOGLE_KEY) {
-      console.log(`  Skipping ${langInfo.name} — requires GOOGLE_TRANSLATE_API_KEY`)
-      continue
-    }
-
-    const { strings, positions } = extractStrings(items, lang)
-    if (strings.length === 0) {
-      process.stdout.write(`  ✓ ${langInfo.name} already complete\n`)
-      continue
-    }
-
-    console.log(`  Translating ${strings.length} strings → ${langInfo.name}...`)
-    const translated = await translateStrings(strings, lang)
-    injectTranslations(items, lang, translated, positions)
-    changed = true
-  }
-
-  return changed
-}
-
 async function main() {
   console.log('🌍 Auto-Translate — New Life UK\n')
   console.log(`API: ${GOOGLE_KEY ? 'Google Cloud Translation' : 'MyMemory (free tier)'}`)
@@ -270,20 +231,6 @@ async function main() {
 
   // Rewrite guides.js with new translations
   if (!DRY) {
-    // Read the current file and replace the content objects
-    let src = readFileSync(guidesPath, 'utf8')
-
-    // Replace each guide's content section
-    for (const guide of GUIDES) {
-      // Find and replace the content block for this guide
-      const regex = new RegExp(
-        `(\\{ id: "${guide.id}",.*?content: )\\{[^}]*en:[^}]*\\}(.*?\\})`,
-        'gs'
-      )
-      // Use the serialized content
-      // Simple approach: regenerate whole file from data
-    }
-
     console.log('\n📝 Writing translations to src/data/guides.js...')
     generateTranslatedFile(GUIDES, guidesPath)
     console.log(`✅ Done — ${totalTranslated} strings translated across ${TARGET_LANGS.length} languages`)
@@ -292,40 +239,61 @@ async function main() {
   }
 }
 
+/**
+ * Scans `src` starting at `src[start]` (which must be `{`) and returns the
+ * index immediately after the matching closing `}`. Unlike a naïve brace
+ * counter, this skips over single- and double-quoted string literals so that
+ * `{` / `}` characters embedded inside string values are not miscounted.
+ *
+ * @param {string} src
+ * @param {number} start - index of the opening `{`
+ * @returns {number} index after the matching `}`, or -1 if unmatched
+ */
+function findObjectEnd(src, start) {
+  let depth = 0
+  let i = start
+  while (i < src.length) {
+    const ch = src[i]
+    if (ch === '"' || ch === "'") {
+      const quote = ch
+      i++
+      while (i < src.length) {
+        if (src[i] === '\\') { i += 2; continue } // skip escape sequence
+        if (src[i] === quote) break
+        i++
+      }
+    } else if (ch === '{') {
+      depth++
+    } else if (ch === '}') {
+      depth--
+      if (depth === 0) return i + 1
+    }
+    i++
+  }
+  return -1 // unmatched opening brace
+}
+
 function generateTranslatedFile(guides, outputPath) {
-  // Read the original and use JSON5-style parsing to replace content objects
   let src = readFileSync(outputPath, 'utf8')
 
   for (const guide of guides) {
     if (!guide.content) continue
     const langs = Object.keys(guide.content)
-    if (langs.length <= 1) continue // Only en, nothing new
+    if (langs.length <= 1) continue // only `en` — nothing new to write
 
-    // Build new content string
-    const contentStr = serializeContent(guide)
-
-    // Replace this guide's content section in the source
-    const idPattern = `id: "${guide.id}"`
-    const idIdx = src.indexOf(idPattern)
+    const idIdx = src.indexOf(`id: "${guide.id}"`)
     if (idIdx === -1) continue
 
-    const contentKey = 'content: '
-    const contentStart = src.indexOf(contentKey, idIdx)
-    if (contentStart === -1) continue
+    const contentKeyIdx = src.indexOf('content: ', idIdx)
+    if (contentKeyIdx === -1) continue
 
-    // Find matching braces to get the full content object
-    let depth = 0
-    let start = contentStart + contentKey.length
-    let end = start
-    let found = false
-    for (let i = start; i < src.length; i++) {
-      if (src[i] === '{') depth++
-      if (src[i] === '}') { depth--; if (depth === 0) { end = i + 1; found = true; break } }
-    }
+    const objStart = contentKeyIdx + 'content: '.length
+    if (src[objStart] !== '{') continue
 
-    if (found) {
-      src = src.slice(0, start) + contentStr + src.slice(end)
-    }
+    const objEnd = findObjectEnd(src, objStart)
+    if (objEnd === -1) continue
+
+    src = src.slice(0, objStart) + serializeContent(guide) + src.slice(objEnd)
   }
 
   writeFileSync(outputPath, src, 'utf8')

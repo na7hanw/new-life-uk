@@ -1,0 +1,31 @@
+/* Share Bar */
+.shareBar {
+  display: flex;
+  gap: 8px;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
+.shareBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 24px;
+  font-size: .825rem;
+  font-weight: 700;
+  border: 1px solid var(--bd);
+  background: var(--bg2);
+  color: var(--t2);
+  transition: all .1s;
+  box-shadow: var(--shadow);
+}
+.shareBtn:active { transform: scale(.95); }
+.shareWhatsapp { color: #25D366; border-color: #25D366; }
+.shareTelegram { color: #0088CC; border-color: #0088CC; }
+.shareFacebook { color: #1877F2; border-color: #1877F2; }
+.shareCopy     { color: var(--ac3); border-color: var(--ac); }
+:global(.dark) .shareCopy { color: var(--ac); }
+
+@media (min-width: 600px) {
+  .shareBar { gap: 10px; }
+}
