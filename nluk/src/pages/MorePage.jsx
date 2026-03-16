@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useApp } from '../context/AppContext.jsx'
-import { GEMS } from '../data/saves.js'
 import { GITHUB_URL } from '../data/emergency.js'
-import { t18 } from '../lib/utils.js'
 
 export default function MorePage() {
-  const { lang, ui, L, dark, setDark, setShowLang } = useApp()
+  const { lang: _lang, ui, L, dark, setDark, setShowLang } = useApp()
   const [offline, setOffline] = useState(false)
 
   useEffect(() => {
@@ -16,28 +14,6 @@ export default function MorePage() {
 
   return (
     <div className="page-enter">
-      <div style={{ padding: '16px 20px 8px' }}>
-        <h2 style={{ fontSize: '1.15rem', fontWeight: 800 }}>{ui.gemsTitle}</h2>
-        <p style={{ fontSize: '.9rem', color: 'var(--t2)', marginTop: 4, lineHeight: 1.55 }}>{ui.gemsSub}</p>
-      </div>
-      {GEMS.map(g => {
-        const gc = t18(g.content, lang)
-        return (
-          <div key={gc.title} className="content-card">
-            <div className="content-card-header">
-              <span className="content-card-icon">{g.icon}</span>
-              <span className="content-card-title">{gc.title}</span>
-            </div>
-            <p className="content-card-body">{gc.desc}</p>
-            {g.url && (
-              <a href={g.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
-                🔗 <span>{ui.openLink}</span> →
-              </a>
-            )}
-          </div>
-        )
-      })}
-
       <div className="section-label">{ui.theme}</div>
       <div className="card" style={{ margin: '0 20px 12px' }}>
         <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -70,6 +46,7 @@ export default function MorePage() {
             ['nluk_lang', 'Language preference'],
             ['nluk_dark', 'Dark/light mode'],
             ['nluk_wtab', 'Last work tab viewed'],
+            ['nluk_stab', 'Last free stuff tab viewed'],
           ].map(([k, v]) => (
             <div key={k} style={{ fontSize: '.8rem', color: 'var(--t2)', padding: '2px 0' }}>
               <code style={{ background: 'var(--s2)', borderRadius: 4, padding: '1px 5px', marginRight: 6 }}>{k}</code>{v}
@@ -86,7 +63,7 @@ export default function MorePage() {
             style={{ marginTop: 12 }}
             onClick={() => {
               try {
-                ['nluk_lang','nluk_dark','nluk_wtab'].forEach(k => localStorage.removeItem(k))
+                ['nluk_lang','nluk_dark','nluk_wtab','nluk_stab'].forEach(k => localStorage.removeItem(k))
                 window.location.reload()
               } catch {}
             }}

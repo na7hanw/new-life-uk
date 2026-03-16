@@ -1,55 +1,78 @@
+import { useParams, useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext.jsx'
-import { SAVES, APPS } from '../data/saves.js'
-import { t18 } from '../lib/utils.js'
+import { SAVES, APPS, GEMS } from '../data/saves.js'
+import { t18, lsSet } from '../lib/utils.js'
 
 export default function SavesPage() {
+  const { subtab = 'apps' } = useParams()
+  const navigate = useNavigate()
   const { lang, ui } = useApp()
+
+  const handleSubtab = (id) => {
+    lsSet('nluk_stab', id)
+    navigate(`/saves/${id}`)
+  }
+
+  const renderCards = (items) =>
+    items.map(item => {
+      const c = t18(item.content, lang)
+      return (
+        <div key={c.title} className="content-card">
+          <div className="content-card-header">
+            <span className="content-card-icon">{item.icon}</span>
+            <span className="content-card-title">{c.title}</span>
+          </div>
+          <p className="content-card-body">{c.desc}</p>
+          {item.url && (
+            <a href={item.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
+              🔗 <span>{ui.openLink}</span> →
+            </a>
+          )}
+        </div>
+      )
+    })
 
   return (
     <div className="page-enter">
-      <div style={{ padding: '16px 20px 8px' }}>
-        <h2 style={{ fontSize: '1.15rem', fontWeight: 800 }}>{ui.appsTitle}</h2>
-        <p style={{ fontSize: '.9rem', color: 'var(--t2)', marginTop: 4, lineHeight: 1.55 }}>{ui.appsSub}</p>
+      <div className="sub-tabs" role="tablist">
+        {[
+          { id: 'apps', label: `📲 ${ui.appsTab}` },
+          { id: 'free', label: `🆓 ${ui.savesTab}` },
+          { id: 'gems', label: `💎 ${ui.gemsTab}` },
+        ].map(t => (
+          <button key={t.id} className={`sub-tab ${subtab === t.id ? 'active' : ''}`}
+            onClick={() => handleSubtab(t.id)} role="tab" aria-selected={subtab === t.id}>
+            {t.label}
+          </button>
+        ))}
       </div>
-      {APPS.map(a => {
-        const ac = t18(a.content, lang)
-        return (
-          <div key={ac.title} className="content-card">
-            <div className="content-card-header">
-              <span className="content-card-icon">{a.icon}</span>
-              <span className="content-card-title">{ac.title}</span>
-            </div>
-            <p className="content-card-body">{ac.desc}</p>
-            {a.url && (
-              <a href={a.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
-                🔗 <span>{ui.openLink}</span> →
-              </a>
-            )}
-          </div>
-        )
-      })}
 
-      <div className="section-label">{ui.savesTitle}</div>
-      <div style={{ padding: '0 20px 8px' }}>
-        <p style={{ fontSize: '.9rem', color: 'var(--t2)', lineHeight: 1.55 }}>{ui.savesSub}</p>
-      </div>
-      {SAVES.map(s => {
-        const sc = t18(s.content, lang)
-        return (
-          <div key={sc.title} className="content-card">
-            <div className="content-card-header">
-              <span className="content-card-icon">{s.icon}</span>
-              <span className="content-card-title">{sc.title}</span>
-            </div>
-            <p className="content-card-body">{sc.desc}</p>
-            {s.url && (
-              <a href={s.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
-                🔗 <span>{ui.openLink}</span> →
-              </a>
-            )}
+      {subtab === 'apps' && (
+        <>
+          <div style={{ padding: '4px 20px 8px' }}>
+            <p style={{ fontSize: '.9rem', color: 'var(--t2)', lineHeight: 1.55 }}>{ui.appsSub}</p>
           </div>
-        )
-      })}
+          {renderCards(APPS)}
+        </>
+      )}
+
+      {subtab === 'free' && (
+        <>
+          <div style={{ padding: '4px 20px 8px' }}>
+            <p style={{ fontSize: '.9rem', color: 'var(--t2)', lineHeight: 1.55 }}>{ui.savesSub}</p>
+          </div>
+          {renderCards(SAVES)}
+        </>
+      )}
+
+      {subtab === 'gems' && (
+        <>
+          <div style={{ padding: '4px 20px 8px' }}>
+            <p style={{ fontSize: '.9rem', color: 'var(--t2)', lineHeight: 1.55 }}>{ui.gemsSub}</p>
+          </div>
+          {renderCards(GEMS)}
+        </>
+      )}
 
       <div style={{ height: 8 }} />
     </div>

@@ -33,7 +33,7 @@ export default function App() {
       p.startsWith('/work')   ? 'Work and jobs' :
       p.startsWith('/cert/')  ? 'Certificate detail' :
       p.startsWith('/career/')? 'Career path detail' :
-      p === '/saves'      ? 'Saved resources' :
+      p.startsWith('/saves')  ? 'Free stuff' :
       p === '/more'       ? 'More and settings' : ''
     setRouteAnn(ann)
   }, [location.pathname])
@@ -41,13 +41,13 @@ export default function App() {
   const TABS = [
     { id: 'guides', path: '/', icon: '📖', label: ui.guides },
     { id: 'work', path: '/work/jobs', icon: '💼', label: ui.work },
-    { id: 'saves', path: '/saves', icon: '🆓', label: ui.saves },
+    { id: 'saves', path: '/saves/apps', icon: '🆓', label: ui.saves },
     { id: 'more', path: '/more', icon: '☰', label: ui.more },
   ]
 
   const isTabActive = (path) => {
     if (path === '/') return location.pathname === '/'
-    return location.pathname.startsWith(path.replace('/jobs', ''))
+    return location.pathname.startsWith(path.replace('/jobs', '').replace('/apps', ''))
   }
 
   const switchTab = (path) => {
@@ -101,7 +101,8 @@ export default function App() {
           <Route path="/work/:subtab" element={<WorkHub />} />
           <Route path="/cert/:id" element={<CertDetail />} />
           <Route path="/career/:id" element={<CareerDetail />} />
-          <Route path="/saves" element={<SavesPage />} />
+          <Route path="/saves" element={<Navigate to="/saves/apps" replace />} />
+          <Route path="/saves/:subtab" element={<SavesPage />} />
           <Route path="/more" element={<MorePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
