@@ -8,6 +8,7 @@ import JobCard from '../components/JobCard.jsx'
 const JOB_FILTERS = [
   { id: 'all',  label: 'All' },
   { id: 'noexp', label: '✅ No experience', tag: 'No experience needed' },
+  { id: 'pro',   label: '🎓 Professionals', tag: 'Overseas qualifications valued' },
   { id: 'visa',  label: '🌍 Visa sponsorship', tag: 'Visa sponsorship available' },
 ]
 
