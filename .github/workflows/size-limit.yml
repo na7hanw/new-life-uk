@@ -1,0 +1,22 @@
+name: Size Limit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Install size-limit
+        run: npm install -g size-limit
+      - name: Run size-limit
+        run: size-limit
+      - name: Notify if size has increased
+        if: ${{ steps.size-limit.outputs.size > 300000 }} # Change threshold as necessary
+        run: |
+          echo 'Bundle size has increased significantly!'
+          # Add your notification logic here
