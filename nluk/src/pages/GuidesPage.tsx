@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Fuse from 'fuse.ts'
+import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { LANGS, TIPS } from '../data/ui-strings.ts'
