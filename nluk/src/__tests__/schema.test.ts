@@ -4,9 +4,9 @@
  */
 import { describe, it, expect } from 'vitest'
 import { z } from 'zod'
-import { CERTS, CAREERS } from '../data/jobs.js'
-import { GUIDE_MAP, GUIDE_SOURCE_URL } from '../data/guides.js'
-import { SOS_NUMBERS } from '../data/emergency.js'
+import { CERTS, CAREERS } from '../data/jobs.ts'
+import { GUIDE_MAP, GUIDE_SOURCE_URL } from '../data/guides.ts'
+import { SOS_NUMBERS } from '../data/emergency.ts'
 
 // ─── Schemas ────────────────────────────────────────────────────────────────
 

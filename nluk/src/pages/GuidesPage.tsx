@@ -1,10 +1,10 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Fuse from 'fuse.js'
-import { useApp } from '../context/AppContext.jsx'
-import { GUIDES, GUIDE_PRIORITY, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.js'
-import { LANGS, TIPS } from '../data/ui-strings.js'
-import { t18 } from '../lib/utils.js'
+import Fuse from 'fuse.ts'
+import { useApp } from '../context/AppContext.tsx'
+import { GUIDES, GUIDE_PRIORITY, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
+import { LANGS, TIPS } from '../data/ui-strings.ts'
+import { t18 } from '../lib/utils.ts'
 
 export default function GuidesPage() {
   const { lang, ui, dir, af } = useApp()

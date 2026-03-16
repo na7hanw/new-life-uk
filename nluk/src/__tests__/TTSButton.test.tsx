@@ -6,7 +6,7 @@
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act, cleanup } from '@testing-library/react'
-import TTSButton from '../components/TTSButton.jsx'
+import TTSButton from '../components/TTSButton.tsx'
 
 const PROPS = {
   lang: 'en',

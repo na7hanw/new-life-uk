@@ -1,14 +1,15 @@
-import { createContext, useContext, useState, useEffect } from 'react'
-import { LANGS, UI } from '../data/ui-strings.js'
-import { ls, lsSet } from '../lib/utils.js'
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { LANGS, UI } from '../data/ui-strings.ts'
+import { ls, lsSet } from '../lib/utils.ts'
+import type { AppContextValue } from '../types'
 
-const AppContext = createContext(null)
+const AppContext = createContext<AppContextValue | null>(null)
 
-export function AppProvider({ children }) {
-  const [lang, setLang] = useState(() => ls('nluk_lang', 'en'))
-  const [dark, setDark] = useState(() => ls('nluk_dark', '') === 'true')
-  const [showSOS, setSOS] = useState(false)
-  const [showLang, setShowLang] = useState(() => !ls('nluk_lang', ''))
+export function AppProvider({ children }: { children: ReactNode }) {
+  const [lang, setLang] = useState<string>(() => ls('nluk_lang', 'en'))
+  const [dark, setDark] = useState<boolean>(() => ls('nluk_dark', '') === 'true')
+  const [showSOS, setSOS] = useState<boolean>(false)
+  const [showLang, setShowLang] = useState<boolean>(() => !ls('nluk_lang', ''))
 
   useEffect(() => {
     const L2 = LANGS.find(l => l.code === lang) || LANGS[0]

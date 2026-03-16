@@ -1,20 +1,20 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { useApp } from './context/AppContext.jsx'
-import { LANGS } from './data/ui-strings.js'
-import { SOS_NUMBERS } from './data/emergency.js'
-import ErrorBoundary from './components/ErrorBoundary.jsx'
-import Logo from './components/Logo.jsx'
-import SOSModal from './components/SOSModal.jsx'
-import FloatingSOS from './components/FloatingSOS.jsx'
+import { useApp } from './context/AppContext.tsx'
+import { LANGS } from './data/ui-strings.ts'
+import { SOS_NUMBERS } from './data/emergency.ts'
+import ErrorBoundary from './components/ErrorBoundary.tsx'
+import Logo from './components/Logo.tsx'
+import SOSModal from './components/SOSModal.tsx'
+import FloatingSOS from './components/FloatingSOS.tsx'
 
-const GuidesPage   = lazy(() => import('./pages/GuidesPage.jsx'))
-const GuideDetail  = lazy(() => import('./pages/GuideDetail.jsx'))
-const WorkHub      = lazy(() => import('./pages/WorkHub.jsx'))
-const CertDetail   = lazy(() => import('./pages/CertDetail.jsx'))
-const CareerDetail = lazy(() => import('./pages/CareerDetail.jsx'))
-const SavesPage    = lazy(() => import('./pages/SavesPage.jsx'))
-const MorePage     = lazy(() => import('./pages/MorePage.jsx'))
+const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
+const GuideDetail  = lazy(() => import('./pages/GuideDetail.tsx'))
+const WorkHub      = lazy(() => import('./pages/WorkHub.tsx'))
+const CertDetail   = lazy(() => import('./pages/CertDetail.tsx'))
+const CareerDetail = lazy(() => import('./pages/CareerDetail.tsx'))
+const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
+const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {

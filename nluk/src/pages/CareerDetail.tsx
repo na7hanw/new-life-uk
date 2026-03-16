@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { useApp } from '../context/AppContext.jsx'
-import { CAREER_MAP } from '../data/jobs.js'
-import { t18 } from '../lib/utils.js'
-import QuickLinks from '../components/QuickLinks.jsx'
-import ShareBar from '../components/ShareBar.jsx'
-import StepText from '../components/StepText.jsx'
+import { useApp } from '../context/AppContext.tsx'
+import { CAREER_MAP } from '../data/jobs.ts'
+import { t18 } from '../lib/utils.ts'
+import QuickLinks from '../components/QuickLinks.tsx'
+import ShareBar from '../components/ShareBar.tsx'
+import StepText from '../components/StepText.tsx'
 
 export default function CareerDetail() {
   const { id } = useParams()

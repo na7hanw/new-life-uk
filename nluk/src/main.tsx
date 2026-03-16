@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import * as Sentry from '@sentry/react'
-import { AppProvider } from './context/AppContext.jsx'
-import App from './App.jsx'
-import ErrorBoundary from './components/ErrorBoundary.jsx'
+import { AppProvider } from './context/AppContext.tsx'
+import App from './App.tsx'
+import ErrorBoundary from './components/ErrorBoundary.tsx'
 import './index.css'
 
 // Initialize Sentry for error tracking in production

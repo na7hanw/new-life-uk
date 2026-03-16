@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { useApp } from '../context/AppContext.jsx'
-import { GEMS } from '../data/saves.js'
-import { GITHUB_URL } from '../data/emergency.js'
-import { t18 } from '../lib/utils.js'
+import { useApp } from '../context/AppContext.tsx'
+import { GEMS } from '../data/saves.ts'
+import { GITHUB_URL } from '../data/emergency.ts'
+import { t18 } from '../lib/utils.ts'
 
 export default function MorePage() {
   const { lang, ui, L, dark, setDark, setShowLang } = useApp()

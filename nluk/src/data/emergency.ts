@@ -1,5 +1,7 @@
+import type { SosEntry, HelplineEntry } from '../types'
+
 // ─── EMERGENCY ───────────────────────────────────────────────────
-export const SOS_NUMBERS = [
+export const SOS_NUMBERS: SosEntry[] = [
   { name: "Emergency", num: "999", phone: "999", note: "Police / Fire / Ambulance" },
   { name: "NHS 111", num: "111", phone: "111", note: "Urgent medical advice · 24/7" },
   { name: "Samaritans", num: "116 123", phone: "116123", note: "Mental health crisis · 24/7" },
@@ -8,7 +10,7 @@ export const SOS_NUMBERS = [
   { name: "Migrant Help", num: "0808 801 0503", phone: "08088010503", note: "24/7 · Free" },
 ];
 
-export const HELPLINES = [
+export const HELPLINES: HelplineEntry[] = [
   { name: "Refugee Council", num: "0808 196 7272", phone: "08081967272", hours: "Mon–Fri 9am–4pm" },
   { name: "Shelter", num: "0808 800 4444", phone: "08088004444", hours: "Mon–Fri 8am–8pm" },
   { name: "Universal Credit", num: "0800 328 5644", phone: "08003285644", hours: "Mon–Fri 8am–6pm" },

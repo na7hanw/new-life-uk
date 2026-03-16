@@ -6,7 +6,7 @@
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act, cleanup } from '@testing-library/react'
-import ShareBar from '../components/ShareBar.jsx'
+import ShareBar from '../components/ShareBar.tsx'
 
 const UI = {
   shareWhatsapp: 'WhatsApp',
