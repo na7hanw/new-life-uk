@@ -202,6 +202,41 @@ export interface UiStrings {
   privacyLocal?: string
   privacyNone?: string
   gdprRights?: string
+  // PR #11
+  ttsListen?: string
+  ttsStop?: string
+  skipToContent?: string
+  loading?: string
+  // PR #14
+  autoTranslated?: string
+  translating?: string
+  installApp?: string
+  installDone?: string
+  langSuggest?: string
+  langSuggestUse?: string
+  langSuggestDismiss?: string
+  // PR #23
+  privacyKeyLang?: string
+  privacyKeyTheme?: string
+  privacyKeyTab?: string
+  privacyKeyConsent?: string
+  privacyCrashTitle?: string
+  privacyCrashBody?: string
+  privacyCrashOn?: string
+  privacyCrashOff?: string
+  privacyCrashEnable?: string
+  privacyCrashDisable?: string
+  privacyCrashSentry?: string
+  gdprRightsTitle?: string
+  gdprRightsBody?: string
+  gdprIco?: string
+  privacyControllerTitle?: string
+  privacyControllerBody?: string
+  clearData?: string
+  consentTitle?: string
+  consentBody?: string
+  consentAccept?: string
+  consentDecline?: string
   [key: string]: unknown
 }
 
@@ -220,4 +255,18 @@ export interface AppContextValue {
   fontClass: string
   ab: string
   af: string
+}
+
+// ─── Browser API extensions ──────────────────────────────────────
+
+/** PWA install prompt event (not yet in the standard TS lib). */
+export interface BeforeInstallPromptEvent extends Event {
+  prompt(): void
+  readonly userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
+
+declare global {
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent
+  }
 }

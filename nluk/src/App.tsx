@@ -4,8 +4,10 @@ import { useApp } from './context/AppContext.tsx'
 import { LANGS } from './data/ui-strings.ts'
 import { SOS_NUMBERS } from './data/emergency.ts'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
+import ConsentBanner from './components/ConsentBanner.tsx'
 import Logo from './components/Logo.tsx'
 import SOSModal from './components/SOSModal.tsx'
+import type { BeforeInstallPromptEvent } from './types'
 
 
 const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
@@ -20,8 +22,27 @@ const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
 export default function App() {
   const { lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, ui, dir, fontClass } = useApp()
   const [showSettings, setSettings] = useState(false)
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const [installDone, setInstallDone] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+
+  // Capture the PWA beforeinstallprompt event so we can show our own button
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault()
+      setInstallPrompt(e as BeforeInstallPromptEvent)
+    }
+    window.addEventListener('beforeinstallprompt', handler)
+    return () => window.removeEventListener('beforeinstallprompt', handler)
+  }, [])
+
+  const handleInstall = async () => {
+    if (!installPrompt) return
+    installPrompt.prompt()
+    const { outcome } = await installPrompt.userChoice
+    if (outcome === 'accepted') { setInstallDone(true); setInstallPrompt(null) }
+  }
 
   const isDetail = /^\/(guide|cert|career)\//.test(location.pathname)
   const [routeAnn, setRouteAnn] = useState('')
@@ -58,6 +79,9 @@ export default function App() {
   return (
     <div className={`app-root ${dark ? 'dark' : ''} ${fontClass}`} dir={dir}>
 
+      {/* SKIP-TO-CONTENT for keyboard navigation */}
+      <a href="#main-content" className="skip-link">{ui.skipToContent || 'Skip to content'}</a>
+
       {/* SCREEN READER ROUTE ANNOUNCER */}
       <span className="sr-only" aria-live="polite" aria-atomic="true">{routeAnn}</span>
 
@@ -92,7 +116,7 @@ export default function App() {
       )}
 
       {/* SCROLLABLE CONTENT */}
-      <main className="app-scroll">
+      <main className="app-scroll" id="main-content">
         <ErrorBoundary>
           <Suspense fallback={<div className="skeleton" role="status" aria-busy="true" aria-label="Loading..." style={{ height: 48, width: 48, borderRadius: '50%', margin: '32px auto' }} />}>
             <Routes>
@@ -129,6 +153,9 @@ export default function App() {
       {/* SOS MODAL — focus-trapped, no backdrop dismiss (safety-critical) */}
       <SOSModal showSOS={showSOS} setSOS={setSOS} ui={ui} SOS_NUMBERS={SOS_NUMBERS} />
 
+      {/* CONSENT BANNER — shown once on first visit when Sentry is configured */}
+      <ConsentBanner ui={ui} />
+
       {/* SETTINGS MODAL */}
       {showSettings && (
         <div className="modal-backdrop" role="presentation"
@@ -148,6 +175,14 @@ export default function App() {
               <span style={{ fontWeight: 700 }}>{dark ? ui.darkMode : ui.lightMode}</span>
               <button className="btn btn-primary btn-sm" onClick={() => setDark(d => !d)}>{dark ? ui.lightMode : ui.darkMode}</button>
             </div>
+            {(installPrompt || installDone) && (
+              <div className="settings-row">
+                <span style={{ fontWeight: 700 }}>{ui.installApp || '📲 Install App'}</span>
+                <button className="btn btn-outline btn-sm" onClick={handleInstall} disabled={installDone}>
+                  {installDone ? (ui.installDone || 'Installed!') : '📲 Install'}
+                </button>
+              </div>
+            )}
             <h3 className="modal-title" style={{ marginTop: 16, marginBottom: 4 }}>{ui.language}</h3>
             {LANGS.map(l => (
               <button key={l.code} className="settings-row" onClick={() => { setLang(l.code); setSettings(false) }} aria-label={l.native}>

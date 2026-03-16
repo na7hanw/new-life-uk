@@ -149,8 +149,33 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 }
 
 /* RTL and Ethiopic font overrides */
-[dir="rtl"] { font-family: 'Noto Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif; line-height: 1.85; }
-.eth-font  { font-family: 'Noto Sans Ethiopic', 'Plus Jakarta Sans', system-ui, sans-serif; }
+[dir="rtl"] { font-family: 'Arabic UI Text', 'Geeza Pro', 'Segoe UI', system-ui, sans-serif; line-height: 1.85; }
+.eth-font  { font-family: 'Kefa', 'Noto Sans Ethiopic', system-ui, sans-serif; }
+
+/* Skip-to-content link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 8px;
+  padding: 8px 16px;
+  background: var(--ac);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0 0 8px 8px;
+  z-index: 9999;
+  transition: top .15s;
+}
+.skip-link:focus { top: 0; }
+
+/* Lazy-load suspense fallback */
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  font-size: .95rem;
+  color: var(--t3);
+}
 
 /* ─── Layout ─── */
 .app-root {
@@ -1259,3 +1284,62 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   .app-root { max-width: 800px; }
   .lang-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ─── Auto-translation badges & states ─── */
+@keyframes translating-shimmer {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.55; }
+  100% { opacity: 1; }
+}
+
+.translating {
+  animation: translating-shimmer 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.translating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 6px;
+  color: var(--t3);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.translating-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--bd);
+  border-top-color: var(--ac);
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin .8s linear infinite;
+  flex-shrink: 0;
+}
+
+.auto-translated-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--t3);
+  background: var(--bg3);
+  border: 1px solid var(--bd);
+  border-radius: 20px;
+  padding: 2px 9px;
+  margin-top: 8px;
+  letter-spacing: 0.01em;
+}
+
+/* Stagger content cards so they cascade in nicely */
+.page-enter .content-card:nth-child(1)  { animation: fadeUp .22s .04s ease both; opacity: 0; }
+.page-enter .content-card:nth-child(2)  { animation: fadeUp .22s .07s ease both; opacity: 0; }
+.page-enter .content-card:nth-child(3)  { animation: fadeUp .22s .10s ease both; opacity: 0; }
+.page-enter .content-card:nth-child(4)  { animation: fadeUp .22s .13s ease both; opacity: 0; }
+.page-enter .content-card:nth-child(5)  { animation: fadeUp .22s .16s ease both; opacity: 0; }
+.page-enter .content-card:nth-child(6)  { animation: fadeUp .22s .19s ease both; opacity: 0; }
+.page-enter .content-card:nth-child(n+7){ animation: fadeUp .22s .22s ease both; opacity: 0; }

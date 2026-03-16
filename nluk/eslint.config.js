@@ -18,6 +18,10 @@ const sharedGlobals = {
   clearTimeout: 'readonly',
   setInterval: 'readonly',
   clearInterval: 'readonly',
+  // PR #14 — auto-translate uses fetch and AbortController
+  fetch: 'readonly',
+  AbortController: 'readonly',
+  Promise: 'readonly',
 }
 
 export default [
@@ -69,7 +73,7 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     settings: {
-      react: { version: '18.3' },
+      react: { version: '19.2' },
     },
     languageOptions: {
       parser: tsParser,

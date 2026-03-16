@@ -5,8 +5,24 @@ import type { AppContextValue } from '../types'
 
 const AppContext = createContext<AppContextValue | null>(null)
 
+// Detect the best supported language from the browser's preferences
+function detectBrowserLang(): string {
+  const supported = new Set(LANGS.map(l => l.code))
+  const candidates = navigator.languages?.length ? navigator.languages : [navigator.language || 'en']
+  for (const full of candidates) {
+    const code = full.toLowerCase().slice(0, 2)
+    if (supported.has(code)) return code
+  }
+  return 'en'
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<string>(() => ls('nluk_lang', 'en'))
+  const [lang, setLang] = useState<string>(() => {
+    const saved = ls('nluk_lang', '')
+    if (saved) return saved
+    // Auto-detect browser language on first visit
+    return detectBrowserLang()
+  })
   const [dark, setDark] = useState<boolean>(() => ls('nluk_dark', '') === 'true')
   const [showSOS, setSOS] = useState<boolean>(false)
   const [showLang, setShowLang] = useState<boolean>(() => !ls('nluk_lang', ''))
