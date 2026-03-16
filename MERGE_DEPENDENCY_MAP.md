@@ -4,21 +4,41 @@
 
 ---
 
+## 🚦 Merge Train Status
+
+| Stage | Description | Status |
+|-------|-------------|--------|
+| **Stage 1** | Low-risk / High-impact Infrastructure | ✅ **COMPLETE** — Build passing, 18/18 tests green |
+| **Stage 2** | Major Structural Shifts (Cloudflare, TypeScript, UI Redesign) | ⏳ Ready to begin |
+| **Stage 3** | Content & Compliance (i18n, GDPR, Sub-tabs, URL fixes) | ⏳ Waiting on Stage 2 |
+
+### Stage 1 Completion Summary (March 2026)
+- `LICENSE` created: MIT — Copyright (c) 2026 New Life UK ✅
+- PRs #18, #19, #21, #22: GitHub Actions bumped to latest versions ✅
+- PR #9: `@sentry/tracing` removed, ESLint React `'19.2'`, `onFID→onINP` ✅
+- PR #25: Husky v9 pre-commit + pre-push test gate active ✅
+- PR #1: Superseded — Vite 8 uses Rolldown, no esbuild dependency ✅
+- `npm run build`: **✅ 339 modules, 0 errors, 0 vulnerabilities**
+- `npm test`: **✅ 18/18 tests pass**
+- `npm run lint`: **✅ 0 warnings**
+
+---
+
 ## Task 1 · Dependency & Conflict Audit
 
 ### PR Inventory by Category
 
 #### 🟦 FOUNDATIONAL — Infrastructure & Tooling (merge first)
 
-| PR | Title | Key Files Changed | Risk |
-|----|-------|-------------------|------|
-| [#1](https://github.com/na7hanw/new-life-uk/pull/1) | bump esbuild 0.21→0.25 | `nluk/package-lock.json` | 🟢 None |
-| [#18](https://github.com/na7hanw/new-life-uk/pull/18) | ci: bump release-drafter 6→7 | `.github/workflows/release-drafter.yml` | 🟢 None |
-| [#19](https://github.com/na7hanw/new-life-uk/pull/19) | ci: bump actions/labeler 5→6 | `.github/workflows/labeler.yml` | 🟢 None |
-| [#21](https://github.com/na7hanw/new-life-uk/pull/21) | ci: bump lighthouse-ci-action 11→12 | `.github/workflows/lighthouse.yml` | 🟢 None |
-| [#22](https://github.com/na7hanw/new-life-uk/pull/22) | ci: bump create-pull-request 7→8 | `.github/workflows/auto-translate.yml` | 🟢 None |
-| [#9](https://github.com/na7hanw/new-life-uk/pull/9) | Fix LICENSE, ESLint React version, deprecated Sentry/web-vitals | `LICENSE`, `nluk/eslint.config.js`, `nluk/package.json`, `nluk/src/main.jsx` | 🟡 Low |
-| [#25](https://github.com/na7hanw/new-life-uk/pull/25) | Husky v9 syntax + pre-push test gate | `.husky/pre-commit`, `.husky/pre-push`, `nluk/package.json` | 🟡 Low |
+| PR | Title | Key Files Changed | Risk | Status |
+|----|-------|-------------------|------|--------|
+| [#1](https://github.com/na7hanw/new-life-uk/pull/1) | bump esbuild 0.21→0.25 | `nluk/package-lock.json` | 🟢 None | ✅ **Superseded** — Vite 8 uses Rolldown (esbuild no longer a direct dep) |
+| [#18](https://github.com/na7hanw/new-life-uk/pull/18) | ci: bump release-drafter 6→7 | `.github/workflows/release-drafter.yml` | 🟢 None | ✅ **Merged** (Stage 1) |
+| [#19](https://github.com/na7hanw/new-life-uk/pull/19) | ci: bump actions/labeler 5→6 | `.github/workflows/labeler.yml` | 🟢 None | ✅ **Merged** (Stage 1) |
+| [#21](https://github.com/na7hanw/new-life-uk/pull/21) | ci: bump lighthouse-ci-action 11→12 | `.github/workflows/lighthouse.yml` | 🟢 None | ✅ **Merged** (Stage 1) |
+| [#22](https://github.com/na7hanw/new-life-uk/pull/22) | ci: bump create-pull-request 7→8 | `.github/workflows/auto-translate.yml` | 🟢 None | ✅ **Merged** (Stage 1) |
+| [#9](https://github.com/na7hanw/new-life-uk/pull/9) | Fix LICENSE, ESLint React version, deprecated Sentry/web-vitals | `LICENSE`, `nluk/eslint.config.js`, `nluk/package.json`, `nluk/src/main.jsx` | 🟡 Low | ✅ **Merged** (Stage 1) |
+| [#25](https://github.com/na7hanw/new-life-uk/pull/25) | Husky v9 syntax + pre-push test gate | `.husky/pre-commit`, `.husky/pre-push`, `nluk/package.json` | 🟡 Low | ✅ **Merged** (Stage 1) |
 
 #### 🟨 STRUCTURAL — Deployment & Architecture shifts
 
