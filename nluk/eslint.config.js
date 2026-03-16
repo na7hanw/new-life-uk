@@ -22,6 +22,12 @@ const sharedGlobals = {
   fetch: 'readonly',
   AbortController: 'readonly',
   Promise: 'readonly',
+  // DOM types used in TypeScript generics and interface declarations
+  Event: 'readonly',
+  HTMLButtonElement: 'readonly',
+  HTMLInputElement: 'readonly',
+  HTMLElement: 'readonly',
+  HTMLDivElement: 'readonly',
 }
 
 export default [
