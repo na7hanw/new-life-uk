@@ -25,7 +25,10 @@ function JobCard({ j, lang, ui }) {
         </div>
       )}
 
-      {open && (
+      <div
+        data-state={open ? 'open' : 'closed'}
+        className={`${styles.jobBodyWrapper} ${open ? styles.jobBodyWrapperOpen : ''}`}
+      >
         <div id={bodyId} className={styles.jobBody}>
           <p className={styles.jobDesc}>{jc.desc}</p>
 
@@ -49,7 +52,7 @@ function JobCard({ j, lang, ui }) {
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
