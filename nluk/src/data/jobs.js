@@ -66,7 +66,7 @@ export const JOBS = [
     tags: ["CSCS card needed", "Free funded training available"],
     docs: ["Share code (Right to Work)", "CSCS Green Card (get free via Skills Bootcamp)", "Safety boots and hi-vis (often provided on site)", "Photo ID"],
     applyLinks: [
-      { name: "Free CSCS Training — CITB", url: "https://www.citb.co.uk/courses-and-qualifications/cscs-health-safety-and-environment-test/" },
+      { name: "Free CSCS Training — CITB", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/" },
       { name: "Find a free Skills Bootcamp (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },
       { name: "Hays Construction Jobs", url: "https://www.hays.co.uk/construction-jobs" },
       { name: "Manpower Construction Jobs", url: "https://www.manpower.co.uk" },
@@ -107,7 +107,7 @@ export const JOBS = [
     tags: ["No experience needed", "Flexible hours"],
     docs: ["Share code (Right to Work)", "References (helpful but not always required)", "DBS check for some roles (healthcare / schools — employer arranges)"],
     applyLinks: [
-      { name: "OCS Group Jobs", url: "https://www.ocsgroup.com/join-us/" },
+      { name: "OCS Group Jobs", url: "https://ocs.com/uk/careers/" },
       { name: "ISS UK Careers", url: "https://www.issworld.com/en-gb/career/your-career-at-iss/uk-jobs" },
       { name: "Mitie Careers", url: "https://www.mitie.com/careers/" },
       { name: "Sodexo UK Jobs", url: "https://www.sodexojobs.co.uk/" },
@@ -122,7 +122,7 @@ export const JOBS = [
     docs: ["Share code (Right to Work)", "SIA Door Supervisor or Security Guarding licence (companies can fund this)", "Enhanced DBS (employer arranges)", "5-year checkable history"],
     applyLinks: [
       { name: "G4S UK Careers", url: "https://www.g4s.com/en-gb/careers" },
-      { name: "Securitas UK Jobs", url: "https://www.securitas.com/gb/en/careers/" },
+      { name: "Securitas UK Jobs", url: "https://www.securitas.uk.com/careers/" },
       { name: "Corps Security Careers", url: "https://www.corpssecurity.co.uk/careers/" },
       { name: "Compass Group Security Jobs", url: "https://www.compass-group.co.uk/jobs/" },
       { name: "Indeed Security Officer Jobs", url: "https://uk.indeed.com/jobs?q=security+officer" },
@@ -137,8 +137,8 @@ export const JOBS = [
     visa: true,
     applyLinks: [
       { name: "TeachVac (free job board)", url: "https://www.teachvac.co.uk" },
-      { name: "TES Teaching Jobs", url: "https://www.tes.com/jobs/teaching-assistants" },
-      { name: "Hays Education", url: "https://www.hays.co.uk/education-jobs" },
+      { name: "TES Teaching Jobs", url: "https://www.tes.com/jobs/teaching-assistant" },
+      { name: "Hays Education", url: "https://www.hays.co.uk/jobs/education" },
       { name: "Reed Education Jobs", url: "https://www.reed.co.uk/jobs/teaching-assistant-jobs" },
     ],
   },
@@ -149,7 +149,7 @@ export const JOBS = [
     tags: ["No experience needed", "Training provided"],
     docs: ["Share code (Right to Work)", "Food Hygiene cert (helpful — free via Jobcentre)", "Smart/uniform appearance"],
     applyLinks: [
-      { name: "Starbucks UK Jobs", url: "https://www.starbucks.co.uk/careers" },
+      { name: "Starbucks UK Jobs", url: "https://www.starbucksemeacareers.com/en" },
       { name: "Costa Coffee Jobs", url: "https://www.costacoffee.com/jobs" },
       { name: "Caffè Nero Jobs", url: "https://www.caffenero.com/uk/careers" },
       { name: "Pret a Manger Jobs", url: "https://jobs.pret.com/jobs/gb" },
@@ -196,7 +196,7 @@ export const JOBS = [
       { name: "Tesco Jobs", url: "https://www.tesco-careers.com/en/search/" },
       { name: "Sainsbury's Jobs", url: "https://jobs.sainsburys.co.uk" },
       { name: "Asda Jobs", url: "https://www.asda.jobs" },
-      { name: "Aldi UK Jobs", url: "https://www.aldi.co.uk/about-aldi/careers" },
+      { name: "Aldi UK Jobs", url: "https://www.aldirecruitment.co.uk/" },
       { name: "Lidl UK Jobs", url: "https://www.careers.lidl.co.uk" },
       { name: "Morrisons Careers", url: "https://www.morrisons.jobs" },
       { name: "M&S Jobs", url: "https://careers.marksandspencer.com" },
@@ -214,7 +214,7 @@ export const JOBS = [
       { name: "Drive with Bolt UK", url: "https://bolt.eu/en-gb/drive/" },
       { name: "Addison Lee Driver Jobs", url: "https://www.addisonlee.com/become-an-addisonlee-driver/" },
       { name: "Ola UK Drivers", url: "https://driver.olacabs.com/gb/en/registration" },
-      { name: "Apply for PHV licence (GOV.UK)", url: "https://www.gov.uk/apply-for-taxi-licence" },
+      { name: "Apply for PHV licence (GOV.UK)", url: "https://www.gov.uk/taxi-driver-licence" },
     ],
   },
   // Added March 2026 - refugee-friendly job agencies / agency link
@@ -271,11 +271,11 @@ export const CERTS = [
     ]},
     links: [
       { name: "Highfield Food Safety L2", url: "https://www.highfield.co.uk/qualifications/food-safety/" },
-      { name: "Flexible Support Fund (GOV.UK)", url: "https://www.gov.uk/flexible-support-fund" },
+      { name: "Flexible Support Fund (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },
     ],
     studyLinks: [
-      { name: "Food safety basics — Food Standards Agency", url: "https://www.food.gov.uk/business-guidance/food-safety" },
-      { name: "Free practice test (Virtual College)", url: "https://www.virtual-college.co.uk/resources/food-hygiene-test" },
+      { name: "Food safety basics — Food Standards Agency", url: "https://www.food.gov.uk/business-guidance/business-guidance/food-safety-management-for-businesses" },
+      { name: "Free practice test (Virtual College)", url: "https://www.virtual-college.co.uk/food-hygiene-certificates" },
     ],
   },
   {
@@ -294,12 +294,12 @@ export const CERTS = [
     ]},
     links: [
       { name: "Find Skills Bootcamp (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },
-      { name: "Apply for CSCS card", url: "https://www.cscs.uk.com/applying-for-a-card/" },
-      { name: "Book CITB test", url: "https://www.citb.co.uk/standards-and-delivering-training/health-safety-environment-hse-test/" },
+      { name: "Apply for CSCS card", url: "https://www.cscs.uk.com/applying-for-cards/" },
+      { name: "Book CITB test", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/" },
     ],
     studyLinks: [
-      { name: "Free CITB mock test (CITB)", url: "https://www.citb.co.uk/standards-and-delivering-training/health-safety-environment-hse-test/mock-test/" },
-      { name: "Which CSCS card do you need?", url: "https://www.cscs.uk.com/applying-for-a-card/which-card/" },
+      { name: "Free CITB mock test (CITB)", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/hse-test-support/" },
+      { name: "Which CSCS card do you need?", url: "https://www.cscs.uk.com/types-of-cscs-cards/" },
     ],
   },
   {
@@ -340,7 +340,7 @@ export const CERTS = [
       "First aid on your CV is valued in care, education, hospitality, construction, and retail.",
     ]},
     links: [
-      { name: "Red Cross First Aid Training (free for refugees)", url: "https://www.redcross.org.uk/get-help/get-first-aid-training" },
+      { name: "Red Cross First Aid Training (free for refugees)", url: "https://www.redcross.org.uk/first-aid/learn-first-aid" },
       { name: "St John Ambulance Courses", url: "https://www.sja.org.uk/courses/first-aid-courses/" },
     ],
     studyLinks: [
@@ -363,12 +363,12 @@ export const CERTS = [
       "FLT operators earn £12–£16/hr. Night shifts and bank holidays attract premium pay.",
     ]},
     links: [
-      { name: "Find FLT training centres (RTITB)", url: "https://www.rtitb.com/find-a-training-centre/" },
+      { name: "Find FLT training centres (RTITB)", url: "https://www.rtitb.com/course-locator/" },
       { name: "Skills Bootcamps — Logistics (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },
     ],
     studyLinks: [
-      { name: "Preparing for forklift test (RTITB guide)", url: "https://www.rtitb.com/news/preparing-forklift-licence-test/" },
-      { name: "ITSSAR approved instructors", url: "https://www.itssar.org.uk/approved-instructors" },
+      { name: "Preparing for forklift test (RTITB guide)", url: "https://www.rtitb.com/resources/" },
+      { name: "ITSSAR approved instructors", url: "https://www.itssar.org.uk/" },
     ],
   },
   {
@@ -417,7 +417,7 @@ export const CERTS = [
     ],
     studyLinks: [
       { name: "Care Certificate standards (Skills for Care)", url: "https://www.skillsforcare.org.uk/Developing-your-workforce/Care-Certificate/Care-Certificate.aspx" },
-      { name: "Free care training resources (Skills for Care)", url: "https://www.skillsforcare.org.uk/Learning-development/learning-and-development-resources/Learning-and-development-resources.aspx" },
+      { name: "Free care training resources (Skills for Care)", url: "https://www.skillsforcare.org.uk/Developing-your-workforce/Skills-for-Care-eLearning.aspx" },
     ],
   },
   {
@@ -434,12 +434,12 @@ export const CERTS = [
       "⚠ You need the right to work and must be 18+ to hold a Personal Licence.",
     ]},
     links: [
-      { name: "Apply for Personal Licence (GOV.UK)", url: "https://www.gov.uk/apply-for-a-premises-licence-to-sell-alcohol" },
+      { name: "Apply for Personal Licence (GOV.UK)", url: "https://www.gov.uk/guidance/alcohol-licensing" },
       { name: "APLH qualification (Highfield)", url: "https://www.highfield.co.uk/qualifications/alcohol/" },
     ],
     studyLinks: [
       { name: "APLH revision (British Institute of Innkeeping)", url: "https://www.bii.org/Qualifications/APLH" },
-      { name: "Licensing Act 2003 — plain English guide (GOV.UK)", url: "https://www.gov.uk/government/publications/summary-of-the-licensing-act-2003" },
+      { name: "Licensing Act 2003 — plain English guide (GOV.UK)", url: "https://www.gov.uk/guidance/alcohol-licensing" },
     ],
   },
   {
@@ -459,12 +459,12 @@ export const CERTS = [
     ]},
     links: [
       { name: "Taxi licensing guidance (GOV.UK)", url: "https://www.gov.uk/taxi-driver-licence" },
-      { name: "Apply for taxi licence via your council (GOV.UK)", url: "https://www.gov.uk/apply-for-taxi-licence" },
+      { name: "Apply for taxi licence via your council (GOV.UK)", url: "https://www.gov.uk/taxi-driver-licence" },
       { name: "TfL Taxi & Private Hire (London only)", url: "https://tfl.gov.uk/info-for/taxis-and-private-hire/" },
     ],
     studyLinks: [
       { name: "Knowledge of London preparation (TfL)", url: "https://tfl.gov.uk/info-for/taxis-and-private-hire/licensing/learn-the-knowledge-of-london" },
-      { name: "D4 medical form info (DVLA)", url: "https://www.gov.uk/government/publications/d4-medical-examination-report-for-a-lorry-bus-driver" },
+      { name: "D4 medical form info (DVLA)", url: "https://www.gov.uk/government/publications/d4-medical-examiner-report-for-a-lorry-or-bus-driving-licence" },
     ],
   },
   {
@@ -491,7 +491,7 @@ export const CERTS = [
     studyLinks: [
       { name: "Official Highway Code — FREE (GOV.UK)", url: "https://www.gov.uk/highway-code" },
       { name: "Free theory test practice (GOV.UK)", url: "https://www.gov.uk/take-practice-theory-test" },
-      { name: "Hazard perception test guide (GOV.UK)", url: "https://www.gov.uk/hazard-perception-test" },
+      { name: "Hazard perception test guide (GOV.UK)", url: "https://www.gov.uk/theory-test/hazard-perception-test" },
     ],
   },
 ];
@@ -512,7 +512,7 @@ export const CAREERS = [
   { icon: "📊", content: { en: { title: "Project & Business Management", salary: "£30K–£75K+" } }, tags: ["APM", "CMI", "MBA"], steps: { en: ["Your MBA from a recognised university is a major asset. Get UK ENIC recognition (£49) so UK employers can verify it.", "APM (Association for Project Management) offers refugee support and mentoring. The APM PMQ qualification (£200–£400) is the UK industry standard for project managers.", "CMI (Chartered Management Institute) is the UK's leading management body. A Chartered Manager Degree Apprenticeship delivers a free CMI Level 6 qualification while earning £20K–£25K.", "PMP (Project Management Professional) is globally recognised and directly complements an MBA — study online, exam ~£300.", "Prince2 Foundation + Practitioner (£500 total) is used across UK government and public sector projects.", "Target roles: project coordinator → project manager → programme manager → director. Your MBA positions you for management fast-track at most employers.", "Key sectors hiring project managers: infrastructure (aligned with your engineering background), construction, energy, IT, financial services.", "Target employers: Mott MacDonald, Atkins, Jacobs, Amey, BAM, Transport for London, NHS, HMRC digital."] }, links: [{ name: "APM (project management)", url: "https://www.apm.org.uk/" }, { name: "CMI (management institute)", url: "https://www.managers.org.uk/" }, { name: "UK ENIC (degree recognition)", url: "https://www.enic.org.uk/Qualifications/SOC/Default.aspx" }, { name: "Find a degree apprenticeship", url: "https://www.findapprenticeship.service.gov.uk/" }] },
   { icon: "🏥", content: { en: { title: "Healthcare & Nursing", salary: "£22K–£50K+" } }, tags: ["NMC", "NHS", "Band 2–7"], steps: { en: ["HCA (Band 2–3): no experience, Care Cert free, ~£22K.", "NHS Refugee Employment Programme.", "Overseas nurses: NMC + OSCE exam. Many trusts fund it."] }, links: [{ name: "NHS Jobs", url: "https://www.jobs.nhs.uk/" }, { name: "NMC Registration", url: "https://www.nmc.org.uk/registration/joining-the-register/" }] },
   { icon: "🌱", content: { en: { title: "Green Energy & Retrofit", salary: "£28K–£65K+" } }, tags: ["Heat Pumps", "Solar", "EV"], steps: { en: ["UK needs 250K+ green workers by 2030.", "Heat pump installation: £35K–£65K+. Free CITB training.", "No previous experience needed for many entry routes."] }, links: [{ name: "CITB", url: "https://www.citb.co.uk/" }, { name: "Skills Bootcamps (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" }] },
-  { icon: "🗣", content: { en: { title: "Translation & Interpreting", salary: "£25K–£60K+" } }, tags: ["CIOL", "NRPSI", "Amharic"], steps: { en: ["Amharic and Tigrinya are critically rare in the UK — demand far exceeds supply in NHS hospitals, courts, local authorities, and the asylum system. Your language alone is a significant professional asset.", "Start immediately (no qualification required): Language Line, thebigword, and Capita Translation hire telephone and video interpreters now. Your language skills are enough to begin earning.", "NHS interpreting: contact your local NHS trust's interpreter services directly. The NHS is legally required to provide interpreting and always needs rare language speakers urgently.", "Court and legal interpreting: the highest paid work (£35–£65/hr for rare languages). Register with the National Register of Public Service Interpreters (NRPSI) at nrpsi.org.uk — this unlocks NHS, police, and court bookings.", "CIOL (Chartered Institute of Linguists): UK's leading professional body. The Diploma in Translation (DipTrans) is the gold-standard qualification — prepare with CIOL study guides.", "ITI (Institute of Translation and Interpreting): professional membership and directory listing. Associate membership available while building your portfolio.", "Your engineering and business background opens premium niches: technical translation (engineering specs, contracts), financial/commercial translation, and expert witness interpreting — all command higher rates.", "Freelance profile: list on ProZ.com, Translators Cafe, and the ITI directory. Amharic–English specialists can charge £0.10–£0.20 per word for written translation.", "Long-term: a Language Service Provider (LSP) of your own is a realistic business route given the scarcity of Amharic professionals in the UK."] }, links: [{ name: "NRPSI (public service register)", url: "https://www.nrpsi.org.uk" }, { name: "CIOL (Chartered Institute of Linguists)", url: "https://www.ciol.org.uk" }, { name: "ITI (Institute of Translation)", url: "https://www.iti.org.uk" }, { name: "Language Line — become an interpreter", url: "https://www.languageline.com/uk/interpreters/" }] },
+  { icon: "🗣", content: { en: { title: "Translation & Interpreting", salary: "£25K–£60K+" } }, tags: ["CIOL", "NRPSI", "Amharic"], steps: { en: ["Amharic and Tigrinya are critically rare in the UK — demand far exceeds supply in NHS hospitals, courts, local authorities, and the asylum system. Your language alone is a significant professional asset.", "Start immediately (no qualification required): Language Line, thebigword, and Capita Translation hire telephone and video interpreters now. Your language skills are enough to begin earning.", "NHS interpreting: contact your local NHS trust's interpreter services directly. The NHS is legally required to provide interpreting and always needs rare language speakers urgently.", "Court and legal interpreting: the highest paid work (£35–£65/hr for rare languages). Register with the National Register of Public Service Interpreters (NRPSI) at nrpsi.org.uk — this unlocks NHS, police, and court bookings.", "CIOL (Chartered Institute of Linguists): UK's leading professional body. The Diploma in Translation (DipTrans) is the gold-standard qualification — prepare with CIOL study guides.", "ITI (Institute of Translation and Interpreting): professional membership and directory listing. Associate membership available while building your portfolio.", "Your engineering and business background opens premium niches: technical translation (engineering specs, contracts), financial/commercial translation, and expert witness interpreting — all command higher rates.", "Freelance profile: list on ProZ.com, Translators Cafe, and the ITI directory. Amharic–English specialists can charge £0.10–£0.20 per word for written translation.", "Long-term: a Language Service Provider (LSP) of your own is a realistic business route given the scarcity of Amharic professionals in the UK."] }, links: [{ name: "NRPSI (public service register)", url: "https://www.nrpsi.org.uk" }, { name: "CIOL (Chartered Institute of Linguists)", url: "https://www.ciol.org.uk" }, { name: "ITI (Institute of Translation)", url: "https://www.iti.org.uk" }, { name: "Language Line — become an interpreter", url: "https://www.languageline.com/en-gb/careers" }] },
   { icon: "🏘", content: { en: { title: "Property Valuation & Surveying", salary: "£35K–£80K+" } }, tags: ["RICS", "MRICS", "APC"], steps: { en: ["Overseas property valuation experience (e.g. bank valuations, residential, commercial) is directly relevant. RICS explicitly recognises international professional experience and has a dedicated pathway for overseas-qualified surveyors.", "RICS (Royal Institution of Chartered Surveyors) is the UK gold standard. MRICS status unlocks the best roles. Email international@rics.org to discuss your route — they actively recruit internationally experienced professionals.", "Senior Professional APC Route: if overseas experience is substantial, you may qualify for this accelerated route — bypassing the standard 24-month structured training. Significant valuation backgrounds make this realistic.", "Step 1: UK ENIC recognition of your degree (£49) — establishes academic equivalence for RICS assessment.", "Step 2: Register with RICS as an Associate (AssocRICS) first — this is achievable quickly and lets you work as a surveyor while pursuing full MRICS.", "Entry roles while working toward MRICS: assistant valuer, estates officer, property consultant at councils, housing associations, CBRE, JLL, Savills, Knight Frank, or any mortgage lender.", "Bank/lender-panel valuer roles are a strong match for overseas valuation experience. UK banks require Red Book valuations. Target: Countrywide Surveying, e.surv, LSL Property Services.", "MRICS salary: £45K–£75K. Senior Registered Valuer or Director: £65K–£100K+.", "RefuAid loans can fund RICS assessment and APC costs. Breaking Barriers may also have employer connections in the built environment sector."] }, links: [{ name: "RICS — routes to membership", url: "https://www.rics.org/surveying-profession/join-rics/" }, { name: "RICS Senior Professional APC", url: "https://www.rics.org/surveying-profession/join-rics/assessment-of-professional-competence-apc/" }, { name: "RICS International routes", url: "https://www.rics.org/surveying-profession/join-rics/international-routes-to-membership/" }, { name: "UK ENIC (degree recognition)", url: "https://www.enic.org.uk/Qualifications/SOC/Default.aspx" }] },
   { icon: "🤝", content: { en: { title: "Social Work & Support Work", salary: "£22K–£45K+" } }, tags: ["HCPC", "Social Work England", "Care Cert"], steps: { en: ["Support Worker is one of the most accessible, high-demand entry roles in the UK — no prior UK experience required. Start within weeks of getting refugee status.", "The Care Certificate (15-standard induction, free from employer) is your entry credential. NHS, care homes, charities, and councils all hire Support Workers immediately.", "Support Worker salary: £22K–£28K. Senior Support Worker: £28K–£35K. Many roles offer shift premiums, overtime, and free training.", "If you have a relevant overseas degree (social sciences, psychology, health, education), you can train as a qualified Social Worker. Social Work England is the UK regulator.", "The ASYE (Assessed and Supported Year in Employment) is a paid first year of practice after qualifying — all employers provide this automatically.", "Qualifying routes: MA Social Work (2 years, funded bursary available), or fast-track Frontline/Step Up programmes for graduates (salaried, competitive).", "High-demand specialisms with better pay: mental health, learning disabilities, children's services (CYPS), domestic abuse support, refugee resettlement (directly relevant).", "Organisations specifically hiring refugees and people with lived experience: Nacro, St Mungo's, Shelter, Mind, Rethink, local councils.", "Overseas social work qualifications: assessed by Social Work England — contact them at socialworkengland.org.uk for your specific route.", "HCPC (Health and Care Professions Council) regulates social workers in some devolved nations — check requirements for Scotland, Wales, Northern Ireland separately."] }, links: [{ name: "Social Work England", url: "https://www.socialworkengland.org.uk/" }, { name: "Frontline (fast-track social work)", url: "https://thefrontline.org.uk/" }, { name: "Step Up to Social Work", url: "https://www.gov.uk/guidance/step-up-to-social-work" }, { name: "NHS Jobs — Support Worker", url: "https://www.jobs.nhs.uk/" }] },
 ];
