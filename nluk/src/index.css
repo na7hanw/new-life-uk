@@ -276,18 +276,10 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   min-height: 52px;
   letter-spacing: .01em;
 }
-.tab-btn.active { color: var(--ac); }
+.tab-btn.active { color: var(--ac); background: var(--ac2); }
+.dark .tab-btn.active { background: rgba(52,211,153,.09); }
 .tab-btn .tab-icon { font-size: 1.3rem; line-height: 1; }
-.tab-btn .tab-dot {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 28px;
-  height: 3px;
-  background: var(--ac);
-  border-radius: 0 0 4px 4px;
-}
+.tab-btn .tab-dot { display: none; }
 
 /* ─── Cards ─── */
 .card {
@@ -304,11 +296,14 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 .section-label {
   font-size: .72rem;
   font-weight: 800;
-  color: var(--t3);
+  color: var(--ac3);
   text-transform: uppercase;
   letter-spacing: .1em;
-  padding: 20px 16px 8px;
+  padding: 20px 16px 8px 20px;
+  border-left: 3px solid var(--ac);
+  margin-left: 16px;
 }
+.dark .section-label { color: var(--ac); }
 
 /* ─── Page Transition ─── */
 .page-enter {
@@ -337,21 +332,21 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 .hero::before {
   content: "";
   position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255,255,255,.09), transparent 65%);
+  top: -25%;
+  right: -12%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(255,255,255,.16), transparent 60%);
   pointer-events: none;
 }
 .hero::after {
   content: "";
   position: absolute;
-  bottom: -35%;
-  left: -8%;
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, rgba(255,255,255,.05), transparent 65%);
+  bottom: -40%;
+  left: -10%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(255,255,255,.09), transparent 60%);
   pointer-events: none;
 }
 .hero-badge {
@@ -438,6 +433,7 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   margin: 10px 16px 0;
   background: var(--wnbg);
   border: 1px solid var(--wnbd);
+  border-left: 4px solid var(--wn);
   border-radius: 14px;
   padding: 12px 16px;
 }
@@ -521,7 +517,18 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 }
 .list-row:last-child { border-bottom: none; }
 .list-row:active { background: var(--bg3); }
-.list-row-icon { font-size: 1.3rem; flex-shrink: 0; }
+.list-row-icon {
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  background: var(--bg3);
+  border: 1px solid var(--bd);
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 .list-row-content { flex: 1; min-width: 0; text-align: start; }
 .list-row-title {
   font-size: .95rem;
@@ -727,8 +734,8 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--bg3);
-  border: 1px solid var(--bd);
+  background: var(--ac2);
+  border: 1.5px solid rgba(13,110,75,.2);
   border-radius: 12px;
   padding: 12px 14px;
   font-size: .875rem;
@@ -737,8 +744,10 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   margin-top: 6px;
   transition: all .1s;
 }
-.dark .link-btn { color: var(--ac); }
-.link-btn:active { background: var(--bd); }
+.dark .link-btn { color: var(--ac); border-color: rgba(52,211,153,.2); background: rgba(52,211,153,.07); }
+.link-btn:hover { background: var(--ac); color: #fff; border-color: var(--ac); }
+.dark .link-btn:hover { color: #042B1C; }
+.link-btn:active { opacity: .85; transform: scale(.98); }
 .link-btn span { flex: 1; }
 
 /* ─── Buttons ─── */
@@ -813,6 +822,8 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, black 85%, transparent 100%);
 }
 .chip {
   flex-shrink: 0;
@@ -1011,13 +1022,25 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   transition: border-color .15s, box-shadow .15s;
 }
 .content-card-header { display: flex; align-items: flex-start; gap: 12px; }
-.content-card-icon { font-size: 1.5rem; flex-shrink: 0; }
+.content-card-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  background: var(--ac2);
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dark .content-card-icon { background: rgba(52,211,153,.09); }
 .content-card-title {
   font-size: 1rem;
   font-weight: 800;
   color: var(--tx);
   flex: 1;
   line-height: 1.35;
+  align-self: center;
 }
 .content-card-body {
   font-size: .875rem;
@@ -1224,13 +1247,44 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   line-height: 1.7;
 }
 
+/* ─── Page Hero Header ─── */
+.page-hero {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 8px;
+}
+.page-hero-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--tx);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.page-hero-sub {
+  font-size: .88rem;
+  color: var(--t2);
+  margin-top: 5px;
+  line-height: 1.55;
+}
+
 /* ─── Category Header (Guides page) ─── */
 .cat-header {
   font-size: .78rem;
   font-weight: 800;
-  padding: 16px 16px 6px;
+  padding: 16px 20px 6px 16px;
   text-transform: uppercase;
   letter-spacing: .08em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cat-header::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: currentColor;
+  opacity: 0.12;
+  border-radius: 2px;
 }
 
 /* ─── Start Here Numbers ─── */
@@ -1275,7 +1329,7 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   .detail-header { padding: 16px 24px 32px; }
   .quick-links-row { padding: 4px 24px 10px; }
   .key-info-strip { padding: 0 24px 14px; }
-  .section-label { padding: 20px 24px 8px; }
+  .section-label { padding: 20px 24px 8px 20px; margin-left: 24px; }
   .card { margin: 0 24px 14px; }
 }
 @media (min-width: 1200px) {
