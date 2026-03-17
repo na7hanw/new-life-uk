@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import compression from 'vite-plugin-compression'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import { readFileSync } from 'fs'
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf8'))
@@ -38,11 +39,23 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    // Compress PNG/JPEG/SVG/WebP assets during build to reduce initial load size.
+    ViteImageOptimizer({
+      png: { quality: 80 },
+      jpeg: { quality: 80 },
+      svg: { multipass: true },
+    }),
     compression({ algorithm: 'brotliCompress', ext: '.br' }),
     compression({ algorithm: 'gzip', ext: '.gz' }),
     VitePWA({
       registerType: 'autoUpdate',
-      workbox: { globPatterns: ['**/*.{js,css,html,svg,png,woff2}'] },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        // Serve cached index.html for any navigation request so SPA routes
+        // (/culture, /saves/apps, etc.) work correctly when offline.
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/^\/api\//],
+      },
       manifest: {
         name: 'New Life UK — Free Guide',
         short_name: 'New Life UK',
