@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest'
 import { GUIDES, GUIDE_PRIORITY } from '../data/guides.ts'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
 import { SOS_NUMBERS } from '../data/emergency.ts'
+import { APPS } from '../data/apps.ts'
 
 // ─── Guides ───────────────────────────────────────────────────────
 
@@ -88,6 +89,35 @@ describe('SOS numbers', () => {
     for (const s of SOS_NUMBERS) {
       expect(s.name, 'SOS entry missing name').toBeTruthy()
       expect(s.phone, `${s.name} missing phone`).toBeTruthy()
+    }
+  })
+})
+
+// ─── Essential Apps ───────────────────────────────────────────────
+
+describe('essential apps — data integrity', () => {
+  it('APPS is non-empty', () => {
+    expect(APPS.length).toBeGreaterThan(0)
+  })
+
+  it('every app has an English title and description', () => {
+    for (const app of APPS) {
+      expect(app.content?.en?.title, 'app missing English title').toBeTruthy()
+      expect(app.content?.en?.desc, `${app.content?.en?.title} missing description`).toBeTruthy()
+    }
+  })
+
+  it('all app URLs use https://', () => {
+    for (const app of APPS) {
+      if (app.url) {
+        expect(app.url, `${app.content?.en?.title} — URL must start with https://`).toMatch(/^https:\/\//)
+      }
+    }
+  })
+
+  it('every app has an icon', () => {
+    for (const app of APPS) {
+      expect(app.icon, `${app.content?.en?.title} missing icon`).toBeTruthy()
     }
   })
 })

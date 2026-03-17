@@ -25,6 +25,7 @@ const BASE_UI = {
   visaQ: "What's your visa situation?", forYou: "For You", quickActions: "Quick Actions", helplines: "Helplines",
   jobsTab: "Jobs", certsTab: "Certs", careerTab: "Careers",
   savesTitle: "Free Stuff & Discounts", savesSub: "Things most new arrivals never find out about.",
+  appsTitle: "Essential Apps & Services 📲", appsSub: "Free must-have apps and services for life in the UK.",
   gemsTitle: "Hidden Gems 💎", gemsSub: "Free money, career shortcuts, insider routes.",
   theme: "Theme", language: "Language", apply: "Apply", freeRoute: "Free route available",
   darkMode: "🌙 Dark", lightMode: "☀️ Light", settings: "Settings",
