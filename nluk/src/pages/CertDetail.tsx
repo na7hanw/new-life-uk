@@ -1,9 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
 import { CERT_MAP } from '../data/jobs.ts'
-import { t18 } from '../lib/utils.ts'
-import { translateContentObject } from '../lib/translate.ts'
+import { useTranslatedContent, useTranslatedSteps } from '../lib/useTranslation.ts'
 import QuickLinks from '../components/QuickLinks.tsx'
 import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
@@ -25,59 +24,16 @@ export default function CertDetail() {
     if (!cert) navigate('/work/certs')
   }, [cert, navigate])
 
-  const englishContent = cert ? t18(cert.content, 'en') as CertContent : null
-  const hasNativeTranslation = cert ? !!cert.content[lang as keyof typeof cert.content] : false
-
-  const [cc, setCc] = useState<CertContent | null>(() =>
-    cert ? t18(cert.content, lang) as CertContent : null
+  const [cc, translating, wasTranslated] = useTranslatedContent<CertContent>(
+    cert?.content as Record<string, CertContent> | undefined,
+    lang,
+    id
   )
-  const [translating, setTranslating] = useState(false)
-  const [wasTranslated, setWasTranslated] = useState(false)
-
-  useEffect(() => {
-    if (!cert || !englishContent) return
-    const nativeContent = t18(cert.content, lang) as CertContent
-    if (lang === 'en' || hasNativeTranslation) {
-      setCc(nativeContent)
-      setWasTranslated(false)
-      return
-    }
-    let cancelled = false
-    setTranslating(true)
-    setCc(englishContent)
-    translateContentObject(englishContent, lang).then(translated => {
-      if (!cancelled) {
-        setCc(translated as CertContent)
-        setTranslating(false)
-        setWasTranslated(true)
-      }
-    })
-    return () => { cancelled = true }
-  // englishContent and hasNativeTranslation are derived from cert+lang, which are already in the dep array
-  }, [lang, id, cert]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const englishSteps = cert ? t18(cert.steps, 'en') as string[] : []
-  const hasNativeSteps = cert ? !!cert.steps[lang as keyof typeof cert.steps] : false
-
-  const [st, setSt] = useState<string[]>(() =>
-    cert ? t18(cert.steps, lang) as string[] : []
+  const st = useTranslatedSteps(
+    cert?.steps as Record<string, string[]> | undefined,
+    lang,
+    id
   )
-
-  useEffect(() => {
-    if (!cert) return
-    const nativeSteps = t18(cert.steps, lang) as string[]
-    if (lang === 'en' || hasNativeSteps) {
-      setSt(nativeSteps)
-      return
-    }
-    let cancelled = false
-    setSt(englishSteps)
-    translateContentObject({ steps: englishSteps }, lang).then(translated => {
-      if (!cancelled) setSt((translated as { steps: string[] }).steps)
-    })
-    return () => { cancelled = true }
-  // englishSteps and hasNativeSteps are derived from cert+lang, which are already in the dep array
-  }, [lang, id, cert]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!cert) return null
 

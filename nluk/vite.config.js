@@ -2,10 +2,36 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import compression from 'vite-plugin-compression'
+import { readFileSync } from 'fs'
+
+const pkg = JSON.parse(readFileSync('./package.json', 'utf8'))
 
 export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom', 'react-router-dom'],
+  },
+  define: {
+    // Expose package version as an env var so MorePage can display it without
+    // bundling the entire package.json.
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(pkg.version),
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        // Split large vendor libraries into a separate chunk so they can be
+        // cached independently of application code, improving repeat-visit load time.
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (['react', 'react-dom', 'react-router-dom'].some(pkg => id.includes(`/${pkg}/`))) {
+              return 'vendor'
+            }
+            if (id.includes('/fuse.js/') || id.includes('/fuse.js?')) {
+              return 'search'
+            }
+          }
+        },
+      },
+    },
   },
   test: {
     environment: 'node',
@@ -34,3 +60,4 @@ export default defineConfig({
     })
   ]
 })
+

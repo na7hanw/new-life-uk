@@ -1,9 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
 import { CAREER_MAP } from '../data/jobs.ts'
-import { t18 } from '../lib/utils.ts'
-import { translateContentObject } from '../lib/translate.ts'
+import { useTranslatedContent, useTranslatedSteps } from '../lib/useTranslation.ts'
 import QuickLinks from '../components/QuickLinks.tsx'
 import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
@@ -25,59 +24,16 @@ export default function CareerDetail() {
     if (!career) navigate('/work/career')
   }, [career, navigate])
 
-  const englishContent = career ? t18(career.content, 'en') as CareerContent : null
-  const hasNativeTranslation = career ? !!career.content[lang as keyof typeof career.content] : false
-
-  const [pc, setPc] = useState<CareerContent | null>(() =>
-    career ? t18(career.content, lang) as CareerContent : null
+  const [pc, translating, wasTranslated] = useTranslatedContent<CareerContent>(
+    career?.content as Record<string, CareerContent> | undefined,
+    lang,
+    id
   )
-  const [translating, setTranslating] = useState(false)
-  const [wasTranslated, setWasTranslated] = useState(false)
-
-  useEffect(() => {
-    if (!career || !englishContent) return
-    const nativeContent = t18(career.content, lang) as CareerContent
-    if (lang === 'en' || hasNativeTranslation) {
-      setPc(nativeContent)
-      setWasTranslated(false)
-      return
-    }
-    let cancelled = false
-    setTranslating(true)
-    setPc(englishContent)
-    translateContentObject(englishContent, lang).then(translated => {
-      if (!cancelled) {
-        setPc(translated as CareerContent)
-        setTranslating(false)
-        setWasTranslated(true)
-      }
-    })
-    return () => { cancelled = true }
-  // englishContent and hasNativeTranslation are derived from career+lang, which are already in the dep array
-  }, [lang, id, career]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const englishSteps = career ? t18(career.steps, 'en') as string[] : []
-  const hasNativeSteps = career ? !!career.steps[lang as keyof typeof career.steps] : false
-
-  const [st, setSt] = useState<string[]>(() =>
-    career ? t18(career.steps, lang) as string[] : []
+  const st = useTranslatedSteps(
+    career?.steps as Record<string, string[]> | undefined,
+    lang,
+    id
   )
-
-  useEffect(() => {
-    if (!career) return
-    const nativeSteps = t18(career.steps, lang) as string[]
-    if (lang === 'en' || hasNativeSteps) {
-      setSt(nativeSteps)
-      return
-    }
-    let cancelled = false
-    setSt(englishSteps)
-    translateContentObject({ steps: englishSteps }, lang).then(translated => {
-      if (!cancelled) setSt((translated as { steps: string[] }).steps)
-    })
-    return () => { cancelled = true }
-  // englishSteps and hasNativeSteps are derived from career+lang, which are already in the dep array
-  }, [lang, id, career]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!career) return null
 
