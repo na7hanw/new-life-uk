@@ -1,7 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
 import styles from './ShareBar.module.css'
+import type { UiStrings } from '../types'
 
-function ShareBar({ title, ui }) {
+interface ShareBarProps {
+  title: string
+  ui: UiStrings
+}
+
+function ShareBar({ title, ui }: ShareBarProps) {
   const [copied, setCopied] = useState(false)
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const url = window.location.href

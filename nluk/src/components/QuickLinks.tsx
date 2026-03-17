@@ -1,4 +1,11 @@
-function QuickLinks({ links, label }) {
+import type { Link } from '../types'
+
+interface QuickLinksProps {
+  links: Link[]
+  label?: string
+}
+
+function QuickLinks({ links, label }: QuickLinksProps) {
   if (!links?.length) return null
   return (
     <div className="quick-links-wrap">

@@ -9,6 +9,8 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps> {
   static getDerivedStateFromError() { return { hasError: true } }
 
   componentDidCatch(error: Error): void {
+    // eslint-disable-next-line no-console
+    if (import.meta.env.DEV) console.error('[ErrorBoundary]', error)
     if (!SENTRY_DSN) return
     import('@sentry/react').then(Sentry => {
       if (Sentry.getClient()) Sentry.captureException(error)
