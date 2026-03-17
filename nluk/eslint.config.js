@@ -24,6 +24,7 @@ const sharedGlobals = {
   Promise: 'readonly',
   // DOM types used in TypeScript generics and interface declarations
   Event: 'readonly',
+  Element: 'readonly',
   HTMLButtonElement: 'readonly',
   HTMLInputElement: 'readonly',
   HTMLElement: 'readonly',
@@ -44,7 +45,7 @@ export default [
     },
     settings: {
       // Pin explicitly — 'detect' crashes ESLint v10 flat config
-      react: { version: '19.2' },
+      react: { version: '18.3' },
     },
     languageOptions: {
       ecmaVersion: 2022,
@@ -81,7 +82,7 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     settings: {
-      react: { version: '19.2' },
+      react: { version: '18.3' },
     },
     languageOptions: {
       parser: tsParser,
