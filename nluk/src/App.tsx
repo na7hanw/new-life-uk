@@ -17,7 +17,7 @@ const CertDetail   = lazy(() => import('./pages/CertDetail.tsx'))
 const CareerDetail = lazy(() => import('./pages/CareerDetail.tsx'))
 const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
 const AppsPage     = lazy(() => import('./pages/AppsPage.tsx'))
-const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
+const CulturePage  = lazy(() => import('./pages/CulturePage.tsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
@@ -58,7 +58,7 @@ export default function App() {
       p.startsWith('/career/')? 'Career path detail' :
       p === '/saves/apps' ? 'Essential apps' :
       p === '/saves'      ? 'Saved resources' :
-      p === '/more'       ? 'More and settings' : ''
+      p === '/culture'    ? 'UK Culture & Oddities' : ''
     setRouteAnn(ann)
   }, [location.pathname])
 
@@ -66,7 +66,7 @@ export default function App() {
     { id: 'guides', path: '/', icon: '📖', label: ui.guides },
     { id: 'work', path: '/work/jobs', icon: '💼', label: ui.work },
     { id: 'saves', path: '/saves', icon: '🆓', label: ui.saves },
-    { id: 'more', path: '/more', icon: '☰', label: ui.more },
+    { id: 'culture', path: '/culture', icon: '🇬🇧', label: ui.culture },
   ]
 
   const isTabActive = (path: string) => {
@@ -130,7 +130,8 @@ export default function App() {
               <Route path="/career/:id" element={<CareerDetail />} />
               <Route path="/saves" element={<SavesPage />} />
               <Route path="/saves/apps" element={<AppsPage />} />
-              <Route path="/more" element={<MorePage />} />
+              <Route path="/culture" element={<CulturePage />} />
+              <Route path="/more" element={<Navigate to="/culture" replace />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>

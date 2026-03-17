@@ -304,6 +304,12 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   margin-left: 16px;
 }
 .dark .section-label { color: var(--ac); }
+.section-sub {
+  font-size: .875rem;
+  color: var(--t2);
+  margin: 0 20px 12px;
+  line-height: 1.55;
+}
 
 /* ─── Page Transition ─── */
 .page-enter {

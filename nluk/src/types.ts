@@ -149,6 +149,7 @@ export interface UiStrings {
   work: string
   saves: string
   more: string
+  culture: string
   search: string
   noResults: string
   searchWork?: string
@@ -242,6 +243,9 @@ export interface UiStrings {
   consentDecline?: string
   appsTitle?: string
   appsSub?: string
+  settingsSub?: string
+  cultureTitle?: string
+  cultureSub?: string
   [key: string]: unknown
 }
 

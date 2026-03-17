@@ -19,7 +19,7 @@ export const LANGS: Lang[] = [
 const BASE_UI = {
   app: "New Life UK", tag: "Your free guide to life in the UK",
   sos: "SOS", close: "Close", back: "Back", change: "Change",
-  home: "Home", guides: "Guides", work: "Work", saves: "Free Stuff", more: "More",
+  home: "Home", guides: "Guides", work: "Work", saves: "Free Stuff", more: "More", culture: "Culture",
   search: "Search guides…", noResults: "No results found.", searchWork: "Search jobs, certs, careers…",
   cost: "Cost", time: "Time", bring: "What to bring", steps: "Steps", keyInfo: "Key Info",
   visaQ: "What's your visa situation?", forYou: "For You", quickActions: "Quick Actions", helplines: "Helplines",
@@ -27,6 +27,8 @@ const BASE_UI = {
   savesTitle: "Free Stuff & Discounts", savesSub: "Things most new arrivals never find out about.",
   appsTitle: "Essential Apps & Services 📲", appsSub: "Free must-have apps and services for life in the UK.",
   gemsTitle: "Hidden Gems 💎", gemsSub: "Free money, career shortcuts, insider routes.",
+  cultureTitle: "🇬🇧 UK Culture & Oddities", cultureSub: "Unwritten rules, polite lies, and peculiar customs of British life.",
+  settingsSub: "App preferences, language, and privacy.",
   theme: "Theme", language: "Language", apply: "Apply", freeRoute: "Free route available",
   darkMode: "🌙 Dark", lightMode: "☀️ Light", settings: "Settings",
   share: "Share", shareWhatsapp: "WhatsApp", shareTelegram: "Telegram", shareFacebook: "Facebook", shareCopy: "Copy link",

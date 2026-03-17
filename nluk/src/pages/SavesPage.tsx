@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useApp } from '../context/AppContext.tsx'
-import { SAVES } from '../data/saves.ts'
+import { SAVES, GEMS } from '../data/saves.ts'
 import ResourceCard from '../components/ResourceCard.tsx'
 import type { ResourceContent } from '../components/ResourceCard.tsx'
 
@@ -29,6 +29,18 @@ export default function SavesPage() {
           icon={s.icon}
           content={s.content as Record<string, ResourceContent>}
           url={s.url}
+          lang={lang}
+          ui={ui}
+        />
+      ))}
+      <div className="section-label">{ui.gemsTitle}</div>
+      <p className="section-sub">{ui.gemsSub}</p>
+      {GEMS.map(g => (
+        <ResourceCard
+          key={g.content.en.title}
+          icon={g.icon}
+          content={g.content as Record<string, ResourceContent>}
+          url={g.url}
           lang={lang}
           ui={ui}
         />
