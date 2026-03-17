@@ -1,17 +1,25 @@
 import { useRef, useEffect } from 'react'
+import type { SosEntry, UiStrings } from '../types'
 
-function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }) {
-  const sosModalRef = useRef(null)
+interface SOSModalProps {
+  showSOS: boolean
+  setSOS: (show: boolean) => void
+  ui: UiStrings
+  SOS_NUMBERS: SosEntry[]
+}
+
+function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }: SOSModalProps) {
+  const sosModalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!showSOS) return
     const el = sosModalRef.current
     if (!el) return
-    const focusable = el.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    const focusable = el.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
     const first = focusable[0]
     const last = focusable[focusable.length - 1]
     first?.focus()
-    const trap = (e) => {
+    const trap = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { setSOS(false); return }
       if (e.key !== 'Tab') return
       if (e.shiftKey) {

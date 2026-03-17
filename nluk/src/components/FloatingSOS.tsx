@@ -1,6 +1,12 @@
 import styles from './FloatingSOS.module.css'
+import type { UiStrings } from '../types'
 
-function FloatingSOS({ ui, setSOS }) {
+interface FloatingSOSProps {
+  ui: UiStrings
+  setSOS: (show: boolean) => void
+}
+
+function FloatingSOS({ ui, setSOS }: FloatingSOSProps) {
   return (
     <button
       className={styles.floatingSOS}

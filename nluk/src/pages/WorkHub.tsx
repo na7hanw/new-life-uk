@@ -9,8 +9,8 @@ export default function WorkHub() {
   const { subtab = 'jobs' } = useParams()
   const navigate = useNavigate()
   const { lang, ui, af } = useApp()
-  const certBtnRefs = useRef({})
-  const careerBtnRefs = useRef({})
+  const certBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+  const careerBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
   useEffect(() => {
     const lastCert = sessionStorage.getItem('nluk_last_cert')
@@ -25,7 +25,7 @@ export default function WorkHub() {
     }
   }, [subtab])
 
-  const handleSubtab = (id) => {
+  const handleSubtab = (id: string) => {
     lsSet('nluk_wtab', id)
     navigate(`/work/${id}`)
   }

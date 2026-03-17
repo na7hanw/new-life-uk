@@ -67,12 +67,12 @@ export default function App() {
     { id: 'more', path: '/more', icon: '☰', label: ui.more },
   ]
 
-  const isTabActive = (path) => {
+  const isTabActive = (path: string) => {
     if (path === '/') return location.pathname === '/'
     return location.pathname.startsWith(path.replace('/jobs', ''))
   }
 
-  const switchTab = (path) => {
+  const switchTab = (path: string) => {
     navigate(path)
   }
 
