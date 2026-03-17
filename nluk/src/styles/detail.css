@@ -150,7 +150,7 @@
 }
 .key-chip {
   display: inline-flex;
-  align-items: background;
+  align-items: center;
   background: var(--bg3);
   color: var(--t2);
   border: 1px solid var(--bd);
