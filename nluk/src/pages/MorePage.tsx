@@ -2,64 +2,14 @@ import { useState, useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
 import { GEMS } from '../data/saves.ts'
 import { GITHUB_URL } from '../data/emergency.ts'
-import { t18, ls, lsSet } from '../lib/utils.ts'
-import { translateContentObject, clearTranslationCache } from '../lib/translate.ts'
+import { ls, lsSet } from '../lib/utils.ts'
+import { clearTranslationCache } from '../lib/translate.ts'
 import { SENTRY_DSN, initSentry } from '../lib/sentry.ts'
 import { CONSENT_KEY } from '../components/ConsentBanner.tsx'
-import type { UiStrings } from '../types'
+import ResourceCard from '../components/ResourceCard.tsx'
+import type { ResourceContent } from '../components/ResourceCard.tsx'
 
 const ALL_KEYS = ['nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', CONSENT_KEY]
-
-interface GemContent {
-  title: string
-  desc: string
-  [key: string]: unknown
-}
-
-interface GemItem {
-  icon: string
-  content: Record<string, GemContent>
-  url?: string
-}
-
-function GemCard({ gem, lang, ui }: { gem: GemItem; lang: string; ui: UiStrings }) {
-  const native = t18(gem.content, lang) as GemContent
-  const needsTranslation = lang !== 'en' && !gem.content[lang]
-  const gemId = gem.content.en.title
-
-  const [content, setContent] = useState<GemContent>(native)
-  const [translating, setTranslating] = useState(false)
-  const [wasTranslated, setWasTranslated] = useState(false)
-
-  useEffect(() => {
-    if (!needsTranslation) { setContent(native); setWasTranslated(false); return }
-    let cancelled = false
-    setTranslating(true)
-    setContent(native)
-    translateContentObject(native, lang).then(translated => {
-      if (!cancelled) { setContent(translated as GemContent); setTranslating(false); setWasTranslated(true) }
-    })
-    return () => { cancelled = true }
-  // gemId is the stable identifier; native is derived from lang+gem so not needed separately
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang, gemId])
-
-  return (
-    <div className={`content-card${translating ? ' translating' : ''}`}>
-      <div className="content-card-header">
-        <span className="content-card-icon">{gem.icon}</span>
-        <span className="content-card-title">{content.title}</span>
-      </div>
-      <p className="content-card-body">{content.desc}</p>
-      {wasTranslated && <span className="auto-translated-badge">{ui.autoTranslated || '🌐 Auto-translated'}</span>}
-      {gem.url && (
-        <a href={gem.url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
-          🔗 <span>{ui.openLink}</span> →
-        </a>
-      )}
-    </div>
-  )
-}
 
 export default function MorePage() {
   const { lang, ui, L, dark, setDark, setShowLang } = useApp()
@@ -86,7 +36,14 @@ export default function MorePage() {
         <p style={{ fontSize: '.9rem', color: 'var(--t2)', marginTop: 4, lineHeight: 1.55 }}>{ui.gemsSub}</p>
       </div>
       {GEMS.map(g => (
-        <GemCard key={(g.content.en as GemContent).title} gem={g as unknown as GemItem} lang={lang} ui={ui} />
+        <ResourceCard
+          key={g.content.en.title}
+          icon={g.icon}
+          content={g.content as Record<string, ResourceContent>}
+          url={g.url}
+          lang={lang}
+          ui={ui}
+        />
       ))}
 
       <div className="section-label">{ui.theme}</div>
@@ -192,11 +149,18 @@ export default function MorePage() {
             className="btn btn-outline btn-sm"
             style={{ marginTop: 16 }}
             onClick={() => {
-              try {
-                clearTranslationCache()
-                ALL_KEYS.forEach(k => localStorage.removeItem(k))
-                window.location.reload()
-              } catch {}
+              clearTranslationCache()
+              ALL_KEYS.forEach(k => {
+                try {
+                  localStorage.removeItem(k)
+                } catch (err) {
+                  if (import.meta.env.DEV) {
+                    // eslint-disable-next-line no-console
+                    console.warn(`[nluk] Failed to clear localStorage key "${k}":`, err)
+                  }
+                }
+              })
+              window.location.reload()
             }}
           >
             🗑 {ui.clearData || 'Clear all app data'}
@@ -205,7 +169,7 @@ export default function MorePage() {
       </div>
 
       <div className="version-badge" aria-label="App version and data verification date">
-        🛡 v2.3.0 · Data verified March 2026
+        🛡 v{import.meta.env.VITE_APP_VERSION || '2.2.0'} · Data verified March 2026
         {offlineReady && <span className="offline-badge" style={{ marginLeft: 8 }}>📴 Available Offline</span>}
       </div>
 

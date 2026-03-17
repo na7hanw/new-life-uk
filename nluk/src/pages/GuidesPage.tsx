@@ -7,6 +7,9 @@ import { LANGS, TIPS } from '../data/ui-strings.ts'
 import { t18 } from '../lib/utils.ts'
 import { translate } from '../lib/translate.ts'
 
+// Enrich guides with keyword aliases once at module load (not on every component mount).
+const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
+
 export default function GuidesPage() {
   const { lang, ui, dir, af } = useApp()
   const navigate = useNavigate()
@@ -41,9 +44,9 @@ export default function GuidesPage() {
 
   const tip = translatedTip || tipEn
 
-  // Fuse.js index — built once, searches title + summary + keyword aliases
+  // Fuse.js index — built once using pre-enriched data
   const fuseIndex = useMemo(() => new Fuse(
-    GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] })),
+    GUIDES_WITH_KW,
     {
       keys: [
         { name: 'content.en.title',   weight: 3 },
@@ -71,7 +74,19 @@ export default function GuidesPage() {
     return list
   }, [search, catFilter, fuseIndex])
 
-  const cats = useMemo(() => [...new Set(filtered.map(g => g.cat))] as string[], [filtered])
+  // Group guides by category in a single O(n) pass, preserving insertion order for cats.
+  const { cats, groupedByCat } = useMemo(() => {
+    const groups: Record<string, typeof filtered> = {}
+    const orderedCats: string[] = []
+    for (const g of filtered) {
+      if (!groups[g.cat]) {
+        groups[g.cat] = []
+        orderedCats.push(g.cat)
+      }
+      groups[g.cat].push(g)
+    }
+    return { cats: orderedCats, groupedByCat: groups }
+  }, [filtered])
 
   return (
     <div className="page-enter">
@@ -116,7 +131,7 @@ export default function GuidesPage() {
             {CATEGORIES[cat]?.emoji} {cat}
           </div>
           <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
-            {filtered.filter(g => g.cat === cat).map(g => {
+            {groupedByCat[cat].map(g => {
               const gc = t18(g.content, lang)
               return (
                 <button key={g.id} className="list-row"
@@ -139,3 +154,4 @@ export default function GuidesPage() {
     </div>
   )
 }
+

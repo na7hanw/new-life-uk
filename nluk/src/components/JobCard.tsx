@@ -1,10 +1,20 @@
-import { useState, useId } from 'react'
+import { useState, useId, useMemo } from 'react'
 import styles from './JobCard.module.css'
+import type { Job, UiStrings } from '../types'
 
-function JobCard({ j, lang, ui }) {
+interface JobCardProps {
+  j: Job
+  lang: string
+  ui: Pick<UiStrings, 'docsNeeded' | 'jobsApplyTo'>
+}
+
+function JobCard({ j, lang, ui }: JobCardProps) {
   const [open, setOpen] = useState(false)
   const bodyId = useId()
-  const jc = (j.content?.[lang] || j.content?.en || {})
+  const jc = useMemo(
+    () => (j.content?.[lang] || j.content?.en || {}),
+    [j, lang]
+  )
   return (
     <div className={`${styles.jobCard} ${open ? styles.jobCardOpen : ''}`}>
       <button className={styles.jobHeader} onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls={bodyId}>

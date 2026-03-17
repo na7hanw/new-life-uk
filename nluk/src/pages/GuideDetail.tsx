@@ -1,10 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL } from '../data/guides.ts'
-import { t18 } from '../lib/utils.ts'
-import { translateContentObject } from '../lib/translate.ts'
+import { useTranslatedContent } from '../lib/useTranslation.ts'
 import QuickLinks from '../components/QuickLinks.tsx'
 import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
@@ -28,35 +27,11 @@ export default function GuideDetail() {
     if (!guide) navigate('/')
   }, [guide, navigate])
 
-  const englishContent = guide ? t18(guide.content, 'en') as GuideContent : null
-  const hasNativeTranslation = guide ? !!guide.content[lang as keyof typeof guide.content] : false
-
-  const [gc, setGc] = useState<GuideContent | null>(() =>
-    guide ? t18(guide.content, lang) as GuideContent : null
+  const [gc, translating, wasTranslated] = useTranslatedContent<GuideContent>(
+    guide?.content as Record<string, GuideContent> | undefined,
+    lang,
+    id
   )
-  const [translating, setTranslating] = useState(false)
-  const [wasTranslated, setWasTranslated] = useState(false)
-
-  useEffect(() => {
-    if (!guide || !englishContent) return
-    const nativeContent = t18(guide.content, lang) as GuideContent
-    if (lang === 'en' || hasNativeTranslation) {
-      setGc(nativeContent)
-      setWasTranslated(false)
-      return
-    }
-    let cancelled = false
-    setTranslating(true)
-    setGc(englishContent) // show English while translating
-    translateContentObject(englishContent, lang).then(translated => {
-      if (!cancelled) {
-        setGc(translated as GuideContent)
-        setTranslating(false)
-        setWasTranslated(true)
-      }
-    })
-    return () => { cancelled = true }
-  }, [lang, id, guide]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!guide) return null
 

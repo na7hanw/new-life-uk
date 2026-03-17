@@ -1,4 +1,5 @@
 import DOMPurify from 'dompurify'
+import { useMemo, memo } from 'react'
 import type { JSX } from 'react'
 
 interface StepTextProps {
@@ -19,9 +20,12 @@ function safeHref(url: string): string {
   }
 }
 
-function StepText({ text }: StepTextProps): JSX.Element {
-  // Sanitize the text to prevent XSS before processing
-  const safe = DOMPurify.sanitize(text, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] })
+const StepText = memo(function StepText({ text }: StepTextProps): JSX.Element {
+  // Sanitize once and only re-run when text changes
+  const safe = useMemo(
+    () => DOMPurify.sanitize(text, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }),
+    [text]
+  )
   // Matches [label](url) and bare https:// URLs
   const rx = /(\[([^\]]+)\]\((https?:\/\/[^)]+)\))|(https?:\/\/[^\s,;)]+)/g
   const parts: (string | JSX.Element)[] = []
@@ -39,6 +43,7 @@ function StepText({ text }: StepTextProps): JSX.Element {
   }
   if (last < safe.length) parts.push(safe.slice(last))
   return <>{parts}</>
-}
+})
 
 export default StepText
+
