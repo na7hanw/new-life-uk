@@ -33,6 +33,10 @@ A free, multilingual PWA that helps refugees and asylum seekers navigate life in
 ## Getting started
 
 ```bash
+# From the repo root — using the root package.json or Makefile:
+make install && make dev
+
+# Or equivalently, cd into the sub-project:
 cd nluk
 npm install
 npm run dev        # http://localhost:5173
@@ -70,9 +74,10 @@ All automations are **free** and designed to catch bugs early, reduce manual wor
 | CodeQL | push / PR / weekly | Static security analysis |
 | Security Audit | push / PR / weekly | `npm audit` full report |
 | Snyk | push / PR / daily | Dependency vulnerability scanning |
-| i18n Check | push / PR (guides.js) | All guides have English content |
-| Bundle Size | PR | Fail if JS bundle grows > budget |
-| Link Health | daily | Opens issue if any URL returns 404 |
+| i18n Check | push / PR (guides.ts) | All guides have English content |
+| Bundle Size | PR | Posts bundle-size comparison comment |
+| Broken Links | push / PR | Lychee checks all `.md` hyperlinks |
+| Link Health | daily | Opens issue (URL + file:line) if any data URL returns 404 |
 | OSSF Scorecard | push / weekly | Supply-chain security score |
 | Release Drafter | push to main | Auto-generates changelog |
 | Stale Bot | daily | Closes inactive issues/PRs |

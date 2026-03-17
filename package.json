@@ -1,0 +1,13 @@
+{
+  "name": "new-life-uk-root",
+  "private": true,
+  "description": "Root package — delegates all commands to the nluk/ sub-project.",
+  "scripts": {
+    "dev":     "npm --prefix nluk run dev",
+    "build":   "npm --prefix nluk run build",
+    "preview": "npm --prefix nluk run preview",
+    "test":    "npm --prefix nluk test",
+    "lint":    "npm --prefix nluk run lint",
+    "install": "npm --prefix nluk install"
+  }
+}
