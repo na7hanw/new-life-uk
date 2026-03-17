@@ -16,6 +16,7 @@ const WorkHub      = lazy(() => import('./pages/WorkHub.tsx'))
 const CertDetail   = lazy(() => import('./pages/CertDetail.tsx'))
 const CareerDetail = lazy(() => import('./pages/CareerDetail.tsx'))
 const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
+const AppsPage     = lazy(() => import('./pages/AppsPage.tsx'))
 const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
@@ -44,7 +45,7 @@ export default function App() {
     if (outcome === 'accepted') { setInstallDone(true); setInstallPrompt(null) }
   }
 
-  const isDetail = /^\/(guide|cert|career)\//.test(location.pathname)
+  const isDetail = /^\/(guide|cert|career)\//.test(location.pathname) || location.pathname === '/saves/apps'
   const [routeAnn, setRouteAnn] = useState('')
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function App() {
       p.startsWith('/work')   ? 'Work and jobs' :
       p.startsWith('/cert/')  ? 'Certificate detail' :
       p.startsWith('/career/')? 'Career path detail' :
+      p === '/saves/apps' ? 'Essential apps' :
       p === '/saves'      ? 'Saved resources' :
       p === '/more'       ? 'More and settings' : ''
     setRouteAnn(ann)
@@ -127,6 +129,7 @@ export default function App() {
               <Route path="/cert/:id" element={<CertDetail />} />
               <Route path="/career/:id" element={<CareerDetail />} />
               <Route path="/saves" element={<SavesPage />} />
+              <Route path="/saves/apps" element={<AppsPage />} />
               <Route path="/more" element={<MorePage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

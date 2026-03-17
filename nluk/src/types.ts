@@ -240,6 +240,8 @@ export interface UiStrings {
   consentBody?: string
   consentAccept?: string
   consentDecline?: string
+  appsTitle?: string
+  appsSub?: string
   [key: string]: unknown
 }
 
