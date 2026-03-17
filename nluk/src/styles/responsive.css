@@ -1,0 +1,37 @@
+/* ─── Responsive & Hover States ──────────────────────────────────────────────
+   Desktop hover interactions and breakpoint overrides.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Hover states (desktop) ─── */
+@media (hover: hover) {
+  .list-row:hover { background: var(--bg3); }
+  .content-card:hover { border-color: var(--ac); box-shadow: var(--shadow2); }
+  .lang-item:hover { border-color: var(--ac); background: var(--ac2); }
+  .chip:not(.active):hover { border-color: var(--t2); color: var(--tx); }
+  .tab-btn:hover:not(.active) { color: var(--t2); background: var(--bg3); }
+}
+
+/* ─── Responsive — tablet & desktop ─── */
+@media (min-width: 600px) {
+  .app-root { max-width: 620px; }
+  .modal-content { max-width: 620px; }
+  .lang-overlay { max-width: 620px; }
+  .hero-title { font-size: 1.7rem; }
+}
+@media (min-width: 900px) {
+  .app-root { max-width: 720px; }
+  .modal-content { max-width: 720px; }
+  .lang-overlay { max-width: 720px; }
+  .hero { padding: 30px 28px 32px; }
+  .hero-title { font-size: 1.9rem; }
+  .list-row { padding: 16px 20px; }
+  .detail-header { padding: 16px 24px 32px; }
+  .quick-links-row { padding: 4px 24px 10px; }
+  .key-info-strip { padding: 0 24px 14px; }
+  .section-label { padding: 20px 24px 8px 20px; margin-left: 24px; }
+  .card { margin: 0 24px 14px; }
+}
+@media (min-width: 1200px) {
+  .app-root { max-width: 800px; }
+  .lang-grid { grid-template-columns: repeat(3, 1fr); }
+}

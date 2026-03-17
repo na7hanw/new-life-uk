@@ -9,6 +9,7 @@ import ConsentBanner from './components/ConsentBanner.tsx'
 import SkeletonFallback from './components/SkeletonFallback.tsx'
 import Logo from './components/Logo.tsx'
 import SOSModal from './components/SOSModal.tsx'
+import styles from './App.module.css'
 
 
 const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
@@ -89,8 +90,8 @@ export default function App() {
       {/* LANGUAGE OVERLAY */}
       {showLang && (
         <div className="lang-overlay" role="dialog" aria-label="Select language">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div className="header-brand"><Logo size={28} /><h1 style={{ fontSize: '1.05rem', fontWeight: 800 }}>New Life UK</h1></div>
+          <div className={styles.langOverlayHeader}>
+            <div className="header-brand"><Logo size={28} /><h1 className={styles.langOverlayTitle}>New Life UK</h1></div>
             <button className="btn btn-primary" onClick={() => setShowLang(false)}>{ui.close} ✓</button>
           </div>
           <div className="lang-grid">
@@ -141,7 +142,7 @@ export default function App() {
       {/* TAB BAR */}
       {!isDetail && !showLang && (
         <nav className="tab-bar" aria-label="Main navigation">
-          <div role="tablist" style={{ display: 'contents' }}>
+          <div role="tablist" className={styles.tabListContents}>
             {TABS.map(t => (
               <button key={t.id} className={`tab-btn ${isTabActive(t.path) ? 'active' : ''}`}
                 onClick={() => switchTab(t.path)} role="tab" aria-selected={isTabActive(t.path)} aria-label={t.label}>

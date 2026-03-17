@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
 import type { UiStrings } from '../types'
 
@@ -19,7 +20,7 @@ interface ResourceCardProps {
  * ResourceCard — shared card for free resources and career shortcuts.
  * Used by SavesPage and MorePage (replaces the near-identical SaveCard / GemCard pair).
  */
-export default function ResourceCard({ icon, content, url, lang, ui }: ResourceCardProps) {
+const ResourceCard = memo(function ResourceCard({ icon, content, url, lang, ui }: ResourceCardProps) {
   const id = content.en?.title
   const [c, translating, wasTranslated] = useTranslatedContent<ResourceContent>(content, lang, id)
 
@@ -40,4 +41,6 @@ export default function ResourceCard({ icon, content, url, lang, ui }: ResourceC
       )}
     </div>
   )
-}
+})
+
+export default ResourceCard

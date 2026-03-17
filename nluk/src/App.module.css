@@ -1,0 +1,17 @@
+/* App.tsx — shell-level inline style overrides */
+
+/* Language overlay header row */
+.langOverlayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo h1 inside the language overlay (matches the main header size) */
+.langOverlayTitle {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* Tab bar role="tablist" wrapper — no intrinsic box, children lay out as flex items */
+.tabListContents { display: contents; }

@@ -1,0 +1,137 @@
+/* ─── Overlays & Modals ───────────────────────────────────────────────────────
+   SOS modal, language selector overlay, share bar.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Modal ─── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+}
+.modal-content {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 26px 26px 0 0;
+  width: 100%;
+  max-width: 480px;
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow3);
+}
+.modal-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--bd);
+  border-radius: 2px;
+  margin: 0 auto 18px;
+}
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--tx);
+  margin-bottom: 12px;
+}
+
+/* ─── Language Overlay ─── */
+.lang-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  z-index: 300;
+  padding: 16px 20px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--bd);
+  border-radius: 0 0 20px 20px;
+  box-shadow: var(--shadow3);
+}
+.lang-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  max-height: 55vh;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+.lang-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  background: var(--bg3);
+  border: 1.5px solid transparent;
+  transition: all .1s;
+  width: 100%;
+}
+.lang-item.active { border-color: var(--ac); background: var(--ac2); }
+.lang-item:active { transform: scale(.97); }
+.lang-flag { font-size: 1.2rem; }
+.lang-name { font-size: .9rem; font-weight: 700; flex: 1; }
+
+/* ─── Share Bar ─── */
+.share-bar {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  flex-wrap: wrap;
+}
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 24px;
+  font-size: .825rem;
+  font-weight: 700;
+  border: 1px solid var(--bd);
+  background: var(--bg2);
+  color: var(--t2);
+  transition: all .1s;
+  box-shadow: var(--shadow);
+}
+.share-btn:active { transform: scale(.95); }
+.share-whatsapp { color: #25D366; border-color: rgba(37,211,102,.3); }
+.share-telegram  { color: #0088CC; border-color: rgba(0,136,204,.3); }
+.share-facebook  { color: #1877F2; border-color: rgba(24,119,242,.3); }
+.share-copy      { color: var(--ac3); border-color: rgba(13,110,75,.25); }
+.dark .share-copy { color: var(--ac); }
+
+/* ─── Quick Actions Grid ─── */
+.qa-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 0 16px;
+}
+.qa-btn {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  padding: 16px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all .1s;
+  box-shadow: var(--shadow);
+  text-align: start;
+  min-height: 58px;
+}
+.qa-btn:active { transform: scale(.96); box-shadow: none; background: var(--bg3); }
+.qa-icon { font-size: 1.5rem; flex-shrink: 0; }
+.qa-label {
+  font-size: .875rem;
+  font-weight: 700;
+  color: var(--tx);
+  line-height: 1.3;
+}
