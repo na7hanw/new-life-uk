@@ -196,6 +196,13 @@ export interface UiStrings {
   cultureSub?: string
   searchCulture?: string
   copyTip?: string
+  heroTitle?: string
+  heroSub?: string
+  heroBadge?: string
+  brpNotice?: string
+  notFoundTitle?: string
+  notFoundSub?: string
+  notFoundHome?: string
   [key: string]: unknown
 }
 

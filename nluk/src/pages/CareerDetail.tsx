@@ -40,7 +40,7 @@ export default function CareerDetail() {
   if (!career) return null
 
   if (!pc?.title) return (
-    <article className="page-enter">
+    <article className="detail-enter">
       <div className="detail-header">
         <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
       </div>
@@ -49,7 +49,7 @@ export default function CareerDetail() {
   )
 
   return (
-    <article className="page-enter">
+    <article className="detail-enter">
       <Helmet>
         <title>{pc.title} — New Life UK</title>
         <meta name="description" content={pc.salary} />

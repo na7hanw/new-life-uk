@@ -1,14 +1,14 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { BookOpen, Briefcase, Gift, Globe } from 'lucide-react'
+import { BookOpen, Briefcase, Compass, Globe } from 'lucide-react'
 import { useApp } from './context/AppContext.tsx'
 import { LANGS } from './data/ui-strings.ts'
 import { SOS_NUMBERS } from './data/emergency.ts'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
 import ConsentBanner from './components/ConsentBanner.tsx'
+import SkeletonFallback from './components/SkeletonFallback.tsx'
 import Logo from './components/Logo.tsx'
 import SOSModal from './components/SOSModal.tsx'
-import type { BeforeInstallPromptEvent } from './types'
 
 
 const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
@@ -19,32 +19,30 @@ const CareerDetail = lazy(() => import('./pages/CareerDetail.tsx'))
 const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
 const AppsPage     = lazy(() => import('./pages/AppsPage.tsx'))
 const CulturePage  = lazy(() => import('./pages/CulturePage.tsx'))
+const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage.tsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
-  const { lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, ui, dir, fontClass } = useApp()
-  const [showSettings, setSettings] = useState(false)
-  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
-  const [installDone, setInstallDone] = useState(false)
+  const { lang, setLang, dark, showSOS, setSOS, showLang, setShowLang, ui, dir, fontClass } = useApp()
   const location = useLocation()
   const navigate = useNavigate()
 
-  // Capture the PWA beforeinstallprompt event so we can show our own button
-  useEffect(() => {
-    const handler = (e: Event) => {
-      e.preventDefault()
-      setInstallPrompt(e as BeforeInstallPromptEvent)
-    }
-    window.addEventListener('beforeinstallprompt', handler)
-    return () => window.removeEventListener('beforeinstallprompt', handler)
-  }, [])
+  // ── Page transition direction ──
+  const prevPathRef = useRef(location.pathname)
+  const [navClass, setNavClass] = useState('')
 
-  const handleInstall = async () => {
-    if (!installPrompt) return
-    installPrompt.prompt()
-    const { outcome } = await installPrompt.userChoice
-    if (outcome === 'accepted') { setInstallDone(true); setInstallPrompt(null) }
-  }
+  useEffect(() => {
+    const prev = prevPathRef.current
+    const curr = location.pathname
+    const isDetailPath = (p: string) => /^\/(guide|cert|career)\//.test(p) || p === '/saves/apps'
+    if (!isDetailPath(curr) && isDetailPath(prev)) {
+      setNavClass('nav-left')
+    } else {
+      setNavClass('')
+    }
+    prevPathRef.current = curr
+  }, [location.pathname])
 
   const isDetail = /^\/(guide|cert|career)\//.test(location.pathname) || location.pathname === '/saves/apps'
   const [routeAnn, setRouteAnn] = useState('')
@@ -66,7 +64,7 @@ export default function App() {
   const TABS = [
     { id: 'guides', path: '/', icon: <BookOpen size={22} strokeWidth={2} />, label: ui.guides },
     { id: 'work', path: '/work/jobs', icon: <Briefcase size={22} strokeWidth={2} />, label: ui.work },
-    { id: 'saves', path: '/saves', icon: <Gift size={22} strokeWidth={2} />, label: ui.saves },
+    { id: 'saves', path: '/saves', icon: <Compass size={22} strokeWidth={2} />, label: ui.saves },
     { id: 'culture', path: '/culture', icon: <Globe size={22} strokeWidth={2} />, label: ui.culture },
   ]
 
@@ -112,16 +110,16 @@ export default function App() {
         <header className="app-header">
           <div className="header-brand"><Logo size={26} /><h1>{ui.app}</h1></div>
           <div className="header-actions">
-            <button className="btn-settings" onClick={() => setSettings(true)} aria-label={ui.settings}>⚙</button>
+            <button className="btn-settings" onClick={() => navigate('/settings')} aria-label={ui.settings}>⚙</button>
             <button className="btn-sos" onClick={() => { navigator?.vibrate?.(15); setSOS(true) }} aria-label="Emergency SOS">{ui.sos}</button>
           </div>
         </header>
       )}
 
       {/* SCROLLABLE CONTENT */}
-      <main className="app-scroll" id="main-content">
+      <main className={`app-scroll ${navClass}`} id="main-content">
         <ErrorBoundary>
-          <Suspense fallback={<div className="skeleton" role="status" aria-busy="true" aria-label="Loading..." style={{ height: 48, width: 48, borderRadius: '50%', margin: '32px auto' }} />}>
+          <Suspense fallback={<SkeletonFallback />}>
             <Routes>
               <Route path="/" element={<GuidesPage />} />
               <Route path="/guide/:id" element={<GuideDetail />} />
@@ -132,8 +130,9 @@ export default function App() {
               <Route path="/saves" element={<SavesPage />} />
               <Route path="/saves/apps" element={<AppsPage />} />
               <Route path="/culture" element={<CulturePage />} />
+              <Route path="/settings" element={<MorePage />} />
               <Route path="/more" element={<Navigate to="/culture" replace />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
@@ -160,47 +159,6 @@ export default function App() {
 
       {/* CONSENT BANNER — shown once on first visit when Sentry is configured */}
       <ConsentBanner ui={ui} />
-
-      {/* SETTINGS MODAL */}
-      {showSettings && (
-        <div className="modal-backdrop" role="presentation"
-          onClick={() => setSettings(false)}
-          onKeyDown={e => e.key === 'Escape' && setSettings(false)}>
-          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-          <div className="modal-content" role="dialog" aria-modal="true" aria-label={ui.settings}
-            tabIndex={-1}
-            onClick={e => e.stopPropagation()}
-            onKeyDown={e => e.stopPropagation()}>
-            <div className="modal-handle" />
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-              <h2 className="modal-title" style={{ margin: 0 }}>⚙ {ui.settings}</h2>
-              <button className="btn btn-ghost btn-sm" onClick={() => setSettings(false)} aria-label={ui.close}>✕</button>
-            </div>
-            <div className="settings-row">
-              <span style={{ fontWeight: 700 }}>{dark ? ui.darkMode : ui.lightMode}</span>
-              <button className="btn btn-primary btn-sm" onClick={() => setDark(d => !d)}>{dark ? ui.lightMode : ui.darkMode}</button>
-            </div>
-            {(installPrompt || installDone) && (
-              <div className="settings-row">
-                <span style={{ fontWeight: 700 }}>{ui.installApp || '📲 Install App'}</span>
-                <button className="btn btn-outline btn-sm" onClick={handleInstall} disabled={installDone}>
-                  {installDone ? (ui.installDone || 'Installed!') : '📲 Install'}
-                </button>
-              </div>
-            )}
-            <h3 className="modal-title" style={{ marginTop: 16, marginBottom: 4 }}>{ui.language}</h3>
-            {LANGS.map(l => (
-              <button key={l.code} className="settings-row" onClick={() => { setLang(l.code); setSettings(false) }} aria-label={l.native}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: '1.1rem' }}>{l.flag}</span>
-                  <span style={{ fontWeight: 700 }}>{l.native}</span>
-                </div>
-                {lang === l.code && <span style={{ color: 'var(--ac)', fontWeight: 800 }}>✓</span>}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   )
 }
