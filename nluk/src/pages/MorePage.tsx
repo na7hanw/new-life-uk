@@ -31,9 +31,9 @@ export default function MorePage() {
 
   return (
     <div className="page-enter">
-      <div style={{ padding: '16px 20px 8px' }}>
-        <h2 style={{ fontSize: '1.15rem', fontWeight: 800 }}>{ui.gemsTitle}</h2>
-        <p style={{ fontSize: '.9rem', color: 'var(--t2)', marginTop: 4, lineHeight: 1.55 }}>{ui.gemsSub}</p>
+      <div className="page-hero">
+        <h2 className="page-hero-title">{ui.gemsTitle}</h2>
+        <p className="page-hero-sub">{ui.gemsSub}</p>
       </div>
       {GEMS.map(g => (
         <ResourceCard

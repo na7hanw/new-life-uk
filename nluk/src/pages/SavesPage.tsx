@@ -8,9 +8,9 @@ export default function SavesPage() {
 
   return (
     <div className="page-enter">
-      <div style={{ padding: '16px 20px 8px' }}>
-        <h2 style={{ fontSize: '1.15rem', fontWeight: 800 }}>{ui.savesTitle}</h2>
-        <p style={{ fontSize: '.9rem', color: 'var(--t2)', marginTop: 4, lineHeight: 1.55 }}>{ui.savesSub}</p>
+      <div className="page-hero">
+        <h2 className="page-hero-title">{ui.savesTitle}</h2>
+        <p className="page-hero-sub">{ui.savesSub}</p>
       </div>
       {SAVES.map(s => (
         <ResourceCard
