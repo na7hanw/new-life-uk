@@ -40,7 +40,7 @@ export default function CertDetail() {
   if (!cert) return null
 
   if (!cc?.title) return (
-    <article className="page-enter">
+    <article className="detail-enter">
       <div className="detail-header">
         <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
       </div>
@@ -49,7 +49,7 @@ export default function CertDetail() {
   )
 
   return (
-    <article className="page-enter">
+    <article className="detail-enter">
       <Helmet>
         <title>{cc.title} — New Life UK</title>
         <meta name="description" content={cc.sector || cc.title} />

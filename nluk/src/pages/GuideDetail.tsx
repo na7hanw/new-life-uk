@@ -36,7 +36,7 @@ export default function GuideDetail() {
   if (!guide) return null
 
   if (!gc?.title) return (
-    <article className="page-enter">
+    <article className="detail-enter">
       <div className={`detail-header${translating ? ' translating' : ''}`}>
         <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
       </div>
@@ -45,7 +45,7 @@ export default function GuideDetail() {
   )
 
   return (
-    <article className="page-enter">
+    <article className="detail-enter">
       <Helmet>
         <title>{gc.title} — New Life UK</title>
         <meta name="description" content={gc.summary} />

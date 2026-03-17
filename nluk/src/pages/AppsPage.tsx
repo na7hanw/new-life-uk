@@ -9,7 +9,7 @@ export default function AppsPage() {
   const { lang, ui, ab } = useApp()
 
   return (
-    <article className="page-enter">
+    <article className="detail-enter">
       <div className="detail-header">
         <button className="back-btn" onClick={() => navigate('/saves')}>{ab} {ui.back}</button>
         <div className="detail-hero" style={{ paddingTop: 14 }}>

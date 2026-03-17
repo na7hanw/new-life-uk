@@ -1,24 +1,44 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext.tsx'
 import { GITHUB_URL } from '../data/emergency.ts'
 import { ls, lsSet } from '../lib/utils.ts'
 import { clearTranslationCache } from '../lib/translate.ts'
 import { SENTRY_DSN, initSentry } from '../lib/sentry.ts'
 import { CONSENT_KEY } from '../components/ConsentBanner.tsx'
-import type { UserStatus } from '../types'
+import type { BeforeInstallPromptEvent, UserStatus } from '../types'
 
 const ALL_KEYS = ['nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', 'nluk_status', CONSENT_KEY]
 
 export default function MorePage() {
-  const { ui, L, dark, setDark, setShowLang, userStatus, setUserStatus } = useApp()
+  const { ui, L, dark, setDark, setShowLang, userStatus, setUserStatus, ab } = useApp()
+  const navigate = useNavigate()
   const [offlineReady, setOfflineReady] = useState(false)
   const [consent, setConsent] = useState(() => ls(CONSENT_KEY, ''))
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const [installDone, setInstallDone] = useState(false)
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready.then(() => setOfflineReady(true)).catch(() => {})
     }
   }, [])
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault()
+      setInstallPrompt(e as BeforeInstallPromptEvent)
+    }
+    window.addEventListener('beforeinstallprompt', handler)
+    return () => window.removeEventListener('beforeinstallprompt', handler)
+  }, [])
+
+  const handleInstall = async () => {
+    if (!installPrompt) return
+    installPrompt.prompt()
+    const { outcome } = await installPrompt.userChoice
+    if (outcome === 'accepted') { setInstallDone(true); setInstallPrompt(null) }
+  }
 
   const toggleConsent = () => {
     const next = consent === 'granted' ? 'denied' : 'granted'
@@ -29,9 +49,12 @@ export default function MorePage() {
 
   return (
     <div className="page-enter">
-      <div className="page-hero">
-        <h2 className="page-hero-title">⚙ {ui.settings}</h2>
-        <p className="page-hero-sub">{ui.settingsSub}</p>
+      <div className="detail-header" style={{ borderBottom: '1px solid var(--bd)', marginBottom: 8 }}>
+        <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
+        <div className="page-hero" style={{ borderBottom: 'none', margin: 0 }}>
+          <h2 className="page-hero-title">⚙ {ui.settings}</h2>
+          <p className="page-hero-sub">{ui.settingsSub}</p>
+        </div>
       </div>
 
       <div className="section-label">{ui.theme}</div>
@@ -43,6 +66,17 @@ export default function MorePage() {
           </button>
         </div>
       </div>
+
+      {(installPrompt || installDone) && (
+        <div className="card" style={{ margin: '0 20px 12px' }}>
+          <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontWeight: 700 }}>{ui.installApp || '📲 Install App'}</span>
+            <button className="btn btn-outline btn-sm" onClick={handleInstall} disabled={installDone}>
+              {installDone ? (ui.installDone || 'Installed!') : '📲 Install'}
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="section-label">{ui.language}</div>
       <div className="card" style={{ margin: '0 20px 12px' }}>

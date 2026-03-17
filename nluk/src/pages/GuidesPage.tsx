@@ -114,13 +114,13 @@ export default function GuidesPage() {
       {!search && catFilter === 'All' && (
         <>
           <div className="hero">
-            <div className="hero-badge">🇬🇧 Free · Private · {LANGS.length} Languages · No account needed</div>
-            <h2 className="hero-title">Welcome to<br />your new life. 🤝</h2>
-            <p className="hero-sub">Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.</p>
+            <div className="hero-badge">{ui.heroBadge ? `${ui.heroBadge} · ${LANGS.length} Languages` : `🇬🇧 Free · Private · ${LANGS.length} Languages · No account needed`}</div>
+            <h2 className="hero-title" style={{ whiteSpace: 'pre-line' }}>{ui.heroTitle || 'Welcome to\nyour new life. 🤝'}</h2>
+            <p className="hero-sub">{ui.heroSub || 'Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.'}</p>
           </div>
 
           <div className="notice">
-            <p className="notice-text">⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.</p>
+            <p className="notice-text">{ui.brpNotice || '⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.'}</p>
           </div>
 
           {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
