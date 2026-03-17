@@ -172,6 +172,7 @@ export interface UiStrings {
   gdprIco?: string
   privacyControllerTitle?: string
   privacyControllerBody?: string
+  privacyPolicyLink?: string
   clearData?: string
   consentTitle?: string
   consentBody?: string
