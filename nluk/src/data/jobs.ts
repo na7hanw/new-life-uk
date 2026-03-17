@@ -537,3 +537,34 @@ const CAREER_IDS = [
 ]
 CAREER_IDS.forEach((id, i) => { (CAREERS[i] as Record<string, unknown>).id = id })
 export const CAREER_MAP: Record<string, Career> = Object.fromEntries((CAREERS as unknown as Career[]).map(c => [c.id, c]))
+
+// ─── Data verification date ──────────────────────────────────────
+export const JOBS_DATA_DATE = 'March 2026'
+
+// ─── Official source URLs per cert (keyed by CERT_IDS values) ───
+export const CERT_SOURCE_URL: Record<string, string> = {
+  'dbs-check':        'https://www.gov.uk/request-copy-criminal-record',
+  'food-hygiene':     'https://www.food.gov.uk/business-guidance/food-safety',
+  'cscs-card':        'https://www.cscs.uk.com/applying-for-a-card/',
+  'sia-licence':      'https://www.sia.homeoffice.gov.uk/Pages/licensing.aspx',
+  'first-aid':        'https://www.redcross.org.uk/get-help/get-first-aid-training',
+  'forklift':         'https://www.rtitb.com/find-a-training-centre/',
+  'hgv-licence':      'https://www.gov.uk/become-lorry-bus-driver',
+  'care-cert':        'https://www.skillsforcare.org.uk/Developing-your-workforce/Care-Certificate/Care-Certificate.aspx',
+  'personal-licence': 'https://www.gov.uk/apply-for-a-premises-licence-to-sell-alcohol',
+  'phv-licence':      'https://www.gov.uk/taxi-driver-licence',
+  'driving-theory':   'https://www.gov.uk/book-theory-test',
+}
+
+// ─── Official source URLs per career (keyed by CAREER_IDS values) ─
+export const CAREER_SOURCE_URL: Record<string, string> = {
+  'civil-engineering':  'https://www.ice.org.uk/about-ice/what-we-do/social-mobility/refugee-support/',
+  'tech-digital':       'https://grow.google/certificates/',
+  'finance':            'https://www.accaglobal.com/',
+  'project-management': 'https://www.apm.org.uk/',
+  'healthcare':         'https://www.jobs.nhs.uk/',
+  'green-energy':       'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+  'translation':        'https://www.nrpsi.org.uk',
+  'property-valuation': 'https://www.rics.org/surveying-profession/join-rics/',
+  'social-work':        'https://www.socialworkengland.org.uk/',
+}

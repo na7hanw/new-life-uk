@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
-import { CAREER_MAP } from '../data/jobs.ts'
+import { CAREER_MAP, JOBS_DATA_DATE, CAREER_SOURCE_URL } from '../data/jobs.ts'
 import { useTranslatedContent, useTranslatedSteps } from '../lib/useTranslation.ts'
 import QuickLinks from '../components/QuickLinks.tsx'
 import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
+import TTSButton from '../components/TTSButton.tsx'
 
 interface CareerContent {
   title: string
@@ -48,6 +50,10 @@ export default function CareerDetail() {
 
   return (
     <article className="page-enter">
+      <Helmet>
+        <title>{pc.title} — New Life UK</title>
+        <meta name="description" content={pc.salary} />
+      </Helmet>
       <div className={`detail-header${translating ? ' translating' : ''}`}>
         <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
         <div className="detail-hero">
@@ -68,6 +74,8 @@ export default function CareerDetail() {
 
       <ShareBar title={pc.title} ui={ui} />
 
+      <TTSButton lang={lang} title={pc.title} summary={pc.salary} steps={st} ui={ui} />
+
       <div className="section-label">{ui.steps}</div>
       <div className={`card${translating ? ' translating' : ''}`} style={{ margin: '0 20px 12px' }}>
         <div style={{ padding: '6px 16px' }}>
@@ -80,7 +88,7 @@ export default function CareerDetail() {
           {st.map((s, i) => (
             <div key={i} className="step-row">
               <div className="step-num">{i + 1}</div>
-              <div className="step-text"><StepText text={s} /></div>
+              {s.startsWith('⚠') ? <div className="step-warn"><StepText text={s} /></div> : <div className="step-text"><StepText text={s} /></div>}
             </div>
           ))}
         </div>
@@ -92,7 +100,17 @@ export default function CareerDetail() {
         </div>
       )}
 
-      <div style={{ height: 20 }} />
+      <div className="guide-updated">
+        ✓ Verified {JOBS_DATA_DATE}
+      </div>
+
+      {id && CAREER_SOURCE_URL[id] && (
+        <div style={{ textAlign: 'center', paddingBottom: 24 }}>
+          <a href={CAREER_SOURCE_URL[id]} target="_blank" rel="noopener noreferrer" className="source-link">
+            📄 View Official Source
+          </a>
+        </div>
+      )}
     </article>
   )
 }
