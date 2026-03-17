@@ -4,7 +4,7 @@ import type { UiStrings } from '../types'
 
 interface ShareBarProps {
   title: string
-  ui: UiStrings
+  ui: Pick<UiStrings, 'shareWhatsapp' | 'shareTelegram' | 'shareFacebook' | 'shareCopy' | 'copied'>
 }
 
 function ShareBar({ title, ui }: ShareBarProps) {

@@ -121,6 +121,7 @@ export interface Job {
 export interface SaveContent {
   title: string
   desc: string
+  [key: string]: unknown
 }
 
 export interface SaveItem {
@@ -202,6 +203,7 @@ export interface UiStrings {
   privacyLocal?: string
   privacyNone?: string
   gdprRights?: string
+  sosLabel?: string
   // PR #11
   ttsListen?: string
   ttsStop?: string

@@ -4,7 +4,7 @@ import type { SosEntry, UiStrings } from '../types'
 interface SOSModalProps {
   showSOS: boolean
   setSOS: (show: boolean) => void
-  ui: UiStrings
+  ui: Pick<UiStrings, 'sos' | 'close' | 'sosDesc'>
   SOS_NUMBERS: SosEntry[]
 }
 
