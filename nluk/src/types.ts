@@ -86,6 +86,9 @@ export interface UiStrings {
   saves: string
   more: string
   culture: string
+  startHere: string
+  help: string
+  lifeUK: string
   search: string
   noResults: string
   searchWork?: string

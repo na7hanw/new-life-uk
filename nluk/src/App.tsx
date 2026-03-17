@@ -51,22 +51,22 @@ export default function App() {
   useEffect(() => {
     const p = location.pathname
     const ann =
-      p === '/'            ? 'Guides' :
+      p === '/'            ? 'Start Here' :
       p.startsWith('/guide/') ? 'Guide detail' :
       p.startsWith('/work')   ? 'Work and jobs' :
       p.startsWith('/cert/')  ? 'Certificate detail' :
       p.startsWith('/career/')? 'Career path detail' :
       p === '/saves/apps' ? 'Essential apps' :
-      p === '/saves'      ? 'Saved resources' :
-      p === '/culture'    ? 'UK Culture & Oddities' : ''
+      p === '/saves'      ? 'Help' :
+      p === '/culture'    ? 'Life UK' : ''
     setRouteAnn(ann)
   }, [location.pathname])
 
   const TABS = [
-    { id: 'guides', path: '/', icon: '📖', label: ui.guides },
+    { id: 'start-here', path: '/', icon: '🏠', label: ui.startHere },
     { id: 'work', path: '/work/jobs', icon: '💼', label: ui.work },
-    { id: 'saves', path: '/saves', icon: '🆓', label: ui.saves },
-    { id: 'culture', path: '/culture', icon: '🇬🇧', label: ui.culture },
+    { id: 'help', path: '/saves', icon: '🤝', label: ui.help },
+    { id: 'life-uk', path: '/culture', icon: '🇬🇧', label: ui.lifeUK },
   ]
 
   const isTabActive = (path: string) => {
