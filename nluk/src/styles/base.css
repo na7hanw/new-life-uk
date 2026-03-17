@@ -1,0 +1,103 @@
+/* ─── Base Reset & Global Utilities ──────────────────────────────────────────
+   Box-sizing reset, body defaults, RTL / Ethiopic font overrides,
+   accessibility utilities and misc global helpers.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { border: none; cursor: pointer; font-family: inherit; background: none; color: inherit; text-align: inherit; padding: 0; font-size: inherit; }
+::-webkit-scrollbar { width: 0; height: 0; }
+
+/* RTL and Ethiopic font overrides */
+[dir="rtl"] { font-family: 'Arabic UI Text', 'Geeza Pro', 'Segoe UI', system-ui, sans-serif; line-height: 1.85; }
+.eth-font  { font-family: 'Kefa', 'Noto Sans Ethiopic', system-ui, sans-serif; }
+
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip-to-content link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 8px;
+  padding: 8px 16px;
+  background: var(--ac);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0 0 8px 8px;
+  z-index: 9999;
+  transition: top .15s;
+}
+.skip-link:focus { top: 0; }
+
+/* Lazy-load suspense fallback */
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  font-size: .95rem;
+  color: var(--t3);
+}
+
+/* Offline available badge */
+.offline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--gn);
+  background: rgba(5,150,105,.1);
+  border: 1px solid rgba(5,150,105,.25);
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
+/* Skeleton pulse loader */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.skeleton {
+  background: var(--bg3);
+  border-radius: 8px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+/* TTS "Listen" button */
+.tts-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 20px 12px;
+  padding: 9px 18px;
+  border-radius: 24px;
+  border: 1.5px solid var(--ac3);
+  background: transparent;
+  color: var(--ac3);
+  font-size: .875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.tts-btn:hover { background: var(--ac3); color: #fff; }
+.tts-btn.tts-speaking { background: var(--rd); border-color: var(--rd); color: #fff; }

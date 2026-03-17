@@ -5,6 +5,7 @@ import { useApp } from '../context/AppContext.tsx'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
 import { t18, lsSet } from '../lib/utils.ts'
 import JobCard from '../components/JobCard.tsx'
+import styles from './WorkHub.module.css'
 
 export default function WorkHub() {
   const { subtab = 'jobs' } = useParams()
@@ -91,7 +92,7 @@ export default function WorkHub() {
       </div>
 
       <div className="search-bar">
-        <span style={{ color: 'var(--t3)' }}>🔍</span>
+        <span className={styles.searchIcon}>🔍</span>
         <input className="search-input" placeholder={searchPlaceholder} value={search}
           onChange={e => setSearch(e.target.value)} dir={dir} aria-label={searchPlaceholder} />
         {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
@@ -99,17 +100,17 @@ export default function WorkHub() {
 
       {/* Status-specific banner on the Jobs tab */}
       {subtab === 'jobs' && userStatus === 'asylum-seeker' && (
-        <div className="tip-banner" style={{ margin: '0 16px 12px' }}>
+        <div className={`tip-banner ${styles.tipBannerGutter}`}>
           <span className="tip-icon">⏳</span>
           <p className="tip-text">
             <strong>Permission to Work:</strong> Waited 12+ months for your decision? You may be eligible to apply.
             Rules expand significantly from 26 March 2026.{' '}
-            <button style={{ background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: 700 }}
+            <button className={styles.inlineLink}
               onClick={() => navigate('/guide/permission-to-work')}>
               See the guide →
             </button>
             {' '}Volunteering is always allowed — start building UK experience now.{' '}
-            <button style={{ background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: 700 }}
+            <button className={styles.inlineLink}
               onClick={() => navigate('/guide/volunteering')}>
               Volunteering guide →
             </button>
@@ -117,11 +118,11 @@ export default function WorkHub() {
         </div>
       )}
       {subtab === 'jobs' && userStatus === 'refugee' && (
-        <div className="tip-banner" style={{ margin: '0 16px 12px' }}>
+        <div className={`tip-banner ${styles.tipBannerGutter}`}>
           <span className="tip-icon">📦</span>
           <p className="tip-text">
             <strong>56-Day Move-On:</strong> Recently got refugee status? You have 56 days to set up your new life — don&apos;t miss your Universal Credit and housing deadlines.{' '}
-            <button style={{ background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: 700 }}
+            <button className={styles.inlineLink}
               onClick={() => navigate('/guide/move-on')}>
               See the checklist →
             </button>
@@ -133,26 +134,26 @@ export default function WorkHub() {
         <JobCard key={i} j={j} lang={lang} ui={ui} />
       ))}
       {subtab === 'jobs' && filteredJobs.length === 0 && (
-        <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>{ui.noResults}</div>
+        <div className={styles.noResults}>{ui.noResults}</div>
       )}
 
       {subtab === 'certs' && (
         filteredCerts.length === 0 ? (
-          <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>{ui.noResults}</div>
+          <div className={styles.noResults}>{ui.noResults}</div>
         ) : (
-          <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
+          <div className={`card card-flush ${styles.cardGutter}`}>
             {filteredCerts.map((c) => {
               const cc = t18(c.content, lang)
               return (
-                <button key={c.id} className="list-row"
+                <button key={c.id} className={`list-row ${styles.rowAlignTop}`}
                   ref={el => { certBtnRefs.current[c.id] = el }}
                   onClick={() => { sessionStorage.setItem('nluk_last_cert', c.id); navigate(`/cert/${c.id}`) }} // lgtm[js/clear-text-storage-of-sensitive-data] -- c.id is a public slug, not a credential
-                  aria-label={cc.title} style={{ alignItems: 'flex-start' }}>
+                  aria-label={cc.title}>
                   <span className="list-row-icon">{c.icon}</span>
                   <div className="list-row-content">
                     <div className="list-row-title">{cc.title}</div>
                     <div className="list-row-sub">{cc.sector}</div>
-                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 5 }}>
+                    <div className={styles.pillsRow}>
                       <span className="pill pill-green">{c.time}</span>
                       <span className="pill pill-amber">{c.cost}</span>
                     </div>
@@ -168,23 +169,23 @@ export default function WorkHub() {
 
       {subtab === 'career' && (
         filteredCareers.length === 0 ? (
-          <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>{ui.noResults}</div>
+          <div className={styles.noResults}>{ui.noResults}</div>
         ) : (
-          <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
+          <div className={`card card-flush ${styles.cardGutter}`}>
             {filteredCareers.map((p) => {
               const pc = t18(p.content, lang)
               return (
-                <button key={p.id} className="list-row"
+                <button key={p.id} className={`list-row ${styles.rowAlignTop}`}
                   ref={el => { careerBtnRefs.current[p.id] = el }}
                   onClick={() => { sessionStorage.setItem('nluk_last_career', p.id); navigate(`/career/${p.id}`) }}
-                  aria-label={pc.title} style={{ alignItems: 'flex-start' }}>
+                  aria-label={pc.title}>
                   <span className="list-row-icon">{p.icon}</span>
                   <div className="list-row-content">
                     <div className="list-row-title">{pc.title}</div>
-                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 3 }}>
+                    <div className={styles.tagsRow}>
                       {p.tags.map(t => <span key={t} className="career-tag">{t}</span>)}
                     </div>
-                    <div style={{ fontSize: '.9rem', fontWeight: 800, color: 'var(--gn)', marginTop: 3 }}>{pc.salary}</div>
+                    <div className={styles.careerSalary}>{pc.salary}</div>
                   </div>
                   <span className="list-row-arrow">{af}</span>
                 </button>
@@ -193,7 +194,7 @@ export default function WorkHub() {
           </div>
         )
       )}
-      <div style={{ height: 8 }} />
+      <div className={styles.spacer} />
     </div>
   )
 }

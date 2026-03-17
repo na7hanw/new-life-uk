@@ -7,6 +7,7 @@ import { clearTranslationCache } from '../lib/translate.ts'
 import { SENTRY_DSN, initSentry } from '../lib/sentry.ts'
 import { CONSENT_KEY } from '../components/ConsentBanner.tsx'
 import type { BeforeInstallPromptEvent, UserStatus } from '../types'
+import styles from './MorePage.module.css'
 
 const ALL_KEYS = ['nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', 'nluk_status', CONSENT_KEY]
 
@@ -49,18 +50,18 @@ export default function MorePage() {
 
   return (
     <div className="page-enter">
-      <div className="detail-header" style={{ borderBottom: '1px solid var(--bd)', marginBottom: 8 }}>
+      <div className={`detail-header ${styles.settingsHeader}`}>
         <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
-        <div className="page-hero" style={{ borderBottom: 'none', margin: 0 }}>
+        <div className={`page-hero ${styles.settingsHero}`}>
           <h2 className="page-hero-title">⚙ {ui.settings}</h2>
           <p className="page-hero-sub">{ui.settingsSub}</p>
         </div>
       </div>
 
       <div className="section-label">{ui.theme}</div>
-      <div className="card" style={{ margin: '0 20px 12px' }}>
-        <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontWeight: 700 }}>{dark ? ui.darkMode : ui.lightMode}</span>
+      <div className={`card ${styles.cardGutter}`}>
+        <div className={styles.cardRow}>
+          <span className={styles.cardRowLabel}>{dark ? ui.darkMode : ui.lightMode}</span>
           <button className="btn btn-primary btn-sm" onClick={() => setDark(!dark)}>
             {dark ? ui.lightMode : ui.darkMode}
           </button>
@@ -68,9 +69,9 @@ export default function MorePage() {
       </div>
 
       {(installPrompt || installDone) && (
-        <div className="card" style={{ margin: '0 20px 12px' }}>
-          <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontWeight: 700 }}>{ui.installApp || '📲 Install App'}</span>
+        <div className={`card ${styles.cardGutter}`}>
+          <div className={styles.cardRow}>
+            <span className={styles.cardRowLabel}>{ui.installApp || '📲 Install App'}</span>
             <button className="btn btn-outline btn-sm" onClick={handleInstall} disabled={installDone}>
               {installDone ? (ui.installDone || 'Installed!') : '📲 Install'}
             </button>
@@ -79,15 +80,15 @@ export default function MorePage() {
       )}
 
       <div className="section-label">{ui.language}</div>
-      <div className="card" style={{ margin: '0 20px 12px' }}>
-        <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontWeight: 700 }}>{L.flag} {L.native}</span>
+      <div className={`card ${styles.cardGutter}`}>
+        <div className={styles.cardRow}>
+          <span className={styles.cardRowLabel}>{L.flag} {L.native}</span>
           <button className="btn btn-outline btn-sm" onClick={() => setShowLang(true)}>{ui.change}</button>
         </div>
       </div>
 
       <div className="section-label">👤 {ui.statusLabel || 'My Situation'}</div>
-      <div className="card" style={{ margin: '0 20px 12px' }}>
+      <div className={`card ${styles.cardGutter}`}>
         {([
           { value: 'asylum-seeker' as UserStatus, label: ui.statusAsylumSeeker || '⏳ Asylum seeker — waiting for my decision' },
           { value: 'refugee'       as UserStatus, label: ui.statusRefugee       || '✅ Recognised refugee' },
@@ -97,31 +98,31 @@ export default function MorePage() {
           <button key={opt.value} className="settings-row"
             onClick={() => setUserStatus(userStatus === opt.value ? '' : opt.value)}
             aria-label={opt.label} aria-pressed={userStatus === opt.value}>
-            <span style={{ fontSize: '.875rem' }}>{opt.label}</span>
-            {userStatus === opt.value && <span style={{ color: 'var(--ac)', fontWeight: 800 }}>✓</span>}
+            <span className={styles.statusLabel}>{opt.label}</span>
+            {userStatus === opt.value && <span className={styles.statusCheck}>✓</span>}
           </button>
         ))}
-        <div style={{ padding: '8px 16px' }}>
-          <p style={{ fontSize: '.75rem', color: 'var(--t3)', margin: 0 }}>
+        <div className={styles.statusFooter}>
+          <p className={styles.statusFooterText}>
             {ui.statusPickerSub || 'Optional — helps us show the most relevant guides first.'}
           </p>
         </div>
       </div>
 
       <div className="section-label">🔒 {ui.privacy || 'Privacy & Data'}</div>
-      <div className="card" style={{ margin: '0 20px 12px' }}>
-        <div style={{ padding: '14px 16px' }}>
+      <div className={`card ${styles.cardGutter}`}>
+        <div className={styles.cardBody}>
 
           {/* ── What this app stores ── */}
-          <p style={{ fontWeight: 700, marginBottom: 6, fontSize: '.95rem' }}>
+          <p className={styles.privacyTitle}>
             {ui.privacyTitle || 'Your Privacy'}
           </p>
-          <p style={{ fontSize: '.875rem', color: 'var(--t2)', lineHeight: 1.6, marginBottom: 10 }}>
+          <p className={styles.privacyBody}>
             {ui.privacyBody || 'This app stores only your language preference and theme setting locally on your device. No personal information is collected or shared. There are no cookies and no user accounts.'}
           </p>
 
-          <p style={{ fontSize: '.8rem', fontWeight: 700, marginBottom: 4 }}>{ui.privacyLocal || 'Stored locally on your device only:'}</p>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+          <p className={styles.privacyLocalLabel}>{ui.privacyLocal || 'Stored locally on your device only:'}</p>
+          <ul className={styles.privacyKeyList}>
             {([
               ['nluk_lang',    ui.privacyKeyLang    || 'Language preference'],
               ['nluk_dark',    ui.privacyKeyTheme   || 'Dark / light mode'],
@@ -130,8 +131,8 @@ export default function MorePage() {
               ['nluk_tx3',     'Cached translations (auto-translate)'],
               [CONSENT_KEY,    ui.privacyKeyConsent || 'Your crash-report consent choice'],
             ] as [string, string][]).map(([k, v]) => (
-              <li key={k} style={{ fontSize: '.8rem', color: 'var(--t2)', padding: '2px 0' }}>
-                <code style={{ background: 'var(--bg3)', borderRadius: 4, padding: '1px 5px', marginRight: 6 }}>{k}</code>{v}
+              <li key={k} className={styles.privacyKeyItem}>
+                <code className={styles.privacyKeyCode}>{k}</code>{v}
               </li>
             ))}
           </ul>
@@ -139,14 +140,14 @@ export default function MorePage() {
           {/* ── Crash reporting (Sentry) ── */}
           {SENTRY_DSN && (
             <>
-              <p style={{ fontWeight: 700, marginTop: 14, marginBottom: 4, fontSize: '.875rem' }}>
+              <p className={styles.crashTitle}>
                 {ui.privacyCrashTitle || '🐛 Anonymous crash reports'}
               </p>
-              <p style={{ fontSize: '.8rem', color: 'var(--t2)', lineHeight: 1.6, marginBottom: 8 }}>
+              <p className={styles.crashBody}>
                 {ui.privacyCrashBody || 'With your permission, the app sends anonymous error reports to Sentry (sentry.io) when it crashes. This helps us fix bugs. No personal information is included. No session recordings are made. You can opt out at any time below.'}
               </p>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                <span style={{ fontSize: '.875rem', fontWeight: 700 }}>
+              <div className={styles.crashRow}>
+                <span className={styles.crashStatus}>
                   {consent === 'granted'
                     ? (ui.privacyCrashOn  || '✅ Crash reports: on')
                     : (ui.privacyCrashOff || '❌ Crash reports: off')}
@@ -157,11 +158,11 @@ export default function MorePage() {
                     : (ui.privacyCrashEnable  || 'Turn on')}
                 </button>
               </div>
-              <p style={{ fontSize: '.75rem', color: 'var(--t3)', lineHeight: 1.5 }}>
+              <p className={styles.crashFooter}>
                 {ui.privacyCrashSentry || 'Sentry is an independent service. See'}{' '}
                 <a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer"
                   aria-label="Sentry privacy policy (opens in new tab)"
-                  style={{ color: 'var(--ac3)', textDecoration: 'underline' }}>
+                  className={styles.crashLink}>
                   sentry.io/privacy
                 </a>
               </p>
@@ -169,34 +170,34 @@ export default function MorePage() {
           )}
 
           {/* ── UK GDPR rights ── */}
-          <p style={{ fontWeight: 700, marginTop: 14, marginBottom: 4, fontSize: '.875rem' }}>
+          <p className={styles.gdprTitle}>
             {ui.gdprRightsTitle || '⚖️ Your UK GDPR rights'}
           </p>
-          <p style={{ fontSize: '.8rem', color: 'var(--t2)', lineHeight: 1.6 }}>
+          <p className={styles.gdprBody}>
             {ui.gdprRightsBody || "Under UK GDPR you have the right to access, correct, and erase your data. Use the button below to delete all locally stored data at any time. To exercise rights over crash-report data held by Sentry, contact us at hello@newlifeuk.org. You also have the right to complain to the Information Commissioner's Office (ICO) at ico.org.uk."}
           </p>
           <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer"
             aria-label="ICO — make a complaint (opens in new tab)"
-            style={{ display: 'inline-block', fontSize: '.8rem', color: 'var(--ac3)', textDecoration: 'underline', marginTop: 6 }}>
+            className={styles.gdprLink}>
             {ui.gdprIco || 'ICO — make a complaint →'}
           </a>
 
           {/* ── Data controller ── */}
-          <p style={{ fontWeight: 700, marginTop: 14, marginBottom: 4, fontSize: '.875rem' }}>
+          <p className={styles.controllerTitle}>
             {ui.privacyControllerTitle || '🏢 Data controller'}
           </p>
-          <p style={{ fontSize: '.8rem', color: 'var(--t2)', lineHeight: 1.6 }}>
+          <p className={styles.controllerBody}>
             {ui.privacyControllerBody || 'New Life UK · hello@newlifeuk.org · Open-source, non-commercial project.'}
           </p>
 
           {/* ── Full privacy policy ── */}
-          <p style={{ marginTop: 14 }}>
+          <p className={styles.policyWrapper}>
             <a
               href="https://github.com/na7hanw/new-life-uk/blob/main/PRIVACY.md"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Full privacy policy (opens in new tab)"
-              style={{ fontSize: '.8rem', color: 'var(--ac3)', textDecoration: 'underline' }}
+              className={styles.policyLink}
             >
               {ui.privacyPolicyLink || '📄 Full privacy policy →'}
             </a>
@@ -204,8 +205,7 @@ export default function MorePage() {
 
           {/* ── Clear all data ── */}
           <button
-            className="btn btn-outline btn-sm"
-            style={{ marginTop: 16 }}
+            className={`btn btn-outline btn-sm ${styles.clearBtn}`}
             onClick={() => {
               clearTranslationCache()
               ALL_KEYS.forEach(k => {
@@ -228,7 +228,7 @@ export default function MorePage() {
 
       <div className="version-badge" aria-label="App version and data verification date">
         🛡 v{import.meta.env.VITE_APP_VERSION || '2.2.0'} · Data verified March 2026
-        {offlineReady && <span className="offline-badge" style={{ marginLeft: 8 }}>📴 Available Offline</span>}
+        {offlineReady && <span className="offline-badge">📴 Available Offline</span>}
       </div>
 
       <div className="footer-disc">
@@ -236,16 +236,16 @@ export default function MorePage() {
         {ui.disclaimer}<br /><br />
         Built with care for people who need it most.<br />
         Found outdated info? Email{' '}
-        <a href="mailto:hello@newlifeuk.org" style={{ color: 'var(--ac3)', textDecoration: 'underline' }}>
+        <a href="mailto:hello@newlifeuk.org" className={styles.footerEmailLink}>
           hello@newlifeuk.org
         </a>
         <br /><br />
         <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--t2)', fontWeight: 700, fontSize: '.875rem', textDecoration: 'none' }}>
+          className={styles.githubLink}>
           <span>⭐</span> {ui.sourceCode || 'View Source on GitHub'}
         </a>
       </div>
-      <div style={{ height: 12 }} />
+      <div className={styles.bottomSpacer} />
     </div>
   )
 }

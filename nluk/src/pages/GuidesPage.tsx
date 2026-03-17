@@ -7,6 +7,7 @@ import { LANGS, TIPS } from '../data/ui-strings.ts'
 import { t18 } from '../lib/utils.ts'
 import { translate } from '../lib/translate.ts'
 import type { UserStatus } from '../types'
+import styles from './GuidesPage.module.css'
 
 // Guides to pin in the "For You" section per status
 const STATUS_GUIDES: Record<string, string[]> = {
@@ -115,7 +116,7 @@ export default function GuidesPage() {
         <>
           <div className="hero">
             <div className="hero-badge">{ui.heroBadge ? `${ui.heroBadge} · ${LANGS.length} Languages` : `🇬🇧 Free · Private · ${LANGS.length} Languages · No account needed`}</div>
-            <h2 className="hero-title" style={{ whiteSpace: 'pre-line' }}>{ui.heroTitle || 'Welcome to\nyour new life. 🤝'}</h2>
+            <h2 className={`hero-title ${styles.heroTitle}`}>{ui.heroTitle || 'Welcome to\nyour new life. 🤝'}</h2>
             <p className="hero-sub">{ui.heroSub || 'Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.'}</p>
           </div>
 
@@ -127,11 +128,11 @@ export default function GuidesPage() {
 
           {/* Status picker — shown once until user picks a status or skips */}
           {!userStatus && !statusPickerDismissed && (
-            <div className="card" style={{ margin: '12px 16px 0', padding: '16px' }}>
-              <p style={{ fontWeight: 700, marginBottom: 4, fontSize: '.95rem' }}>
+            <div className={`card ${styles.statusPickerCard}`}>
+              <p className={styles.statusPickerTitle}>
                 {ui.statusPickerTitle || "What's your situation in the UK?"}
               </p>
-              <p style={{ fontSize: '.8rem', color: 'var(--t2)', marginBottom: 12 }}>
+              <p className={styles.statusPickerSub}>
                 {ui.statusPickerSub || 'Optional — helps us show the most relevant guides first.'}
               </p>
               {([
@@ -140,14 +141,12 @@ export default function GuidesPage() {
                 { value: 'other-visa'    as UserStatus, label: ui.statusOtherVisa     || '🛂 Another visa (Skilled Worker, Family, Student…)' },
                 { value: 'settled'       as UserStatus, label: ui.statusSettled       || '🇬🇧 Settled / Pre-Settled Status' },
               ]).map(opt => (
-                <button key={opt.value} className="btn btn-outline"
-                  style={{ width: '100%', textAlign: 'left', marginBottom: 8, padding: '10px 14px', fontWeight: 600 }}
+                <button key={opt.value} className={`btn btn-outline ${styles.statusBtn}`}
                   onClick={() => setUserStatus(opt.value)}>
                   {opt.label}
                 </button>
               ))}
-              <button
-                style={{ background: 'none', border: 'none', color: 'var(--t3)', fontSize: '.8rem', cursor: 'pointer', padding: '4px 0', textDecoration: 'underline' }}
+              <button className={styles.statusSkip}
                 onClick={() => setStatusPickerDismissed(true)}>
                 {ui.statusSkip || 'Skip for now'}
               </button>
@@ -157,7 +156,7 @@ export default function GuidesPage() {
       )}
 
       <div className="search-bar">
-        <span style={{ color: 'var(--t3)' }}>🔍</span>
+        <span className={styles.searchIcon}>🔍</span>
         <input className="search-input" placeholder={ui.search} value={search}
           onChange={e => setSearch(e.target.value)} dir={dir} aria-label={ui.search} />
         {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
@@ -171,14 +170,14 @@ export default function GuidesPage() {
         ))}
       </div>
       {filtered.length === 0 && (
-        <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>{ui.noResults}</div>
+        <div className={styles.noResults}>{ui.noResults}</div>
       )}
 
       {/* For You — pinned guides for this status, shown when not searching and viewing all categories */}
       {!search && catFilter === 'All' && userStatus && STATUS_GUIDES[userStatus] && (
         <div>
-          <div className="cat-header" style={{ color: 'var(--gn)' }}>⭐ {ui.forYou}</div>
-          <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
+          <div className={`cat-header ${styles.forYouHeader}`}>⭐ {ui.forYou}</div>
+          <div className={`card card-flush ${styles.cardGutter}`}>
             {STATUS_GUIDES[userStatus]
               .map(id => GUIDE_MAP[id])
               .filter(Boolean)
@@ -207,7 +206,7 @@ export default function GuidesPage() {
           <div className="cat-header" style={{ color: CATEGORIES[cat]?.color }}>
             {CATEGORIES[cat]?.emoji} {cat}
           </div>
-          <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
+          <div className={`card card-flush ${styles.cardGutter}`}>
             {groupedByCat[cat].map(g => {
               const gc = t18(g.content, lang)
               return (
@@ -227,7 +226,7 @@ export default function GuidesPage() {
           </div>
         </div>
       ))}
-      <div style={{ height: 8 }} />
+      <div className={styles.spacer} />
     </div>
   )
 }

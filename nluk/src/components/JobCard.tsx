@@ -1,4 +1,4 @@
-import { useState, useId, useMemo } from 'react'
+import { useState, useId, useMemo, memo } from 'react'
 import styles from './JobCard.module.css'
 import type { Job, JobContent, UiStrings } from '../types'
 
@@ -8,7 +8,7 @@ interface JobCardProps {
   ui: Pick<UiStrings, 'docsNeeded' | 'jobsApplyTo'>
 }
 
-function JobCard({ j, lang, ui }: JobCardProps) {
+const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
   const [open, setOpen] = useState(false)
   const bodyId = useId()
   const jc = useMemo<Partial<JobContent>>(
@@ -65,6 +65,6 @@ function JobCard({ j, lang, ui }: JobCardProps) {
       </div>
     </div>
   )
-}
+})
 
 export default JobCard

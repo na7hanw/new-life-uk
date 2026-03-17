@@ -1,0 +1,183 @@
+/* MorePage / Settings — page-specific styles for inline style overrides */
+
+/* Settings page uses a light-bordered header instead of the green gradient */
+.settingsHeader {
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 8px;
+}
+
+/* Settings page-hero resets the border/margin that other pages use */
+.settingsHero {
+  border-bottom: none;
+  margin: 0;
+}
+
+/* Card with slightly wider horizontal margin */
+.cardGutter { margin: 0 20px 12px; }
+
+/* Card inner row: icon/label + action button side-by-side */
+.cardRow {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Bold label text inside a card row */
+.cardRowLabel { font-weight: 700; }
+
+/* General card body padding (no flex row needed) */
+.cardBody { padding: 14px 16px; }
+
+/* Status option label text */
+.statusLabel { font-size: .875rem; }
+
+/* Green checkmark for selected status */
+.statusCheck {
+  color: var(--ac);
+  font-weight: 800;
+}
+
+/* Footer area inside status card */
+.statusFooter { padding: 8px 16px; }
+
+/* Small sub-text below status options */
+.statusFooterText {
+  font-size: .75rem;
+  color: var(--t3);
+  margin: 0;
+}
+
+/* ─── Privacy section ─── */
+.privacyTitle {
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: .95rem;
+}
+.privacyBody {
+  font-size: .875rem;
+  color: var(--t2);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.privacyLocalLabel {
+  font-size: .8rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.privacyKeyList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.privacyKeyItem {
+  font-size: .8rem;
+  color: var(--t2);
+  padding: 2px 0;
+}
+.privacyKeyCode {
+  background: var(--bg3);
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-right: 6px;
+}
+
+/* ─── Crash reporting (Sentry) ─── */
+.crashTitle {
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  font-size: .875rem;
+}
+.crashBody {
+  font-size: .8rem;
+  color: var(--t2);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.crashRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.crashStatus {
+  font-size: .875rem;
+  font-weight: 700;
+}
+.crashFooter {
+  font-size: .75rem;
+  color: var(--t3);
+  line-height: 1.5;
+}
+.crashLink {
+  color: var(--ac3);
+  text-decoration: underline;
+}
+.dark .crashLink { color: var(--ac); }
+
+/* ─── UK GDPR rights ─── */
+.gdprTitle {
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  font-size: .875rem;
+}
+.gdprBody {
+  font-size: .8rem;
+  color: var(--t2);
+  line-height: 1.6;
+}
+.gdprLink {
+  display: inline-block;
+  font-size: .8rem;
+  color: var(--ac3);
+  text-decoration: underline;
+  margin-top: 6px;
+}
+.dark .gdprLink { color: var(--ac); }
+
+/* ─── Data controller ─── */
+.controllerTitle {
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  font-size: .875rem;
+}
+.controllerBody {
+  font-size: .8rem;
+  color: var(--t2);
+  line-height: 1.6;
+}
+
+/* ─── Privacy policy link ─── */
+.policyWrapper { margin-top: 14px; }
+.policyLink {
+  font-size: .8rem;
+  color: var(--ac3);
+  text-decoration: underline;
+}
+.dark .policyLink { color: var(--ac); }
+
+/* Clear data button top margin */
+.clearBtn { margin-top: 16px; }
+
+/* Footer links */
+.footerEmailLink {
+  color: var(--ac3);
+  text-decoration: underline;
+}
+.dark .footerEmailLink { color: var(--ac); }
+
+.githubLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--t2);
+  font-weight: 700;
+  font-size: .875rem;
+  text-decoration: none;
+}
+
+/* Bottom spacer */
+.bottomSpacer { height: 12px; }

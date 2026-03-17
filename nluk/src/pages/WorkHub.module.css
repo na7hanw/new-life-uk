@@ -1,0 +1,61 @@
+/* WorkHub — page-specific styles for inline style overrides */
+
+/* Search bar icon colour */
+.searchIcon { color: var(--t3); }
+
+/* Status tip banner with horizontal margin */
+.tipBannerGutter {
+  margin: 0 16px 12px;
+}
+
+/* Inline text link (used inside tip banners for "See the guide →") */
+.inlineLink {
+  background: none;
+  border: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+}
+
+/* Empty search results */
+.noResults {
+  padding: 40px;
+  text-align: center;
+  color: var(--t3);
+}
+
+/* Card with slightly wider horizontal margin (certs & careers lists) */
+.cardGutter { margin: 0 20px 12px; }
+
+/* Cert/career list row — aligns content to top for multi-line items */
+.rowAlignTop { align-items: flex-start; }
+
+/* Pills row within cert list rows */
+.pillsRow {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+/* Tags row within career list rows */
+.tagsRow {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 3px;
+}
+
+/* Career salary text */
+.careerSalary {
+  font-size: .9rem;
+  font-weight: 800;
+  color: var(--gn);
+  margin-top: 3px;
+}
+
+/* Small bottom spacer */
+.spacer { height: 8px; }
