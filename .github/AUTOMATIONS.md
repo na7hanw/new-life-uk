@@ -1,38 +1,88 @@
-# GitHub Automations & Integrations
+# CI / Automation Overview
 
-This project uses multiple free GitHub integrations to catch bugs early, reduce manual work, and improve code quality.
+This project uses multiple free GitHub integrations to catch bugs early, reduce manual work, and keep dependencies secure.  Everything listed here is $0 — see the [Cost Breakdown](#cost-breakdown) at the bottom.
 
-## Installed Automations
+---
 
-### CI/CD Pipelines (Auto-run on every push/PR)
-- **CI** (`ci.yml`) — Lint, test, build, security audit
-- **Lighthouse** (`lighthouse.yml`) — Performance & accessibility scores
-- **CodeQL** (`codeql-analysis.yml`) — Static security analysis
-- **i18n Check** (`i18n-check.yml`) — Verify all guides have English content
-- **Bundle Size Guard** (`bundle-size.yml`) — Fail if JS exceeds budget
-- **Cloudflare Pages** — PR preview deployments are created automatically by the Cloudflare Pages Git integration (no workflow required)
+## Workflow map
 
-### Scheduled Checks (Daily/Weekly)
-- **Link Health** (`link-health.yml`) — Auto-opens issue if any URL is 404
-- **Security Audit** (`security-audit.yml`) — Full npm audit report (daily + weekly)
-- **OSSF Scorecard** (`scorecard.yml`) — Supply-chain security score
-- **Stale Bot** (`stale.yml`) — Auto-closes inactive issues/PRs
-- **Release Drafter** (`release-drafter.yml`) — Auto-generates changelog
+### Required checks (block merge on failure)
 
-### Dependency Management
-- **Dependabot** (`dependabot.yml`) — Auto-opens PRs for outdated packages
-- **Mergify** (`.mergify.yml`) — Auto-merges safe PRs (patch/minor Dependabot updates)
-- **Snyk** (`snyk-scan.yml`) — Dependency vulnerability scanning (requires token)
+| Workflow | File | Trigger | What it does |
+|----------|------|---------|--------------|
+| **CI** | `ci.yml` | push / PR → `main` | Lint (ESLint + a11y), TypeScript type-check, Vitest tests, production build, `npm audit --audit-level=high` |
+| **CodeQL** | `codeql-analysis.yml` | push / PR → `main`, weekly Mon | Static security analysis of JavaScript/TypeScript |
+| **Security Audit** | `security-audit.yml` | push / PR → `main`, weekly Mon | Full `npm audit` report + fail on high/critical CVEs |
+| **i18n Check** | `i18n-check.yml` | push / PR → `main` (guides.ts only) | Verifies every guide has complete English content |
+| **Broken Link Check** | `broken-links.yml` | push / PR → `main` | Lychee link-checker on all `*.md` files |
 
-### Code Quality
-- **Husky + lint-staged** — Pre-commit hooks (runs ESLint locally before committing)
-- **Auto-labeler** (`labeler.yml`) — Auto-labels PRs (content, ui, ci, etc.)
+> **Note — security audit overlap:** Both `ci.yml` and `security-audit.yml` run `npm audit --audit-level=high` on push/PR.  
+> The duplication is intentional: `ci.yml` keeps the gate in the main pipeline; `security-audit.yml` additionally runs on a weekly schedule and prints the full verbose report for triage.
 
-### Translation Management
-- **GitLocalize** (`.gitlocalize`) — Allow volunteers to contribute translations via UI (requires signup)
+### Informational / non-blocking checks (post results, do not block merge)
 
-### Error Monitoring (Production)
-- **Sentry** — Runtime error tracking in deployed app (requires DSN environment variable)
+| Workflow | File | Trigger | What it does |
+|----------|------|---------|--------------|
+| **Bundle Size** | `bundle-size.yml` | PR → `main` | Runs `size-limit` and posts a bundle-size comparison comment on the PR |
+| **Lighthouse** | `lighthouse.yml` | push / PR → `main` | Performance, accessibility, SEO, and PWA scores via Lighthouse CI |
+| **Snyk** | `snyk-scan.yml` | push / PR → `main`, daily 09:00 UTC | Dependency vulnerability scan; uploads SARIF to GitHub Security tab |
+| **PR Size Guard** | `pr-size-guard.yml` | PR opened/updated | Posts a comment warning if PR exceeds 400 lines or 25 files changed |
+
+> These workflows post comments or upload results but do **not** fail the PR.
+
+### Scheduled checks (run without a PR)
+
+| Workflow | File | Schedule | What it does |
+|----------|------|---------|--------------|
+| **Data Link Health** | `link-health.yml` | Daily 07:00 UTC | Curls every `https://` URL in all data files; opens a GitHub issue with **URL + file:line** for any 404/410 found; closes the previous issue before opening a new one (no spam) |
+| **OSSF Scorecard** | `scorecard.yml` | push to `main`, weekly Mon | Supply-chain security score; results appear in the Security tab |
+| **Stale Bot** | `stale.yml` | Daily 01:00 UTC | Marks issues stale after 60 days, PRs after 30 days; closes after 14 more days |
+
+### Automation / housekeeping
+
+| Workflow / Tool | File | Trigger | What it does |
+|-----------------|------|---------|--------------|
+| **Release Drafter** | `release-drafter.yml` | push to `main` | Maintains a rolling draft release / changelog |
+| **Auto-labeler** | `labeler.yml` | PR opened/updated | Labels PRs by changed paths (content, ui, ci…) and adds size labels (XS → XL) |
+| **Dependabot Auto-merge** | `dependabot-auto-merge.yml` | PR from dependabot[bot] | Auto-merges patch/minor dependency updates once CI passes |
+| **Auto-translate** | `auto-translate.yml` | push to `main` (guides.ts), manual dispatch | Fills missing translations using Google Translate (if key set) or MyMemory; opens a PR |
+| **Sentry Setup** | `sentry-setup.yml` | manual dispatch, monthly | One-time helper that prints Sentry project setup instructions |
+
+### External integrations (no workflow file)
+
+| Integration | Config | What it does |
+|-------------|--------|--------------|
+| **Cloudflare Pages** | (Git integration) | Deploys `nluk/dist` on push to `main`; PR preview deployments created automatically |
+| **Dependabot** | `.github/dependabot.yml` | Opens weekly PRs for outdated npm packages |
+| **Mergify** | `.mergify.yml` | Auto-merges patch/minor Dependabot PRs when CI passes; also mirrors the `dependabot-auto-merge.yml` logic |
+| **Husky + lint-staged** | `nluk/package.json`, `.husky/` | Pre-commit hook runs ESLint on staged files locally |
+| **GitLocalize** | `.gitlocalize` | Web UI for volunteer translators; auto-opens translation PRs |
+| **Sentry** | `nluk/src/lib/sentry.ts` | Runtime error tracking in production (requires `VITE_SENTRY_DSN` env var) |
+
+---
+
+## Consolidation decisions
+
+### Bundle-size: one workflow kept, one removed
+
+Two bundle-size workflows existed previously:
+
+| File | Status | Reason |
+|------|--------|--------|
+| `bundle-size.yml` | ✅ **Active** | Uses `andresz1/size-limit-action`; runs on PR; posts a size-comparison comment; respects `nluk/.size-limit.json` |
+| `size-limit.yml` | 🗑️ **Removed** | Used a globally-installed `size-limit` CLI with no config; used the unmaintained `actions/checkout@v2`; had a broken output condition; ran on `push` to `main` (not PR); was never posting useful output |
+
+### Link-health: enhanced, not replaced
+
+`link-health.yml` (curl-based, daily, data files) and `broken-links.yml` (Lychee, PR gate, markdown files) are kept as **separate** workflows because they serve different purposes:
+
+- `broken-links.yml` — fast PR gate; validates hyperlinks in documentation files
+- `link-health.yml` — daily maintenance; validates live URLs embedded in app data (jobs, guides, saves, apps, culture, emergency)
+
+`link-health.yml` was enhanced to:
+1. Scan **all six** data files (previously only `jobs.ts` and `guides.ts`)
+2. Include **file and line number** in the issue body so developers can jump directly to the broken reference
+3. Replace the previous issue before opening a new one (anti-spam — at most one open `broken-links` issue at any time)
 
 ---
 

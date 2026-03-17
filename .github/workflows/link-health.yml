@@ -21,11 +21,22 @@ jobs:
         run: |
           set +e
 
-          # Extract every https URL from the data files
-          URLS=$(grep -ohE 'https://[^"]+' \
+          # Scan all TypeScript data files for https URLs, capturing file:line context.
+          # Output format from grep -nHoE: "file:lineno:https://..."
+          # We use sed to rewrite to "file TAB lineno TAB url" so the URL (which
+          # contains its own colons) is preserved as a single tab-delimited field.
+          LOCATION_RAW=$(grep -nHoE 'https://[^"[:space:]]+' \
             nluk/src/data/jobs.ts \
             nluk/src/data/guides.ts \
-            2>/dev/null | sort -u)
+            nluk/src/data/saves.ts \
+            nluk/src/data/apps.ts \
+            nluk/src/data/culture.ts \
+            nluk/src/data/emergency.ts \
+            2>/dev/null | \
+            sed 's/\([^:]*\):\([0-9]*\):\(.*\)/\1\t\2\t\3/')
+
+          # Unique URLs only (for checking — avoids redundant requests)
+          URLS=$(echo "$LOCATION_RAW" | cut -f3 | sort -u)
 
           BROKEN=""
           CHECKED=0
@@ -38,10 +49,12 @@ jobs:
               -H "Accept: text/html,application/xhtml+xml" \
               "$url" 2>/dev/null)
 
-            # Only flag definitive failures (404 Gone, 410 Deleted)
-            # Ignore 000/timeout — many legit sites block automated checks
+            # Only flag definitive failures (404 Gone, 410 Deleted).
+            # Ignore 000/timeout — many legit sites block automated checks.
             if [ "$CODE" = "404" ] || [ "$CODE" = "410" ]; then
-              BROKEN="$BROKEN\n| $CODE | $url |"
+              # Find all file:line locations for this URL
+              LOCS=$(echo "$LOCATION_RAW" | awk -F'\t' -v u="$url" '$3==u {print "`" $1 ":" $2 "`"}' | paste -sd ', ' -)
+              BROKEN="$BROKEN\n| $CODE | \`$url\` | $LOCS |"
             fi
           done
 
@@ -88,21 +101,32 @@ jobs:
             const checked = '${{ steps.check.outputs.checked }}';
             const broken = `${{ steps.check.outputs.broken_list }}`;
 
+            const dataFiles = [
+              'nluk/src/data/jobs.ts',
+              'nluk/src/data/guides.ts',
+              'nluk/src/data/saves.ts',
+              'nluk/src/data/apps.ts',
+              'nluk/src/data/culture.ts',
+              'nluk/src/data/emergency.ts',
+            ].map(f => `\`${f}\``).join(', ');
+
             const body = [
               `## 🔗 Broken Links Detected`,
               ``,
-              `The weekly link health check scanned **${checked} URLs** across \`nluk/src/data/jobs.ts\` and \`nluk/src/data/guides.ts\` and found the following returning **404 / 410**:`,
+              `The daily link health check scanned **${checked} unique URLs** across ${dataFiles} and found the following returning **404 / 410**:`,
               ``,
-              `| Code | URL |`,
-              `|------|-----|`,
+              `| Code | URL | Location (file:line) |`,
+              `|------|-----|----------------------|`,
               broken,
               ``,
               `### How to fix`,
-              `1. Find the updated URL for each broken link`,
-              `2. Edit the URL directly in the data file`,
-              `3. Commit and push — Cloudflare Pages will redeploy automatically`,
+              `1. Open the file listed in the **Location** column`,
+              `2. Jump to the line number shown`,
+              `3. Replace the broken URL with the updated one`,
+              `4. Commit and push — Cloudflare Pages will redeploy automatically`,
               ``,
               `_Auto-generated ${today} by the [Data Link Health Check](.github/workflows/link-health.yml) workflow._`,
+              `_A new issue replaces this one on the next daily run if links remain broken._`,
             ].join('\n');
 
             await github.rest.issues.create({
