@@ -183,6 +183,8 @@ export interface UiStrings {
   settingsSub?: string
   cultureTitle?: string
   cultureSub?: string
+  searchCulture?: string
+  copyTip?: string
   [key: string]: unknown
 }
 

@@ -1,5 +1,4 @@
 import type { Job, Cert, Career } from '../types'
-import { CertSchema, CareerSchema } from '../lib/schema'
 
 // ─── JOBS ────────────────────────────────────────────────────────
 // Each job has applyLinks[] with per-employer apply links + docs[] required
@@ -568,17 +567,4 @@ export const CAREER_SOURCE_URL: Record<string, string> = {
   'translation':        'https://www.nrpsi.org.uk',
   'property-valuation': 'https://www.rics.org/surveying-profession/join-rics/',
   'social-work':        'https://www.socialworkengland.org.uk/',
-}
-
-// ─── Runtime validation ───────────────────────────────────────────────────────
-// Catches schema mismatches on app load rather than silently serving bad data.
-try {
-  for (const cert of CERTS) {
-    CertSchema.parse(cert)
-  }
-  for (const career of CAREERS) {
-    CareerSchema.parse(career)
-  }
-} catch (e) {
-  console.error('[new-life-uk] Jobs/certs/careers data failed schema validation:', e)
 }

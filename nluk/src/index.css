@@ -1054,6 +1054,20 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   line-height: 1.65;
   margin-top: 10px;
 }
+.culture-copy-btn {
+  flex-shrink: 0;
+  align-self: center;
+  background: none;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 4px 7px;
+  font-size: .85rem;
+  cursor: pointer;
+  color: var(--t3);
+  transition: background .15s, border-color .15s;
+  line-height: 1;
+}
+.culture-copy-btn:hover { background: var(--bg3); border-color: var(--ac); }
 
 /* ─── Helpline Rows ─── */
 .helpline-row {
