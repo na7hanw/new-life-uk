@@ -131,6 +131,19 @@ export default function MorePage() {
             {ui.privacyControllerBody || 'New Life UK · hello@newlifeuk.org · Open-source, non-commercial project.'}
           </p>
 
+          {/* ── Full privacy policy ── */}
+          <p style={{ marginTop: 14 }}>
+            <a
+              href="https://github.com/na7hanw/new-life-uk/blob/main/PRIVACY.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Full privacy policy (opens in new tab)"
+              style={{ fontSize: '.8rem', color: 'var(--ac3)', textDecoration: 'underline' }}
+            >
+              {ui.privacyPolicyLink || '📄 Full privacy policy →'}
+            </a>
+          </p>
+
           {/* ── Clear all data ── */}
           <button
             className="btn btn-outline btn-sm"
