@@ -1,5 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { BookOpen, Briefcase, Gift, Globe } from 'lucide-react'
 import { useApp } from './context/AppContext.tsx'
 import { LANGS } from './data/ui-strings.ts'
 import { SOS_NUMBERS } from './data/emergency.ts'
@@ -63,10 +64,10 @@ export default function App() {
   }, [location.pathname])
 
   const TABS = [
-    { id: 'guides', path: '/', icon: '📖', label: ui.guides },
-    { id: 'work', path: '/work/jobs', icon: '💼', label: ui.work },
-    { id: 'saves', path: '/saves', icon: '🆓', label: ui.saves },
-    { id: 'culture', path: '/culture', icon: '🇬🇧', label: ui.culture },
+    { id: 'guides', path: '/', icon: <BookOpen size={22} strokeWidth={2} />, label: ui.guides },
+    { id: 'work', path: '/work/jobs', icon: <Briefcase size={22} strokeWidth={2} />, label: ui.work },
+    { id: 'saves', path: '/saves', icon: <Gift size={22} strokeWidth={2} />, label: ui.saves },
+    { id: 'culture', path: '/culture', icon: <Globe size={22} strokeWidth={2} />, label: ui.culture },
   ]
 
   const isTabActive = (path: string) => {
