@@ -22,6 +22,8 @@ export type SosEntry = z.infer<typeof SOSSchema>
 
 // ─── Additional types not covered by Zod schemas ────────────────────────────
 
+export type UserStatus = 'asylum-seeker' | 'refugee' | 'other-visa' | 'settled' | ''
+
 export interface Lang {
   code: string
   native: string
@@ -155,6 +157,15 @@ export interface UiStrings {
   langSuggest?: string
   langSuggestUse?: string
   langSuggestDismiss?: string
+  // Task 16 — status selector
+  statusPickerTitle?: string
+  statusPickerSub?: string
+  statusAsylumSeeker?: string
+  statusRefugee?: string
+  statusOtherVisa?: string
+  statusSettled?: string
+  statusSkip?: string
+  statusLabel?: string
   // PR #23
   privacyKeyLang?: string
   privacyKeyTheme?: string
@@ -197,6 +208,8 @@ export interface AppContextValue {
   setSOS: (show: boolean) => void
   showLang: boolean
   setShowLang: (show: boolean) => void
+  userStatus: UserStatus
+  setUserStatus: (s: UserStatus) => void
   ui: UiStrings
   L: Lang
   dir: 'ltr' | 'rtl'

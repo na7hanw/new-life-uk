@@ -2,21 +2,40 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
-import { GUIDES, GUIDE_PRIORITY, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
+import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { LANGS, TIPS } from '../data/ui-strings.ts'
 import { t18 } from '../lib/utils.ts'
 import { translate } from '../lib/translate.ts'
+import type { UserStatus } from '../types'
+
+// Guides to pin in the "For You" section per status
+const STATUS_GUIDES: Record<string, string[]> = {
+  'asylum-seeker': ['permission-to-work', 'volunteering', 'asylum-waiting'],
+  'refugee':       ['move-on', 'uc', 'housing-help'],
+  'other-visa':    ['work-rights', 'evisa', 'sharecode'],
+  'settled':       ['ilr', 'evisa', 'sharecode'],
+}
+
+// Map user status to the appropriate tips array key
+function tipsKeyForStatus(s: UserStatus): keyof typeof TIPS {
+  if (s === 'asylum-seeker') return 'asylum'
+  if (s === 'refugee')       return 'refugee'
+  if (s === 'settled')       return 'eu'
+  if (s === 'other-visa')    return 'other'
+  return 'refugee' // default
+}
 
 // Enrich guides with keyword aliases once at module load (not on every component mount).
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
 
 export default function GuidesPage() {
-  const { lang, ui, dir, af } = useApp()
+  const { lang, ui, dir, af, userStatus, setUserStatus } = useApp()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('All')
   const [tipIdx, setTipIdx] = useState(0)
   const [translatedTip, setTranslatedTip] = useState('')
+  const [statusPickerDismissed, setStatusPickerDismissed] = useState(false)
   const guideBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
   useEffect(() => {
@@ -29,7 +48,7 @@ export default function GuidesPage() {
     }
   }, [])
 
-  const tipList = TIPS.refugee
+  const tipList = TIPS[tipsKeyForStatus(userStatus)]
   const tipEn = tipList[tipIdx % tipList.length]
 
   // Auto-translate the tip when language changes
@@ -105,6 +124,35 @@ export default function GuidesPage() {
           </div>
 
           {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
+
+          {/* Status picker — shown once until user picks a status or skips */}
+          {!userStatus && !statusPickerDismissed && (
+            <div className="card" style={{ margin: '12px 16px 0', padding: '16px' }}>
+              <p style={{ fontWeight: 700, marginBottom: 4, fontSize: '.95rem' }}>
+                {ui.statusPickerTitle || "What's your situation in the UK?"}
+              </p>
+              <p style={{ fontSize: '.8rem', color: 'var(--t2)', marginBottom: 12 }}>
+                {ui.statusPickerSub || 'Optional — helps us show the most relevant guides first.'}
+              </p>
+              {([
+                { value: 'asylum-seeker' as UserStatus, label: ui.statusAsylumSeeker || '⏳ Asylum seeker — waiting for my decision' },
+                { value: 'refugee'       as UserStatus, label: ui.statusRefugee       || '✅ Recognised refugee' },
+                { value: 'other-visa'    as UserStatus, label: ui.statusOtherVisa     || '🛂 Another visa (Skilled Worker, Family, Student…)' },
+                { value: 'settled'       as UserStatus, label: ui.statusSettled       || '🇬🇧 Settled / Pre-Settled Status' },
+              ]).map(opt => (
+                <button key={opt.value} className="btn btn-outline"
+                  style={{ width: '100%', textAlign: 'left', marginBottom: 8, padding: '10px 14px', fontWeight: 600 }}
+                  onClick={() => setUserStatus(opt.value)}>
+                  {opt.label}
+                </button>
+              ))}
+              <button
+                style={{ background: 'none', border: 'none', color: 'var(--t3)', fontSize: '.8rem', cursor: 'pointer', padding: '4px 0', textDecoration: 'underline' }}
+                onClick={() => setStatusPickerDismissed(true)}>
+                {ui.statusSkip || 'Skip for now'}
+              </button>
+            </div>
+          )}
         </>
       )}
 
@@ -125,6 +173,35 @@ export default function GuidesPage() {
       {filtered.length === 0 && (
         <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>{ui.noResults}</div>
       )}
+
+      {/* For You — pinned guides for this status, shown when not searching and viewing all categories */}
+      {!search && catFilter === 'All' && userStatus && STATUS_GUIDES[userStatus] && (
+        <div>
+          <div className="cat-header" style={{ color: 'var(--gn)' }}>⭐ {ui.forYou}</div>
+          <div className="card card-flush" style={{ margin: '0 20px 12px' }}>
+            {STATUS_GUIDES[userStatus]
+              .map(id => GUIDE_MAP[id])
+              .filter(Boolean)
+              .map(g => {
+                const gc = t18(g.content, lang)
+                return (
+                  <button key={g.id} className="list-row"
+                    ref={el => { guideBtnRefs.current[g.id] = el }}
+                    onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
+                    aria-label={gc.title}>
+                    <span className="list-row-icon">{g.icon}</span>
+                    <div className="list-row-content">
+                      <div className="list-row-title">{gc.title}</div>
+                      <div className="list-row-sub">{gc.summary}</div>
+                    </div>
+                    <span className="list-row-arrow">{af}</span>
+                  </button>
+                )
+              })}
+          </div>
+        </div>
+      )}
+
       {cats.map(cat => (
         <div key={cat}>
           <div className="cat-header" style={{ color: CATEGORIES[cat]?.color }}>

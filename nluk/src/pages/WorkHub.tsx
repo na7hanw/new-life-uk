@@ -9,7 +9,7 @@ import JobCard from '../components/JobCard.tsx'
 export default function WorkHub() {
   const { subtab = 'jobs' } = useParams()
   const navigate = useNavigate()
-  const { lang, ui, af, dir } = useApp()
+  const { lang, ui, af, dir, userStatus } = useApp()
   const certBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const careerBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const [search, setSearch] = useState('')
@@ -96,6 +96,38 @@ export default function WorkHub() {
           onChange={e => setSearch(e.target.value)} dir={dir} aria-label={searchPlaceholder} />
         {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
       </div>
+
+      {/* Status-specific banner on the Jobs tab */}
+      {subtab === 'jobs' && userStatus === 'asylum-seeker' && (
+        <div className="tip-banner" style={{ margin: '0 16px 12px' }}>
+          <span className="tip-icon">⏳</span>
+          <p className="tip-text">
+            <strong>Permission to Work:</strong> Waited 12+ months for your decision? You may be eligible to apply.
+            Rules expand significantly from 26 March 2026.{' '}
+            <button style={{ background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: 700 }}
+              onClick={() => navigate('/guide/permission-to-work')}>
+              See the guide →
+            </button>
+            {' '}Volunteering is always allowed — start building UK experience now.{' '}
+            <button style={{ background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: 700 }}
+              onClick={() => navigate('/guide/volunteering')}>
+              Volunteering guide →
+            </button>
+          </p>
+        </div>
+      )}
+      {subtab === 'jobs' && userStatus === 'refugee' && (
+        <div className="tip-banner" style={{ margin: '0 16px 12px' }}>
+          <span className="tip-icon">📦</span>
+          <p className="tip-text">
+            <strong>56-Day Move-On:</strong> Recently got refugee status? You have 56 days to set up your new life — don&apos;t miss your Universal Credit and housing deadlines.{' '}
+            <button style={{ background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit', fontWeight: 700 }}
+              onClick={() => navigate('/guide/move-on')}>
+              See the checklist →
+            </button>
+          </p>
+        </div>
+      )}
 
       {subtab === 'jobs' && filteredJobs.map((j, i) => (
         <JobCard key={i} j={j} lang={lang} ui={ui} />
