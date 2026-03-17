@@ -52,8 +52,8 @@ jobs:
             # Only flag definitive failures (404 Gone, 410 Deleted).
             # Ignore 000/timeout — many legit sites block automated checks.
             if [ "$CODE" = "404" ] || [ "$CODE" = "410" ]; then
-              # Find all file:line locations for this URL
-              LOCS=$(echo "$LOCATION_RAW" | awk -F'\t' -v u="$url" '$3==u {print "`" $1 ":" $2 "`"}' | paste -sd ', ' -)
+              # Find all file:line locations for this URL (plain text, no nested backticks)
+              LOCS=$(echo "$LOCATION_RAW" | awk -F'\t' -v u="$url" '$3==u {print $1 ":" $2}' | paste -sd ', ' -)
               BROKEN="$BROKEN\n| $CODE | \`$url\` | $LOCS |"
             fi
           done
