@@ -1,80 +1,16 @@
 /**
- * Shared TypeScript types derived from the Zod schemas in schema.test.ts.
+ * Shared TypeScript types derived from the Zod schemas in lib/schema.ts.
  * Using z.infer keeps the runtime validation and compile-time types in sync.
  */
 import { z } from 'zod'
 import { type Dispatch, type SetStateAction } from 'react'
-
-// ─── Primitive schemas (mirrors schema.test.ts) ─────────────────────────────
-
-export const LinkSchema = z.object({
-  name: z.string().min(1),
-  url: z.string().url(),
-})
-
-export const GuideContentSchema = z.object({
-  en: z.object({
-    title: z.string().min(1),
-    summary: z.string().min(1),
-    steps: z.array(z.string().min(1)).min(1),
-  }),
-})
-
-export const GuideSchema = z.object({
-  id: z.string().min(1),
-  cat: z.string().min(1),
-  icon: z.string().min(1),
-  content: GuideContentSchema,
-  links: z.array(LinkSchema).optional(),
-  cost: z.string().optional(),
-  time: z.string().optional(),
-  bring: z.array(z.string()).optional(),
-})
-
-export const CertContentSchema = z.object({
-  en: z.object({
-    title: z.string().min(1),
-    sector: z.string().optional(),
-  }),
-})
-
-export const CertSchema = z.object({
-  id: z.string().min(1),
-  icon: z.string().min(1),
-  content: CertContentSchema,
-  cost: z.string().min(1),
-  time: z.string().min(1),
-  freeRoute: z.string().min(1),
-  steps: z.object({
-    en: z.array(z.string().min(1)).min(1),
-  }),
-  links: z.array(LinkSchema).optional(),
-  studyLinks: z.array(LinkSchema).optional(),
-})
-
-export const CareerSchema = z.object({
-  id: z.string().min(1),
-  icon: z.string().min(1),
-  content: z.object({
-    en: z.object({
-      title: z.string().min(1),
-      salary: z.string().min(1),
-    }),
-  }),
-  tags: z.array(z.string()).min(1),
-  steps: z.object({
-    en: z.array(z.string().min(1)).min(1),
-  }),
-  links: z.array(LinkSchema).optional(),
-})
-
-export const SosEntrySchema = z.object({
-  name: z.string().min(1),
-  num: z.string().min(1),
-  phone: z.string().min(1),
-  note: z.string().optional(),
-  hours: z.string().optional(),
-})
+import {
+  LinkSchema,
+  GuideSchema,
+  CertSchema,
+  CareerSchema,
+  SOSSchema,
+} from './lib/schema'
 
 // ─── Inferred types ─────────────────────────────────────────────────────────
 
@@ -82,7 +18,7 @@ export type Link = z.infer<typeof LinkSchema>
 export type Guide = z.infer<typeof GuideSchema>
 export type Cert = z.infer<typeof CertSchema>
 export type Career = z.infer<typeof CareerSchema>
-export type SosEntry = z.infer<typeof SosEntrySchema>
+export type SosEntry = z.infer<typeof SOSSchema>
 
 // ─── Additional types not covered by Zod schemas ────────────────────────────
 

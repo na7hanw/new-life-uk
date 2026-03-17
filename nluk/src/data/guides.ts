@@ -1,4 +1,5 @@
 import type { Guide } from '../types'
+import { GuideSchema } from '../lib/schema'
 
 export const CATEGORIES: Record<string, { emoji: string; color: string }> = {
   "Digital Status": { emoji: "📱", color: "#0D9488" },
@@ -125,4 +126,14 @@ export const GUIDE_SOURCE_URL = {
   'family-reunion': 'https://www.gov.uk/family-permit',
   'community':      'https://www.gov.uk/volunteering/overview',
   'ilr':            'https://www.gov.uk/indefinite-leave-to-remain',
+}
+
+// ─── Runtime validation ───────────────────────────────────────────────────────
+// Catches schema mismatches on app load rather than silently serving bad data.
+try {
+  for (const guide of GUIDES) {
+    GuideSchema.parse(guide)
+  }
+} catch (e) {
+  console.error('[new-life-uk] Guide data failed schema validation:', e)
 }
