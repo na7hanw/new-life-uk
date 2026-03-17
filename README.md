@@ -48,9 +48,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) — content edits (broken links, new guid
 
 | File | What it controls |
 |------|----------------|
-| `nluk/src/data/guides.js` | 26 step-by-step guides |
-| `nluk/src/data/jobs.js` | Jobs, certifications, career paths |
-| `nluk/src/data/emergency.js` | SOS emergency numbers |
+| `nluk/src/data/guides.ts` | 26 step-by-step guides |
+| `nluk/src/data/jobs.ts` | Jobs, certifications, career paths |
+| `nluk/src/data/emergency.ts` | SOS emergency numbers |
+| `nluk/src/data/saves.ts` | Free resources and hidden gems |
+| `nluk/src/data/apps.ts` | Essential apps for new arrivals |
+| `nluk/src/data/culture.ts` | Culture tips and information |
+| `nluk/src/data/ui-strings.ts` | UI strings and language configuration |
+| `nluk/src/data/content.ts` | Barrel re-export of all data files (backward compat) |
 
 ## Automations
 

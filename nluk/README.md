@@ -2,7 +2,7 @@
 
 ## What this is
 A professional, multilingual survival guide website for new arrivals in the UK.
-22 guides, 16 free stuff items, 15 hidden gems, 12 languages, social sharing, dark/light mode.
+26 guides, 16 free stuff items, 15 hidden gems, 12 languages, social sharing, dark/light mode.
 
 ## Quick Start (15 minutes, £0)
 
@@ -57,10 +57,21 @@ This creates a `dist` folder.
 
 ## How to Update Content
 
-All content is in one file: `src/data/content.js`
+Content is split across dedicated TypeScript files in `src/data/`:
+
+| File | What it controls |
+|------|----------------|
+| `src/data/guides.ts` | 26 step-by-step guides |
+| `src/data/jobs.ts` | Jobs, certifications, career paths |
+| `src/data/emergency.ts` | SOS emergency numbers |
+| `src/data/saves.ts` | Free resources and hidden gems |
+| `src/data/apps.ts` | Essential apps for new arrivals |
+| `src/data/culture.ts` | Culture tips and information |
+| `src/data/ui-strings.ts` | UI strings and language configuration |
+| `src/data/content.ts` | Barrel re-export of all data files (backward compat) |
 
 ### To edit a guide:
-1. Open `src/data/content.js` in any text editor
+1. Open `src/data/guides.ts` in any text editor
 2. Find the guide by searching for its title
 3. Edit the text
 4. Save the file
@@ -79,7 +90,7 @@ content: {
 Just add a new language key with the translated content.
 
 ### To fix a broken link:
-Search for the old URL in `content.js`, replace it with the new one.
+Search for the old URL in the relevant file (e.g. `guides.ts`, `saves.ts`, `jobs.ts`), replace it with the new one.
 
 ---
 
@@ -108,7 +119,7 @@ External links go to gov.uk, nhs.uk, and other official sites.
 - **Framework**: React 18 + Vite (fast, modern, zero-config)
 - **Hosting**: Cloudflare Pages (free tier, global CDN, custom domain, HTTPS)
 - **PWA**: Optional install-to-homescreen via vite-plugin-pwa
-- **Data**: i18n-ready structure in `src/data/content.js`
+- **Data**: i18n-ready structure split across `src/data/` TypeScript files
 - **Styling**: CSS variables for theme, responsive typography
 - **Accessibility**: Semantic HTML, ARIA labels, keyboard navigation
 - **Sharing**: WhatsApp, Telegram, Facebook, copy-link on every guide
@@ -118,9 +129,16 @@ External links go to gov.uk, nhs.uk, and other official sites.
 ## File Structure
 ```
 src/
-├── main.jsx          ← Entry point + error boundary
-├── App.jsx           ← Main app with all components
+├── main.tsx          ← Entry point + error boundary
+├── App.tsx           ← Main app with routing
 ├── index.css         ← All styles (CSS variables)
 └── data/
-    └── content.js    ← ALL content, translations, links
+    ├── guides.ts     ← 26 step-by-step guides
+    ├── jobs.ts       ← Jobs, certifications, career paths
+    ├── emergency.ts  ← SOS emergency numbers
+    ├── saves.ts      ← Free resources and hidden gems
+    ├── apps.ts       ← Essential apps for new arrivals
+    ├── culture.ts    ← Culture tips and information
+    ├── ui-strings.ts ← UI strings and language config
+    └── content.ts    ← Barrel re-export (backward compat)
 ```
