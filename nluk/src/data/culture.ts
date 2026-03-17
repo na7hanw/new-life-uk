@@ -211,4 +211,46 @@ export const CULTURE: CultureSection[] = [
       },
     ],
   },
+  {
+    id: 'workplace',
+    emoji: '💼',
+    heading: 'Workplace & Office Culture — The Unwritten Handbook',
+    items: [
+      {
+        emoji: '🎂',
+        title: 'Bring Cake on Your Birthday',
+        body: 'In most British offices, it is tradition for the birthday person to bring cake for the team — not the other way round. Failing to do so will be noticed. Bring enough for everyone. This is not optional in offices that take cake seriously.',
+      },
+      {
+        emoji: '📧',
+        title: '"As per my last email…"',
+        body: 'The most passive-aggressive phrase in British professional culture. It means: you have ignored what I told you, and I am politely furious. If you receive this, re-read the original email immediately.',
+      },
+      {
+        emoji: '🫖',
+        title: 'The Tea Round',
+        body: 'In an office, when you make yourself a hot drink, you are expected to ask everyone nearby if they want one. This is called "doing a tea round." Accepting tea and never offering to make any is a slow-burn social crime that colleagues will remember.',
+      },
+      {
+        emoji: '🕐',
+        title: 'Start Time vs. Actual Start Time',
+        body: 'If your shift starts at 9:00, being there at 9:00 is fine. However, ambitious employees arrive at 8:45. Arriving at exactly 9:00 every single day may be noted. Leaving exactly at 5:00 pm every day is also noticed — even if it is technically acceptable.',
+      },
+      {
+        emoji: '🍻',
+        title: 'The Work Night Out',
+        body: 'Attendance at after-work drinks is technically optional, but is socially important for career development. The first round is usually paid for by someone senior. Do not get so drunk that you are memorable — the goal is "pleasant and sociable", not "the most interesting story of the quarter."',
+      },
+      {
+        emoji: '🤐',
+        title: 'Feedback Is Delivered Sideways',
+        body: 'British managers rarely give direct negative feedback. Instead: "there\'s just one small thing…" means a major problem. "I wonder if we could perhaps…" means "change this." "It\'s quite good" means it needs work. "This is really interesting" in a performance review means they are confused.',
+      },
+      {
+        emoji: '📱',
+        title: 'No Phone Calls in Open-Plan Offices',
+        body: 'Taking a loud personal phone call at your desk is considered rude. Step outside, go to a meeting room, or keep it very brief and quiet. Playing audio from your phone without headphones is a social crime. Headphones are the universal signal for "do not disturb."',
+      },
+    ],
+  },
 ]

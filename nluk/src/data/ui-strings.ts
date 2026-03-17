@@ -28,6 +28,7 @@ const BASE_UI = {
   appsTitle: "Essential Apps & Services 📲", appsSub: "Free must-have apps and services for life in the UK.",
   gemsTitle: "Hidden Gems 💎", gemsSub: "Free money, career shortcuts, insider routes.",
   cultureTitle: "🇬🇧 UK Culture & Oddities", cultureSub: "Unwritten rules, polite lies, and peculiar customs of British life.",
+  searchCulture: "Search culture tips…", copyTip: "Copy tip",
   settingsSub: "App preferences, language, and privacy.",
   theme: "Theme", language: "Language", apply: "Apply", freeRoute: "Free route available",
   darkMode: "🌙 Dark", lightMode: "☀️ Light", settings: "Settings",
