@@ -1,6 +1,7 @@
 import type { Guide } from '../types'
 
 export const CATEGORIES: Record<string, { emoji: string; color: string }> = {
+  "Asylum Process": { emoji: "⏳", color: "#7C3AED" },
   "Digital Status": { emoji: "📱", color: "#0D9488" },
   "Money": { emoji: "💷", color: "#16A34A" },
   "Healthcare": { emoji: "🏥", color: "#0891B2" },
@@ -14,6 +15,7 @@ export const CATEGORIES: Record<string, { emoji: string; color: string }> = {
 };
 
 export const GUIDES: Guide[] = [
+  { id: "asylum-waiting", cat: "Asylum Process", icon: "⏳", content: { en: { title: "Waiting for Your Asylum Decision", summary: "What to expect while your asylum claim is being processed — your cards, rights, payments, and what happens next.", steps: ["Your ARC card (Application Registration Card) is your primary ID while your asylum claim is active. It proves you have an ongoing claim. Use it to: register with a GP or NHS service, access asylum support accommodation, open certain bank accounts (Monese accepts an ARC card), and enrol in ESOL or college.", "Your ARC card CANNOT be used as a right-to-work document unless it specifically says 'Permitted to Work' on the front. It is NOT a travel document — you cannot leave the UK and re-enter on it. It is NOT equivalent to a BRP or eVisa.", "Your ASPEN card is your asylum support payment card. As of 2025/26 the standard rate is £49.18/week for a single adult (higher if you have children). Payments arrive weekly. The card works like a Visa debit card at any shop that accepts Visa. Note: older ASPEN cards cannot withdraw cash from ATMs.", "Current Home Office processing times: 6–18+ months for most claims, and longer for complex cases or certain nationalities. You can check your case status by contacting the Asylum Helpline on 0808 8000 631 (free, Mon–Fri 9am–5pm) or by asking your solicitor to make enquiries.", "If you need to chase the Home Office: ask your solicitor to write to the case-owner or the National Asylum Intake Unit. If you do not have a solicitor, call the Asylum Helpline (0808 8000 631) or contact a local law centre.", "If your decision is POSITIVE (refugee status granted): you will receive a refugee recognition letter. You then have 56 days to leave asylum accommodation and set yourself up — see the 56-Day Move-On guide for everything you must do immediately.", "If your decision is NEGATIVE: you will usually have the right to appeal. You have 14 or 28 days to lodge an appeal (the letter will say which). Always consult a solicitor immediately — do not miss the deadline. If you have new evidence not previously considered, you may be able to submit a 'fresh claim'.", "Your rights while waiting: you have the right to free NHS care, your children have the right to attend school, you have the right to asylum accommodation and Section 95 support if destitute. If you are refused but cannot safely return to your home country, you may qualify for Section 4 support. You also have the right to free legal aid for your asylum case.", "Reporting requirements: you may be required to report regularly to an immigration reporting centre. The letter you received will tell you your reporting schedule. Missing a reporting appointment without a good reason can lead to the Home Office treating you as having absconded, which can seriously harm your case.", "⚠ Never pay anyone to check your case status — it is free. Never give your ARC card or ASPEN card to anyone else."] } }, cost: "Free", time: "Ongoing — 6–18+ months", bring: ["ARC card", "Any letters from the Home Office"], links: [{ name: "Asylum Helpline (0808 8000 631)", url: "https://www.gov.uk/asylum-support" }, { name: "Check your asylum case (GOV.UK)", url: "https://www.gov.uk/asylum-support/further-information" }, { name: "Legal aid for asylum (GOV.UK)", url: "https://www.gov.uk/legal-aid" }, { name: "Refugee Council asylum support", url: "https://www.refugeecouncil.org.uk/help-for-refugees/asylum-support/" }, { name: "Section 4 support (GOV.UK)", url: "https://www.gov.uk/asylum-support/section-4-support" }] },
   { id: "evisa", cat: "Digital Status", icon: "📱", content: { en: { title: "Your eVisa & UKVI Account", summary: "BRPs expired Dec 2024. Your immigration status is now 100% digital.", steps: ["All BRPs expired 31 December 2024. Your status hasn't changed — only how you prove it.", "You can still use an expired BRP to access the online share code service for up to 18 months after its expiry date (until June 2026 for most people).", "Since June 2025, expired BRPs are NOT accepted for travel by airlines.", "Check your email for noreply@notifications.service.gov.uk — your UKVI account may already exist.", "No account? Visit gov.uk/evisa — free, takes 10 minutes.", "Link your passport to your UKVI account BEFORE travelling.", "From 25 Feb 2026, all new visa applicants receive eVisas only — no more vignette stickers.", "Screenshot your eVisa status page and save offline — essential without internet.", "⚠ ~300,000 UK residents still haven't set up their eVisa. Do it now."] } }, cost: "Free", time: "10 min", bring: ["Email address", "Passport or BRP number"], links: [{ name: "Set up eVisa (GOV.UK)", url: "https://www.gov.uk/evisa" }, { name: "Update UKVI details", url: "https://www.gov.uk/evisa/update-your-ukvi-account-details" }, { name: "eVisa help videos", url: "https://www.gov.uk/government/publications/updates-on-the-move-to-evisas/updates-on-the-move-to-evisas" }] },
   { id: "sharecode", cat: "Digital Status", icon: "🔗", content: { en: { title: "Share Codes", summary: "Prove your right to work, rent, or access services.", steps: ["Log in to UKVI → 'Prove your status'. Choose: Right to Work, Right to Rent, or General.", "Right to Work codes start with 'W'. Right to Rent codes start with 'R'. Don't mix them up.", "Codes valid 90 days. Generate a new one each time you need it.", "Give the code + your date of birth to your employer or landlord. They verify online.", "EU Settled Status: share code is your ONLY proof. No physical card exists.", "⚠ Never pay anyone for a share code. The GOV.UK service is always free."] } }, cost: "Free", time: "2 min", bring: ["UKVI account login"], links: [{ name: "Prove right to work (GOV.UK)", url: "https://www.gov.uk/prove-right-to-work" }, { name: "Prove right to rent (GOV.UK)", url: "https://www.gov.uk/prove-right-to-rent" }, { name: "Check someone's status (GOV.UK)", url: "https://www.gov.uk/view-right-to-work" }] },
   { id: "nrpf", cat: "Digital Status", icon: "⚠️", content: { en: { title: "No Recourse to Public Funds (NRPF)", summary: "NRPF restricts most benefits. Know what you CAN still access.", steps: ["NRPF means you cannot claim: Universal Credit, Housing Benefit, Child Tax Credit.", "You CAN still access: full NHS care, state schools, Statutory Sick Pay, child protection.", "Destitute with children? Your council MUST help under Section 17, Children Act 1989.", "Changed circumstances (illness, domestic abuse)? Apply to have NRPF removed.", "NRPF Network provides free specialist advice."] } }, cost: "Free", time: "Read now", bring: [], links: [{ name: "NRPF Network", url: "https://www.nrpfnetwork.org.uk" }, { name: "Find immigration adviser (GOV.UK)", url: "https://www.gov.uk/find-an-immigration-adviser" }] },
@@ -47,7 +49,7 @@ export const GUIDE_MAP: Record<string, Guide> = Object.fromEntries(GUIDES.map(g 
 
 // ─── Priority order for Guides tab (refugee-first) ─────────────
 export const GUIDE_PRIORITY = [
-  'move-on', 'bank', 'uc', 'ni', 'evisa', 'sharecode', 'gp', 'housing-help',
+  'asylum-waiting', 'move-on', 'bank', 'uc', 'ni', 'evisa', 'sharecode', 'gp', 'housing-help',
   'work-rights', 'ctd', 'citizen-card', 'employment-rights', 're-qualify', 'ilr',
   'renting', 'schools', 'mental', 'safety', 'tax', 'driving',
   'proof-address', 'travel', 'family-reunion', 'nrpf', 'women-support', 'community',
@@ -58,6 +60,7 @@ export const GUIDE_DATA_DATE = 'March 2026'
 
 // ─── Per-guide last-updated overrides ──────────────────────────
 export const GUIDE_LAST_UPDATED = {
+  'asylum-waiting':    'March 2026',
   'evisa':             'February 2026',
   'sharecode':         'February 2026',
   'ctd':               'March 2026',
@@ -72,6 +75,7 @@ export const GUIDE_LAST_UPDATED = {
 
 // ─── Fuzzy-search keywords (alias terms users type instead of UK jargon) ──
 export const GUIDE_KEYWORDS = {
+  'asylum-waiting': ['asylum', 'waiting', 'decision', 'ARC', 'ASPEN', 'Home Office', 'claim', 'interview', 'reporting', 'asylum seeker', 'pending', 'refused', 'appeal', 'fresh claim'],
   'gp':            ['doctor', 'dentist', 'hospital', 'medicine', 'sick', 'ill', 'health', 'nurse', 'prescription'],
   'uc':            ['benefits', 'money', 'income', 'welfare', 'payment', 'poverty', 'allowance', 'JSA', 'ESA', 'PIP'],
   'ni':            ['NINO', 'NIN', 'tax number', 'national insurance number', 'employment number'],
@@ -99,6 +103,7 @@ export const GUIDE_KEYWORDS = {
 
 // ─── Official source URLs (GOV.UK / NHS / authoritative charity) ─────────
 export const GUIDE_SOURCE_URL = {
+  'asylum-waiting': 'https://www.gov.uk/asylum-support',
   'evisa':          'https://www.gov.uk/evisa',
   'sharecode':      'https://www.gov.uk/view-prove-immigration-status',
   'nrpf':           'https://www.gov.uk/government/publications/public-funds--2/public-funds',
