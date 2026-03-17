@@ -63,7 +63,7 @@ export const GUIDE_LAST_UPDATED = {
   'sharecode':         'February 2026',
   'ctd':               'March 2026',
   'travel':            'March 2026',
-  'family-reunion':    'September 2025',
+  'family-reunion':    'March 2026',
   'employment-rights': 'March 2026',
   'ilr':               'January 2026',
   'uc':                'March 2026',

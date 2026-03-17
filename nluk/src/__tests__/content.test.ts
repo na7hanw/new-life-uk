@@ -4,10 +4,11 @@
  * Critical: this app gives life-changing advice; a broken link matters.
  */
 import { describe, it, expect } from 'vitest'
-import { GUIDES, GUIDE_PRIORITY } from '../data/guides.ts'
+import { GUIDES, GUIDE_PRIORITY, GUIDE_LAST_UPDATED } from '../data/guides.ts'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
 import { SOS_NUMBERS } from '../data/emergency.ts'
 import { APPS } from '../data/apps.ts'
+import { CULTURE } from '../data/culture.ts'
 
 // ─── Guides ───────────────────────────────────────────────────────
 
@@ -118,6 +119,64 @@ describe('essential apps — data integrity', () => {
   it('every app has an icon', () => {
     for (const app of APPS) {
       expect(app.icon, `${app.content?.en?.title} missing icon`).toBeTruthy()
+    }
+  })
+})
+
+// ─── UK Culture ───────────────────────────────────────────────────
+
+describe('culture — data integrity', () => {
+  it('CULTURE is non-empty', () => {
+    expect(CULTURE.length).toBeGreaterThan(0)
+  })
+
+  it('every section has an id, emoji, and heading', () => {
+    for (const section of CULTURE) {
+      expect(section.id, 'culture section missing id').toBeTruthy()
+      expect(section.emoji, `section "${section.id}" missing emoji`).toBeTruthy()
+      expect(section.heading, `section "${section.id}" missing heading`).toBeTruthy()
+    }
+  })
+
+  it('every section has at least one item', () => {
+    for (const section of CULTURE) {
+      expect(
+        section.items.length,
+        `section "${section.id}" has no items`
+      ).toBeGreaterThan(0)
+    }
+  })
+
+  it('every culture item has an emoji, title, and body', () => {
+    for (const section of CULTURE) {
+      for (const item of section.items) {
+        expect(item.emoji, `item in "${section.id}" missing emoji`).toBeTruthy()
+        expect(item.title, `item in "${section.id}" missing title`).toBeTruthy()
+        expect(item.body, `item in "${section.id}" missing body`).toBeTruthy()
+      }
+    }
+  })
+})
+
+// ─── GUIDE_LAST_UPDATED freshness ────────────────────────────────
+
+describe('GUIDE_LAST_UPDATED — freshness', () => {
+  it('every id in GUIDE_LAST_UPDATED exists in GUIDES', () => {
+    const ids = new Set(GUIDES.map(g => g.id))
+    for (const id of Object.keys(GUIDE_LAST_UPDATED)) {
+      expect(ids.has(id), `GUIDE_LAST_UPDATED contains unknown guide id: "${id}"`).toBe(true)
+    }
+  })
+
+  it('no GUIDE_LAST_UPDATED entry is older than 12 months from today', () => {
+    const now = new Date()
+    const cutoff = new Date(now.getFullYear() - 1, now.getMonth(), 1)
+    for (const [id, dateStr] of Object.entries(GUIDE_LAST_UPDATED)) {
+      const parsed = new Date(dateStr)
+      expect(
+        parsed.getTime(),
+        `GUIDE_LAST_UPDATED["${id}"] = "${dateStr}" is older than 12 months`
+      ).toBeGreaterThan(cutoff.getTime())
     }
   })
 })
