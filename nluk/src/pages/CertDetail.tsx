@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
-import { CERT_MAP } from '../data/jobs.ts'
+import { CERT_MAP, JOBS_DATA_DATE, CERT_SOURCE_URL } from '../data/jobs.ts'
 import { useTranslatedContent, useTranslatedSteps } from '../lib/useTranslation.ts'
 import QuickLinks from '../components/QuickLinks.tsx'
 import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
+import TTSButton from '../components/TTSButton.tsx'
 
 interface CertContent {
   title: string
@@ -48,6 +50,10 @@ export default function CertDetail() {
 
   return (
     <article className="page-enter">
+      <Helmet>
+        <title>{cc.title} — New Life UK</title>
+        <meta name="description" content={cc.sector || cc.title} />
+      </Helmet>
       <div className={`detail-header${translating ? ' translating' : ''}`}>
         <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
         <div className="detail-hero">
@@ -71,6 +77,8 @@ export default function CertDetail() {
       )}
 
       <ShareBar title={cc.title} ui={ui} />
+
+      <TTSButton lang={lang} title={cc.title} summary={cc.sector || ''} steps={st} ui={ui} />
 
       <div className="section-label">{ui.freeRoute}</div>
       <div className="card" style={{ margin: '0 20px 12px' }}>
@@ -103,7 +111,17 @@ export default function CertDetail() {
         </div>
       )}
 
-      <div style={{ height: 20 }} />
+      <div className="guide-updated">
+        ✓ Verified {JOBS_DATA_DATE}
+      </div>
+
+      {id && CERT_SOURCE_URL[id] && (
+        <div style={{ textAlign: 'center', paddingBottom: 24 }}>
+          <a href={CERT_SOURCE_URL[id]} target="_blank" rel="noopener noreferrer" className="source-link">
+            📄 View Official Source
+          </a>
+        </div>
+      )}
     </article>
   )
 }

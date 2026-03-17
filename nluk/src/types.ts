@@ -151,6 +151,7 @@ export interface UiStrings {
   more: string
   search: string
   noResults: string
+  searchWork?: string
   cost: string
   time: string
   bring: string

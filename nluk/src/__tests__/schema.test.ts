@@ -4,7 +4,7 @@
  */
 import { describe, it, expect } from 'vitest'
 import { z } from 'zod'
-import { CERTS, CAREERS } from '../data/jobs.ts'
+import { CERTS, CAREERS, CERT_SOURCE_URL, CAREER_SOURCE_URL } from '../data/jobs.ts'
 import { GUIDE_MAP, GUIDE_SOURCE_URL } from '../data/guides.ts'
 import { SOS_NUMBERS } from '../data/emergency.ts'
 
@@ -127,6 +127,21 @@ describe('Cert schema', () => {
       expect(cert.id.length).toBeGreaterThan(0)
     }
   })
+
+  it('all certs have a sourceUrl', () => {
+    for (const cert of CERTS) {
+      expect(
+        CERT_SOURCE_URL[cert.id],
+        `Cert "${cert.id}" is missing a CERT_SOURCE_URL`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all cert sourceUrls are valid https URLs', () => {
+    for (const [id, url] of Object.entries(CERT_SOURCE_URL)) {
+      expect(url, `Cert "${id}" sourceUrl must start with https://`).toMatch(/^https:\/\//)
+    }
+  })
 })
 
 describe('Career schema', () => {
@@ -144,6 +159,21 @@ describe('Career schema', () => {
     for (const career of CAREERS) {
       expect(typeof career.id).toBe('string')
       expect(career.id.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('all careers have a sourceUrl', () => {
+    for (const career of CAREERS) {
+      expect(
+        CAREER_SOURCE_URL[career.id],
+        `Career "${career.id}" is missing a CAREER_SOURCE_URL`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all career sourceUrls are valid https URLs', () => {
+    for (const [id, url] of Object.entries(CAREER_SOURCE_URL)) {
+      expect(url, `Career "${id}" sourceUrl must start with https://`).toMatch(/^https:\/\//)
     }
   })
 })
