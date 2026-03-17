@@ -36,6 +36,14 @@ const BASE_UI = {
   copied: "Copied!",
   qaEvisa: "eVisa", qaShare: "Share Code", qaBank: "Bank", qaGP: "GP / NHS", qaBenefits: "Benefits", qaID: "ID Card", qaTravel: "Travel Doc", qaSafety: "Safety",
   status: { refugee: "Refugee", skilled: "Skilled Worker", family: "Family Visa", eu: "EU Settled", student: "Student", other: "Other" },
+  statusPickerTitle: "What's your situation in the UK?",
+  statusPickerSub: "Optional — helps us show the most relevant guides first. No account needed.",
+  statusAsylumSeeker: "⏳ Asylum seeker — waiting for my decision",
+  statusRefugee: "✅ Recognised refugee",
+  statusOtherVisa: "🛂 Another visa (Skilled Worker, Family, Student…)",
+  statusSettled: "🇬🇧 Settled / Pre-Settled Status",
+  statusSkip: "Skip for now",
+  statusLabel: "My Situation",
   openLink: "Open link", studyLinks: "Study Resources", applyLinks: "Apply / Sign Up", sourceCode: "View Source on GitHub",
   docsNeeded: "What you'll need", jobsApplyTo: "Where to apply",
   privacy: "Privacy & Data", privacyTitle: "Your Privacy",
@@ -92,6 +100,16 @@ LANGS.forEach(({ code }) => {
 });
 
 export const TIPS = {
+  asylum: [
+    "Volunteering is ALWAYS allowed — no permission from the Home Office needed.",
+    "Waited 12+ months for a decision? You may be able to apply for Permission to Work.",
+    "Rules expand from 26 March 2026 — most asylum seekers become eligible for a wider range of jobs.",
+    "Register with a GP — free NHS care for everyone, regardless of immigration status.",
+    "Your ARC card is your main ID while your claim is active. Keep it safe.",
+    "Citizens Advice: 0800 144 8848 — free help with benefits, housing, and legal issues.",
+    "Freedom from Torture: free mental health support — 020 7697 7777.",
+    "Never pay anyone to check your case status — it is always free.",
+  ],
   refugee: ["Register with a GP — no address or ID needed.", "Request a UC Advance on day one.", "Revolut, Monzo, Starling: open with share code + selfie.", "Download the NHS App for GP bookings.", "Move-on period is now 56 days.", "Apply for a CitizenCard (£15) — photo ID accepted everywhere.", "National Databank: free SIM with 40GB/month from Vodafone.", "ESOL classes free if you receive UC."],
   skilled: ["Your employer cannot hold your passport.", "60 days to find new sponsorship if you lose your job.", "Revolut, Monzo, Starling: open with share code.", "Download the NHS App.", "You can switch visa without leaving UK.", "16-25 Railcard: 1/3 off all train fares for £30/year.", "Save every payslip and P60 for ILR.", "Check eVisa expiry — extend 3 months early."],
   family: ["Check eVisa conditions — NRPF affects benefits.", "Domestic abuse victims can switch visa.", "Revolut, Monzo, Starling: share code + selfie.", "Download the NHS App.", "CitizenCard £15 for photo ID.", "Free prescriptions if on UC.", "Most family visas allow work — check eVisa.", "Citizens Advice: free immigration advice."],

@@ -5,11 +5,12 @@ import { ls, lsSet } from '../lib/utils.ts'
 import { clearTranslationCache } from '../lib/translate.ts'
 import { SENTRY_DSN, initSentry } from '../lib/sentry.ts'
 import { CONSENT_KEY } from '../components/ConsentBanner.tsx'
+import type { UserStatus } from '../types'
 
-const ALL_KEYS = ['nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', CONSENT_KEY]
+const ALL_KEYS = ['nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', 'nluk_status', CONSENT_KEY]
 
 export default function MorePage() {
-  const { ui, L, dark, setDark, setShowLang } = useApp()
+  const { ui, L, dark, setDark, setShowLang, userStatus, setUserStatus } = useApp()
   const [offlineReady, setOfflineReady] = useState(false)
   const [consent, setConsent] = useState(() => ls(CONSENT_KEY, ''))
 
@@ -51,6 +52,28 @@ export default function MorePage() {
         </div>
       </div>
 
+      <div className="section-label">👤 {ui.statusLabel || 'My Situation'}</div>
+      <div className="card" style={{ margin: '0 20px 12px' }}>
+        {([
+          { value: 'asylum-seeker' as UserStatus, label: ui.statusAsylumSeeker || '⏳ Asylum seeker — waiting for my decision' },
+          { value: 'refugee'       as UserStatus, label: ui.statusRefugee       || '✅ Recognised refugee' },
+          { value: 'other-visa'    as UserStatus, label: ui.statusOtherVisa     || '🛂 Another visa (Skilled Worker, Family, Student…)' },
+          { value: 'settled'       as UserStatus, label: ui.statusSettled       || '🇬🇧 Settled / Pre-Settled Status' },
+        ]).map(opt => (
+          <button key={opt.value} className="settings-row"
+            onClick={() => setUserStatus(userStatus === opt.value ? '' : opt.value)}
+            aria-label={opt.label} aria-pressed={userStatus === opt.value}>
+            <span style={{ fontSize: '.875rem' }}>{opt.label}</span>
+            {userStatus === opt.value && <span style={{ color: 'var(--ac)', fontWeight: 800 }}>✓</span>}
+          </button>
+        ))}
+        <div style={{ padding: '8px 16px' }}>
+          <p style={{ fontSize: '.75rem', color: 'var(--t3)', margin: 0 }}>
+            {ui.statusPickerSub || 'Optional — helps us show the most relevant guides first.'}
+          </p>
+        </div>
+      </div>
+
       <div className="section-label">🔒 {ui.privacy || 'Privacy & Data'}</div>
       <div className="card" style={{ margin: '0 20px 12px' }}>
         <div style={{ padding: '14px 16px' }}>
@@ -66,11 +89,12 @@ export default function MorePage() {
           <p style={{ fontSize: '.8rem', fontWeight: 700, marginBottom: 4 }}>{ui.privacyLocal || 'Stored locally on your device only:'}</p>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {([
-              ['nluk_lang',  ui.privacyKeyLang    || 'Language preference'],
-              ['nluk_dark',  ui.privacyKeyTheme   || 'Dark / light mode'],
-              ['nluk_wtab',  ui.privacyKeyTab     || 'Last work tab viewed'],
-              ['nluk_tx3',   'Cached translations (auto-translate)'],
-              [CONSENT_KEY,  ui.privacyKeyConsent || 'Your crash-report consent choice'],
+              ['nluk_lang',    ui.privacyKeyLang    || 'Language preference'],
+              ['nluk_dark',    ui.privacyKeyTheme   || 'Dark / light mode'],
+              ['nluk_wtab',    ui.privacyKeyTab     || 'Last work tab viewed'],
+              ['nluk_status',  ui.statusLabel       || 'Your situation (asylum seeker / refugee etc.)'],
+              ['nluk_tx3',     'Cached translations (auto-translate)'],
+              [CONSENT_KEY,    ui.privacyKeyConsent || 'Your crash-report consent choice'],
             ] as [string, string][]).map(([k, v]) => (
               <li key={k} style={{ fontSize: '.8rem', color: 'var(--t2)', padding: '2px 0' }}>
                 <code style={{ background: 'var(--bg3)', borderRadius: 4, padding: '1px 5px', marginRight: 6 }}>{k}</code>{v}
