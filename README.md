@@ -82,6 +82,10 @@ All automations are **free** and designed to catch bugs early, reduce manual wor
 | **Husky** | **pre-commit** | **Local linting before commit** |
 | **GitLocalize** | **manual** | **Volunteer translation management** |
 
+## Privacy
+
+See [PRIVACY.md](PRIVACY.md) for the full privacy policy (what data the app stores, your UK GDPR rights, and optional crash reporting).
+
 ## Security
 
 See [SECURITY.md](SECURITY.md) for the vulnerability reporting process.
