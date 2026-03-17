@@ -242,6 +242,7 @@ export interface UiStrings {
   consentDecline?: string
   appsTitle?: string
   appsSub?: string
+  settingsSub?: string
   [key: string]: unknown
 }
 

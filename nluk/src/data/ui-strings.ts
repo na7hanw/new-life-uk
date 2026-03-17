@@ -27,6 +27,7 @@ const BASE_UI = {
   savesTitle: "Free Stuff & Discounts", savesSub: "Things most new arrivals never find out about.",
   appsTitle: "Essential Apps & Services 📲", appsSub: "Free must-have apps and services for life in the UK.",
   gemsTitle: "Hidden Gems 💎", gemsSub: "Free money, career shortcuts, insider routes.",
+  settingsSub: "App preferences, language, and privacy.",
   theme: "Theme", language: "Language", apply: "Apply", freeRoute: "Free route available",
   darkMode: "🌙 Dark", lightMode: "☀️ Light", settings: "Settings",
   share: "Share", shareWhatsapp: "WhatsApp", shareTelegram: "Telegram", shareFacebook: "Facebook", shareCopy: "Copy link",

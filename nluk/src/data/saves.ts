@@ -20,7 +20,7 @@ export const SAVES: SaveItem[] = [
   { icon: "🛒", content: { en: { title: "Amazon Prime — Half Price on UC", desc: "£4.49/month instead of £8.99 if you receive UC, JSA, ESA, or Pension Credit. Includes free delivery and Prime Video." } }, url: "https://www.amazon.co.uk/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U" },
 ];
 
-// ─── GEMS ────────────────────────────────────────────────────────
+// ─── GEMS (Hidden Gems — unique items not already in SAVES) ──────
 export const GEMS: SaveItem[] = [
   { icon: "🎓", content: { en: { title: "Your Foreign Degree IS Valid", desc: "UK ENIC: £49 Statement of Comparability. Refugees with missing docs: refugee@ecctis.com." } }, url: "https://www.enic.org.uk/Qualifications/SOC/Default.aspx" },
   { icon: "💎", content: { en: { title: "Breaking Barriers — Free Career Help", desc: "UK's leading refugee employment charity. Free CV, interview coaching, employer introductions. London, Birmingham, Manchester, Glasgow." } }, url: "https://breaking-barriers.co.uk/" },
@@ -31,12 +31,6 @@ export const GEMS: SaveItem[] = [
   { icon: "🏦", content: { en: { title: "RefuAid — £10K Interest-Free Loans", desc: "Professional requalification: exam fees, registration, training. No UK credit history needed." } }, url: "https://www.refuaid.org/" },
   { icon: "⚖️", content: { en: { title: "Free Legal Advice", desc: "Legal Aid covers most refugee cases. Law Centres Network, Asylum Aid, Citizens Advice. NEVER pay unregistered consultants." } }, url: "https://www.lawcentres.org.uk/" },
   { icon: "🪪", content: { en: { title: "CitizenCard — £15 Photo ID", desc: "Government-backed PASS photo ID. Accepted almost everywhere. No passport needed." } }, url: "https://www.citizencard.com" },
-  { icon: "📱", content: { en: { title: "Free 40GB SIM — National Databank", desc: "Vodafone donates 40GB/month + calls for 6 months. O2 gives 25GB. Ask at any library or O2 store." } }, url: "https://www.goodthingsfoundation.org/our-services/national-databank" },
-  { icon: "🚌", content: { en: { title: "16-25 Railcard — 1/3 Off Trains", desc: "£30/year. Works on London Oyster too. Average saving £145/year. Also 26-30 Railcard available." } }, url: "https://www.16-25railcard.co.uk" },
-  { icon: "🏠", content: { en: { title: "Warm Home Discount — £150 Free", desc: "£150 off electricity bill. Automatic on Pension Credit. Others: contact your energy supplier." } }, url: "https://www.gov.uk/the-warm-home-discount-scheme" },
-  { icon: "💻", content: { en: { title: "Free Laptops & Devices", desc: "Good Things Foundation National Device Bank. Available through libraries and community organisations." } }, url: "https://www.goodthingsfoundation.org/our-services/national-device-bank" },
-  { icon: "🏛", content: { en: { title: "Free Museums & Days Out", desc: "British Museum, Natural History, Tate Modern, V&A — all FREE. Hundreds of free parks and festivals." } }, url: "https://www.museumsassociation.org/campaigns/free-museums/" },
-  { icon: "🛒", content: { en: { title: "Amazon Prime Half Price on UC", desc: "£4.49/month instead of £8.99 if on UC, JSA, or ESA. Free delivery + Prime Video." } }, url: "https://www.amazon.co.uk/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U" },
   { icon: "🏅", content: { en: { title: "ILR is FREE for Refugees — Save £2,885", desc: "Refugees use form SET(P) which has no application fee. Everyone else pays £2,885. Apply after 5 years — this is one of the biggest financial benefits of refugee status." } }, url: "https://www.gov.uk/settle-in-the-uk/y/you-have-refugee-status-or-humanitarian-protection" },
   { icon: "⚖️", content: { en: { title: "Unity Project — Remove NRPF Conditions", desc: "78% success rate removing No Recourse to Public Funds conditions. Free specialist help. If your eVisa says NRPF and your situation has changed (illness, abuse, destitution), apply to have it removed." } }, url: "https://unity-project.org.uk" },
   { icon: "🏠", content: { en: { title: "Permanent Local Connection Right", desc: "You have an irrevocable local connection to the council area where your refugee decision was made. This right can NEVER be lost — critical for social housing applications even if you move cities temporarily." } }, url: "https://www.shelter.org.uk/housing_advice/homelessness/rules/local_connection" },

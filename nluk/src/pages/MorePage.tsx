@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
-import { GEMS } from '../data/saves.ts'
 import { GITHUB_URL } from '../data/emergency.ts'
 import { ls, lsSet } from '../lib/utils.ts'
 import { clearTranslationCache } from '../lib/translate.ts'
 import { SENTRY_DSN, initSentry } from '../lib/sentry.ts'
 import { CONSENT_KEY } from '../components/ConsentBanner.tsx'
-import ResourceCard from '../components/ResourceCard.tsx'
-import type { ResourceContent } from '../components/ResourceCard.tsx'
 
 const ALL_KEYS = ['nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', CONSENT_KEY]
 
 export default function MorePage() {
-  const { lang, ui, L, dark, setDark, setShowLang } = useApp()
+  const { ui, L, dark, setDark, setShowLang } = useApp()
   const [offlineReady, setOfflineReady] = useState(false)
   const [consent, setConsent] = useState(() => ls(CONSENT_KEY, ''))
 
@@ -32,19 +29,9 @@ export default function MorePage() {
   return (
     <div className="page-enter">
       <div className="page-hero">
-        <h2 className="page-hero-title">{ui.gemsTitle}</h2>
-        <p className="page-hero-sub">{ui.gemsSub}</p>
+        <h2 className="page-hero-title">⚙ {ui.settings}</h2>
+        <p className="page-hero-sub">{ui.settingsSub}</p>
       </div>
-      {GEMS.map(g => (
-        <ResourceCard
-          key={g.content.en.title}
-          icon={g.icon}
-          content={g.content as Record<string, ResourceContent>}
-          url={g.url}
-          lang={lang}
-          ui={ui}
-        />
-      ))}
 
       <div className="section-label">{ui.theme}</div>
       <div className="card" style={{ margin: '0 20px 12px' }}>
