@@ -1,13 +1,14 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, type ReactNode } from 'react'
 import styles from './ShareBar.module.css'
 import type { UiStrings } from '../types'
 
 interface ShareBarProps {
   title: string
   ui: Pick<UiStrings, 'shareWhatsapp' | 'shareTelegram' | 'shareFacebook' | 'shareCopy' | 'copied'>
+  extra?: ReactNode
 }
 
-function ShareBar({ title, ui }: ShareBarProps) {
+function ShareBar({ title, ui, extra }: ShareBarProps) {
   const [copied, setCopied] = useState(false)
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const url = window.location.href
@@ -52,6 +53,7 @@ function ShareBar({ title, ui }: ShareBarProps) {
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
         )}
       </button>
+      {extra}
     </div>
   )
 }

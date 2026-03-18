@@ -110,14 +110,14 @@
 .qa-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 8px;
   padding: 0 16px;
 }
 .qa-btn {
   background: var(--bg2);
   border: 1px solid var(--bd);
   border-radius: 16px;
-  padding: 16px 14px;
+  padding: 12px 12px;
   display: flex;
   align-items: center;
   gap: 12px;

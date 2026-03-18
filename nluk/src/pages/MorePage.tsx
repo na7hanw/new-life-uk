@@ -18,6 +18,7 @@ export default function MorePage() {
   const [consent, setConsent] = useState(() => ls(CONSENT_KEY, ''))
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [installDone, setInstallDone] = useState(false)
+  const [privacyOpen, setPrivacyOpen] = useState(false)
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
@@ -87,6 +88,30 @@ export default function MorePage() {
         </div>
       </div>
 
+      {/* Standalone "Clear all data" card (P2) */}
+      <div className={`card ${styles.cardGutter}`}>
+        <div className={styles.cardRow}>
+          <span className={styles.cardRowLabel}>🗑 {ui.clearData || 'Clear all app data'}</span>
+          <button
+            className="btn btn-outline btn-sm"
+            onClick={() => {
+              clearTranslationCache()
+              ALL_KEYS.forEach(k => {
+                try { localStorage.removeItem(k) } catch (err) {
+                  if (import.meta.env.DEV) {
+                    // eslint-disable-next-line no-console
+                    console.warn(`[nluk] Failed to clear localStorage key "${k}":`, err)
+                  }
+                }
+              })
+              window.location.reload()
+            }}
+          >
+            {ui.clearData || 'Clear data'}
+          </button>
+        </div>
+      </div>
+
       <div className="section-label">👤 {ui.statusLabel || 'My Situation'}</div>
       <div className={`card ${styles.cardGutter}`}>
         {([
@@ -111,7 +136,18 @@ export default function MorePage() {
 
       <div className="section-label">🔒 {ui.privacy || 'Privacy & Data'}</div>
       <div className={`card ${styles.cardGutter}`}>
-        <div className={styles.cardBody}>
+        <button
+          className={styles.cardRow}
+          style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '14px 16px' }}
+          onClick={() => setPrivacyOpen(o => !o)}
+          aria-expanded={privacyOpen}
+        >
+          <span className={styles.cardRowLabel}>{ui.privacyTitle || 'Your Privacy'} — No data collected. GDPR compliant.</span>
+          <span style={{ color: 'var(--t3)', fontSize: '.8rem' }}>{privacyOpen ? '▲' : '▼'}</span>
+        </button>
+
+        {privacyOpen && (
+          <div className={styles.cardBody}>
 
           {/* ── What this app stores ── */}
           <p className={styles.privacyTitle}>
@@ -202,28 +238,8 @@ export default function MorePage() {
               {ui.privacyPolicyLink || '📄 Full privacy policy →'}
             </a>
           </p>
-
-          {/* ── Clear all data ── */}
-          <button
-            className={`btn btn-outline btn-sm ${styles.clearBtn}`}
-            onClick={() => {
-              clearTranslationCache()
-              ALL_KEYS.forEach(k => {
-                try {
-                  localStorage.removeItem(k)
-                } catch (err) {
-                  if (import.meta.env.DEV) {
-                    // eslint-disable-next-line no-console
-                    console.warn(`[nluk] Failed to clear localStorage key "${k}":`, err)
-                  }
-                }
-              })
-              window.location.reload()
-            }}
-          >
-            🗑 {ui.clearData || 'Clear all app data'}
-          </button>
         </div>
+        )}
       </div>
 
       <div className="version-badge" aria-label="App version and data verification date">

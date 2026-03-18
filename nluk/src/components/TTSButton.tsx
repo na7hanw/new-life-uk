@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Volume2, VolumeX } from 'lucide-react'
 import styles from './TTSButton.module.css'
 import type { UiStrings } from '../types'
 
@@ -29,8 +30,8 @@ interface TTSButtonProps {
 export default function TTSButton({ lang, title, summary, steps, ui = {} }: TTSButtonProps) {
   const [speaking, setSpeaking] = useState(false)
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
-  const listenLabel = ui.ttsListen || '🔊 Listen'
-  const stopLabel   = ui.ttsStop   || '⏹ Stop'
+  const listenLabel = ui.ttsListen || 'Listen'
+  const stopLabel   = ui.ttsStop   || 'Stop'
 
   // Stop speech on unmount
   useEffect(() => {
@@ -78,8 +79,12 @@ export default function TTSButton({ lang, title, summary, steps, ui = {} }: TTSB
       className={`${styles.ttsBtn} ${speaking ? styles.ttsSpeaking : ''}`}
       onClick={speaking ? stop : speak}
       aria-label={speaking ? stopLabel : listenLabel}
+      title={speaking ? stopLabel : listenLabel}
     >
-      {speaking ? stopLabel : listenLabel}
+      {speaking
+        ? <VolumeX size={18} strokeWidth={2} />
+        : <Volume2 size={18} strokeWidth={2} />
+      }
     </button>
   )
 }

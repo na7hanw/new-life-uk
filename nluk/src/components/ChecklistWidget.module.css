@@ -26,7 +26,10 @@
 }
 .chevron {
   color: var(--t2);
-  font-size: 1.1rem;
+  transition: transform .2s;
+}
+.chevronOpen {
+  transform: rotate(180deg);
 }
 .progressBar {
   margin-top: 8px;

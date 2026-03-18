@@ -1,9 +1,11 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Search } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { APPS } from '../data/apps.ts'
 import ResourceCard from '../components/ResourceCard.tsx'
+import EmptyState from '../components/EmptyState.tsx'
 import type { ResourceContent } from '../components/ResourceCard.tsx'
 
 // Fuse index built once at module load
@@ -42,7 +44,7 @@ export default function AppsPage() {
       </div>
 
       <div className="search-bar">
-        <span style={{ color: 'var(--t3)' }}>🔍</span>
+        <Search size={18} strokeWidth={2} className="search-icon" />
         <input
           className="search-input"
           placeholder={searchPlaceholder}
@@ -55,11 +57,7 @@ export default function AppsPage() {
         )}
       </div>
 
-      {filteredApps.length === 0 && (
-        <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>
-          {ui.noResults}
-        </div>
-      )}
+      {filteredApps.length === 0 && <EmptyState message={ui.noResults} />}
       {filteredApps.map(app => (
         <ResourceCard
           key={app.content.en.title}
@@ -68,6 +66,7 @@ export default function AppsPage() {
           url={app.url}
           lang={lang}
           ui={ui}
+          badge={app.cat}
         />
       ))}
       <div style={{ height: 16 }} />

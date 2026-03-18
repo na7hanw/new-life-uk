@@ -1,4 +1,5 @@
 import { useState, useId, memo } from 'react'
+import { ChevronDown } from 'lucide-react'
 import styles from './CultureCard.module.css'
 
 interface CultureCardProps {
@@ -19,7 +20,7 @@ const CultureCard = memo(function CultureCard({ emoji, title, body, onCopy, copi
       <button className={styles.header} onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls={bodyId}>
         <span className={styles.icon}>{emoji}</span>
         <span className={styles.title}>{title}</span>
-        <span className={styles.chevron}>{open ? '▲' : '▼'}</span>
+        <ChevronDown size={16} strokeWidth={2.5} className={styles.chevron} />
       </button>
       <div className={`${styles.bodyWrapper} ${open ? styles.bodyWrapperOpen : ''}`}>
         <div id={bodyId} className={styles.body}>

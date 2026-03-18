@@ -1,10 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { Search } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
 import { t18, lsSet } from '../lib/utils.ts'
 import JobCard from '../components/JobCard.tsx'
+import EmptyState from '../components/EmptyState.tsx'
 import styles from './WorkHub.module.css'
 
 export default function WorkHub() {
@@ -92,7 +94,7 @@ export default function WorkHub() {
       </div>
 
       <div className="search-bar">
-        <span className={styles.searchIcon}>🔍</span>
+        <Search size={18} strokeWidth={2} className={styles.searchIcon} />
         <input className="search-input" placeholder={searchPlaceholder} value={search}
           onChange={e => setSearch(e.target.value)} dir={dir} aria-label={searchPlaceholder} />
         {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
@@ -134,12 +136,12 @@ export default function WorkHub() {
         <JobCard key={i} j={j} lang={lang} ui={ui} />
       ))}
       {subtab === 'jobs' && filteredJobs.length === 0 && (
-        <div className={styles.noResults}>{ui.noResults}</div>
+        <EmptyState message={ui.noResults} />
       )}
 
       {subtab === 'certs' && (
         filteredCerts.length === 0 ? (
-          <div className={styles.noResults}>{ui.noResults}</div>
+          <EmptyState message={ui.noResults} />
         ) : (
           <div className={`card card-flush ${styles.cardGutter}`}>
             {filteredCerts.map((c) => {
@@ -153,10 +155,6 @@ export default function WorkHub() {
                   <div className="list-row-content">
                     <div className="list-row-title">{cc.title}</div>
                     <div className="list-row-sub">{cc.sector}</div>
-                    <div className={styles.pillsRow}>
-                      <span className="pill pill-green">{c.time}</span>
-                      <span className="pill pill-amber">{c.cost}</span>
-                    </div>
                     <span className="pill-free">{ui.freeRoute}</span>
                   </div>
                   <span className="list-row-arrow">{af}</span>
@@ -169,7 +167,7 @@ export default function WorkHub() {
 
       {subtab === 'career' && (
         filteredCareers.length === 0 ? (
-          <div className={styles.noResults}>{ui.noResults}</div>
+          <EmptyState message={ui.noResults} />
         ) : (
           <div className={`card card-flush ${styles.cardGutter}`}>
             {filteredCareers.map((p) => {

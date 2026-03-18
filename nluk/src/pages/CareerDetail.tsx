@@ -72,12 +72,12 @@ export default function CareerDetail() {
         <QuickLinks links={career.links} label={`🔗 ${ui.applyLinks || 'Apply'}`} />
       )}
 
-      <ShareBar title={pc.title} ui={ui} />
-
-      <TTSButton lang={lang} title={pc.title} summary={pc.salary} steps={st} ui={ui} />
+      <ShareBar title={pc.title} ui={ui}
+        extra={<TTSButton lang={lang} title={pc.title} summary={pc.salary} steps={st} ui={ui} />}
+      />
 
       <div className="section-label">{ui.steps}</div>
-      <div className={`card${translating ? ' translating' : ''}`} style={{ margin: '0 20px 12px' }}>
+      <div className={`card${translating ? ' translating' : ''}`} style={{ margin: '0 var(--gutter) 12px' }}>
         <div style={{ padding: '6px 16px' }}>
           {translating && (
             <div className="translating-row">
@@ -100,17 +100,17 @@ export default function CareerDetail() {
         </div>
       )}
 
-      <div className="guide-updated">
-        ✓ Verified {JOBS_DATA_DATE}
+      <div className="guide-footer">
+        <span className="guide-footer-verified">✓ Verified {JOBS_DATA_DATE}</span>
+        {id && CAREER_SOURCE_URL[id] && (
+          <>
+            <span aria-hidden="true">·</span>
+            <a href={CAREER_SOURCE_URL[id]} target="_blank" rel="noopener noreferrer" className="guide-footer-source">
+              📄 View Official Source
+            </a>
+          </>
+        )}
       </div>
-
-      {id && CAREER_SOURCE_URL[id] && (
-        <div style={{ textAlign: 'center', paddingBottom: 24 }}>
-          <a href={CAREER_SOURCE_URL[id]} target="_blank" rel="noopener noreferrer" className="source-link">
-            📄 View Official Source
-          </a>
-        </div>
-      )}
     </article>
   )
 }

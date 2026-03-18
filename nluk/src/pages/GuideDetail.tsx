@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useEffect, useState } from 'react'
+import { Bookmark } from 'lucide-react'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL } from '../data/guides.ts'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
@@ -82,7 +83,7 @@ export default function GuideDetail() {
               aria-label={isBookmarked ? (ui.unbookmark || 'Remove saved') : (ui.bookmark || 'Save guide')}
               aria-pressed={isBookmarked}
             >
-              {isBookmarked ? '🔖' : '🏷️'}
+              <Bookmark size={20} strokeWidth={2} fill={isBookmarked ? 'currentColor' : 'none'} />
             </button>
           )}
         </div>
@@ -99,7 +100,9 @@ export default function GuideDetail() {
         <QuickLinks links={guide.links} label={`🔗 ${ui.applyLinks || 'Quick Links'}`} />
       )}
 
-      <ShareBar title={gc.title} ui={ui} />
+      <ShareBar title={gc.title} ui={ui}
+        extra={<TTSButton lang={lang} title={gc.title} summary={gc.summary} steps={gc.steps} ui={ui} />}
+      />
 
       {(guide.cost || guide.time || (guide.bring && guide.bring.length > 0)) && (
         <div className="key-info-strip">
@@ -109,10 +112,8 @@ export default function GuideDetail() {
         </div>
       )}
 
-      <TTSButton lang={lang} title={gc.title} summary={gc.summary} steps={gc.steps} ui={ui} />
-
       <div className="section-label">{ui.steps}</div>
-      <div className={`card${translating ? ' translating' : ''}`} style={{ margin: '0 20px 12px' }}>
+      <div className={`card${translating ? ' translating' : ''}`} style={{ margin: '0 var(--gutter) 12px' }}>
         <div style={{ padding: '6px 16px' }}>
           {translating && (
             <div className="translating-row">
@@ -135,17 +136,17 @@ export default function GuideDetail() {
         </div>
       )}
 
-      <div className="guide-updated">
-        ✓ Verified {(id && GUIDE_LAST_UPDATED[id]) || GUIDE_DATA_DATE}
+      <div className="guide-footer">
+        <span className="guide-footer-verified">✓ Verified {(id && GUIDE_LAST_UPDATED[id]) || GUIDE_DATA_DATE}</span>
+        {id && GUIDE_SOURCE_URL[id] && (
+          <>
+            <span aria-hidden="true">·</span>
+            <a href={GUIDE_SOURCE_URL[id]} target="_blank" rel="noopener noreferrer" className="guide-footer-source">
+              📄 View Official Source
+            </a>
+          </>
+        )}
       </div>
-
-      {id && GUIDE_SOURCE_URL[id] && (
-        <div style={{ textAlign: 'center', paddingBottom: 24 }}>
-          <a href={GUIDE_SOURCE_URL[id]} target="_blank" rel="noopener noreferrer" className="source-link">
-            📄 View Official Source
-          </a>
-        </div>
-      )}
     </article>
   )
 }

@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Search, Bookmark } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
@@ -8,6 +9,7 @@ import { t18 } from '../lib/utils.ts'
 import { translate } from '../lib/translate.ts'
 import type { UserStatus } from '../types'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
+import EmptyState from '../components/EmptyState.tsx'
 import styles from './GuidesPage.module.css'
 
 // Guides to pin in the "For You" section per status
@@ -30,7 +32,7 @@ function tipsKeyForStatus(s: UserStatus): keyof typeof TIPS {
 // Enrich guides with keyword aliases once at module load (not on every component mount).
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
 
-// Quick Actions: navigate to the most critical guides with a single tap
+// Quick Actions: navigate to the most critical guides with a single tap (6 items = 2×3 on mobile)
 const QUICK_ACTIONS = [
   { icon: '📱', labelKey: 'qaEvisa',    path: '/guide/evisa' },
   { icon: '🔗', labelKey: 'qaShare',    path: '/guide/sharecode' },
@@ -38,8 +40,6 @@ const QUICK_ACTIONS = [
   { icon: '🏥', labelKey: 'qaGP',       path: '/guide/gp' },
   { icon: '💷', labelKey: 'qaBenefits', path: '/guide/uc' },
   { icon: '🏠', labelKey: 'qaHousing',  path: '/guide/housing-help' },
-  { icon: '⚖️', labelKey: 'qaLegal',    path: '/guide/legal-help' },
-  { icon: '🛡️', labelKey: 'qaSafety',  path: '/guide/safety' },
 ] as const
 
 export default function GuidesPage() {
@@ -126,13 +126,31 @@ export default function GuidesPage() {
 
       {/* Compact welcome — only when not searching */}
       {!search && catFilter === 'All' && (
-        <>
-          <div className="hero">
-            <div className="hero-badge">{ui.heroBadge ? `${ui.heroBadge} · ${LANGS.length} Languages` : `🇬🇧 Free · Private · ${LANGS.length} Languages · No account needed`}</div>
-            <h2 className={`hero-title ${styles.heroTitle}`}>{ui.heroTitle || 'Welcome to\nyour new life. 🤝'}</h2>
-            <p className="hero-sub">{ui.heroSub || 'Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.'}</p>
-          </div>
+        <div className="hero">
+          <div className="hero-badge">{ui.heroBadge ? `${ui.heroBadge} · ${LANGS.length} Languages` : `🇬🇧 Free · Private · ${LANGS.length} Languages · No account needed`}</div>
+          <h2 className={`hero-title ${styles.heroTitle}`}>{ui.heroTitle || 'Welcome to\nyour new life. 🤝'}</h2>
+          <p className="hero-sub">{ui.heroSub || 'Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.'}</p>
+        </div>
+      )}
 
+      <div className="search-bar">
+        <Search size={18} strokeWidth={2} className={styles.searchIcon} />
+        <input className="search-input" placeholder={ui.search} value={search}
+          onChange={e => setSearch(e.target.value)} dir={dir} aria-label={ui.search} />
+        {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
+      </div>
+
+      {/* Aria-live region announces search result count to screen readers */}
+      <span
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {search.trim() ? `${filtered.length} result${filtered.length === 1 ? '' : 's'} found` : ''}
+      </span>
+
+      {!search && catFilter === 'All' && (
+        <>
           <div className="notice">
             <p className="notice-text">{ui.brpNotice || '⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.'}</p>
           </div>
@@ -183,22 +201,6 @@ export default function GuidesPage() {
         </>
       )}
 
-      <div className="search-bar">
-        <span className={styles.searchIcon}>🔍</span>
-        <input className="search-input" placeholder={ui.search} value={search}
-          onChange={e => setSearch(e.target.value)} dir={dir} aria-label={ui.search} />
-        {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
-      </div>
-
-      {/* Aria-live region announces search result count to screen readers */}
-      <span
-        className="sr-only"
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        {search.trim() ? `${filtered.length} result${filtered.length === 1 ? '' : 's'} found` : ''}
-      </span>
-
       <div className="chip-bar" role="tablist">
         {['All', ...Object.keys(CATEGORIES)].map(c => (
           <button key={c} className={`chip ${catFilter === c ? 'active' : ''}`}
@@ -208,7 +210,7 @@ export default function GuidesPage() {
         ))}
       </div>
       {filtered.length === 0 && (
-        <div className={styles.noResults}>{ui.noResults}</div>
+        <EmptyState message={ui.noResults} />
       )}
 
       {/* For You — pinned guides for this status, shown when not searching and viewing all categories */}
@@ -240,7 +242,7 @@ export default function GuidesPage() {
                       aria-label={bookmarks.includes(g.id) ? (ui.unbookmark || 'Remove saved') : (ui.bookmark || 'Save guide')}
                       aria-pressed={bookmarks.includes(g.id)}
                     >
-                      {bookmarks.includes(g.id) ? '🔖' : '🏷️'}
+                      <Bookmark size={20} strokeWidth={2} fill={bookmarks.includes(g.id) ? 'currentColor' : 'none'} />
                     </button>
                   </div>
                 )
@@ -278,7 +280,7 @@ export default function GuidesPage() {
                       aria-label={ui.unbookmark || 'Remove saved'}
                       aria-pressed={true}
                     >
-                      🔖
+                      <Bookmark size={20} strokeWidth={2} fill="currentColor" />
                     </button>
                   </div>
                 )
@@ -287,6 +289,7 @@ export default function GuidesPage() {
         </div>
       )}
 
+      <div style={{ height: 6 }} />
       {cats.map(cat => (
         <div key={cat}>
           <div className="cat-header" style={{ color: CATEGORIES[cat]?.color }}>
@@ -314,7 +317,7 @@ export default function GuidesPage() {
                     aria-label={bookmarks.includes(g.id) ? (ui.unbookmark || 'Remove saved') : (ui.bookmark || 'Save guide')}
                     aria-pressed={bookmarks.includes(g.id)}
                   >
-                    {bookmarks.includes(g.id) ? '🔖' : '🏷️'}
+                    <Bookmark size={20} strokeWidth={2} fill={bookmarks.includes(g.id) ? 'currentColor' : 'none'} />
                   </button>
                 </div>
               )
