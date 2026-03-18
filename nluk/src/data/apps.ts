@@ -95,4 +95,40 @@ export const APPS: SaveItem[] = [
     content: { en: { title: "NHS 111 Online — Urgent Health Advice", desc: "Get urgent (non-emergency) medical advice 24/7. The website asks you questions and tells you exactly what to do next. Faster than A&E for minor problems. Also call 111 free." } },
     url: "https://111.nhs.uk",
   },
+  {
+    icon: "💬",
+    cat: "Community",
+    content: { en: { title: "WhatsApp — Free International Calls & Messaging", desc: "Free voice and video calls, messaging, and file sharing with anyone worldwide over Wi-Fi or mobile data. The primary way most diaspora communities stay connected with family back home. Available on iOS and Android." } },
+    url: "https://www.whatsapp.com",
+  },
+  {
+    icon: "💸",
+    cat: "Transfer",
+    content: { en: { title: "Remitly — Send Money Home", desc: "Send money to Ethiopia, Eritrea, Somalia, and 100+ countries — often at better exchange rates than banks. Delivered within minutes to a bank account or mobile money (CBE Birr, Telebirr). First transfer free. Fees from £1.99." } },
+    url: "https://www.remitly.com",
+  },
+  {
+    icon: "🛏️",
+    cat: "Housing",
+    content: { en: { title: "SpareRoom — Find a Room", desc: "The UK's largest room and flatmate finder. Sharing a house or flat is often the only affordable option in London and major cities — far cheaper than renting alone. Free to browse listings and message landlords." } },
+    url: "https://www.spareroom.co.uk",
+  },
+  {
+    icon: "📋",
+    cat: "Jobs",
+    content: { en: { title: "Reed — Professional & Graduate Jobs", desc: "One of the UK's most trusted job boards for office, graduate, engineering, and professional roles. Particularly strong for civil engineering, construction, finance, and management positions. Free to create a profile and apply." } },
+    url: "https://www.reed.co.uk",
+  },
+  {
+    icon: "📻",
+    cat: "Learning",
+    content: { en: { title: "BBC Learning English — Free Professional English", desc: "BBC-quality English lessons for adult learners. Includes professional vocabulary, pronunciation, business English, and British idioms. Trusted globally. Free, no registration needed — works in any browser." } },
+    url: "https://www.bbc.co.uk/learningenglish",
+  },
+  {
+    icon: "🎥",
+    cat: "Work",
+    content: { en: { title: "Microsoft Teams — Workplace Communication", desc: "The standard communication tool used by most UK employers for video meetings, messaging, and file sharing. Install it before your first job interview — many employers run remote interviews and onboarding entirely via Teams. Free for personal use." } },
+    url: "https://www.microsoft.com/en-gb/microsoft-teams/download-app",
+  },
 ]

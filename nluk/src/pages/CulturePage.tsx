@@ -35,9 +35,19 @@ const cultureFuse = new Fuse(FLAT_CULTURE, {
   minMatchCharLength: 2,
 })
 
+// Short labels for tab buttons — the full headings are too long
+const TAB_LABELS: Record<string, string> = {
+  'politeness':      'Phrases',
+  'unwritten-rules': 'Rules',
+  'bureaucracy':     'Quirks',
+  'daily-life':      'Daily Life',
+  'workplace':       'Workplace',
+}
+
 export default function CulturePage() {
   const { ui } = useApp()
   const [search, setSearch] = useState('')
+  const [activeSectionId, setActiveSectionId] = useState(CULTURE[0].id)
   const [copiedTitle, setCopiedTitle] = useState<string | null>(null)
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -58,6 +68,11 @@ export default function CulturePage() {
       .map(s => ({ ...s, items: grouped[s.id] }))
   }, [search])
 
+  // When searching: show all matching sections. When not: show active tab only.
+  const visibleSections = search.trim()
+    ? filteredSections
+    : filteredSections.filter(s => s.id === activeSectionId)
+
   const handleCopy = (item: CultureItem) => {
     const text = `${item.title}\n\n${item.body}`
     navigator.clipboard?.writeText(text).then(() => {
@@ -74,9 +89,21 @@ export default function CulturePage() {
 
   return (
     <div className="page-enter">
-      <div className="page-hero">
-        <h2 className="page-hero-title">{ui.cultureTitle || '🇬🇧 UK Culture & Oddities'}</h2>
-        <p className="page-hero-sub">{ui.cultureSub || 'Unwritten rules, polite lies, and peculiar customs of British life.'}</p>
+
+      {/* Section sub-tabs — one per cultural topic */}
+      <div className="sub-tabs" role="tablist">
+        {CULTURE.map(s => (
+          <button
+            key={s.id}
+            className={`sub-tab ${activeSectionId === s.id && !search.trim() ? 'active' : ''}`}
+            onClick={() => { setActiveSectionId(s.id); setSearch('') }}
+            role="tab"
+            aria-selected={activeSectionId === s.id && !search.trim()}
+            aria-label={s.heading}
+          >
+            <span aria-hidden="true">{s.emoji}</span> {TAB_LABELS[s.id] ?? s.emoji}
+          </button>
+        ))}
       </div>
 
       <div className="search-bar">
@@ -93,11 +120,14 @@ export default function CulturePage() {
         )}
       </div>
 
-      {filteredSections.length === 0 && <EmptyState message={ui.noResults} />}
+      {visibleSections.length === 0 && <EmptyState message={ui.noResults} />}
 
-      {filteredSections.map(section => (
+      {visibleSections.map(section => (
         <div key={section.id}>
-          <div className="section-label-lg">{section.emoji} {section.heading}</div>
+          {/* Show section heading only when searching across multiple sections */}
+          {search.trim() && (
+            <div className="section-label-lg">{section.emoji} {section.heading}</div>
+          )}
           {section.items.map(item => (
             <CultureCard
               key={item.title}

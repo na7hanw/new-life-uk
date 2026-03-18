@@ -233,6 +233,37 @@ export const JOBS: Job[] = [
       { name: "IRC UK — Employment Support", url: "https://www.rescue.org/uk/employment-support-refugees-uk" }, // Added March 2026 - agency link
     ],
   },
+  {
+    icon: "🗣️",
+    content: { en: { role: "Interpreter & Community Translator", desc: "Rare-language interpreters (Amharic, Somali, Tigrinya, Arabic, Dari, Ukrainian) are in critical shortage across the NHS, courts, police, councils, and social services. Excellent hourly rates. Work as freelance or employed. The DPSI (Diploma in Public Service Interpreting) is the recognised professional qualification — obtainable from the Chartered Institute of Linguists. ⚠ You need full right to work in the UK. Registered interpreters earn more and get access to government framework contracts." } },
+    pay: "£25–£55/hr",
+    tags: ["Rare language skills required", "Flexible / freelance", "Critical shortage"],
+    docs: ["Share code (Right to Work)", "DPSI qualification (strongly preferred for NHS/courts)", "NRPSI registration (opens public-sector contracts)", "Enhanced DBS check (employer usually arranges)"],
+    applyLinks: [
+      { name: "NRPSI — Register of Public Service Interpreters", url: "https://www.nrpsi.org.uk" },
+      { name: "CIOL — DPSI Qualification", url: "https://www.ciol.org.uk/dpsi" },
+      { name: "Language Line — Interpreter Jobs", url: "https://www.languageline.com/uk/interpreter" },
+      { name: "THEBIGWORD — Interpreter Roles", url: "https://www.thebigword.com/careers" },
+      { name: "Reed — Interpreter & Translator Jobs", url: "https://www.reed.co.uk/jobs/interpreter-jobs" },
+      { name: "Vocalink Global — Interpreter Registration", url: "https://www.vocalinkglobal.com" },
+    ],
+  },
+  {
+    icon: "🏗️",
+    content: { en: { role: "Civil Engineer / Valuation Surveyor", desc: "Graduate-level engineering and surveying roles are in high demand across infrastructure, construction, housing, and property sectors. With a relevant overseas degree, you can start as an assistant or graduate engineer while working toward ICE chartership (CEng) or RICS qualification (MRICS). Visa sponsorship widely available at established engineering and surveying firms. From 26 March 2026, asylum seekers who have waited 12+ months can apply for Permission to Work in these RQF Level 6+ roles — see the Permission to Work guide. UK ENIC assessment (£49) confirms your degree to UK employers." } },
+    pay: "£28,000–£55,000/yr",
+    tags: ["Degree required", "Visa sponsorship available", "RICS / ICE pathway"],
+    docs: ["Share code (Right to Work)", "UK ENIC Statement of Comparability (£49 — confirms overseas degree)", "CV with portfolio or project examples", "ICE or RICS student/affiliate membership (recommended)"],
+    visa: true,
+    applyLinks: [
+      { name: "ICE Refugee Support — Engineering Jobs", url: "https://www.ice.org.uk/about-ice/what-we-do/social-mobility/refugee-support/" },
+      { name: "RICS — Careers in Surveying", url: "https://www.rics.org/careers-in-surveying" },
+      { name: "Hays Engineering Jobs", url: "https://www.hays.co.uk/engineering-jobs" },
+      { name: "Reed Engineering & Property Jobs", url: "https://www.reed.co.uk/jobs/engineering-surveying-jobs" },
+      { name: "Indeed Civil Engineer Jobs UK", url: "https://uk.indeed.com/jobs?q=civil+engineer" },
+      { name: "UK ENIC — Degree Comparison (£49)", url: "https://www.enic.org.uk/Qualifications/SOC/Default.aspx" },
+    ],
+  },
 ];
 
 // ─── CERTS ───────────────────────────────────────────────────────
