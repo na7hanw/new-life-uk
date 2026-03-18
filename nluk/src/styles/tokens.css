@@ -36,8 +36,8 @@
 }
 
 .dark {
-  --bg:  #0C0F12;
-  --bg2: #161B22;
+  --bg:  #080A0E;
+  --bg2: #1A2029;
   --bg3: #1E2430;
   --bd:  #2D3748;
   --tx:  #F0F4F8;
@@ -51,7 +51,7 @@
   --wnbg:  rgba(245,158,11,.07);
   --wnbd:  rgba(245,158,11,.2);
   --rd:    #F87171;
-  --shadow:  0 1px 4px rgba(0,0,0,.3);
+  --shadow:  0 1px 6px rgba(0,0,0,.4);
   --shadow2: 0 4px 20px rgba(0,0,0,.45);
   --shadow3: 0 8px 32px rgba(0,0,0,.55);
 }

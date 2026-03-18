@@ -169,8 +169,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--bd);
+  height: 4px;
+  background: transparent;
   z-index: 20;
   overflow: hidden;
 }

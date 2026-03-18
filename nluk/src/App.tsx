@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense, type TouchEvent as ReactTouchEvent } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { BookOpen, Briefcase, Compass, Globe } from 'lucide-react'
+import { BookOpen, Briefcase, Compass, Globe, Settings, ChevronUp } from 'lucide-react'
 import { useApp } from './context/AppContext.tsx'
 import { LANGS } from './data/ui-strings.ts'
 import { SOS_NUMBERS } from './data/emergency.ts'
@@ -229,7 +229,7 @@ export default function App() {
         <header className="app-header">
           <div className="header-brand"><Logo size={26} /><h1>{ui.app}</h1></div>
           <div className="header-actions">
-            <button className="btn-settings" onClick={() => navigate('/settings')} aria-label={ui.settings}>⚙</button>
+            <button className="btn-settings" onClick={() => navigate('/settings')} aria-label={ui.settings}><Settings size={18} strokeWidth={2} /></button>
             <button className="btn-sos" onClick={() => { navigator?.vibrate?.(15); setSOS(true) }} aria-label="Emergency SOS">{ui.sos}</button>
           </div>
         </header>
@@ -300,7 +300,7 @@ export default function App() {
           aria-label={ui.backToTop || 'Back to top'}
           tabIndex={showBackToTop ? 0 : -1}
         >
-          ↑
+          <ChevronUp size={22} strokeWidth={2.5} />
         </button>
       )}
 

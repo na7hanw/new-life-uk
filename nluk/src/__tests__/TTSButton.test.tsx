@@ -69,8 +69,7 @@ describe('TTSButton — supported environment', () => {
     render(<TTSButton {...PROPS} />)
     const btn = screen.getByRole('button')
     expect(btn).not.toBeNull()
-    expect(btn.textContent).toContain('Listen')
-    expect(btn.getAttribute('aria-label')).toBe('🔊 Listen')
+    expect(btn.getAttribute('aria-label')).toBe('Listen')
   })
 
   it('calls speechSynthesis.speak when the Listen button is clicked', () => {
@@ -108,8 +107,7 @@ describe('TTSButton — supported environment', () => {
     const utter = MockUtterance.mock.instances[0]
     await act(async () => { utter.onstart?.() })
     const btn = screen.getByRole('button')
-    expect(btn.textContent).toContain('Stop')
-    expect(btn.getAttribute('aria-label')).toBe('⏹ Stop')
+    expect(btn.getAttribute('aria-label')).toBe('Stop')
   })
 
   it('returns to Listen mode when speech ends naturally (onend fires)', async () => {
@@ -118,7 +116,7 @@ describe('TTSButton — supported environment', () => {
     const utter = MockUtterance.mock.instances[0]
     await act(async () => { utter.onstart?.() })
     await act(async () => { utter.onend?.() })
-    expect(screen.getByRole('button').textContent).toContain('Listen')
+    expect(screen.getByRole('button').getAttribute('aria-label')).toBe('Listen')
   })
 
   it('returns to Listen mode when speech errors (onerror fires)', async () => {
@@ -127,7 +125,7 @@ describe('TTSButton — supported environment', () => {
     const utter = MockUtterance.mock.instances[0]
     await act(async () => { utter.onstart?.() })
     await act(async () => { utter.onerror?.() })
-    expect(screen.getByRole('button').textContent).toContain('Listen')
+    expect(screen.getByRole('button').getAttribute('aria-label')).toBe('Listen')
   })
 
   it('calls speechSynthesis.cancel when the Stop button is clicked', async () => {

@@ -66,6 +66,7 @@ export interface SaveItem {
   icon: string
   content: I18nContent<SaveContent>
   url?: string
+  cat?: string
 }
 
 export interface HelplineEntry {

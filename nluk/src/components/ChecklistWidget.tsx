@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ChevronDown } from 'lucide-react'
 import { ls, lsSet } from '../lib/utils.ts'
 import type { UiStrings } from '../types'
 import styles from './ChecklistWidget.module.css'
@@ -64,7 +65,7 @@ export default function ChecklistWidget({ ui }: ChecklistWidgetProps) {
               {doneCount}/{totalCount} complete
             </div>
           </div>
-          <span className={styles.chevron}>{expanded ? '▲' : '▼'}</span>
+          <ChevronDown size={16} strokeWidth={2.5} className={`${styles.chevron} ${expanded ? styles.chevronOpen : ''}`} />
         </div>
         <div className={styles.progressBar} aria-hidden="true">
           <div

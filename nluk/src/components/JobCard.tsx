@@ -1,4 +1,5 @@
 import { useState, useId, useMemo, memo } from 'react'
+import { ChevronDown } from 'lucide-react'
 import styles from './JobCard.module.css'
 import type { Job, JobContent, UiStrings } from '../types'
 
@@ -26,20 +27,20 @@ const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
           </div>
           <div className={styles.jobPay}>{j.pay}</div>
         </div>
-        <span className={styles.jobChevron}>{open ? '▲' : '▼'}</span>
+        <ChevronDown size={16} strokeWidth={2.5} className={styles.jobChevron} />
       </button>
-
-      {j.tags && (
-        <div className={styles.jobTags}>
-          {j.tags.map(t => <span key={t} className={styles.jobTag}>{t}</span>)}
-        </div>
-      )}
 
       <div
         data-state={open ? 'open' : 'closed'}
         className={`${styles.jobBodyWrapper} ${open ? styles.jobBodyWrapperOpen : ''}`}
       >
         <div id={bodyId} className={styles.jobBody}>
+          {j.tags && (
+            <div className={styles.jobTags}>
+              {j.tags.map(t => <span key={t} className={styles.jobTag}>{t}</span>)}
+            </div>
+          )}
+
           <p className={styles.jobDesc}>{jc.desc}</p>
 
           {j.docs?.length > 0 && (

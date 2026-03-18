@@ -26,12 +26,27 @@
   margin-left: var(--gutter);
 }
 .dark .section-label { color: var(--ac); }
+.section-label-lg {
+  font-size: .82rem;
+  font-weight: 800;
+  color: var(--ac3);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 20px var(--gutter) 10px var(--gutter);
+  border-left: 3px solid var(--ac);
+  margin-left: var(--gutter);
+  background: linear-gradient(90deg, var(--ac2), transparent);
+}
+.dark .section-label-lg { color: var(--ac); background: linear-gradient(90deg, rgba(52,211,153,.07), transparent); }
 .section-sub {
   font-size: .875rem;
   color: var(--t2);
   margin: 0 var(--gutter) 12px;
   line-height: 1.55;
 }
+
+/* ─── Global Search Icon ─── */
+.search-icon { color: var(--t3); display: flex; align-items: center; }
 
 /* ─── Buttons ─── */
 .btn {

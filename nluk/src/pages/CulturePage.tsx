@@ -1,9 +1,11 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
+import { Search } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { CULTURE } from '../data/culture.ts'
 import type { CultureItem } from '../data/culture.ts'
 import CultureCard from '../components/CultureCard.tsx'
+import EmptyState from '../components/EmptyState.tsx'
 
 interface FlatCultureItem extends CultureItem {
   sectionId: string
@@ -78,7 +80,7 @@ export default function CulturePage() {
       </div>
 
       <div className="search-bar">
-        <span style={{ color: 'var(--t3)' }}>🔍</span>
+        <Search size={18} strokeWidth={2} className="search-icon" />
         <input
           className="search-input"
           placeholder={searchPlaceholder}
@@ -91,15 +93,11 @@ export default function CulturePage() {
         )}
       </div>
 
-      {filteredSections.length === 0 && (
-        <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>
-          {ui.noResults}
-        </div>
-      )}
+      {filteredSections.length === 0 && <EmptyState message={ui.noResults} />}
 
       {filteredSections.map(section => (
         <div key={section.id}>
-          <div className="section-label">{section.emoji} {section.heading}</div>
+          <div className="section-label-lg">{section.emoji} {section.heading}</div>
           {section.items.map(item => (
             <CultureCard
               key={item.title}

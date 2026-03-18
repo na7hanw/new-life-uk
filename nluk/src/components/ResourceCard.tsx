@@ -14,13 +14,14 @@ interface ResourceCardProps {
   url?: string
   lang: string
   ui: UiStrings
+  badge?: string
 }
 
 /**
  * ResourceCard — shared card for free resources and career shortcuts.
  * Used by SavesPage and MorePage (replaces the near-identical SaveCard / GemCard pair).
  */
-const ResourceCard = memo(function ResourceCard({ icon, content, url, lang, ui }: ResourceCardProps) {
+const ResourceCard = memo(function ResourceCard({ icon, content, url, lang, ui, badge }: ResourceCardProps) {
   const id = content.en?.title
   const [c, translating, wasTranslated] = useTranslatedContent<ResourceContent>(content, lang, id)
 
@@ -28,7 +29,10 @@ const ResourceCard = memo(function ResourceCard({ icon, content, url, lang, ui }
     <div className={`content-card${translating ? ' translating' : ''}`}>
       <div className="content-card-header">
         <span className="content-card-icon">{icon}</span>
-        <span className="content-card-title">{c?.title}</span>
+        <div>
+          <span className="content-card-title">{c?.title}</span>
+          {badge && <span className="pill pill-green" style={{ marginLeft: 6, fontSize: '.7rem', verticalAlign: 'middle' }}>{badge}</span>}
+        </div>
       </div>
       <p className="content-card-body">{c?.desc}</p>
       {wasTranslated && (

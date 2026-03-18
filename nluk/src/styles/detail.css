@@ -26,6 +26,30 @@
   opacity: .8;
 }
 
+/* Combined verified + source footer bar */
+.guide-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px var(--gutter);
+  margin-top: 8px;
+  border-top: 1px solid var(--bd);
+  font-size: .8rem;
+  color: var(--t3);
+}
+.guide-footer-verified {
+  font-weight: 700;
+  color: var(--gn);
+}
+.guide-footer-source {
+  color: var(--t2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 700;
+}
+.guide-footer-source:hover { color: var(--ac3); }
+
 /* ─── Detail Header ─── */
 .detail-header {
   background: linear-gradient(150deg, #0D6E4B 0%, #095C3D 50%, #06402A 100%);
