@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  *
  * Tests for src/components/OnboardingOverlay.tsx
- * Covers: step rendering, Next/Skip/Get started behaviour,
+ * Covers: single-step rendering, "Get started" behaviour,
  *         shouldShowOnboarding(), markOnboardingDone().
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
@@ -58,82 +58,38 @@ describe('OnboardingOverlay — initial step', () => {
 
   it('shows the title of the first step on mount', () => {
     render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    expect(screen.getByText('Step-by-step guides')).not.toBeNull()
+    expect(screen.getByText('Your guides are ready')).not.toBeNull()
   })
 
-  it('shows a Skip button on the first (non-last) step', () => {
+  it('shows "Get started" on the single (last) step', () => {
     render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    expect(screen.getByRole('button', { name: 'Skip' })).not.toBeNull()
-  })
-
-  it('shows a Next button on the first step', () => {
-    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    expect(screen.getByRole('button', { name: 'Next' })).not.toBeNull()
-  })
-})
-
-// ─── Navigation ──────────────────────────────────────────────────────────────
-
-describe('OnboardingOverlay — step navigation', () => {
-  it('advances to the second step when Next is clicked', () => {
-    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    expect(screen.getByText('SOS emergency button')).not.toBeNull()
-  })
-
-  it('navigates to the last step after clicking Next twice', () => {
-    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    expect(screen.getByText('Save guides for later')).not.toBeNull()
-  })
-
-  it('shows "Get started" instead of "Next" on the last step', () => {
-    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    expect(screen.queryByRole('button', { name: 'Next' })).toBeNull()
     expect(screen.getByRole('button', { name: 'Get started' })).not.toBeNull()
   })
 
-  it('hides the Skip button on the last step', () => {
+  it('does not show a Skip button on the single step', () => {
     render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
     expect(screen.queryByRole('button', { name: 'Skip' })).toBeNull()
+  })
+
+  it('does not show a Next button on the single step', () => {
+    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
+    expect(screen.queryByRole('button', { name: 'Next' })).toBeNull()
   })
 })
 
 // ─── Completion callbacks ─────────────────────────────────────────────────────
 
 describe('OnboardingOverlay — completion', () => {
-  it('calls onDone when Skip is clicked', () => {
+  it('calls onDone when "Get started" is clicked', () => {
     const onDone = vi.fn()
     render(<OnboardingOverlay ui={UI} onDone={onDone} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Skip' }))
-    expect(onDone).toHaveBeenCalledOnce()
-  })
-
-  it('calls onDone when "Get started" is clicked on the last step', () => {
-    const onDone = vi.fn()
-    render(<OnboardingOverlay ui={UI} onDone={onDone} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
     fireEvent.click(screen.getByRole('button', { name: 'Get started' }))
     expect(onDone).toHaveBeenCalledOnce()
   })
 
   it('marks onboarding as done in localStorage when Get started is clicked', () => {
     render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
     fireEvent.click(screen.getByRole('button', { name: 'Get started' }))
-    expect(localStorage.getItem('nluk_onboarded')).toBe('true')
-  })
-
-  it('marks onboarding as done in localStorage when Skip is clicked', () => {
-    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Skip' }))
     expect(localStorage.getItem('nluk_onboarded')).toBe('true')
   })
 })
