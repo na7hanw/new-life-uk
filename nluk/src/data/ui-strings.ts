@@ -25,6 +25,8 @@ const BASE_UI = {
   visaQ: "What's your visa situation?", forYou: "For You", quickActions: "Quick Actions", helplines: "Helplines",
   jobsTab: "Jobs", certsTab: "Certs", careerTab: "Careers",
   savesTitle: "Discover Free Resources", savesSub: "Things most new arrivals never find out about.",
+  discoverFreeTab: "🆓 Free Resources", discoverGemsTab: "💎 Hidden Gems",
+  searchDiscover: "Search resources…",
   heroTitle: "Welcome to\nyour new life. 🤝",
   heroSub: "Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.",
   heroBadge: "🇬🇧 Free · Private · No account needed",

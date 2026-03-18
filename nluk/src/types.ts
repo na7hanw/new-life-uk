@@ -192,6 +192,9 @@ export interface UiStrings {
   consentDecline?: string
   appsTitle?: string
   appsSub?: string
+  discoverFreeTab?: string
+  discoverGemsTab?: string
+  searchDiscover?: string
   settingsSub?: string
   cultureTitle?: string
   cultureSub?: string
