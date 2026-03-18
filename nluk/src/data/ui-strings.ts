@@ -127,7 +127,7 @@ export const TIPS = {
   asylum: [
     "Volunteering is ALWAYS allowed — no permission from the Home Office needed.",
     "Waited 12+ months for a decision? You may be able to apply for Permission to Work.",
-    "Rules expand from 26 March 2026 — most asylum seekers become eligible for a wider range of jobs.",
+    "Rules expand from 26 March 2026 — this week — asylum seekers with degrees become eligible for a much wider range of graduate-level jobs.",
     "Register with a GP — free NHS care for everyone, regardless of immigration status.",
     "Your ARC card is your main ID while your claim is active. Keep it safe.",
     "Citizens Advice: 0800 144 8848 — free help with benefits, housing, and legal issues.",
