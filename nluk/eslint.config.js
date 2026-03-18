@@ -33,6 +33,7 @@ const sharedGlobals = {
   KeyboardEvent: 'readonly',
   TouchList: 'readonly',
   Touch: 'readonly',
+  ServiceWorkerRegistration: 'readonly',
 }
 
 export default [
