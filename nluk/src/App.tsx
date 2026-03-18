@@ -92,6 +92,29 @@ export default function App() {
     prevShowLang.current = showLang
   }, [showLang])
 
+  // ── Language overlay focus trap ──
+  const langOverlayRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!showLang) return
+    const el = langOverlayRef.current
+    if (!el) return
+    const focusable = el.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    first?.focus()
+    const trap = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setShowLang(false); return }
+      if (e.key !== 'Tab') return
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus() }
+      }
+    }
+    el.addEventListener('keydown', trap)
+    return () => el.removeEventListener('keydown', trap)
+  }, [showLang, setShowLang])
+
   // ── Back-to-top button ──
   const mainRef = useRef<HTMLElement>(null)
   const [showBackToTop, setShowBackToTop] = useState(false)
@@ -184,9 +207,9 @@ export default function App() {
 
       {/* LANGUAGE OVERLAY */}
       {showLang && (
-        <div className="lang-overlay" role="dialog" aria-label="Select language">
+        <div className="lang-overlay" role="dialog" aria-modal="true" aria-labelledby="lang-overlay-title" ref={langOverlayRef}>
           <div className={styles.langOverlayHeader}>
-            <div className="header-brand"><Logo size={28} /><h1 className={styles.langOverlayTitle}>New Life UK</h1></div>
+            <div className="header-brand"><Logo size={28} /><h1 id="lang-overlay-title" className={styles.langOverlayTitle}>New Life UK</h1></div>
             <button className="btn btn-primary" onClick={() => setShowLang(false)}>{ui.close} ✓</button>
           </div>
           <div className="lang-grid">
@@ -258,7 +281,8 @@ export default function App() {
           <div role="tablist" className={styles.tabListContents}>
             {TABS.map(t => (
               <button key={t.id} className={`tab-btn ${isTabActive(t.path) ? 'active' : ''}`}
-                onClick={() => switchTab(t.path)} role="tab" aria-selected={isTabActive(t.path)} aria-label={t.label}>
+                onClick={() => switchTab(t.path)} role="tab" aria-selected={isTabActive(t.path)}
+                aria-current={isTabActive(t.path) ? 'page' : undefined} aria-label={t.label}>
                 {isTabActive(t.path) && <div className="tab-dot" />}
                 <span className="tab-icon">{t.icon}</span>
                 <span>{t.label}</span>
