@@ -5,7 +5,7 @@
  * and culture items at module load so every tab benefits from the same index.
  * Also provides helpers for recent-search and guide-access-count persistence.
  */
-import Fuse from 'fuse.js'
+import Fuse, { type FuseResult } from 'fuse.js'
 import { GUIDES, GUIDE_MAP, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { JOBS, CERT_MAP, CAREER_MAP } from '../data/jobs.ts'
 import { CULTURE } from '../data/culture.ts'
@@ -102,7 +102,7 @@ export const globalFuse = new Fuse(ALL_SEARCH_ITEMS, {
   includeMatches: true,
 })
 
-export type GlobalFuseResult = Fuse.FuseResult<SearchItem>
+export type GlobalFuseResult = FuseResult<SearchItem>
 
 // ── Recent searches ────────────────────────────────────────────────────────
 

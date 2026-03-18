@@ -1,0 +1,56 @@
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  margin: 0 var(--gutter) 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: border-color .2s;
+}
+.cardOpen { border-color: var(--ac); }
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 14px 16px;
+  color: inherit;
+  font: inherit;
+}
+.header:focus-visible { outline: 2px solid var(--ac); outline-offset: -2px; }
+.icon { font-size: 1.2rem; flex-shrink: 0; }
+.title { flex: 1; font-size: .95rem; font-weight: 700; color: var(--tx); }
+.chevron { font-size: .7rem; color: var(--t3); transition: transform .2s; }
+.cardOpen .chevron { transform: rotate(180deg); }
+.bodyWrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .3s ease;
+}
+.bodyWrapperOpen { grid-template-rows: 1fr; }
+.body {
+  overflow: hidden;
+  min-height: 0;
+  border-top: 1px solid var(--bd);
+  padding: 14px 16px;
+}
+.bodyText { font-size: .875rem; color: var(--t2); line-height: 1.65; margin: 0 0 10px; }
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--t2);
+  cursor: pointer;
+  transition: background .15s;
+}
+.copyBtn:hover { background: var(--bd); }

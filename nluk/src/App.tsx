@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense, type TouchEvent as ReactTouchEvent } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { BookOpen, Briefcase, Compass, Globe } from 'lucide-react'
 import { useApp } from './context/AppContext.tsx'
@@ -143,21 +143,21 @@ export default function App() {
   const [ptrPulling, setPtrPulling] = useState(false)
   const PTR_THRESHOLD = 72
 
-  const handlePtrTouchStart = (e: { touches: TouchList }) => {
+  const handlePtrTouchStart = (e: ReactTouchEvent<HTMLElement>) => {
     const el = mainRef.current
     if (!el || el.scrollTop > 0) return
     ptrTouchY.current = e.touches[0].clientY
     ptrActive.current = true
   }
 
-  const handlePtrTouchMove = (e: { touches: TouchList; preventDefault: () => void }) => {
+  const handlePtrTouchMove = (e: ReactTouchEvent<HTMLElement>) => {
     if (!ptrActive.current) return
     const delta = e.touches[0].clientY - ptrTouchY.current
     if (delta > 8) setPtrPulling(true)
     if (delta > PTR_THRESHOLD) e.preventDefault()
   }
 
-  const handlePtrTouchEnd = (e: { changedTouches: TouchList }) => {
+  const handlePtrTouchEnd = (e: ReactTouchEvent<HTMLElement>) => {
     if (!ptrActive.current) return
     ptrActive.current = false
     const delta = e.changedTouches[0].clientY - ptrTouchY.current
@@ -173,12 +173,12 @@ export default function App() {
   const swipeTouchX = useRef(0)
   const swipeTouchY = useRef(0)
 
-  const handleSwipeTouchStart = (e: { touches: TouchList }) => {
+  const handleSwipeTouchStart = (e: ReactTouchEvent<HTMLDivElement>) => {
     swipeTouchX.current = e.touches[0].clientX
     swipeTouchY.current = e.touches[0].clientY
   }
 
-  const handleSwipeTouchEnd = (e: { changedTouches: TouchList }) => {
+  const handleSwipeTouchEnd = (e: ReactTouchEvent<HTMLDivElement>) => {
     if (isDetail) return
     const dx = e.changedTouches[0].clientX - swipeTouchX.current
     const dy = e.changedTouches[0].clientY - swipeTouchY.current
@@ -253,8 +253,8 @@ export default function App() {
         <ErrorBoundary>
           <Suspense fallback={<SkeletonFallback />}>
             <div
-              onTouchStart={handleSwipeTouchStart}
-              onTouchEnd={handleSwipeTouchEnd}
+              onTouchStart={!isDetail ? handleSwipeTouchStart : undefined}
+              onTouchEnd={!isDetail ? handleSwipeTouchEnd : undefined}
             >
               <Routes>
                 <Route path="/" element={<GuidesPage />} />
@@ -267,7 +267,7 @@ export default function App() {
                 <Route path="/saves/apps" element={<AppsPage />} />
                 <Route path="/culture" element={<CulturePage />} />
                 <Route path="/settings" element={<MorePage />} />
-                <Route path="/more" element={<Navigate to="/culture" replace />} />
+                <Route path="/more" element={<Navigate to="/settings" replace />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </div>
@@ -292,10 +292,10 @@ export default function App() {
         </nav>
       )}
 
-      {/* BACK-TO-TOP BUTTON — visible when scrolled down on list pages */}
-      {!isDetail && (
+      {/* BACK-TO-TOP BUTTON — visible when scrolled down */}
+      {(
         <button
-          className={`back-to-top${showBackToTop ? ' visible' : ''}`}
+          className={`back-to-top${showBackToTop ? ' visible' : ''}${isDetail ? ' no-tab-bar' : ''}`}
           onClick={scrollToTop}
           aria-label={ui.backToTop || 'Back to top'}
           tabIndex={showBackToTop ? 0 : -1}

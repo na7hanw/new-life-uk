@@ -199,8 +199,7 @@ describe('translateContentObject', () => {
   })
 
   it('returns the object unchanged when it is falsy', async () => {
-    // @ts-expect-error testing null/undefined handling
-    const result = await translateContentObject(null, 'fr')
+    const result = await translateContentObject(null as unknown as { title: string }, 'fr')
     expect(result).toBeNull()
   })
 })

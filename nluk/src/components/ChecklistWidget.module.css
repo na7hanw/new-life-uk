@@ -1,0 +1,97 @@
+.widget {
+  margin: 0 var(--gutter) 12px;
+}
+.toggle {
+  width: 100%;
+  padding: 14px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+.toggleInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.heading {
+  font-weight: 800;
+  font-size: .95rem;
+  color: var(--tx);
+}
+.progress {
+  font-size: .8rem;
+  color: var(--t2);
+  margin-top: 2px;
+}
+.chevron {
+  color: var(--t2);
+  font-size: 1.1rem;
+}
+.progressBar {
+  margin-top: 8px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg3);
+  overflow: hidden;
+}
+.progressFill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--ac);
+  transition: width .3s;
+}
+.body {
+  padding-bottom: 8px;
+}
+.intro {
+  font-size: .8rem;
+  color: var(--t2);
+  padding: 0 16px 8px;
+  margin: 0;
+}
+.row {
+  display: flex;
+  align-items: center;
+  padding: 6px 16px;
+  gap: 10px;
+  border-top: 1px solid var(--bg3);
+}
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  border: 2px solid var(--bd);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+}
+.checkboxDone {
+  border-color: var(--ac);
+  background: var(--ac);
+}
+.label {
+  font-size: .88rem;
+  flex: 1;
+  color: var(--tx);
+}
+.labelDone {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.navBtn {
+  background: none;
+  border: none;
+  color: var(--ac);
+  cursor: pointer;
+  font-size: .78rem;
+  font-weight: 700;
+  padding: 2px 4px;
+  flex-shrink: 0;
+}

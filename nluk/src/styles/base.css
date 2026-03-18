@@ -88,7 +88,7 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 0 20px 12px;
+  margin: 0 var(--gutter) 12px;
   padding: 9px 18px;
   border-radius: 24px;
   border: 1.5px solid var(--ac3);

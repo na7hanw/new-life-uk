@@ -5,7 +5,7 @@
 
 /* Status tip banner with horizontal margin */
 .tipBannerGutter {
-  margin: 0 16px 12px;
+  margin: 0 var(--gutter) 12px;
 }
 
 /* Inline text link (used inside tip banners for "See the guide →") */
@@ -28,7 +28,7 @@
 }
 
 /* Card with slightly wider horizontal margin (certs & careers lists) */
-.cardGutter { margin: 0 20px 12px; }
+.cardGutter { margin: 0 var(--gutter) 12px; }
 
 /* Cert/career list row — aligns content to top for multi-line items */
 .rowAlignTop { align-items: flex-start; }

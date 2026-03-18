@@ -101,8 +101,6 @@ export default function GuideDetail() {
 
       <ShareBar title={gc.title} ui={ui} />
 
-      <TTSButton lang={lang} title={gc.title} summary={gc.summary} steps={gc.steps} ui={ui} />
-
       {(guide.cost || guide.time || (guide.bring && guide.bring.length > 0)) && (
         <div className="key-info-strip">
           {guide.cost && <span className="key-chip">💰 {guide.cost}</span>}
@@ -110,6 +108,8 @@ export default function GuideDetail() {
           {guide.bring?.map(b => <span key={b} className="key-chip">📋 {b}</span>)}
         </div>
       )}
+
+      <TTSButton lang={lang} title={gc.title} summary={gc.summary} steps={gc.steps} ui={ui} />
 
       <div className="section-label">{ui.steps}</div>
       <div className={`card${translating ? ' translating' : ''}`} style={{ margin: '0 20px 12px' }}>

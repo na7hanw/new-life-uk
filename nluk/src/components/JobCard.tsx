@@ -56,7 +56,7 @@ const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
             <div className={styles.jobApplyGrid}>
               {j.applyLinks?.map(lk => (
                 <a key={lk.url} href={lk.url} target="_blank" rel="noopener noreferrer" className={styles.jobApplyChip}>
-                  {lk.name}
+                  {lk.name} <span aria-hidden="true" style={{ fontSize: '.7em', opacity: .6 }}>↗</span>
                 </a>
               ))}
             </div>
