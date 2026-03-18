@@ -6,19 +6,9 @@ const ONBOARDING_KEY = 'nluk_onboarded'
 
 const STEPS = [
   {
-    icon: '📖',
-    title: 'Step-by-step guides',
-    body: 'Browse 26+ guides covering healthcare, housing, benefits, employment, and legal rights — in 12 languages.',
-  },
-  {
-    icon: '🆘',
-    title: 'SOS emergency button',
-    body: 'The red SOS button in the top corner gives you instant access to emergency numbers — even offline.',
-  },
-  {
-    icon: '📌',
-    title: 'Save guides for later',
-    body: 'Tap the bookmark icon on any guide to save it. Find your saved guides at the top of the Guides tab.',
+    icon: '🇬🇧',
+    title: 'Your guides are ready',
+    body: 'Step-by-step guides for everything you need in the UK — from NHS registration to bank accounts and benefits. Free, private, and available in 12 languages. Tap 🆘 anytime for emergency numbers. Tap the bookmark icon on any guide to save it for later.',
   },
 ]
 

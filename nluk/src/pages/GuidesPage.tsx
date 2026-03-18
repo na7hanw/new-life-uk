@@ -4,11 +4,7 @@ import { Search, Bookmark } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
-import { LANGS, TIPS } from '../data/ui-strings.ts'
 import { t18 } from '../lib/utils.ts'
-import { translate } from '../lib/translate.ts'
-import type { UserStatus } from '../types'
-import ChecklistWidget from '../components/ChecklistWidget.tsx'
 import EmptyState from '../components/EmptyState.tsx'
 import styles from './GuidesPage.module.css'
 
@@ -20,40 +16,17 @@ const STATUS_GUIDES: Record<string, string[]> = {
   'settled':       ['ilr', 'evisa', 'sharecode'],
 }
 
-// Map user status to the appropriate tips array key
-function tipsKeyForStatus(s: UserStatus): keyof typeof TIPS {
-  if (s === 'asylum-seeker') return 'asylum'
-  if (s === 'refugee')       return 'refugee'
-  if (s === 'settled')       return 'eu'
-  if (s === 'other-visa')    return 'other'
-  return 'refugee' // default
-}
-
 // Enrich guides with keyword aliases once at module load (not on every component mount).
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
 
-// Quick Actions: navigate to the most critical guides with a single tap (6 items = 2×3 on mobile)
-const QUICK_ACTIONS = [
-  { icon: '📱', labelKey: 'qaEvisa',    path: '/guide/evisa' },
-  { icon: '🔗', labelKey: 'qaShare',    path: '/guide/sharecode' },
-  { icon: '🏦', labelKey: 'qaBank',     path: '/guide/bank' },
-  { icon: '🏥', labelKey: 'qaGP',       path: '/guide/gp' },
-  { icon: '💷', labelKey: 'qaBenefits', path: '/guide/uc' },
-  { icon: '🏠', labelKey: 'qaHousing',  path: '/guide/housing-help' },
-] as const
-
 export default function GuidesPage() {
-  const { lang, ui, dir, af, userStatus, setUserStatus, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, dir, af, userStatus, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('All')
-  const [tipIdx, setTipIdx] = useState(0)
-  const [translatedTip, setTranslatedTip] = useState('')
-  const [statusPickerDismissed, setStatusPickerDismissed] = useState(false)
   const guideBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
   useEffect(() => {
-    setTipIdx(Math.floor(Math.random() * TIPS.refugee.length))
     // Restore focus to the last guide the user navigated away from
     const last = sessionStorage.getItem('nluk_last_guide')
     if (last) {
@@ -61,21 +34,6 @@ export default function GuidesPage() {
       requestAnimationFrame(() => { guideBtnRefs.current[last]?.focus() })
     }
   }, [])
-
-  const tipList = TIPS[tipsKeyForStatus(userStatus)]
-  const tipEn = tipList[tipIdx % tipList.length]
-
-  // Auto-translate the tip when language changes
-  useEffect(() => {
-    if (!tipEn) return
-    setTranslatedTip(tipEn)
-    if (lang === 'en') return
-    let cancelled = false
-    translate(tipEn, lang).then(t => { if (!cancelled) setTranslatedTip(t) })
-    return () => { cancelled = true }
-  }, [tipEn, lang])
-
-  const tip = translatedTip || tipEn
 
   // Fuse.js index — built once using pre-enriched data
   const fuseIndex = useMemo(() => new Fuse(
@@ -124,15 +82,6 @@ export default function GuidesPage() {
   return (
     <div className="page-enter">
 
-      {/* Compact welcome — only when not searching */}
-      {!search && catFilter === 'All' && (
-        <div className="hero">
-          <div className="hero-badge">{ui.heroBadge ? `${ui.heroBadge} · ${LANGS.length} Languages` : `🇬🇧 Free · Private · ${LANGS.length} Languages · No account needed`}</div>
-          <h2 className={`hero-title ${styles.heroTitle}`}>{ui.heroTitle || 'Welcome to\nyour new life. 🤝'}</h2>
-          <p className="hero-sub">{ui.heroSub || 'Step-by-step guides for everything you need in the UK. No tracking. No cost. Ever.'}</p>
-        </div>
-      )}
-
       <div className="search-bar">
         <Search size={18} strokeWidth={2} className={styles.searchIcon} />
         <input className="search-input" placeholder={ui.search} value={search}
@@ -149,58 +98,6 @@ export default function GuidesPage() {
         {search.trim() ? `${filtered.length} result${filtered.length === 1 ? '' : 's'} found` : ''}
       </span>
 
-      {!search && catFilter === 'All' && (
-        <>
-          <div className="notice">
-            <p className="notice-text">{ui.brpNotice || '⚠ BRPs expired December 2024. Your immigration status is now digital. Set up your eVisa at GOV.UK before travelling.'}</p>
-          </div>
-
-          {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
-
-          {/* Quick Actions grid */}
-          <div className="section-label">{ui.quickActions || 'Quick Actions'}</div>
-          <div className="qa-grid">
-            {QUICK_ACTIONS.map(qa => (
-              <button key={qa.labelKey} className="qa-btn" onClick={() => navigate(qa.path)}
-                aria-label={String(ui[qa.labelKey] || qa.labelKey)}>
-                <span className="qa-icon">{qa.icon}</span>
-                <span className="qa-label">{String(ui[qa.labelKey] || qa.labelKey)}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* My Progress Checklist */}
-          <ChecklistWidget ui={ui} />
-
-          {/* Status picker — shown once until user picks a status or skips */}
-          {!userStatus && !statusPickerDismissed && (
-            <div className={`card ${styles.statusPickerCard}`}>
-              <p className={styles.statusPickerTitle}>
-                {ui.statusPickerTitle || "What's your situation in the UK?"}
-              </p>
-              <p className={styles.statusPickerSub}>
-                {ui.statusPickerSub || 'Optional — helps us show the most relevant guides first.'}
-              </p>
-              {([
-                { value: 'asylum-seeker' as UserStatus, label: ui.statusAsylumSeeker || '⏳ Asylum seeker — waiting for my decision' },
-                { value: 'refugee'       as UserStatus, label: ui.statusRefugee       || '✅ Recognised refugee' },
-                { value: 'other-visa'    as UserStatus, label: ui.statusOtherVisa     || '🛂 Another visa (Skilled Worker, Family, Student…)' },
-                { value: 'settled'       as UserStatus, label: ui.statusSettled       || '🇬🇧 Settled / Pre-Settled Status' },
-              ]).map(opt => (
-                <button key={opt.value} className={`btn btn-outline ${styles.statusBtn}`}
-                  onClick={() => setUserStatus(opt.value)}>
-                  {opt.label}
-                </button>
-              ))}
-              <button className={styles.statusSkip}
-                onClick={() => setStatusPickerDismissed(true)}>
-                {ui.statusSkip || 'Skip for now'}
-              </button>
-            </div>
-          )}
-        </>
-      )}
-
       <div className="chip-bar" role="tablist">
         {['All', ...Object.keys(CATEGORIES)].map(c => (
           <button key={c} className={`chip ${catFilter === c ? 'active' : ''}`}
@@ -209,6 +106,7 @@ export default function GuidesPage() {
           </button>
         ))}
       </div>
+
       {filtered.length === 0 && (
         <EmptyState message={ui.noResults} />
       )}
@@ -329,4 +227,3 @@ export default function GuidesPage() {
     </div>
   )
 }
-
