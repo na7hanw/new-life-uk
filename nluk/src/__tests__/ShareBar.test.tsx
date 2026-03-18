@@ -36,15 +36,15 @@ describe('ShareBar', () => {
 
   it('renders all four share buttons', () => {
     render(<ShareBar title="Test Guide" ui={UI} />)
-    expect(screen.getByLabelText('Share on WhatsApp')).not.toBeNull()
-    expect(screen.getByLabelText('Share on Telegram')).not.toBeNull()
-    expect(screen.getByLabelText('Share on Facebook')).not.toBeNull()
+    expect(screen.getByLabelText('WhatsApp')).not.toBeNull()
+    expect(screen.getByLabelText('Telegram')).not.toBeNull()
+    expect(screen.getByLabelText('Facebook')).not.toBeNull()
     expect(screen.getByLabelText('Copy link')).not.toBeNull()
   })
 
   it('WhatsApp button opens a WhatsApp share URL in a new tab', () => {
     render(<ShareBar title="Test Guide" ui={UI} />)
-    fireEvent.click(screen.getByLabelText('Share on WhatsApp'))
+    fireEvent.click(screen.getByLabelText('WhatsApp'))
     expect(openSpy).toHaveBeenCalledOnce()
     const [url, target] = openSpy.mock.calls[0]
     expect(url).toContain('wa.me')
@@ -53,7 +53,7 @@ describe('ShareBar', () => {
 
   it('Telegram button opens a Telegram share URL in a new tab', () => {
     render(<ShareBar title="Test Guide" ui={UI} />)
-    fireEvent.click(screen.getByLabelText('Share on Telegram'))
+    fireEvent.click(screen.getByLabelText('Telegram'))
     expect(openSpy).toHaveBeenCalledOnce()
     expect(openSpy.mock.calls[0][0]).toContain('t.me')
     expect(openSpy.mock.calls[0][1]).toBe('_blank')
@@ -61,7 +61,7 @@ describe('ShareBar', () => {
 
   it('Facebook button opens a Facebook share URL in a new tab', () => {
     render(<ShareBar title="Test Guide" ui={UI} />)
-    fireEvent.click(screen.getByLabelText('Share on Facebook'))
+    fireEvent.click(screen.getByLabelText('Facebook'))
     expect(openSpy).toHaveBeenCalledOnce()
     expect(openSpy.mock.calls[0][0]).toContain('facebook.com')
     expect(openSpy.mock.calls[0][1]).toBe('_blank')
@@ -69,7 +69,7 @@ describe('ShareBar', () => {
 
   it('share URLs encode the guide title', () => {
     render(<ShareBar title="Bank Account" ui={UI} />)
-    fireEvent.click(screen.getByLabelText('Share on WhatsApp'))
+    fireEvent.click(screen.getByLabelText('WhatsApp'))
     expect(openSpy.mock.calls[0][0]).toContain(encodeURIComponent('Bank Account'))
   })
 
@@ -81,24 +81,24 @@ describe('ShareBar', () => {
     expect(writeTextMock).toHaveBeenCalledWith(window.location.href)
   })
 
-  it('copy button shows "Copied!" after clicking', async () => {
+  it('copy button shows "Copied!" aria-label after clicking', async () => {
     vi.useFakeTimers()
     render(<ShareBar title="Test Guide" ui={UI} />)
     const btn = screen.getByLabelText('Copy link')
     fireEvent.click(btn)
     await act(async () => { await Promise.resolve() })  // flush clipboard promise
-    expect(btn.textContent).toContain('Copied!')
+    expect(btn.getAttribute('aria-label')).toBe('Copied!')
     vi.useRealTimers()
   })
 
-  it('copy button reverts to "Copy link" after 2 seconds', async () => {
+  it('copy button reverts to "Copy link" aria-label after 2 seconds', async () => {
     vi.useFakeTimers()
     render(<ShareBar title="Test Guide" ui={UI} />)
     const btn = screen.getByLabelText('Copy link')
     fireEvent.click(btn)
     await act(async () => { await Promise.resolve() })  // flush clipboard promise
     await act(async () => { vi.advanceTimersByTime(2001) })
-    expect(btn.textContent).toContain('Copy link')
+    expect(btn.getAttribute('aria-label')).toBe('Copy link')
     vi.useRealTimers()
   })
 })

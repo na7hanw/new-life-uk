@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 0 20px 12px;
+  margin: 0 var(--gutter) 12px;
   padding: 8px 16px;
   border-radius: 20px;
   border: 1.5px solid var(--ac3);

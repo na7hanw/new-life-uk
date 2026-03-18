@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ls, lsSet } from '../lib/utils.ts'
 import type { UiStrings } from '../types'
+import styles from './ChecklistWidget.module.css'
 
 const STORAGE_KEY = 'nluk_checklist'
 
@@ -47,59 +48,54 @@ export default function ChecklistWidget({ ui }: ChecklistWidgetProps) {
   const totalCount = CHECKLIST_ITEMS.length
 
   return (
-    <div className="card" style={{ margin: '0 16px 12px' }}>
+    <div className={`card ${styles.widget}`}>
       <button
-        style={{ width: '100%', padding: '14px 16px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+        className={styles.toggle}
         onClick={() => setExpanded(e => !e)}
         aria-expanded={expanded}
         aria-controls="checklist-body"
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className={styles.toggleInner}>
           <div>
-            <div style={{ fontWeight: 800, fontSize: '.95rem', color: 'var(--tx)' }}>
+            <div className={styles.heading}>
               ✅ {ui.myChecklist || 'My Progress'}
             </div>
-            <div style={{ fontSize: '.8rem', color: 'var(--t2)', marginTop: 2 }}>
+            <div className={styles.progress}>
               {doneCount}/{totalCount} complete
             </div>
           </div>
-          <span style={{ color: 'var(--t2)', fontSize: '1.1rem' }}>{expanded ? '▲' : '▼'}</span>
+          <span className={styles.chevron}>{expanded ? '▲' : '▼'}</span>
         </div>
-        <div style={{ marginTop: 8, height: 4, borderRadius: 2, background: 'var(--bg3)', overflow: 'hidden' }} aria-hidden="true">
+        <div className={styles.progressBar} aria-hidden="true">
           <div
-            style={{ height: '100%', borderRadius: 2, background: 'var(--ac)', width: `${(doneCount / totalCount) * 100}%`, transition: 'width .3s' }}
+            className={styles.progressFill}
+            style={{ width: `${(doneCount / totalCount) * 100}%` }}
           />
         </div>
       </button>
 
       {expanded && (
-        <div id="checklist-body" style={{ paddingBottom: 8 }}>
+        <div id="checklist-body" className={styles.body}>
           {ui.checklistIntro && (
-            <p style={{ fontSize: '.8rem', color: 'var(--t2)', padding: '0 16px 8px', margin: 0 }}>{ui.checklistIntro}</p>
+            <p className={styles.intro}>{ui.checklistIntro}</p>
           )}
           {CHECKLIST_ITEMS.map(item => (
-            <div key={item.id} style={{ display: 'flex', alignItems: 'center', padding: '6px 16px', gap: 10, borderTop: '1px solid var(--bg3)' }}>
+            <div key={item.id} className={styles.row}>
               <button
                 onClick={() => toggle(item.id)}
                 aria-pressed={completed.includes(item.id)}
                 aria-label={`${completed.includes(item.id) ? 'Unmark' : 'Mark as done'}: ${item.label}`}
-                style={{
-                  width: 22, height: 22, borderRadius: 6, flexShrink: 0,
-                  border: `2px solid ${completed.includes(item.id) ? 'var(--ac)' : 'var(--bd)'}`,
-                  background: completed.includes(item.id) ? 'var(--ac)' : 'transparent',
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: '#fff', fontSize: '.75rem', fontWeight: 700,
-                }}
+                className={`${styles.checkbox} ${completed.includes(item.id) ? styles.checkboxDone : ''}`}
               >
                 {completed.includes(item.id) ? '✓' : ''}
               </button>
-              <span style={{ fontSize: '.88rem', flex: 1, color: 'var(--tx)', textDecoration: completed.includes(item.id) ? 'line-through' : 'none', opacity: completed.includes(item.id) ? 0.6 : 1 }}>
+              <span className={`${styles.label} ${completed.includes(item.id) ? styles.labelDone : ''}`}>
                 {item.icon} {item.label}
               </span>
               <button
                 onClick={() => navigate(`/guide/${item.guideId}`)}
                 aria-label={`Open guide: ${item.label}`}
-                style={{ background: 'none', border: 'none', color: 'var(--ac)', cursor: 'pointer', fontSize: '.78rem', fontWeight: 700, padding: '2px 4px', flexShrink: 0 }}
+                className={styles.navBtn}
               >
                 →
               </button>

@@ -3,6 +3,7 @@ import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { CULTURE } from '../data/culture.ts'
 import type { CultureItem } from '../data/culture.ts'
+import CultureCard from '../components/CultureCard.tsx'
 
 interface FlatCultureItem extends CultureItem {
   sectionId: string
@@ -100,21 +101,16 @@ export default function CulturePage() {
         <div key={section.id}>
           <div className="section-label">{section.emoji} {section.heading}</div>
           {section.items.map(item => (
-            <div key={item.title} className="content-card">
-              <div className="content-card-header">
-                <span className="content-card-icon">{item.emoji}</span>
-                <span className="content-card-title">{item.title}</span>
-                <button
-                  className="culture-copy-btn"
-                  onClick={() => handleCopy(item)}
-                  aria-label={copiedTitle === item.title ? (ui.copied || 'Copied!') : (ui.copyTip || 'Copy tip')}
-                  title={copiedTitle === item.title ? (ui.copied || 'Copied!') : (ui.copyTip || 'Copy tip')}
-                >
-                  {copiedTitle === item.title ? '✅' : '📋'}
-                </button>
-              </div>
-              <p className="content-card-body">{item.body}</p>
-            </div>
+            <CultureCard
+              key={item.title}
+              emoji={item.emoji}
+              title={item.title}
+              body={item.body}
+              onCopy={() => handleCopy(item)}
+              copied={copiedTitle === item.title}
+              copyLabel={ui.copyTip || 'Copy tip'}
+              copiedLabel={ui.copied || 'Copied!'}
+            />
           ))}
         </div>
       ))}

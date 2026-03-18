@@ -17,8 +17,10 @@
   .modal-content { max-width: 620px; }
   .lang-overlay { max-width: 620px; }
   .hero-title { font-size: 1.7rem; }
+  .qa-grid { grid-template-columns: repeat(4, 1fr); }
 }
 @media (min-width: 900px) {
+  :root { --gutter: 24px; }
   .app-root { max-width: 720px; }
   .modal-content { max-width: 720px; }
   .lang-overlay { max-width: 720px; }
@@ -28,7 +30,7 @@
   .detail-header { padding: 16px 24px 32px; }
   .quick-links-row { padding: 4px 24px 10px; }
   .key-info-strip { padding: 0 24px 14px; }
-  .section-label { padding: 20px 24px 8px 20px; margin-left: 24px; }
+  .section-label { padding: 20px 24px 8px 24px; margin-left: 24px; }
   .card { margin: 0 24px 14px; }
 }
 @media (min-width: 1200px) {

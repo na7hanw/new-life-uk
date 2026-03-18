@@ -8,7 +8,7 @@
   background: var(--bg2);
   border: 1px solid var(--bd);
   border-radius: var(--radius);
-  margin: 0 16px 12px;
+  margin: 0 var(--gutter) 12px;
   box-shadow: var(--shadow);
   overflow: hidden;
 }
@@ -21,15 +21,15 @@
   color: var(--ac3);
   text-transform: uppercase;
   letter-spacing: .1em;
-  padding: 20px 16px 8px 20px;
+  padding: 20px var(--gutter) 8px var(--gutter);
   border-left: 3px solid var(--ac);
-  margin-left: 16px;
+  margin-left: var(--gutter);
 }
 .dark .section-label { color: var(--ac); }
 .section-sub {
   font-size: .875rem;
   color: var(--t2);
-  margin: 0 20px 12px;
+  margin: 0 var(--gutter) 12px;
   line-height: 1.55;
 }
 
@@ -251,7 +251,7 @@
   background: var(--bg2);
   border: 1px solid var(--bd);
   border-radius: var(--radius);
-  margin: 0 16px 12px;
+  margin: 0 var(--gutter) 12px;
   padding: 18px;
   box-shadow: var(--shadow);
   transition: border-color .15s, box-shadow .15s;

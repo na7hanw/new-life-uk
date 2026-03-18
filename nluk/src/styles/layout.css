@@ -159,6 +159,9 @@
   pointer-events: auto;
 }
 .back-to-top:active { transform: scale(.92); }
+.back-to-top.no-tab-bar {
+  bottom: calc(16px + env(safe-area-inset-bottom));
+}
 
 /* ─── Guide Reading Progress Bar ─── */
 .reading-progress-bar {

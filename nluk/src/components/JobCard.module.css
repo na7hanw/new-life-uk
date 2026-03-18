@@ -3,7 +3,7 @@
   background: var(--bg2);
   border: 1px solid var(--bd);
   border-radius: var(--radius);
-  margin: 0 20px 12px;
+  margin: 0 var(--gutter) 12px;
   padding: 0;
   box-shadow: var(--shadow);
   overflow: hidden;

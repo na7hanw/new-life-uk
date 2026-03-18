@@ -4,15 +4,15 @@
  * result structure, and per-type filtering.
  */
 import { describe, it, expect } from 'vitest'
-import { globalFuse, ALL_SEARCH_ITEMS } from '../lib/search.ts'
+import { globalFuse, ALL_SEARCH_ITEMS, type GlobalFuseResult } from '../lib/search.ts'
 
 // ─── Result-structure helpers ─────────────────────────────────────────────────
 
-function idsOf(results: ReturnType<typeof globalFuse.search>) {
+function idsOf(results: GlobalFuseResult[]) {
   return results.map(r => r.item.id)
 }
 
-function typesOf(results: ReturnType<typeof globalFuse.search>) {
+function typesOf(results: GlobalFuseResult[]) {
   return results.map(r => r.item.type)
 }
 

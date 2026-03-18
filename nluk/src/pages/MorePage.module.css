@@ -13,7 +13,7 @@
 }
 
 /* Card with slightly wider horizontal margin */
-.cardGutter { margin: 0 20px 12px; }
+.cardGutter { margin: 0 var(--gutter) 12px; }
 
 /* Card inner row: icon/label + action button side-by-side */
 .cardRow {

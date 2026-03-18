@@ -80,13 +80,13 @@ export default function WorkHub() {
     <div className="page-enter">
       <div className="sub-tabs" role="tablist">
         {[
-          { id: 'jobs', label: `🛵 ${ui.jobsTab}` },
-          { id: 'certs', label: `📋 ${ui.certsTab}` },
-          { id: 'career', label: `🚀 ${ui.careerTab}` },
+          { id: 'jobs', emoji: '🛵', label: ui.jobsTab },
+          { id: 'certs', emoji: '📋', label: ui.certsTab },
+          { id: 'career', emoji: '🚀', label: ui.careerTab },
         ].map(t => (
           <button key={t.id} className={`sub-tab ${subtab === t.id ? 'active' : ''}`}
             onClick={() => handleSubtab(t.id)} role="tab" aria-selected={subtab === t.id}>
-            {t.label}
+            <span aria-hidden="true">{t.emoji}</span> {t.label}
           </button>
         ))}
       </div>

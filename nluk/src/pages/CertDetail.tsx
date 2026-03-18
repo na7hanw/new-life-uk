@@ -78,14 +78,14 @@ export default function CertDetail() {
 
       <ShareBar title={cc.title} ui={ui} />
 
-      <TTSButton lang={lang} title={cc.title} summary={cc.sector || ''} steps={st} ui={ui} />
-
       <div className="section-label">{ui.freeRoute}</div>
       <div className="card" style={{ margin: '0 20px 12px' }}>
         <div style={{ padding: '12px 16px', fontSize: '.95rem', color: 'var(--gn)', lineHeight: 1.65, fontWeight: 600 }}>
           ✅ {cert.freeRoute}
         </div>
       </div>
+
+      <TTSButton lang={lang} title={cc.title} summary={cc.sector || ''} steps={st} ui={ui} />
 
       <div className="section-label">{ui.steps}</div>
       <div className={`card${translating ? ' translating' : ''}`} style={{ margin: '0 20px 12px' }}>
