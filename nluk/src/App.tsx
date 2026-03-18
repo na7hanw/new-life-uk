@@ -13,7 +13,10 @@ import OnboardingOverlay, { shouldShowOnboarding } from './components/Onboarding
 import styles from './App.module.css'
 
 
-const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
+// GuidesPage is the home tab and always loaded on first visit — keep it eager
+// so that its code and metadata are included in the initial bundle (one round trip)
+// rather than requiring a second dynamic-import fetch before any content is shown.
+import GuidesPage from './pages/GuidesPage.tsx'
 const GuideDetail  = lazy(() => import('./pages/GuideDetail.tsx'))
 const WorkHub      = lazy(() => import('./pages/WorkHub.tsx'))
 const CertDetail   = lazy(() => import('./pages/CertDetail.tsx'))
