@@ -4,6 +4,10 @@
  * Tests for src/components/OnboardingOverlay.tsx
  * Covers: single-step rendering, "Get started" behaviour,
  *         shouldShowOnboarding(), markOnboardingDone().
+ *
+ * NOTE: The onboarding flow is a single step ("Your guides are ready").
+ * There is no multi-step navigation — the single step is immediately the
+ * last step, so "Get started" shows in place of "Next" and "Skip" is hidden.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'

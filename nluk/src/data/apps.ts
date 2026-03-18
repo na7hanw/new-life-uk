@@ -419,6 +419,24 @@ export const APPS: SaveItem[] = [
     content: { en: { title: "Microsoft Teams — Workplace Communication", desc: "The standard communication tool used by most UK employers for video meetings, messaging, and file sharing. Install it before your first job interview — many employers run remote interviews and onboarding entirely via Teams. Free for personal use." } },
     url: "https://www.microsoft.com/en-gb/microsoft-teams/download-app",
   },
+  {
+    icon: "🚗",
+    cat: "Transport",
+    content: { en: { title: "AutoTrader — Buy & Sell Cars", desc: "The UK's largest used car marketplace. Search by make, model, price, location, and mileage. View full MOT history and dealer reviews. Also lists private sellers. Set alerts for specific models. Free to browse." } },
+    url: "https://www.autotrader.co.uk",
+  },
+  {
+    icon: "🛵",
+    cat: "Transport",
+    content: { en: { title: "Lime — E-Bikes & E-Scooters to Hire", desc: "Hire dockless electric bikes and rental e-scooters in your city. E-bikes need no licence. Rental e-scooters require a provisional or full driving licence in participating UK cities. Typically £1–£2 to unlock + £0.15–£0.20/min. Download the app and add a payment card to start." } },
+    url: "https://www.li.me",
+  },
+  {
+    icon: "🔍",
+    cat: "Transport",
+    content: { en: { title: "MoneySuperMarket — Compare Car Insurance", desc: "Compare hundreds of UK car insurance quotes in minutes. As a new UK driver or new resident you will be quoted high — always compare. Adding an experienced named driver to your policy can cut premiums by 30–50%. Also compares van, motorbike, and learner driver insurance." } },
+    url: "https://www.moneysupermarket.com/car-insurance/",
+  },
 ]
 
 // ─── Official source URLs for apps/resources ─────────────────────────────────
