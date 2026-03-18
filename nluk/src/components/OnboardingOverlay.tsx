@@ -7,8 +7,18 @@ const ONBOARDING_KEY = 'nluk_onboarded'
 const STEPS = [
   {
     icon: '🇬🇧',
-    title: 'Your guides are ready',
-    body: 'Step-by-step guides for everything you need in the UK — from NHS registration to bank accounts and benefits. Free, private, and available in 12 languages. Tap 🆘 anytime for emergency numbers. Tap the bookmark icon on any guide to save it for later.',
+    title: 'Step-by-step guides',
+    body: 'Everything you need in the UK — from NHS registration to bank accounts and benefits. Free, private, and available in 12 languages.',
+  },
+  {
+    icon: '🆘',
+    title: 'SOS emergency button',
+    body: 'Tap the SOS button anytime to see emergency numbers and crisis helplines — no account needed.',
+  },
+  {
+    icon: '🔖',
+    title: 'Save guides for later',
+    body: 'Tap the bookmark icon on any guide to save it. Works offline — your data stays on your device.',
   },
 ]
 

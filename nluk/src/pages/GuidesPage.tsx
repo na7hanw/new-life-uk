@@ -5,6 +5,7 @@ import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { t18 } from '../lib/utils.ts'
+import type { UserStatus } from '../types'
 import EmptyState from '../components/EmptyState.tsx'
 import styles from './GuidesPage.module.css'
 
@@ -16,14 +17,29 @@ const STATUS_GUIDES: Record<string, string[]> = {
   'settled':       ['ilr', 'evisa', 'sharecode'],
 }
 
+type QaLabelKey = 'qaEvisa' | 'qaShare' | 'qaBank' | 'qaGP' | 'qaBenefits' | 'qaID' | 'qaTravel' | 'qaSafety'
+
+// Quick action buttons: guide id, emoji, and UiStrings key for the label
+const QUICK_ACTIONS: { id: string; icon: string; labelKey: QaLabelKey }[] = [
+  { id: 'evisa',        icon: '🪪', labelKey: 'qaEvisa'    },
+  { id: 'sharecode',    icon: '📱', labelKey: 'qaShare'    },
+  { id: 'bank',         icon: '🏦', labelKey: 'qaBank'     },
+  { id: 'gp',           icon: '🏥', labelKey: 'qaGP'       },
+  { id: 'uc',           icon: '💷', labelKey: 'qaBenefits' },
+  { id: 'citizen-card', icon: '🪪', labelKey: 'qaID'       },
+  { id: 'travel',       icon: '✈️', labelKey: 'qaTravel'   },
+  { id: 'safety',       icon: '🛡️', labelKey: 'qaSafety'   },
+]
+
 // Enrich guides with keyword aliases once at module load (not on every component mount).
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
 
 export default function GuidesPage() {
-  const { lang, ui, dir, af, userStatus, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, dir, af, userStatus, setUserStatus, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('All')
+  const [showStatusPicker, setShowStatusPicker] = useState(!userStatus)
   const guideBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
   useEffect(() => {
@@ -109,6 +125,56 @@ export default function GuidesPage() {
 
       {filtered.length === 0 && (
         <EmptyState message={ui.noResults} />
+      )}
+
+      {/* Status picker — shown when no status is set and not dismissed */}
+      {!search && catFilter === 'All' && showStatusPicker && (
+        <div className="card" style={{ margin: '10px 16px', padding: '16px' }}>
+          <div style={{ fontWeight: 700, marginBottom: 4 }}>
+            {ui.statusPickerTitle || "What's your situation in the UK?"}
+          </div>
+          <div style={{ fontSize: '.85rem', color: 'var(--t3)', marginBottom: 12 }}>
+            {ui.statusPickerSub || 'Optional — helps us show the most relevant guides first.'}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {([
+              { value: 'asylum-seeker' as UserStatus, label: ui.statusAsylumSeeker || '⏳ Asylum seeker — waiting for my decision' },
+              { value: 'refugee'       as UserStatus, label: ui.statusRefugee       || '✅ Recognised refugee' },
+              { value: 'other-visa'    as UserStatus, label: ui.statusOtherVisa     || '🛂 Another visa (Skilled Worker, Family, Student…)' },
+              { value: 'settled'       as UserStatus, label: ui.statusSettled       || '🇬🇧 Settled / Pre-Settled Status' },
+            ]).map(opt => (
+              <button key={opt.value} className="btn btn-secondary"
+                onClick={() => { setUserStatus(opt.value); setShowStatusPicker(false) }}
+                aria-label={opt.label}>
+                {opt.label}
+              </button>
+            ))}
+          </div>
+          <button className="btn btn-ghost btn-sm" style={{ marginTop: 10 }}
+            onClick={() => setShowStatusPicker(false)}>
+            {ui.statusSkip || 'Skip for now'}
+          </button>
+        </div>
+      )}
+
+      {/* Quick Actions grid */}
+      {!search && catFilter === 'All' && (
+        <div>
+          <div className="cat-header">{ui.quickActions || 'Quick Actions'}</div>
+          <div className="qa-grid" style={{ marginBottom: 8 }}>
+            {QUICK_ACTIONS.map(qa => {
+              const label = ui[qa.labelKey]
+              return (
+                <button key={qa.id} className="qa-btn"
+                  aria-label={label}
+                  onClick={() => { sessionStorage.setItem('nluk_last_guide', qa.id); navigate(`/guide/${qa.id}`) }}>
+                  <span className="qa-icon">{qa.icon}</span>
+                  <span className="qa-label">{label}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
       )}
 
       {/* For You — pinned guides for this status, shown when not searching and viewing all categories */}
