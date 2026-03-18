@@ -437,6 +437,90 @@ export const APPS: SaveItem[] = [
     content: { en: { title: "MoneySuperMarket — Compare Car Insurance", desc: "Compare hundreds of UK car insurance quotes in minutes. As a new UK driver or new resident you will be quoted high — always compare. Adding an experienced named driver to your policy can cut premiums by 30–50%. Also compares van, motorbike, and learner driver insurance." } },
     url: "https://www.moneysupermarket.com/car-insurance/",
   },
+  {
+    icon: "🚕",
+    cat: "Transport",
+    content: { en: { title: "Uber — On-Demand Taxis", desc: "Book a car to your exact location in seconds. Cheaper than traditional taxis. Price shown upfront — no surprises. Pay by card in-app. Available in most UK cities. Also offers Uber Comfort and Uber XL for larger groups. Free to download." } },
+    url: "https://www.uber.com/gb/en/ride/",
+  },
+  {
+    icon: "⚡",
+    cat: "Transport",
+    content: { en: { title: "Bolt — Cheaper Taxi Alternative", desc: "Often 20–30% cheaper than Uber for the same journey. Book rides, e-bikes, and e-scooters. Available in London, Birmingham, Bristol, and other UK cities. Great option for frequent journeys — loyalty rewards available." } },
+    url: "https://bolt.eu/en-gb/",
+  },
+  {
+    icon: "🍕",
+    cat: "Food",
+    content: { en: { title: "Just Eat — Food Delivery", desc: "Order from thousands of local restaurants, takeaways, and fast food chains. Often has exclusive deals not available elsewhere. Covers the widest range of cuisines including Ethiopian, Eritrean, Somali, and African restaurants in UK cities." } },
+    url: "https://www.just-eat.co.uk",
+  },
+  {
+    icon: "🛵",
+    cat: "Food",
+    content: { en: { title: "Deliveroo — Restaurant Delivery", desc: "Premium restaurant and grocery delivery. Many restaurants exclusive to Deliveroo. Deliveroo Plus subscription (£3.99/month) gives free delivery on all orders. Useful for ordering from higher-quality restaurants when you want to treat yourself." } },
+    url: "https://www.deliveroo.co.uk",
+  },
+  {
+    icon: "🍔",
+    cat: "Food",
+    content: { en: { title: "Uber Eats — Food & Grocery Delivery", desc: "Order food from restaurants or groceries from supermarkets (Tesco, Morrisons) delivered in as little as 20 minutes. Frequently runs promotions — first order often 50% off. Works alongside the Uber app using the same account." } },
+    url: "https://www.ubereats.com/gb",
+  },
+  {
+    icon: "💱",
+    cat: "Transfer",
+    content: { en: { title: "Wise — International Money Transfers", desc: "Send money abroad at the real mid-market exchange rate with low transparent fees. Often 4–8x cheaper than banks for international transfers. Also offers a Wise debit card and multi-currency account — spend in any currency with no hidden fees. Ideal for sending to Ethiopia, Eritrea, or anywhere globally." } },
+    url: "https://wise.com",
+  },
+  {
+    icon: "🏡",
+    cat: "Housing",
+    content: { en: { title: "Zoopla — Property Search", desc: "Search properties to rent or buy across the UK. Includes estimated property values, sold prices, and local area data. Great for understanding what properties in a neighbourhood are worth before renting or buying — useful research if you plan to work in property." } },
+    url: "https://www.zoopla.co.uk",
+  },
+  {
+    icon: "🛒",
+    cat: "Community",
+    content: { en: { title: "Gumtree — Buy & Sell Locally", desc: "Free classified ads for second-hand furniture, electronics, clothes, bikes, and cars. Also lists jobs and rooms to rent. The fastest way to furnish a new home cheaply — or to earn money selling items you no longer need. Free to list and browse." } },
+    url: "https://www.gumtree.com",
+  },
+  {
+    icon: "👕",
+    cat: "Community",
+    content: { en: { title: "Vinted — Second-Hand Clothes", desc: "Buy and sell second-hand clothing, shoes, and accessories. Huge savings on branded clothes — often 70–90% cheaper than new. Also a way to earn money from clothes you no longer wear. Free to list, buyer pays a small service fee. Great for building a professional UK wardrobe cheaply." } },
+    url: "https://www.vinted.co.uk",
+  },
+  {
+    icon: "💼",
+    cat: "Jobs",
+    content: { en: { title: "TotalJobs — UK Job Board", desc: "One of the UK's largest job boards with millions of listings. Strong coverage of admin, customer service, logistics, and entry-level roles. Upload your CV and apply in one click. Set daily job alerts by email. Free to use." } },
+    url: "https://www.totaljobs.com",
+  },
+  {
+    icon: "🌐",
+    cat: "Learning",
+    content: { en: { title: "DeepL — Professional AI Translator", desc: "Better translation quality than Google Translate for professional and formal documents. Especially accurate for legal letters, bank correspondence, and official documents. Paste in text or upload a PDF/Word document. Free tier covers most everyday needs." } },
+    url: "https://www.deepl.com",
+  },
+  {
+    icon: "🏦",
+    cat: "Banking",
+    content: { en: { title: "Monese — Bank Account for New Arrivals", desc: "Specifically designed for people new to the UK — accepts ARC card and passport with no UK address proof required initially. Open an account in minutes. Good for asylum seekers who cannot open a standard bank account. Supports international transfers and multi-currency." } },
+    url: "https://monese.com",
+  },
+  {
+    icon: "🧮",
+    cat: "Benefits",
+    content: { en: { title: "Turn2us — Benefits Calculator", desc: "Free tool that tells you exactly which UK benefits you are entitled to and how much you could receive. Answer a few questions about your situation and get a personalised list. Also finds grants and charitable funds you may qualify for. Completely anonymous." } },
+    url: "https://www.turn2us.org.uk/benefit-calculator",
+  },
+  {
+    icon: "📊",
+    cat: "Government",
+    content: { en: { title: "HMRC — Tax & Pay Check", desc: "Manage your UK tax online: check your tax code, view your National Insurance record, claim tax rebates, and file a Self Assessment return if self-employed. Many immigrants overpay tax without realising — use this to check and claim any refund you are owed." } },
+    url: "https://www.gov.uk/personal-tax-account",
+  },
 ]
 
 // ─── Official source URLs for apps/resources ─────────────────────────────────
