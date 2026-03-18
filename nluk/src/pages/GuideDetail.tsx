@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL } from '../data/guides.ts'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
@@ -19,7 +19,7 @@ interface GuideContent {
 export default function GuideDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { lang, ui, ab } = useApp()
+  const { lang, ui, ab, bookmarks, toggleBookmark } = useApp()
 
   const guide = id ? GUIDE_MAP[id] : undefined
 
@@ -32,6 +32,22 @@ export default function GuideDetail() {
     lang,
     id
   )
+
+  // ── Reading progress bar ──
+  const [readProgress, setReadProgress] = useState(0)
+  useEffect(() => {
+    const scrollEl = document.getElementById('main-content')
+    if (!scrollEl) return
+    const onScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollEl
+      const max = scrollHeight - clientHeight
+      setReadProgress(max > 0 ? Math.min(100, Math.round((scrollTop / max) * 100)) : 0)
+    }
+    scrollEl.addEventListener('scroll', onScroll, { passive: true })
+    return () => scrollEl.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const isBookmarked = id ? bookmarks.includes(id) : false
 
   if (!guide) return null
 
@@ -50,8 +66,26 @@ export default function GuideDetail() {
         <title>{gc.title} — New Life UK</title>
         <meta name="description" content={gc.summary} />
       </Helmet>
+
+      {/* Reading progress bar */}
+      <div className="reading-progress-bar" role="progressbar" aria-valuenow={readProgress} aria-valuemin={0} aria-valuemax={100} aria-label={ui.readingProgress || 'Reading progress'}>
+        <div className="reading-progress-fill" style={{ width: `${readProgress}%` }} />
+      </div>
+
       <div className={`detail-header${translating ? ' translating' : ''}`}>
-        <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <button className="back-btn" onClick={() => navigate(-1)}>{ab} {ui.back}</button>
+          {id && (
+            <button
+              className={`bookmark-btn${isBookmarked ? ' active' : ''}`}
+              onClick={() => { navigator?.vibrate?.(10); toggleBookmark(id) }}
+              aria-label={isBookmarked ? (ui.unbookmark || 'Remove saved') : (ui.bookmark || 'Save guide')}
+              aria-pressed={isBookmarked}
+            >
+              {isBookmarked ? '🔖' : '🏷️'}
+            </button>
+          )}
+        </div>
         <div className="detail-hero">
           <span className="detail-icon">{guide.icon}</span>
           <div>

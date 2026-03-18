@@ -31,6 +31,8 @@ const sharedGlobals = {
   HTMLDivElement: 'readonly',
   URL: 'readonly',
   KeyboardEvent: 'readonly',
+  TouchList: 'readonly',
+  Touch: 'readonly',
 }
 
 export default [

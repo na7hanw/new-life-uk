@@ -27,6 +27,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [showSOS, setSOS] = useState<boolean>(false)
   const [showLang, setShowLang] = useState<boolean>(() => !ls('nluk_lang', ''))
   const [userStatus, setUserStatus] = useState<UserStatus>(() => ls('nluk_status', '') as UserStatus)
+  const [bookmarks, setBookmarks] = useState<string[]>(() => {
+    try { return JSON.parse(ls('nluk_bookmarks', '[]')) } catch { return [] }
+  })
 
   useEffect(() => {
     const L2 = LANGS.find(l => l.code === lang) || LANGS[0]
@@ -37,6 +40,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => { lsSet('nluk_dark', String(dark)) }, [dark])
   useEffect(() => { lsSet('nluk_status', userStatus) }, [userStatus])
+  useEffect(() => { lsSet('nluk_bookmarks', JSON.stringify(bookmarks)) }, [bookmarks])
+
+  const toggleBookmark = (id: string) => {
+    setBookmarks(prev =>
+      prev.includes(id) ? prev.filter(b => b !== id) : [...prev, id]
+    )
+  }
 
   const L = LANGS.find(l => l.code === lang) || LANGS[0]
   const ui = UI[lang] || UI.en
@@ -46,7 +56,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const af = L.rtl ? '‹' : '›'
 
   return (
-    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, ui, L, dir, fontClass, ab, af }}>
+    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, bookmarks, toggleBookmark, ui, L, dir, fontClass, ab, af }}>
       {children}
     </AppContext.Provider>
   )
