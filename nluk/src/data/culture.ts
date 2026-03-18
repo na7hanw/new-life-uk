@@ -8,6 +8,7 @@ export interface CultureSection {
   id: string
   emoji: string
   heading: string
+  description?: string
   items: CultureItem[]
 }
 
@@ -15,8 +16,9 @@ export interface CultureSection {
 export const CULTURE: CultureSection[] = [
   {
     id: 'politeness',
-    emoji: '🫖',
-    heading: 'The Art of Politeness — British Translation Guide',
+    emoji: '💬',
+    heading: 'Communication Style',
+    description: 'British English is famously indirect. This guide translates what people actually mean when they say something polite.',
     items: [
       {
         emoji: '😶',
@@ -73,7 +75,8 @@ export const CULTURE: CultureSection[] = [
   {
     id: 'unwritten-rules',
     emoji: '📋',
-    heading: 'Unwritten Rules — Break These at Your Peril',
+    heading: 'Social Norms',
+    description: 'The invisible rules of British social life. Breaking these will not get you in trouble with the law, but will cause very British disapproval.',
     items: [
       {
         emoji: '🚫',
@@ -125,7 +128,8 @@ export const CULTURE: CultureSection[] = [
   {
     id: 'bureaucracy',
     emoji: '📄',
-    heading: 'Peculiar Bureaucracy — Things That Will Confuse You',
+    heading: 'Laws & Expectations',
+    description: 'UK rules, taxes, and systems that affect your daily life. Understanding these early saves money and avoids problems.',
     items: [
       {
         emoji: '📺',
@@ -167,7 +171,8 @@ export const CULTURE: CultureSection[] = [
   {
     id: 'daily-life',
     emoji: '☕',
-    heading: 'Daily Life — The Things Nobody Tells You',
+    heading: 'Daily Life',
+    description: 'The everyday quirks of life in the UK — customs, traditions, and things you will notice within your first week.',
     items: [
       {
         emoji: '🍵',
@@ -214,7 +219,8 @@ export const CULTURE: CultureSection[] = [
   {
     id: 'workplace',
     emoji: '💼',
-    heading: 'Workplace & Office Culture — The Unwritten Handbook',
+    heading: 'Workplace Culture',
+    description: 'How British workplaces actually operate — the things no employment contract or induction will ever tell you.',
     items: [
       {
         emoji: '🎂',

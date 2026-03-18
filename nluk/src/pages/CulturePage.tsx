@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
-import { Search } from 'lucide-react'
+import { Search, ChevronDown } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { CULTURE } from '../data/culture.ts'
@@ -40,6 +40,8 @@ export default function CulturePage() {
   const [search, setSearch] = useState('')
   const [copiedTitle, setCopiedTitle] = useState<string | null>(null)
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // All sections open by default
+  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     return () => { if (copyTimer.current !== null) clearTimeout(copyTimer.current) }
@@ -70,6 +72,15 @@ export default function CulturePage() {
     })
   }
 
+  const toggleSection = (id: string) => {
+    setCollapsedSections(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
   const searchPlaceholder = ui.searchCulture || 'Search culture tips…'
 
   return (
@@ -95,23 +106,45 @@ export default function CulturePage() {
 
       {filteredSections.length === 0 && <EmptyState message={ui.noResults} />}
 
-      {filteredSections.map(section => (
-        <div key={section.id}>
-          <div className="section-label-lg">{section.emoji} {section.heading}</div>
-          {section.items.map(item => (
-            <CultureCard
-              key={item.title}
-              emoji={item.emoji}
-              title={item.title}
-              body={item.body}
-              onCopy={() => handleCopy(item)}
-              copied={copiedTitle === item.title}
-              copyLabel={ui.copyTip || 'Copy tip'}
-              copiedLabel={ui.copied || 'Copied!'}
-            />
-          ))}
-        </div>
-      ))}
+      {filteredSections.map(section => {
+        const isCollapsed = !search.trim() && collapsedSections.has(section.id)
+        return (
+          <div key={section.id}>
+            <button
+              className="culture-section-header"
+              onClick={() => toggleSection(section.id)}
+              aria-expanded={!isCollapsed}
+            >
+              <span className="section-label-lg" style={{ padding: 0, margin: 0, border: 'none', background: 'none', flex: 1 }}>
+                {section.emoji} {section.heading}
+              </span>
+              <span className="culture-section-meta">
+                <span className="culture-section-count">{section.items.length}</span>
+                <ChevronDown
+                  size={16}
+                  strokeWidth={2.5}
+                  style={{ color: 'var(--t3)', flexShrink: 0, transition: 'transform .2s', transform: isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)' }}
+                />
+              </span>
+            </button>
+            {section.description && !isCollapsed && (
+              <p className="section-sub">{section.description}</p>
+            )}
+            {!isCollapsed && section.items.map(item => (
+              <CultureCard
+                key={item.title}
+                emoji={item.emoji}
+                title={item.title}
+                body={item.body}
+                onCopy={() => handleCopy(item)}
+                copied={copiedTitle === item.title}
+                copyLabel={ui.copyTip || 'Copy tip'}
+                copiedLabel={ui.copied || 'Copied!'}
+              />
+            ))}
+          </div>
+        )
+      })}
       <div style={{ height: 8 }} />
     </div>
   )
