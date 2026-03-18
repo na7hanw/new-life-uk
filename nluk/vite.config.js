@@ -26,6 +26,9 @@ export default defineConfig({
             if (['react', 'react-dom', 'react-router-dom'].some(pkg => id.includes(`/${pkg}/`))) {
               return 'vendor'
             }
+            if (id.includes('/lucide-react/')) {
+              return 'icons'
+            }
             if (id.includes('/fuse.js/') || id.includes('/fuse.js?')) {
               return 'search'
             }
