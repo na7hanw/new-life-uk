@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ChevronDown } from 'lucide-react'
 import { useApp } from '../context/AppContext.tsx'
 import { GITHUB_URL } from '../data/emergency.ts'
 import { ls, lsSet } from '../lib/utils.ts'
@@ -143,7 +144,7 @@ export default function MorePage() {
           aria-expanded={privacyOpen}
         >
           <span className={styles.cardRowLabel}>{ui.privacyTitle || 'Your Privacy'} — No data collected. GDPR compliant.</span>
-          <span style={{ color: 'var(--t3)', fontSize: '.8rem' }}>{privacyOpen ? '▲' : '▼'}</span>
+          <ChevronDown size={16} strokeWidth={2.5} style={{ color: 'var(--t3)', transition: 'transform .2s', transform: privacyOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
         </button>
 
         {privacyOpen && (
