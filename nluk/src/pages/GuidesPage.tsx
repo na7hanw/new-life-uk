@@ -7,6 +7,7 @@ import { LANGS, TIPS } from '../data/ui-strings.ts'
 import { t18 } from '../lib/utils.ts'
 import { translate } from '../lib/translate.ts'
 import type { UserStatus } from '../types'
+import ChecklistWidget from '../components/ChecklistWidget.tsx'
 import styles from './GuidesPage.module.css'
 
 // Guides to pin in the "For You" section per status
@@ -28,6 +29,18 @@ function tipsKeyForStatus(s: UserStatus): keyof typeof TIPS {
 
 // Enrich guides with keyword aliases once at module load (not on every component mount).
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
+
+// Quick Actions: navigate to the most critical guides with a single tap
+const QUICK_ACTIONS = [
+  { icon: '📱', labelKey: 'qaEvisa',    path: '/guide/evisa' },
+  { icon: '🔗', labelKey: 'qaShare',    path: '/guide/sharecode' },
+  { icon: '🏦', labelKey: 'qaBank',     path: '/guide/bank' },
+  { icon: '🏥', labelKey: 'qaGP',       path: '/guide/gp' },
+  { icon: '💷', labelKey: 'qaBenefits', path: '/guide/uc' },
+  { icon: '🏠', labelKey: 'qaHousing',  path: '/guide/housing-help' },
+  { icon: '⚖️', labelKey: 'qaLegal',    path: '/guide/legal-help' },
+  { icon: '🛡️', labelKey: 'qaSafety',  path: '/guide/safety' },
+] as const
 
 export default function GuidesPage() {
   const { lang, ui, dir, af, userStatus, setUserStatus, bookmarks, toggleBookmark } = useApp()
@@ -126,6 +139,21 @@ export default function GuidesPage() {
 
           {tip && <div className="tip-banner"><span className="tip-icon">💡</span><p className="tip-text">{tip}</p></div>}
 
+          {/* Quick Actions grid */}
+          <div className="section-label">{ui.quickActions || 'Quick Actions'}</div>
+          <div className="qa-grid">
+            {QUICK_ACTIONS.map(qa => (
+              <button key={qa.labelKey} className="qa-btn" onClick={() => navigate(qa.path)}
+                aria-label={String(ui[qa.labelKey] || qa.labelKey)}>
+                <span className="qa-icon">{qa.icon}</span>
+                <span className="qa-label">{String(ui[qa.labelKey] || qa.labelKey)}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* My Progress Checklist */}
+          <ChecklistWidget ui={ui} />
+
           {/* Status picker — shown once until user picks a status or skips */}
           {!userStatus && !statusPickerDismissed && (
             <div className={`card ${styles.statusPickerCard}`}>
@@ -161,6 +189,16 @@ export default function GuidesPage() {
           onChange={e => setSearch(e.target.value)} dir={dir} aria-label={ui.search} />
         {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
       </div>
+
+      {/* Aria-live region announces search result count to screen readers */}
+      <span
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {search.trim() ? `${filtered.length} result${filtered.length === 1 ? '' : 's'} found` : ''}
+      </span>
+
       <div className="chip-bar" role="tablist">
         {['All', ...Object.keys(CATEGORIES)].map(c => (
           <button key={c} className={`chip ${catFilter === c ? 'active' : ''}`}

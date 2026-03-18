@@ -94,6 +94,12 @@ const BASE_UI = {
   onboardingNext: "Next",
   onboardingDone: "Get started",
   readingProgress: "Reading progress",
+  // Quick actions — housing and legal additions
+  qaHousing: "Housing",
+  qaLegal: "Legal Help",
+  // My Checklist feature
+  myChecklist: "My Progress",
+  checklistIntro: "Track the key steps to settling in the UK.",
 };
 
 const UI_OVERRIDES = {

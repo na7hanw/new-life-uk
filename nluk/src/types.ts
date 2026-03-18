@@ -214,6 +214,12 @@ export interface UiStrings {
   onboardingNext?: string
   onboardingDone?: string
   readingProgress?: string
+  // Quick actions — housing and legal additions
+  qaHousing?: string
+  qaLegal?: string
+  // My Checklist feature
+  myChecklist?: string
+  checklistIntro?: string
   [key: string]: unknown
 }
 
