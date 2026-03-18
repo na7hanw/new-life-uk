@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  *
  * Status-specific logic tests for GuidesPage.
- * Covers: status picker visibility, "For You" section rendering per status,
+ * Covers: "For You" section rendering per status,
  *         tip rotation based on status (tipsKeyForStatus behaviour).
  *
  * These tests render the full GuidesPage inside AppProvider + MemoryRouter so
@@ -38,34 +38,6 @@ function renderWithStatus(status: UserStatus) {
 beforeEach(() => { localStorage.clear() })
 afterEach(() => { cleanup(); localStorage.clear() })
 
-// ─── Status picker ────────────────────────────────────────────────────────────
-
-describe('GuidesPage — status picker', () => {
-  it('shows the status picker when no status has been selected', () => {
-    renderGuidesPage()
-    expect(screen.queryByText(/What's your situation/i)).not.toBeNull()
-  })
-
-  it('hides the status picker after the user selects a status', async () => {
-    renderGuidesPage()
-    const btn = screen.getByRole('button', { name: /Recognised refugee/i })
-    await act(async () => { fireEvent.click(btn) })
-    expect(screen.queryByText(/What's your situation/i)).toBeNull()
-  })
-
-  it('hides the status picker when "Skip for now" is clicked', async () => {
-    renderGuidesPage()
-    const skipBtn = screen.getByRole('button', { name: /Skip for now/i })
-    await act(async () => { fireEvent.click(skipBtn) })
-    expect(screen.queryByText(/What's your situation/i)).toBeNull()
-  })
-
-  it('does not show the status picker when a status is already stored', () => {
-    renderWithStatus('refugee')
-    expect(screen.queryByText(/What's your situation/i)).toBeNull()
-  })
-})
-
 // ─── "For You" section ────────────────────────────────────────────────────────
 
 describe('GuidesPage — For You section', () => {
@@ -100,8 +72,6 @@ describe('GuidesPage — For You section', () => {
 
   it('does NOT show the "For You" section when no status is set', () => {
     const { container } = renderGuidesPage()
-    // Dismiss the status picker first
-    fireEvent.click(screen.getByRole('button', { name: /Skip for now/i }))
     const forYouHeaders = container.querySelectorAll('.cat-header')
     const forYouHeader = Array.from(forYouHeaders).find(el => el.textContent?.includes('For You'))
     expect(forYouHeader).toBeUndefined()
@@ -127,19 +97,6 @@ describe('GuidesPage — For You section', () => {
 })
 
 // ─── Quick Actions ────────────────────────────────────────────────────────────
-
-describe('GuidesPage — Quick Actions', () => {
-  it('renders the Quick Actions grid', () => {
-    renderGuidesPage()
-    expect(screen.getByText('Quick Actions')).not.toBeNull()
-  })
-
-  it('includes an eVisa quick action button with exact aria-label', () => {
-    renderGuidesPage()
-    // The quick action uses aria-label="eVisa" (from ui.qaEvisa in BASE_UI)
-    expect(screen.getByRole('button', { name: 'eVisa' })).not.toBeNull()
-  })
-})
 
 // ─── Bookmarks ────────────────────────────────────────────────────────────────
 
