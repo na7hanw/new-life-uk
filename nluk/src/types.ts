@@ -203,6 +203,17 @@ export interface UiStrings {
   notFoundTitle?: string
   notFoundSub?: string
   notFoundHome?: string
+  // UX improvements
+  pullToRefresh?: string
+  backToTop?: string
+  bookmark?: string
+  unbookmark?: string
+  bookmarksTitle?: string
+  bookmarksSub?: string
+  onboardingSkip?: string
+  onboardingNext?: string
+  onboardingDone?: string
+  readingProgress?: string
   [key: string]: unknown
 }
 
@@ -217,6 +228,8 @@ export interface AppContextValue {
   setShowLang: (show: boolean) => void
   userStatus: UserStatus
   setUserStatus: (s: UserStatus) => void
+  bookmarks: string[]
+  toggleBookmark: (id: string) => void
   ui: UiStrings
   L: Lang
   dir: 'ltr' | 'rtl'

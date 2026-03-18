@@ -157,6 +157,18 @@
 .dark .sub-tab.active { color: var(--ac); background: rgba(52,211,153,.09); }
 
 /* ─── List Rows ─── */
+.list-row-wrap {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--bd);
+  position: relative;
+}
+.list-row-wrap:last-child { border-bottom: none; }
+.list-row-main {
+  flex: 1;
+  border-bottom: none !important;
+  min-width: 0;
+}
 .list-row {
   display: flex;
   align-items: center;

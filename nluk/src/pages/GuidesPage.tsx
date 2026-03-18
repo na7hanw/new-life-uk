@@ -30,7 +30,7 @@ function tipsKeyForStatus(s: UserStatus): keyof typeof TIPS {
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
 
 export default function GuidesPage() {
-  const { lang, ui, dir, af, userStatus, setUserStatus } = useApp()
+  const { lang, ui, dir, af, userStatus, setUserStatus, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('All')
@@ -184,17 +184,65 @@ export default function GuidesPage() {
               .map(g => {
                 const gc = t18(g.content, lang)
                 return (
-                  <button key={g.id} className="list-row"
-                    ref={el => { guideBtnRefs.current[g.id] = el }}
-                    onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
-                    aria-label={gc.title}>
-                    <span className="list-row-icon">{g.icon}</span>
-                    <div className="list-row-content">
-                      <div className="list-row-title">{gc.title}</div>
-                      <div className="list-row-sub">{gc.summary}</div>
-                    </div>
-                    <span className="list-row-arrow">{af}</span>
-                  </button>
+                  <div key={g.id} className="list-row-wrap">
+                    <button className="list-row list-row-main"
+                      ref={el => { guideBtnRefs.current[g.id] = el }}
+                      onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
+                      aria-label={gc.title}>
+                      <span className="list-row-icon">{g.icon}</span>
+                      <div className="list-row-content">
+                        <div className="list-row-title">{gc.title}</div>
+                        <div className="list-row-sub">{gc.summary}</div>
+                      </div>
+                      <span className="list-row-arrow">{af}</span>
+                    </button>
+                    <button
+                      className={`bookmark-btn${bookmarks.includes(g.id) ? ' active' : ''}`}
+                      onClick={() => { navigator?.vibrate?.(10); toggleBookmark(g.id) }}
+                      aria-label={bookmarks.includes(g.id) ? (ui.unbookmark || 'Remove saved') : (ui.bookmark || 'Save guide')}
+                      aria-pressed={bookmarks.includes(g.id)}
+                    >
+                      {bookmarks.includes(g.id) ? '🔖' : '🏷️'}
+                    </button>
+                  </div>
+                )
+              })}
+          </div>
+        </div>
+      )}
+
+      {/* Saved/Bookmarked guides — shown when not searching and there are bookmarks */}
+      {!search && catFilter === 'All' && bookmarks.length > 0 && (
+        <div>
+          <div className="section-label">{ui.bookmarksTitle || '📌 Saved Guides'}</div>
+          <div className={`card card-flush ${styles.cardGutter}`}>
+            {bookmarks
+              .map(id => GUIDE_MAP[id])
+              .filter(Boolean)
+              .map(g => {
+                const gc = t18(g.content, lang)
+                return (
+                  <div key={g.id} className="list-row-wrap">
+                    <button className="list-row list-row-main"
+                      ref={el => { guideBtnRefs.current[g.id] = el }}
+                      onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
+                      aria-label={gc.title}>
+                      <span className="list-row-icon">{g.icon}</span>
+                      <div className="list-row-content">
+                        <div className="list-row-title">{gc.title}</div>
+                        <div className="list-row-sub">{gc.summary}</div>
+                      </div>
+                      <span className="list-row-arrow">{af}</span>
+                    </button>
+                    <button
+                      className="bookmark-btn active"
+                      onClick={() => { navigator?.vibrate?.(10); toggleBookmark(g.id) }}
+                      aria-label={ui.unbookmark || 'Remove saved'}
+                      aria-pressed={true}
+                    >
+                      🔖
+                    </button>
+                  </div>
                 )
               })}
           </div>
@@ -210,17 +258,27 @@ export default function GuidesPage() {
             {groupedByCat[cat].map(g => {
               const gc = t18(g.content, lang)
               return (
-                <button key={g.id} className="list-row"
-                  ref={el => { guideBtnRefs.current[g.id] = el }}
-                  onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
-                  aria-label={gc.title}>
-                  <span className="list-row-icon">{g.icon}</span>
-                  <div className="list-row-content">
-                    <div className="list-row-title">{gc.title}</div>
-                    <div className="list-row-sub">{gc.summary}</div>
-                  </div>
-                  <span className="list-row-arrow">{af}</span>
-                </button>
+                <div key={g.id} className="list-row-wrap">
+                  <button className="list-row list-row-main"
+                    ref={el => { guideBtnRefs.current[g.id] = el }}
+                    onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
+                    aria-label={gc.title}>
+                    <span className="list-row-icon">{g.icon}</span>
+                    <div className="list-row-content">
+                      <div className="list-row-title">{gc.title}</div>
+                      <div className="list-row-sub">{gc.summary}</div>
+                    </div>
+                    <span className="list-row-arrow">{af}</span>
+                  </button>
+                  <button
+                    className={`bookmark-btn${bookmarks.includes(g.id) ? ' active' : ''}`}
+                    onClick={() => { navigator?.vibrate?.(10); toggleBookmark(g.id) }}
+                    aria-label={bookmarks.includes(g.id) ? (ui.unbookmark || 'Remove saved') : (ui.bookmark || 'Save guide')}
+                    aria-pressed={bookmarks.includes(g.id)}
+                  >
+                    {bookmarks.includes(g.id) ? '🔖' : '🏷️'}
+                  </button>
+                </div>
               )
             })}
           </div>

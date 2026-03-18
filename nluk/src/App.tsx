@@ -9,6 +9,7 @@ import ConsentBanner from './components/ConsentBanner.tsx'
 import SkeletonFallback from './components/SkeletonFallback.tsx'
 import Logo from './components/Logo.tsx'
 import SOSModal from './components/SOSModal.tsx'
+import OnboardingOverlay, { shouldShowOnboarding } from './components/OnboardingOverlay.tsx'
 import styles from './App.module.css'
 
 
@@ -74,8 +75,102 @@ export default function App() {
     return location.pathname.startsWith(path.replace('/jobs', ''))
   }
 
+  // ── Tab switching with haptic feedback ──
   const switchTab = (path: string) => {
+    navigator?.vibrate?.(10)
     navigate(path)
+  }
+
+  // ── Onboarding — shown once after first language selection ──
+  const [showOnboarding, setShowOnboarding] = useState(false)
+  const prevShowLang = useRef(showLang)
+  useEffect(() => {
+    // When language overlay closes for the first time, check if we should show onboarding
+    if (prevShowLang.current && !showLang && shouldShowOnboarding()) {
+      setShowOnboarding(true)
+    }
+    prevShowLang.current = showLang
+  }, [showLang])
+
+  // ── Back-to-top button ──
+  const mainRef = useRef<HTMLElement>(null)
+  const [showBackToTop, setShowBackToTop] = useState(false)
+
+  useEffect(() => {
+    const el = mainRef.current
+    if (!el) return
+    const onScroll = () => setShowBackToTop(el.scrollTop > 300)
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    navigator?.vibrate?.(10)
+    mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // Reset scroll position on tab/route change
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0 })
+  }, [location.pathname])
+
+  // ── Pull-to-refresh ──
+  const ptrTouchY = useRef(0)
+  const ptrActive = useRef(false)
+  const [ptrPulling, setPtrPulling] = useState(false)
+  const PTR_THRESHOLD = 72
+
+  const handlePtrTouchStart = (e: { touches: TouchList }) => {
+    const el = mainRef.current
+    if (!el || el.scrollTop > 0) return
+    ptrTouchY.current = e.touches[0].clientY
+    ptrActive.current = true
+  }
+
+  const handlePtrTouchMove = (e: { touches: TouchList; preventDefault: () => void }) => {
+    if (!ptrActive.current) return
+    const delta = e.touches[0].clientY - ptrTouchY.current
+    if (delta > 8) setPtrPulling(true)
+    if (delta > PTR_THRESHOLD) e.preventDefault()
+  }
+
+  const handlePtrTouchEnd = (e: { changedTouches: TouchList }) => {
+    if (!ptrActive.current) return
+    ptrActive.current = false
+    const delta = e.changedTouches[0].clientY - ptrTouchY.current
+    if (delta >= PTR_THRESHOLD) {
+      navigator?.vibrate?.(20)
+      window.location.reload()
+    } else {
+      setPtrPulling(false)
+    }
+  }
+
+  // ── Swipe between tabs ──
+  const swipeTouchX = useRef(0)
+  const swipeTouchY = useRef(0)
+
+  const handleSwipeTouchStart = (e: { touches: TouchList }) => {
+    swipeTouchX.current = e.touches[0].clientX
+    swipeTouchY.current = e.touches[0].clientY
+  }
+
+  const handleSwipeTouchEnd = (e: { changedTouches: TouchList }) => {
+    if (isDetail) return
+    const dx = e.changedTouches[0].clientX - swipeTouchX.current
+    const dy = e.changedTouches[0].clientY - swipeTouchY.current
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return
+    const currIdx = TABS.findIndex(t => isTabActive(t.path))
+    if (currIdx === -1) return
+    if (dx < 0 && currIdx < TABS.length - 1) {
+      // swipe left → next tab
+      navigator?.vibrate?.(10)
+      navigate(TABS[currIdx + 1].path)
+    } else if (dx > 0 && currIdx > 0) {
+      // swipe right → previous tab
+      navigator?.vibrate?.(10)
+      navigate(TABS[currIdx - 1].path)
+    }
   }
 
   return (
@@ -118,23 +213,41 @@ export default function App() {
       )}
 
       {/* SCROLLABLE CONTENT */}
-      <main className={`app-scroll ${navClass}`} id="main-content">
+      <main
+        className={`app-scroll ${navClass}`}
+        id="main-content"
+        ref={mainRef}
+        onTouchStart={handlePtrTouchStart}
+        onTouchMove={handlePtrTouchMove}
+        onTouchEnd={handlePtrTouchEnd}
+      >
+        {/* Pull-to-refresh indicator */}
+        {ptrPulling && (
+          <div className="ptr-indicator" aria-hidden="true">
+            <div className="ptr-spinner" />
+          </div>
+        )}
         <ErrorBoundary>
           <Suspense fallback={<SkeletonFallback />}>
-            <Routes>
-              <Route path="/" element={<GuidesPage />} />
-              <Route path="/guide/:id" element={<GuideDetail />} />
-              <Route path="/work" element={<Navigate to="/work/jobs" replace />} />
-              <Route path="/work/:subtab" element={<WorkHub />} />
-              <Route path="/cert/:id" element={<CertDetail />} />
-              <Route path="/career/:id" element={<CareerDetail />} />
-              <Route path="/saves" element={<SavesPage />} />
-              <Route path="/saves/apps" element={<AppsPage />} />
-              <Route path="/culture" element={<CulturePage />} />
-              <Route path="/settings" element={<MorePage />} />
-              <Route path="/more" element={<Navigate to="/culture" replace />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+            <div
+              onTouchStart={handleSwipeTouchStart}
+              onTouchEnd={handleSwipeTouchEnd}
+            >
+              <Routes>
+                <Route path="/" element={<GuidesPage />} />
+                <Route path="/guide/:id" element={<GuideDetail />} />
+                <Route path="/work" element={<Navigate to="/work/jobs" replace />} />
+                <Route path="/work/:subtab" element={<WorkHub />} />
+                <Route path="/cert/:id" element={<CertDetail />} />
+                <Route path="/career/:id" element={<CareerDetail />} />
+                <Route path="/saves" element={<SavesPage />} />
+                <Route path="/saves/apps" element={<AppsPage />} />
+                <Route path="/culture" element={<CulturePage />} />
+                <Route path="/settings" element={<MorePage />} />
+                <Route path="/more" element={<Navigate to="/culture" replace />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </div>
           </Suspense>
         </ErrorBoundary>
       </main>
@@ -155,8 +268,25 @@ export default function App() {
         </nav>
       )}
 
+      {/* BACK-TO-TOP BUTTON — visible when scrolled down on list pages */}
+      {!isDetail && (
+        <button
+          className={`back-to-top${showBackToTop ? ' visible' : ''}`}
+          onClick={scrollToTop}
+          aria-label={ui.backToTop || 'Back to top'}
+          tabIndex={showBackToTop ? 0 : -1}
+        >
+          ↑
+        </button>
+      )}
+
       {/* SOS MODAL — focus-trapped, no backdrop dismiss (safety-critical) */}
       <SOSModal showSOS={showSOS} setSOS={setSOS} ui={ui} SOS_NUMBERS={SOS_NUMBERS} />
+
+      {/* ONBOARDING OVERLAY — shown once after first language selection */}
+      {showOnboarding && (
+        <OnboardingOverlay ui={ui} onDone={() => setShowOnboarding(false)} />
+      )}
 
       {/* CONSENT BANNER — shown once on first visit when Sentry is configured */}
       <ConsentBanner ui={ui} />

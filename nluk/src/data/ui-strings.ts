@@ -83,6 +83,17 @@ const BASE_UI = {
   consentBody: "To help us fix bugs faster, this app can send anonymous crash reports to Sentry. No personal information is included. You can change this at any time in More → Privacy.",
   consentAccept: "✓ OK, that's fine",
   consentDecline: "No thanks",
+  // UX improvements
+  pullToRefresh: "Release to refresh",
+  backToTop: "Back to top",
+  bookmark: "Save guide",
+  unbookmark: "Remove saved",
+  bookmarksTitle: "📌 Saved Guides",
+  bookmarksSub: "Your saved guides appear here.",
+  onboardingSkip: "Skip",
+  onboardingNext: "Next",
+  onboardingDone: "Get started",
+  readingProgress: "Reading progress",
 };
 
 const UI_OVERRIDES = {
