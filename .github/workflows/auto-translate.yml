@@ -45,7 +45,7 @@ jobs:
           GOOGLE_TRANSLATE_API_KEY: ${{ secrets.GOOGLE_TRANSLATE_API_KEY }}
           TRANSLATE_LANGS: ${{ github.event.inputs.langs || '' }}
           DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
-        run: node --input-type=module --experimental-vm-modules scripts/auto-translate.mjs
+        run: node --experimental-vm-modules scripts/auto-translate.mjs
 
       - name: Check for changes
         id: changes
