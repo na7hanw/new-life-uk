@@ -32,17 +32,17 @@
   transform: rotate(180deg);
 }
 .progressBar {
-  margin-top: 8px;
-  height: 4px;
-  border-radius: 2px;
+  margin-top: 10px;
+  height: 6px;
+  border-radius: 4px;
   background: var(--bg3);
   overflow: hidden;
 }
 .progressFill {
   height: 100%;
-  border-radius: 2px;
+  border-radius: 4px;
   background: var(--ac);
-  transition: width .3s;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .body {
   padding-bottom: 8px;
@@ -55,29 +55,32 @@
 }
 .row {
   display: flex;
-  align-items: center;
-  padding: 6px 16px;
-  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 16px;
+  gap: 12px;
   border-top: 1px solid var(--bg3);
 }
 .checkbox {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   flex-shrink: 0;
-  border: 2px solid var(--bd);
+  border: 2px solid var(--t3);
   background: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: transparent;
+  transition: all 0.2s;
   font-size: .75rem;
   font-weight: 700;
+  margin-top: 1px;
 }
 .checkboxDone {
   border-color: var(--ac);
   background: var(--ac);
+  color: #fff;
 }
 .label {
   font-size: .88rem;
@@ -97,4 +100,9 @@
   font-weight: 700;
   padding: 2px 4px;
   flex-shrink: 0;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
