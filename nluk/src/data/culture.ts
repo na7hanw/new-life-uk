@@ -126,49 +126,6 @@ export const CULTURE: CultureSection[] = [
     ],
   },
   {
-    id: 'bureaucracy',
-    emoji: '📄',
-    heading: 'Laws & Expectations',
-    description: 'UK rules, taxes, and systems that affect your daily life. Understanding these early saves money and avoids problems.',
-    items: [
-      {
-        emoji: '📺',
-        title: 'The TV Licence (£174.50/year)',
-        body: 'You must pay this if you watch ANY live TV or use BBC iPlayer — even on a laptop or phone. It funds the BBC. The fine for non-payment is up to £1,000. If you never watch live TV or iPlayer, you can legally declare you don\'t need one at tv-licensing.co.uk.',
-      },
-      {
-        emoji: '🏘️',
-        title: 'Council Tax',
-        body: 'A local tax paid to your borough or district council (not central government). It funds local services — rubbish collection, libraries, street lighting. The amount depends on your property band (A–H). Students are usually fully exempt. Apply for a single-person discount (25% off) if you live alone.',
-      },
-      {
-        emoji: '🚗',
-        title: 'The MOT',
-        body: 'Cars older than 3 years need an annual roadworthiness test (~£55). Fail it and you cannot legally drive the car on public roads. Book at any garage displaying the blue MOT sign. The expiry date is on a small certificate in your car.',
-      },
-      {
-        emoji: '🪪',
-        title: 'National Insurance Number (NIN)',
-        body: 'Your tax and benefits identity number — format: AB 12 34 56 C. You need it to work, claim benefits, and build a pension. Apply online at gov.uk. Takes 2–8 weeks. You can start work before receiving it but must give it to your employer as soon as it arrives.',
-      },
-      {
-        emoji: '📑',
-        title: 'P60 and P45 Forms',
-        body: 'Your P60 is your annual tax summary, issued every April by your employer. Keep every one — you will need them for mortgage applications, visa renewals, and benefit claims. A P45 is issued when you leave a job. Give it to your next employer immediately.',
-      },
-      {
-        emoji: '🏥',
-        title: 'NHS GP System — How It Works',
-        body: 'You register with one local GP surgery for free. Routine appointments are often 2–4 weeks away — book early. For urgent medical advice (not an emergency), call 111 free 24/7, or use 111.nhs.uk. Only go to A&E (999) for genuine emergencies. The NHS App lets you book appointments and order repeat prescriptions.',
-      },
-      {
-        emoji: '📅',
-        title: 'Bank Holidays',
-        body: 'England has 8 bank holidays per year (Scotland and Northern Ireland have different ones). Shops may close or run reduced hours. Public transport runs Sunday timetables. Everyone travels simultaneously. Plan ahead — supermarkets sell out of food the day before.',
-      },
-    ],
-  },
-  {
     id: 'daily-life',
     emoji: '☕',
     heading: 'Daily Life',
