@@ -46,7 +46,7 @@ export default function App() {
     prevPathRef.current = curr
   }, [location.pathname])
 
-  const isDetail = /^\/(guide|cert|career)\//.test(location.pathname) || location.pathname === '/saves/apps'
+  const isDetail = /^\/(guide|cert|career)\//.test(location.pathname) || location.pathname === '/saves/apps' || location.pathname === '/settings'
   const [routeAnn, setRouteAnn] = useState('')
 
   useEffect(() => {

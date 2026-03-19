@@ -20,6 +20,7 @@
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  position: relative;
 }
 
 /* ─── Header ─── */
