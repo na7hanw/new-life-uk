@@ -99,7 +99,7 @@
   border: 1px solid rgba(13,110,75,.12);
   border-radius: 14px;
   padding: 12px 16px;
-  margin: 10px 16px 0;
+  margin: 10px var(--gutter) 0;
 }
 .dark .tip-banner {
   background: rgba(52,211,153,.06);
