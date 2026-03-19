@@ -89,6 +89,7 @@ export interface UiStrings {
   saves: string
   more: string
   culture: string
+  profile?: string
   search: string
   noResults: string
   searchWork?: string

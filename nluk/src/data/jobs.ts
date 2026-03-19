@@ -290,12 +290,10 @@ export const CERTS = [
     freeRoute: "Skills Bootcamp: fully funded training + guaranteed employer interview on completion.",
     steps: { en: [
       "FREE route: Search 'Construction Skills Bootcamp' at gov.uk/guidance/find-a-skills-bootcamp.",
-      "Standard Step 1: Complete a Health & Safety course with a CITB-approved provider.",
-      "Standard Step 2: Book and pass the CITB Health, Safety & Environment test (£22.50).",
-      "Standard Step 3: Apply for your CSCS card — select card type based on your qualification (£36).",
-      "Green Labourer Card: cheapest and quickest entry — for general labouring work.",
-      "Card valid 5 years. Required to enter most UK construction sites by law.",
-      "⚠ Do NOT pay agencies more than £58.50 total. Common scam targeting new arrivals.",
+      "**Green Labourer Card:** For general entry-level site work. Pass the Level 1 Health & Safety in a Construction Environment course and the CITB Health, Safety & Environment test (£22.50). Apply for the card (£36). Total: £58.50.",
+      "**White AQP Card (Academically Qualified Person):** 💎 If you have an overseas civil engineering, construction, or architecture degree, do NOT get a Green Card. Get your degree verified by UK ENIC (£49), pass the CITB Managers and Professionals (MAP) test (£22.50), and apply for the White Card (£36). This lets you enter sites as a qualified professional, not a labourer.",
+      "Card valid 5 years. Required by law to enter most UK construction sites.",
+      "⚠ Do NOT pay agencies more than £58.50 total (£22.50 test + £36 card). This is a common scam targeting new arrivals.",
     ]},
     links: [
       { name: "Find Skills Bootcamp (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },

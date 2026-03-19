@@ -1,0 +1,55 @@
+/* ── Status row ─────────────────────────────────────────────────── */
+.statusRow {
+  width: 100%;
+  text-align: start;
+}
+
+/* ── Status picker (inline dropdown) ───────────────────────────── */
+.statusPicker {
+  border-top: 1px solid var(--sep);
+  padding: 4px 0;
+}
+
+.statusOption {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  text-align: start;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--t1);
+  gap: 8px;
+}
+
+.statusOption:hover,
+.statusOption:focus-visible {
+  background: var(--ac2);
+  outline: none;
+}
+
+.statusCheck {
+  color: var(--ac);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Empty bookmarks state ──────────────────────────────────────── */
+.emptyBookmarks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--t3);
+}
+
+.emptyBookmarks p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--t2);
+}
