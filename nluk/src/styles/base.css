@@ -5,6 +5,14 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Global focus ring for keyboard navigators */
+*:focus-visible {
+  outline: 3px solid var(--ac);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+button:focus-visible, a:focus-visible { border-radius: 8px; }
+
 body {
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
@@ -20,7 +28,13 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 
 /* RTL and Ethiopic font overrides */
 [dir="rtl"] { font-family: 'Arabic UI Text', 'Geeza Pro', 'Segoe UI', system-ui, sans-serif; line-height: 1.85; }
-.eth-font  { font-family: 'Kefa', 'Noto Sans Ethiopic', system-ui, sans-serif; }
+/* Ge'ez characters render ~12% smaller than Latin at the same px — bump to optically match */
+.eth-font {
+  font-family: 'Kefa', 'Noto Sans Ethiopic', system-ui, sans-serif;
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  line-height: 1.7;
+}
 
 /* Screen-reader only utility */
 .sr-only {

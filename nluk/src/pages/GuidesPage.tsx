@@ -5,12 +5,13 @@ import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { t18 } from '../lib/utils.ts'
+import { getTrendingGuideIds } from '../lib/search.ts'
 import EmptyState from '../components/EmptyState.tsx'
 import styles from './GuidesPage.module.css'
 
 // Guides to pin in the "For You" section per status
 const STATUS_GUIDES: Record<string, string[]> = {
-  'asylum-seeker': ['permission-to-work', 'volunteering', 'asylum-waiting'],
+  'asylum-seeker': ['re-qualify', 'permission-to-work', 'volunteering', 'asylum-waiting'],
   'refugee':       ['move-on', 'uc', 'housing-help'],
   'other-visa':    ['work-rights', 'evisa', 'sharecode'],
   'settled':       ['ilr', 'evisa', 'sharecode'],
@@ -23,6 +24,7 @@ export default function GuidesPage() {
   const { lang, ui, dir, af, userStatus, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
+  const [searchFocused, setSearchFocused] = useState(false)
   const [catFilter, setCatFilter] = useState('All')
   const guideBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
@@ -85,9 +87,37 @@ export default function GuidesPage() {
       <div className="search-bar">
         <Search size={18} strokeWidth={2} className={styles.searchIcon} />
         <input className="search-input" placeholder={ui.search} value={search}
-          onChange={e => setSearch(e.target.value)} dir={dir} aria-label={ui.search} />
+          onChange={e => setSearch(e.target.value)} dir={dir} aria-label={ui.search}
+          onFocus={() => setSearchFocused(true)}
+          onBlur={() => setSearchFocused(false)} />
         {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
       </div>
+
+      {/* Search zero-state: show trending guides when focused but no query typed */}
+      {search === '' && searchFocused && (() => {
+        const trending = getTrendingGuideIds(4)
+        if (trending.length === 0) return null
+        return (
+          <div style={{ padding: '0 16px 12px' }}>
+            <div className="section-label" style={{ padding: '10px 0 8px 0', margin: 0, border: 'none' }}>
+              🔥 {ui.trending || 'Trending'}
+            </div>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4 }}>
+              {trending.map(id => {
+                const g = GUIDE_MAP[id]
+                if (!g) return null
+                return (
+                  <button key={id} className="chip"
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={() => navigate(`/guide/${id}`)}>
+                    {g.icon} {t18(g.content, lang).title}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )
+      })()}
 
       {/* Aria-live region announces search result count to screen readers */}
       <span
@@ -115,7 +145,8 @@ export default function GuidesPage() {
       {!search && catFilter === 'All' && userStatus && STATUS_GUIDES[userStatus] && (
         <div>
           <div className={`cat-header ${styles.forYouHeader}`}>⭐ {ui.forYou}</div>
-          <div className={`card card-flush ${styles.cardGutter}`}>
+          <div className={`card card-flush ${styles.cardGutter}`}
+               style={{ border: '2px solid var(--ac)', backgroundColor: 'var(--ac2)' }}>
             {STATUS_GUIDES[userStatus]
               .map(id => GUIDE_MAP[id])
               .filter(Boolean)

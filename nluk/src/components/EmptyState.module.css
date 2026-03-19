@@ -2,15 +2,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 48px 20px;
-  gap: 12px;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: var(--bg2);
+  border: 1px dashed var(--bd);
+  border-radius: var(--radius);
+  margin: 0 var(--gutter);
 }
 .emptyIcon {
-  color: var(--t3);
-  opacity: .45;
+  color: var(--ac);
+  opacity: .3;
+  transform: scale(1.2);
 }
 .emptyText {
-  font-size: .9rem;
-  color: var(--t3);
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--t2);
   text-align: center;
 }
