@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense, type TouchEvent as ReactTouchEvent } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { BookOpen, Briefcase, Compass, Globe, Settings, ChevronUp } from 'lucide-react'
+import { BookOpen, Briefcase, Compass, Globe, Settings, ChevronUp, User } from 'lucide-react'
 import { useApp } from './context/AppContext.tsx'
 import { LANGS } from './data/ui-strings.ts'
 import { SOS_NUMBERS } from './data/emergency.ts'
@@ -21,6 +21,7 @@ const CareerDetail = lazy(() => import('./pages/CareerDetail.tsx'))
 const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
 const CulturePage  = lazy(() => import('./pages/CulturePage.tsx'))
 const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
+const ProfilePage  = lazy(() => import('./pages/ProfilePage.tsx'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage.tsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
@@ -66,6 +67,7 @@ export default function App() {
     { id: 'work', path: '/work/jobs', icon: <Briefcase size={22} strokeWidth={2} />, label: ui.work },
     { id: 'saves', path: '/saves', icon: <Compass size={22} strokeWidth={2} />, label: ui.saves },
     { id: 'culture', path: '/culture', icon: <Globe size={22} strokeWidth={2} />, label: ui.culture },
+    { id: 'profile', path: '/profile', icon: <User size={22} strokeWidth={2} />, label: ui.profile || 'Me' },
   ]
 
   const isTabActive = (path: string) => {
@@ -266,6 +268,7 @@ export default function App() {
                 <Route path="/culture" element={<CulturePage />} />
                 <Route path="/settings" element={<MorePage />} />
                 <Route path="/more" element={<Navigate to="/settings" replace />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </div>

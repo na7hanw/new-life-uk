@@ -180,44 +180,6 @@ export default function GuidesPage() {
         </div>
       )}
 
-      {/* Saved/Bookmarked guides — shown when not searching and there are bookmarks */}
-      {!search && catFilter === 'All' && bookmarks.length > 0 && (
-        <div>
-          <div className="section-label">{ui.bookmarksTitle || '📌 Saved Guides'}</div>
-          <div className={`card card-flush ${styles.cardGutter}`}>
-            {bookmarks
-              .map(id => GUIDE_MAP[id])
-              .filter(Boolean)
-              .map(g => {
-                const gc = t18(g.content, lang)
-                return (
-                  <div key={g.id} className="list-row-wrap">
-                    <button className="list-row list-row-main"
-                      ref={el => { guideBtnRefs.current[g.id] = el }}
-                      onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
-                      aria-label={gc.title}>
-                      <span className="list-row-icon">{g.icon}</span>
-                      <div className="list-row-content">
-                        <div className="list-row-title">{gc.title}</div>
-                        <div className="list-row-sub">{gc.summary}</div>
-                      </div>
-                      <span className="list-row-arrow">{af}</span>
-                    </button>
-                    <button
-                      className="bookmark-btn active"
-                      onClick={() => { navigator?.vibrate?.(10); toggleBookmark(g.id) }}
-                      aria-label={ui.unbookmark || 'Remove saved'}
-                      aria-pressed={true}
-                    >
-                      <Bookmark size={20} strokeWidth={2} fill="currentColor" />
-                    </button>
-                  </div>
-                )
-              })}
-          </div>
-        </div>
-      )}
-
       <div style={{ height: 6 }} />
       {cats.map(cat => (
         <div key={cat}>
