@@ -19,7 +19,6 @@ const WorkHub      = lazy(() => import('./pages/WorkHub.tsx'))
 const CertDetail   = lazy(() => import('./pages/CertDetail.tsx'))
 const CareerDetail = lazy(() => import('./pages/CareerDetail.tsx'))
 const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
-const AppsPage     = lazy(() => import('./pages/AppsPage.tsx'))
 const CulturePage  = lazy(() => import('./pages/CulturePage.tsx'))
 const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage.tsx'))
@@ -37,7 +36,7 @@ export default function App() {
   useEffect(() => {
     const prev = prevPathRef.current
     const curr = location.pathname
-    const isDetailPath = (p: string) => /^\/(guide|cert|career)\//.test(p) || p === '/saves/apps'
+    const isDetailPath = (p: string) => /^\/(guide|cert|career)\//.test(p)
     if (!isDetailPath(curr) && isDetailPath(prev)) {
       setNavClass('nav-left')
     } else {
@@ -46,7 +45,7 @@ export default function App() {
     prevPathRef.current = curr
   }, [location.pathname])
 
-  const isDetail = /^\/(guide|cert|career)\//.test(location.pathname) || location.pathname === '/saves/apps' || location.pathname === '/settings'
+  const isDetail = /^\/(guide|cert|career)\//.test(location.pathname) || location.pathname === '/settings'
   const [routeAnn, setRouteAnn] = useState('')
 
   useEffect(() => {
@@ -57,7 +56,6 @@ export default function App() {
       p.startsWith('/work')   ? 'Work and jobs' :
       p.startsWith('/cert/')  ? 'Certificate detail' :
       p.startsWith('/career/')? 'Career path detail' :
-      p === '/saves/apps' ? 'Essential apps' :
       p === '/saves'      ? 'Saved resources' :
       p === '/culture'    ? 'UK Culture & Oddities' : ''
     setRouteAnn(ann)
@@ -264,7 +262,7 @@ export default function App() {
                 <Route path="/cert/:id" element={<CertDetail />} />
                 <Route path="/career/:id" element={<CareerDetail />} />
                 <Route path="/saves" element={<SavesPage />} />
-                <Route path="/saves/apps" element={<AppsPage />} />
+                <Route path="/saves/apps" element={<Navigate to="/saves" replace />} />
                 <Route path="/culture" element={<CulturePage />} />
                 <Route path="/settings" element={<MorePage />} />
                 <Route path="/more" element={<Navigate to="/settings" replace />} />
