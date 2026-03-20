@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef, lazy, Suspense, type TouchEvent as ReactTouchEvent } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { BookOpen, Briefcase, Compass, Settings, ChevronUp, User } from 'lucide-react'
+import { Toaster } from 'sonner'
+import { useSwipeable } from 'react-swipeable'
 import { useApp } from './context/AppContext.tsx'
 import { LANGS } from './data/ui-strings.ts'
 import { SOS_NUMBERS } from './data/emergency.ts'
@@ -166,32 +168,29 @@ export default function App() {
     }
   }
 
-  // ── Swipe between tabs ──
-  const swipeTouchX = useRef(0)
-  const swipeTouchY = useRef(0)
-
-  const handleSwipeTouchStart = (e: ReactTouchEvent<HTMLDivElement>) => {
-    swipeTouchX.current = e.touches[0].clientX
-    swipeTouchY.current = e.touches[0].clientY
-  }
-
-  const handleSwipeTouchEnd = (e: ReactTouchEvent<HTMLDivElement>) => {
-    if (isDetail) return
-    const dx = e.changedTouches[0].clientX - swipeTouchX.current
-    const dy = e.changedTouches[0].clientY - swipeTouchY.current
-    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return
-    const currIdx = TABS.findIndex(t => isTabActive(t.path))
-    if (currIdx === -1) return
-    if (dx < 0 && currIdx < TABS.length - 1) {
-      // swipe left → next tab
-      navigator?.vibrate?.(10)
-      navigate(TABS[currIdx + 1].path)
-    } else if (dx > 0 && currIdx > 0) {
-      // swipe right → previous tab
-      navigator?.vibrate?.(10)
-      navigate(TABS[currIdx - 1].path)
-    }
-  }
+  // ── Swipe between tabs (react-swipeable) ──
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (isDetail) return
+      const currIdx = TABS.findIndex(t => isTabActive(t.path))
+      if (currIdx !== -1 && currIdx < TABS.length - 1) {
+        navigator?.vibrate?.(10)
+        navigate(TABS[currIdx + 1].path)
+      }
+    },
+    onSwipedRight: () => {
+      if (isDetail) return
+      const currIdx = TABS.findIndex(t => isTabActive(t.path))
+      if (currIdx > 0) {
+        navigator?.vibrate?.(10)
+        navigate(TABS[currIdx - 1].path)
+      }
+    },
+    preventScrollOnSwipe: false,
+    trackMouse: false,
+    delta: 50,
+    swipeDuration: 500,
+  })
 
   return (
     <div className={`app-root ${dark ? 'dark' : ''} ${fontClass}`} dir={dir}>
@@ -232,10 +231,22 @@ export default function App() {
         </header>
       )}
 
+      {/* TOAST NOTIFICATIONS (sonner) */}
+      <Toaster
+        position="top-center"
+        richColors
+        theme={dark ? 'dark' : 'light'}
+        toastOptions={{
+          duration: 2200,
+          style: { borderRadius: 'var(--r, 12px)', fontSize: '0.9rem' },
+        }}
+      />
+
       {/* SCROLLABLE CONTENT */}
       <main
         className={`app-scroll ${navClass}`}
         id="main-content"
+        data-scroll-container
         ref={mainRef}
         onTouchStart={handlePtrTouchStart}
         onTouchMove={handlePtrTouchMove}
@@ -249,10 +260,7 @@ export default function App() {
         )}
         <ErrorBoundary>
           <Suspense fallback={<SkeletonFallback />}>
-            <div
-              onTouchStart={!isDetail ? handleSwipeTouchStart : undefined}
-              onTouchEnd={!isDetail ? handleSwipeTouchEnd : undefined}
-            >
+            <div {...(!isDetail ? swipeHandlers : {})}>
               <Routes>
                 <Route path="/" element={<GuidesPage />} />
                 <Route path="/guide/:id" element={<GuideDetail />} />

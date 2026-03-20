@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, Bookmark } from 'lucide-react'
+import { toast } from 'sonner'
+import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
@@ -184,7 +186,12 @@ export default function GuidesPage() {
                     </button>
                     <button
                       className={`bookmark-btn${bookmarks.includes(g.id) ? ' active' : ''}`}
-                      onClick={() => { navigator?.vibrate?.(10); toggleBookmark(g.id) }}
+                      onClick={() => {
+                        navigator?.vibrate?.(10)
+                        const adding = !bookmarks.includes(g.id)
+                        toggleBookmark(g.id)
+                        adding ? toast.success(ui.bookmark || 'Guide saved') : toast(ui.unbookmark || 'Guide removed')
+                      }}
                       aria-label={bookmarks.includes(g.id) ? (ui.unbookmark || 'Remove saved') : (ui.bookmark || 'Save guide')}
                       aria-pressed={bookmarks.includes(g.id)}
                     >
@@ -222,7 +229,12 @@ export default function GuidesPage() {
                     </button>
                     <button
                       className={`bookmark-btn active`}
-                      onClick={() => { navigator?.vibrate?.(10); toggleBookmark(g.id) }}
+                      onClick={() => {
+                        navigator?.vibrate?.(10)
+                        const adding = !bookmarks.includes(g.id)
+                        toggleBookmark(g.id)
+                        adding ? toast.success(ui.bookmark || 'Guide saved') : toast(ui.unbookmark || 'Guide removed')
+                      }}
                       aria-label={ui.unbookmark || 'Remove saved'}
                       aria-pressed={true}
                     >
@@ -259,7 +271,12 @@ export default function GuidesPage() {
                   </button>
                   <button
                     className={`bookmark-btn${bookmarks.includes(g.id) ? ' active' : ''}`}
-                    onClick={() => { navigator?.vibrate?.(10); toggleBookmark(g.id) }}
+                    onClick={() => {
+                        navigator?.vibrate?.(10)
+                        const adding = !bookmarks.includes(g.id)
+                        toggleBookmark(g.id)
+                        adding ? toast.success(ui.bookmark || 'Guide saved') : toast(ui.unbookmark || 'Guide removed')
+                      }}
                     aria-label={bookmarks.includes(g.id) ? (ui.unbookmark || 'Remove saved') : (ui.bookmark || 'Save guide')}
                     aria-pressed={bookmarks.includes(g.id)}
                   >
