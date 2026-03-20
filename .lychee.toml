@@ -1,4 +1,5 @@
 # Lychee broken link checker config
+# Patterns to skip entirely (local/relative paths and non-HTTP schemes)
 exclude = [
   "localhost",
   "127.0.0.1",
@@ -8,16 +9,23 @@ exclude = [
   "^tel:",
   "^/#",
   "^/[^/]",
+  # Facebook and LinkedIn actively block bots — skip to avoid false positives
+  "facebook\\.com",
+  "linkedin\\.com",
+  # Apple App Store returns 403 to bots
+  "apps\\.apple\\.com",
 ]
 
-# Accept these HTTP status codes as valid
-accept = [200, 206, 301, 302, 307, 308]
+# Accept 200 + all standard redirects as valid.
+# 403 is included because GOV.UK and some large sites rate-limit or block
+# headless checks from CI runners with a 403 even though the link is live.
+accept = [200, 206, 301, 302, 307, 308, 403, 429]
 
 # Timeout per request in seconds
-timeout = 20
+timeout = 25
 
-# Max retries per link
+# Max retries per link (with exponential back-off)
 max_retries = 3
 
-# User agent
-user_agent = "lychee/0.15"
+# Pretend to be a real browser so GOV.UK and NHS don't bot-block us
+user_agent = "Mozilla/5.0 (compatible; New-Life-UK-LinkChecker/1.0)"

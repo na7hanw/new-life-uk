@@ -48,13 +48,39 @@ export default defineConfig({
     compression({ algorithm: 'brotliCompress', ext: '.br' }),
     compression({ algorithm: 'gzip', ext: '.gz' }),
     VitePWA({
-      registerType: 'autoUpdate',
+      // 'prompt' means: check for updates in the background but show a UI
+      // toast rather than force-refreshing behind the user's back. This is
+      // important for an app serving vulnerable users mid-task.
+      registerType: 'prompt',
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         // Serve cached index.html for any navigation request so SPA routes
         // (/culture, /saves/apps, etc.) work correctly when offline.
         navigateFallback: 'index.html',
         navigateFallbackDenylist: [/^\/api\//],
+        // Cache JS/CSS assets for 30 days with stale-while-revalidate so the
+        // app is always fast AND eventually fresh (no hard reload required).
+        runtimeCaching: [
+          {
+            urlPattern: /\.(?:js|css|woff2?)$/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'static-assets',
+              expiration: { maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 },
+            },
+          },
+          // Translation API responses — cache aggressively (content is immutable
+          // for a given source string + language pair).
+          {
+            urlPattern: /^https:\/\/api\.mymemory\.translated\.net\//i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'translations',
+              expiration: { maxEntries: 500, maxAgeSeconds: 90 * 24 * 60 * 60 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
       },
       manifest: {
         name: 'New Life UK — Free Guide',

@@ -5,14 +5,51 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    # Run weekly on Monday mornings to catch link rot
+    - cron: '0 6 * * 1'
 
 jobs:
+  extract-urls:
+    name: Extract URLs from source data
+    runs-on: ubuntu-latest
+    outputs:
+      url-file: urls.txt
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract URLs from TypeScript data files
+        run: |
+          # Pull every https?:// URL out of the data layer TypeScript files
+          grep -oE 'https?://[^"]+' \
+            nluk/src/data/guides.ts \
+            nluk/src/data/saves.ts \
+            nluk/src/data/apps.ts \
+            nluk/src/data/jobs.ts \
+            nluk/src/data/culture.ts \
+            nluk/src/data/emergency.ts \
+            2>/dev/null | sort -u > urls.txt
+          echo "Extracted $(wc -l < urls.txt) unique URLs"
+          cat urls.txt
+
+      - name: Upload extracted URLs
+        uses: actions/upload-artifact@v4
+        with:
+          name: extracted-urls
+          path: urls.txt
+
   lychee:
     name: Check links
     runs-on: ubuntu-latest
+    needs: extract-urls
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
+
+      - name: Download extracted URLs
+        uses: actions/download-artifact@v4
+        with:
+          name: extracted-urls
 
       - name: Check links in Markdown files
         uses: lycheeverse/lychee-action@v2
@@ -23,6 +60,18 @@ jobs:
             --no-progress
             **/*.md
             .github/**/*.md
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check URLs extracted from TypeScript data files
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >
+            --config .lychee.toml
+            --verbose
+            --no-progress
+            urls.txt
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
