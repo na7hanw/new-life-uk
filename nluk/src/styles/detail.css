@@ -284,6 +284,22 @@
 }
 .dark .step-link { color: var(--ac); }
 
+/* ─── Urgency Tags — rendered via StepText (dangerouslySetInnerHTML) ─── */
+.urgency-tag {
+  background: var(--ac);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-right: 6px;
+  display: inline-block;
+  transform: translateY(-1px);
+  vertical-align: middle;
+}
+.urgency-urgent { background: var(--rd); }
+
 /* ─── Start Here Numbers ─── */
 .start-num {
   width: 24px;

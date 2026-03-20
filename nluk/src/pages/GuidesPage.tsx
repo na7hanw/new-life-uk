@@ -254,7 +254,7 @@ export default function GuidesPage() {
       <div style={{ height: 6 }} />
       <div ref={catListRef}>
       {cats.map(cat => (
-        <div key={cat}>
+        <div key={cat} className={styles.catSection}>
           <div className="cat-header" style={{ color: CATEGORIES[cat]?.color }}>
             {CATEGORIES[cat]?.emoji} {cat}
           </div>

@@ -81,3 +81,10 @@
 
 /* Small bottom spacer */
 .spacer { height: 8px; }
+
+/* Native browser virtualization — browser skips layout/paint for off-screen sections.
+   contain-intrinsic-size gives the scrollbar an estimated height while the section is hidden. */
+.catSection {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 auto 280px;
+}
