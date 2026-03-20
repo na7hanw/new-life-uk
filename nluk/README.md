@@ -1,144 +1,187 @@
-# New Life UK v2 — Deployment Guide
+# New Life UK — Deployment & Content Guide
 
 ## What this is
-A professional, multilingual survival guide website for new arrivals in the UK.
-26 guides, 16 free stuff items, 15 hidden gems, 12 languages, social sharing, dark/light mode.
+A professional, multilingual survival guide PWA for new arrivals in the UK.
+**55+ step-by-step guides** across asylum, money, housing, work, health, and legal topics.
+12 supported languages with **full auto-translation** via MyMemory API (cached offline).
+No account. No tracking. No cost. Ever.
+
+---
+
+## Feature Overview
+
+| Feature | Detail |
+|---------|--------|
+| **Guides** | 55+ guides: asylum process, Universal Credit, bank accounts, credit score, social housing, investing, UK rules, and more |
+| **Resources tab** | Apps, Free Stuff (SAVES), and Hidden Gems (GEMS) — all auto-translated |
+| **Work tab** | Jobs with apply links, Certifications (CSCS, SIA, ACCA…), Career paths |
+| **UK Life tab** | Survival hacks, money tricks, professional networking — replaces old "Culture" tab |
+| **Me / Profile tab** | Status picker, Next Steps per status, progress checklist, saved guides, settings |
+| **Languages** | English, Arabic, Farsi, Urdu, Amharic, Tigrinya, Somali, Oromo, Ukrainian, Romanian, Polish, French |
+| **Auto-translation** | All guide content, resource cards, culture tips, and UI auto-translate via MyMemory API |
+| **Offline** | Full PWA — service worker caches all content; works without internet after first load |
+| **Dark mode** | Full dark/light theme with system preference detection |
+| **Accessibility** | Semantic HTML, ARIA labels, keyboard navigation, RTL support, screen reader announcements |
+| **Privacy** | Zero data collection. All preferences stored in localStorage only. GDPR compliant. |
+
+---
 
 ## Quick Start (15 minutes, £0)
 
 ### Step 1: Install Node.js
-1. Go to https://nodejs.org
-2. Download the LTS version (big green button)
-3. Install it (click Next on everything)
+Go to https://nodejs.org, download the LTS version, install it.
 
-### Step 2: Open your computer's terminal
-- **Windows**: Press Windows key, type "cmd", press Enter
-- **Mac**: Press Cmd+Space, type "terminal", press Enter
-
-### Step 3: Go to the project folder
-```
-cd path/to/new-life-uk
+### Step 2: Open terminal and navigate to the project
+```bash
+cd path/to/new-life-uk/nluk
 ```
 
-### Step 4: Install dependencies
-```
+### Step 3: Install dependencies
+```bash
 npm install
 ```
-Wait 30 seconds for it to finish.
 
-### Step 5: Test locally
-```
+### Step 4: Test locally
+```bash
 npm run dev
 ```
 Open the URL shown (usually http://localhost:5173) in your browser.
-Press Ctrl+C when done.
 
-### Step 6: Build for production
-```
+### Step 5: Build for production
+```bash
 npm run build
 ```
-This creates a `dist` folder.
+This creates a `dist/` folder ready for deployment.
 
-### Step 7: Deploy to Cloudflare Pages (free)
+### Step 6: Deploy to Cloudflare Pages (free)
 1. Go to https://pages.cloudflare.com
-2. Sign up or log in with your Cloudflare account
-3. Click "Create a project" → "Connect to Git"
-4. Select this repository
-5. Set the build configuration:
+2. Sign up / log in → Create a project → Connect to Git
+3. Select this repository and set:
    - **Build command**: `npm run build`
    - **Build output directory**: `dist`
    - **Root directory**: `nluk`
-6. Click "Save and Deploy" — your site is live!
-7. Your site is now at: **new-life-uk.pages.dev**
-
-## Done. Share the link everywhere.
+4. Click "Save and Deploy" — your site is live at **new-life-uk.pages.dev**
 
 ---
 
 ## How to Update Content
 
-Content is split across dedicated TypeScript files in `src/data/`:
+All content is in TypeScript data files in `src/data/`. Edit the file, save, run `npm run build`, push to GitHub — Cloudflare Pages redeploys automatically.
 
 | File | What it controls |
 |------|----------------|
-| `src/data/guides.ts` | 26 step-by-step guides |
-| `src/data/jobs.ts` | Jobs, certifications, career paths |
-| `src/data/emergency.ts` | SOS emergency numbers |
-| `src/data/saves.ts` | Free resources and hidden gems |
-| `src/data/apps.ts` | Essential apps for new arrivals |
-| `src/data/culture.ts` | Culture tips and information |
-| `src/data/ui-strings.ts` | UI strings and language configuration |
-| `src/data/content.ts` | Barrel re-export of all data files (backward compat) |
+| `src/data/guides.ts` | 55+ step-by-step guides + GUIDE_PRIORITY, GUIDE_KEYWORDS, GUIDE_RELATED, GUIDE_SOURCE_URL, GUIDE_LAST_UPDATED |
+| `src/data/jobs.ts` | Jobs (with apply links), Certifications, Career paths |
+| `src/data/emergency.ts` | SOS numbers (999, 101) and helplines |
+| `src/data/saves.ts` | Free resources (SAVES) and Hidden Gems (GEMS) |
+| `src/data/apps.ts` | Essential apps organised by category |
+| `src/data/culture.ts` | UK Life & Hacks sections (all auto-translated) |
+| `src/data/ui-strings.ts` | UI strings for all 12 languages |
 
-### To edit a guide:
-1. Open `src/data/guides.ts` in any text editor
-2. Find the guide by searching for its title
-3. Edit the text
-4. Save the file
-5. Run `npm run build`
-6. Push changes to GitHub — Cloudflare Pages will redeploy automatically
-
-### To add a translation for a guide:
-Each guide has this structure:
-```js
-content: {
-  en: { title: "...", summary: "...", steps: [...] },
-  // Add a new language like this:
-  ar: { title: "...", summary: "...", steps: [...] },
+### Adding a new guide
+Every guide must have:
+```ts
+{
+  id: "unique-id",           // kebab-case, used in URL /guide/unique-id
+  cat: "Money",              // Must match a key in CATEGORIES
+  icon: "💷",
+  content: {
+    en: {
+      title: "Guide Title",
+      summary: "One sentence summary.",
+      steps: ["Step 1…", "Step 2…"]
+    }
+    // Other language keys auto-translate via MyMemory if not provided
+  },
+  cost: "Free",              // optional
+  time: "Same day",          // optional
+  bring: ["Passport"],       // optional
+  links: [{ name: "GOV.UK", url: "https://…" }]  // optional
 }
 ```
-Just add a new language key with the translated content.
+Then register it in all 4 lookup objects at the bottom of `guides.ts`:
+- `GUIDE_PRIORITY` — display order
+- `GUIDE_KEYWORDS` — fuzzy search aliases
+- `GUIDE_SOURCE_URL` — official source link for footer
+- `GUIDE_LAST_UPDATED` — verified date for footer
+- `GUIDE_RELATED` — related guides for cross-linking
 
-### To fix a broken link:
-Search for the old URL in the relevant file (e.g. `guides.ts`, `saves.ts`, `jobs.ts`), replace it with the new one.
+### Adding a translation for a guide
+```ts
+content: {
+  en: { title: "Bank Account", summary: "…", steps: ["…"] },
+  am: { title: "የባንክ ሒሳብ", summary: "…", steps: ["…"] },
+  ar: { title: "حساب بنكي", summary: "…", steps: ["…"] },
+}
+```
+If a language key is missing, the app auto-translates via MyMemory API and caches the result in the user's browser.
 
 ---
 
-## Custom Domain (Optional, £0-£10/year)
-1. Buy a domain (e.g., newlifeuk.org) for about £8-10/year
-2. In Cloudflare Pages: Settings → Custom domains → Set up a custom domain
-3. Follow Cloudflare's instructions to point your domain
-4. Cloudflare provides free HTTPS automatically
+## Architecture
+
+- **Framework**: React 18 + Vite 6, TypeScript
+- **Routing**: React Router DOM v7 (HashRouter)
+- **Styling**: CSS Modules + CSS custom properties (design tokens)
+- **State**: React Context (AppContext) — lang, dark, userStatus, bookmarks
+- **Translation**: MyMemory API (free, 100+ languages) + FNV-1a hashed localStorage cache
+- **Search**: Fuse.js fuzzy search with keyword aliases
+- **PWA**: vite-plugin-pwa — full service worker, offline-first, installable
+- **Hosting**: Cloudflare Pages (free tier, global CDN, custom domain, HTTPS)
+- **Validation**: Zod schemas for all data types
+
+## File Structure
+```
+src/
+├── App.tsx               ← Shell: tabs, routing, header, SOS modal
+├── context/
+│   └── AppContext.tsx    ← Global state: lang, dark, userStatus, bookmarks
+├── data/
+│   ├── guides.ts         ← 55+ guides + 5 lookup maps
+│   ├── jobs.ts           ← Jobs, certs, career paths
+│   ├── saves.ts          ← SAVES (free stuff) + GEMS (hidden gems)
+│   ├── apps.ts           ← Essential apps by category
+│   ├── culture.ts        ← UK Life & Hacks sections
+│   ├── emergency.ts      ← Emergency numbers and helplines
+│   └── ui-strings.ts     ← UI strings for all 12 languages
+├── lib/
+│   ├── translate.ts      ← MyMemory API + localStorage cache
+│   ├── useTranslation.ts ← useTranslatedContent, useTranslatedSteps hooks
+│   ├── schema.ts         ← Zod validation schemas
+│   └── utils.ts          ← t18() i18n helper, ls/lsSet localStorage utils
+├── pages/
+│   ├── GuidesPage.tsx    ← Main guides tab with hero, search, For You, categories
+│   ├── GuideDetail.tsx   ← Individual guide with auto-translate + Related Guides
+│   ├── WorkHub.tsx       ← Jobs / Certs / Careers tabs
+│   ├── SavesPage.tsx     ← Apps / Free / Gems tabs
+│   ├── CulturePage.tsx   ← UK Life & Hacks with auto-translated sections
+│   ├── ProfilePage.tsx   ← Me tab: status, next steps, checklist, bookmarks
+│   └── MorePage.tsx      ← Settings: language, theme, privacy
+└── components/
+    ├── ResourceCard.tsx  ← Auto-translating card for apps/saves/gems
+    ├── CultureCard.tsx   ← Auto-translating collapsible culture tip card
+    ├── ChecklistWidget.tsx ← Progress checklist (localStorage)
+    ├── StepText.tsx      ← Markdown-bold renderer for guide steps
+    └── …
+```
 
 ---
 
-## Privacy Policy (host as a page on your site)
+## Privacy Policy
 
 **New Life UK — Privacy Policy**
 Last updated: March 2026
 
 New Life UK does not collect, store, or share any personal data.
 No account is required. No analytics. No tracking. No cookies.
-Language, theme, and status preferences are saved on your device only.
+Language, theme, status, and bookmarks are saved on your device only.
+Anonymous crash reports (opt-in only) sent to Sentry — no personal information included.
 External links go to gov.uk, nhs.uk, and other official sites.
 
 ---
 
-## Architecture Notes
-
-- **Framework**: React 18 + Vite (fast, modern, zero-config)
-- **Hosting**: Cloudflare Pages (free tier, global CDN, custom domain, HTTPS)
-- **PWA**: Optional install-to-homescreen via vite-plugin-pwa
-- **Data**: i18n-ready structure split across `src/data/` TypeScript files
-- **Styling**: CSS variables for theme, responsive typography
-- **Accessibility**: Semantic HTML, ARIA labels, keyboard navigation
-- **Sharing**: WhatsApp, Telegram, Facebook, copy-link on every guide
-- **Offline**: Service worker caches all content for offline use
-- **Performance**: All content hardcoded (no API calls), Vite tree-shakes unused code
-
-## File Structure
-```
-src/
-├── main.tsx          ← Entry point + error boundary
-├── App.tsx           ← Main app with routing
-├── index.css         ← All styles (CSS variables)
-└── data/
-    ├── guides.ts     ← 26 step-by-step guides
-    ├── jobs.ts       ← Jobs, certifications, career paths
-    ├── emergency.ts  ← SOS emergency numbers
-    ├── saves.ts      ← Free resources and hidden gems
-    ├── apps.ts       ← Essential apps for new arrivals
-    ├── culture.ts    ← Culture tips and information
-    ├── ui-strings.ts ← UI strings and language config
-    └── content.ts    ← Barrel re-export (backward compat)
-```
+## Custom Domain (Optional, £0–£10/year)
+1. Buy a domain (e.g., newlifeuk.org) for ~£8–10/year
+2. In Cloudflare Pages: Settings → Custom domains → Set up a custom domain
+3. Follow Cloudflare's instructions to point your domain
+4. Cloudflare provides free HTTPS automatically

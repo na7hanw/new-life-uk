@@ -128,48 +128,43 @@ export const CULTURE: CultureSection[] = [
   {
     id: 'daily-life',
     emoji: '☕',
-    heading: 'Daily Life',
-    description: 'The everyday quirks of life in the UK — customs, traditions, and things you will notice within your first week.',
+    heading: 'Survival Essentials',
+    description: 'The things you will need to know in your first days and weeks — practical systems that catch most new arrivals off-guard.',
     items: [
       {
+        emoji: '📬',
+        title: 'Official Letters — Always Open and Act Immediately',
+        body: 'In the UK, HMRC (tax), DWP (benefits), your council, courts, and the Home Office communicate by post — not by phone or email. Ignoring a letter does not make the issue disappear. HMRC issues £100 fines for missed deadlines communicated only by post. If your UC letters are ignored, payments can be suspended. Open every letter on the day it arrives. If you cannot understand a letter, take it to Citizens Advice immediately — most bureaux will read it with you for free.',
+      },
+      {
+        emoji: '💸',
+        title: 'Direct Debits and Standing Orders — How UK Bills Work',
+        body: 'Most UK bills are paid automatically. A Direct Debit lets the company pull money from your account on a fixed date — used for energy, water, council tax, phone, and broadband. A Standing Order is a fixed amount you push out monthly — used for rent savings. Set these up as soon as you move in. Missing a Direct Debit triggers a late fee, a letter, and a mark on your credit file. UK billing is 99% automated — manual cash payment is not the norm.',
+      },
+      {
+        emoji: '🚑',
+        title: 'A&E vs 111 vs GP — When to Use What',
+        body: 'Call 999 for life-threatening emergencies only (heart attack, stroke, unconsciousness, severe bleeding, fire). Call 111 (free, 24/7) for urgent but non-life-threatening issues — they will tell you exactly what to do. Book a GP for ongoing problems. Do NOT use A&E for colds, minor cuts, or stomach aches — you will wait 4–6 hours. Walk-in Centres and Minor Injury Units handle non-emergency same-day issues. NHS 111 online at 111.nhs.uk is faster than calling.',
+      },
+      {
         emoji: '🍵',
-        title: 'Tea Is Emotional Support',
-        body: '"Shall I put the kettle on?" means "I want to help you through this." The milk debate (in first or last?) divides the nation. Answer carefully. Most Brits: milk last, one sugar.',
-      },
-      {
-        emoji: '🌧️',
-        title: 'The Weather Rules Everything',
-        body: 'British weather changes four times a day. Always carry a coat, even in summer. A temperature of 20°C (68°F) is considered a heatwave and workplaces may send people home. Snow of 2cm shuts down entire cities.',
-      },
-      {
-        emoji: '🍖',
-        title: 'The Sunday Roast',
-        body: 'The most important meal of the week. Roast beef, chicken, lamb or pork, with roast potatoes, Yorkshire pudding, gravy, and vegetables. Eaten with family on Sunday afternoons. Being invited to someone\'s Sunday roast is a genuine sign of friendship.',
-      },
-      {
-        emoji: '🎆',
-        title: 'Bonfire Night — 5th November',
-        body: 'Every year on 5 November, cities across the UK set off large fireworks to commemorate the failed Gunpowder Plot of 1605. If you hear explosions at night in early November, it\'s fireworks, not an emergency. "Remember, remember, the fifth of November."',
+        title: 'Tea Is Emotional Support — and a Workplace Ritual',
+        body: '"Shall I put the kettle on?" means "I want to help you through this." In the office, when you make a hot drink, you are expected to ask everyone nearby if they want one — this is a tea round. Accepting tea and never making a round is a slow-burn social crime your colleagues will remember. Refusing a cup of tea when offered is slightly rude.',
       },
       {
         emoji: '🏧',
         title: 'Britain is Almost Cashless',
-        body: 'Contactless card or phone payment is accepted almost everywhere — market stalls, buses, taxis, corner shops. Many places now refuse cash entirely. Set up Apple Pay or Google Pay for convenience. The maximum contactless limit for a single transaction is £100.',
+        body: 'Contactless card or phone payment is accepted almost everywhere — market stalls, buses, taxis, corner shops. Many places now refuse cash entirely. Set up Apple Pay or Google Pay on your first day. The maximum contactless limit is £100 per transaction. Tap your card or phone — never fumble for cash at the till.',
       },
       {
         emoji: '🍺',
-        title: 'The Pub as a Social Institution',
-        body: 'The pub is not just a bar — it\'s where business deals are made, friendships are formed, and celebrations happen. Buying a "round" (buying drinks for your whole group in turn) is a social contract. If you accept a drink, you are expected to buy the next round.',
-      },
-      {
-        emoji: '📝',
-        title: 'The Passive-Aggressive Note',
-        body: 'British people do not confront neighbours directly about bins, noise, or parking. Instead, they leave elaborate, carefully worded notes. The more polite the note, the more furious the author. "Dear Resident" notes on communal doors are a national art form.',
+        title: 'The Pub as a Social and Professional Institution',
+        body: 'The pub is not just a bar — it is where business deals are made, friendships cemented, and careers advanced. Buying a "round" is a social contract: if you accept a drink, you buy the next round when it is your turn. After-work pub drinks are important for professional relationships even if you do not drink — just order a soft drink and stay for an hour. Turning down every social invitation marks you as an outsider.',
       },
       {
         emoji: '🤝',
-        title: 'Queuing Etiquette Extends to Supermarkets',
-        body: 'At the checkout, always wait to be waved forward by the cashier before placing your items. Leave a respectful gap between you and the person ahead. Do not make eye contact with other shoppers unless you wish to start a conversation (which is unusual).',
+        title: 'Queuing — Sacred and Strictly Enforced',
+        body: 'Cutting in a queue is the single most serious social crime in Britain. A quiet tut is the punishment, but the shame is permanent. Always join the back of any line. At the supermarket checkout, wait to be waved forward before placing your items. Leave a respectful gap between you and the person ahead. On escalators: stand on the right, walk on the left. Breaking this rule in London will cause genuine public anger.',
       },
     ],
   },

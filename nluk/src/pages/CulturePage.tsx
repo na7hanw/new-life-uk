@@ -1,20 +1,14 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Search, ChevronDown } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { CULTURE } from '../data/culture.ts'
-import type { CultureItem } from '../data/culture.ts'
+import { translate } from '../lib/translate.ts'
 import CultureCard from '../components/CultureCard.tsx'
 import EmptyState from '../components/EmptyState.tsx'
 
-interface FlatCultureItem extends CultureItem {
-  sectionId: string
-  sectionEmoji: string
-  sectionHeading: string
-}
-
-// Flatten all culture items once at module load for Fuse indexing
-const FLAT_CULTURE: FlatCultureItem[] = CULTURE.flatMap(section =>
+// Flatten all culture items once at module load for Fuse indexing (English titles/bodies)
+const FLAT_CULTURE = CULTURE.flatMap(section =>
   section.items.map(item => ({
     ...item,
     sectionId: section.id,
@@ -35,22 +29,45 @@ const cultureFuse = new Fuse(FLAT_CULTURE, {
   minMatchCharLength: 2,
 })
 
+interface SectionMeta {
+  heading: string
+  description?: string
+}
+
 export default function CulturePage() {
-  const { ui } = useApp()
+  const { ui, lang } = useApp()
   const [search, setSearch] = useState('')
-  const [copiedTitle, setCopiedTitle] = useState<string | null>(null)
-  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  // All sections open by default
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set())
 
+  // ── Translate section headings & descriptions when lang changes ──
+  const [sectionMeta, setSectionMeta] = useState<Record<string, SectionMeta>>({})
+
   useEffect(() => {
-    return () => { if (copyTimer.current !== null) clearTimeout(copyTimer.current) }
-  }, [])
+    if (lang === 'en') {
+      setSectionMeta({})
+      return
+    }
+    let cancelled = false
+    Promise.all(
+      CULTURE.map(async s => ({
+        id: s.id,
+        heading: await translate(s.heading, lang),
+        description: s.description ? await translate(s.description, lang) : undefined,
+      }))
+    ).then(results => {
+      if (!cancelled) {
+        setSectionMeta(
+          Object.fromEntries(results.map(r => [r.id, { heading: r.heading, description: r.description }]))
+        )
+      }
+    })
+    return () => { cancelled = true }
+  }, [lang])
 
   const filteredSections = useMemo(() => {
     if (!search.trim()) return CULTURE
     const results = cultureFuse.search(search).map(r => r.item)
-    const grouped: Record<string, FlatCultureItem[]> = {}
+    const grouped: Record<string, typeof FLAT_CULTURE> = {}
     for (const item of results) {
       if (!grouped[item.sectionId]) grouped[item.sectionId] = []
       grouped[item.sectionId].push(item)
@@ -59,18 +76,6 @@ export default function CulturePage() {
       .filter(s => grouped[s.id])
       .map(s => ({ ...s, items: grouped[s.id] }))
   }, [search])
-
-  const handleCopy = (item: CultureItem) => {
-    const text = `${item.title}\n\n${item.body}`
-    navigator.clipboard?.writeText(text).then(() => {
-      setCopiedTitle(item.title)
-      if (copyTimer.current !== null) clearTimeout(copyTimer.current)
-      copyTimer.current = setTimeout(() => {
-        setCopiedTitle(null)
-        copyTimer.current = null
-      }, 2000)
-    })
-  }
 
   const toggleSection = (id: string) => {
     setCollapsedSections(prev => {
@@ -81,13 +86,13 @@ export default function CulturePage() {
     })
   }
 
-  const searchPlaceholder = ui.searchCulture || 'Search culture tips…'
+  const searchPlaceholder = ui.searchCulture || 'Search tips & hacks…'
 
   return (
     <div className="page-enter">
       <div className="page-hero">
-        <h2 className="page-hero-title">{ui.cultureTitle || '🇬🇧 UK Culture & Oddities'}</h2>
-        <p className="page-hero-sub">{ui.cultureSub || 'Unwritten rules, polite lies, and peculiar customs of British life.'}</p>
+        <h2 className="page-hero-title">{ui.cultureTitle || '🇬🇧 UK Life & Hacks'}</h2>
+        <p className="page-hero-sub">{ui.cultureSub || 'Survival hacks, money tricks, and the unwritten rules of life in the UK.'}</p>
       </div>
 
       <div className="search-bar">
@@ -108,6 +113,9 @@ export default function CulturePage() {
 
       {filteredSections.map(section => {
         const isCollapsed = !search.trim() && collapsedSections.has(section.id)
+        const heading = sectionMeta[section.id]?.heading || section.heading
+        const description = sectionMeta[section.id]?.description || section.description
+
         return (
           <div key={section.id}>
             <button
@@ -116,7 +124,7 @@ export default function CulturePage() {
               aria-expanded={!isCollapsed}
             >
               <span className="section-label-lg" style={{ padding: 0, margin: 0, border: 'none', background: 'none', flex: 1 }}>
-                {section.emoji} {section.heading}
+                {section.emoji} {heading}
               </span>
               <span className="culture-section-meta">
                 <span className="culture-section-count">{section.items.length}</span>
@@ -127,17 +135,15 @@ export default function CulturePage() {
                 />
               </span>
             </button>
-            {section.description && !isCollapsed && (
-              <p className="section-sub">{section.description}</p>
+            {description && !isCollapsed && (
+              <p className="section-sub">{description}</p>
             )}
             {!isCollapsed && section.items.map(item => (
               <CultureCard
                 key={item.title}
                 emoji={item.emoji}
-                title={item.title}
-                body={item.body}
-                onCopy={() => handleCopy(item)}
-                copied={copiedTitle === item.title}
+                content={{ en: { title: item.title, body: item.body } }}
+                lang={lang}
                 copyLabel={ui.copyTip || 'Copy tip'}
                 copiedLabel={ui.copied || 'Copied!'}
               />

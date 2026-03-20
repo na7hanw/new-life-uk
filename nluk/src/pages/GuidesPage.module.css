@@ -1,4 +1,29 @@
-/* GuidesPage — page-specific styles for inline style overrides */
+/* GuidesPage — page-specific styles */
+
+/* ── Hero banner ──────────────────────────────────────────────────── */
+.hero {
+  margin: 12px var(--gutter) 4px;
+  padding: 14px 16px;
+  border-radius: var(--r);
+  background: linear-gradient(135deg, var(--ac2) 0%, color-mix(in srgb, var(--ac2) 60%, transparent) 100%);
+  border: 1px solid color-mix(in srgb, var(--ac) 25%, transparent);
+}
+
+.heroBadge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ac);
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+
+.heroSub {
+  font-size: 0.875rem;
+  color: var(--t2);
+  margin: 0;
+  line-height: 1.4;
+}
 
 /* Hero title wraps status-aware text onto multiple lines */
 .heroTitle { white-space: pre-line; }
