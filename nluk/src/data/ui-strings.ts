@@ -19,7 +19,7 @@ export const LANGS: Lang[] = [
 const BASE_UI = {
   app: "New Life UK", tag: "Your free guide to life in the UK",
   sos: "SOS", close: "Close", back: "Back", change: "Change",
-  home: "Home", guides: "Guides", work: "Work", saves: "Resources", more: "More", culture: "Culture", profile: "Me",
+  home: "Home", guides: "Guides", work: "Work", saves: "Resources", more: "More", culture: "UK Life", profile: "Me",
   search: "Search guides…", noResults: "No results found.", searchWork: "Search jobs, certs, careers…",
   cost: "Cost", time: "Time", bring: "What to bring", steps: "Steps", keyInfo: "Key Info",
   visaQ: "What's your visa situation?", forYou: "For You", quickActions: "Quick Actions", helplines: "Helplines",
@@ -36,8 +36,8 @@ const BASE_UI = {
   notFoundHome: "Go back home",
   appsTitle: "Essential Apps & Services 📲", appsSub: "Free must-have apps and services for life in the UK.",
   gemsTitle: "Hidden Gems 💎", gemsSub: "Free money, career shortcuts, insider routes.",
-  cultureTitle: "🇬🇧 UK Culture & Oddities", cultureSub: "Unwritten rules, polite lies, and peculiar customs of British life.",
-  searchCulture: "Search culture tips…", copyTip: "Copy tip",
+  cultureTitle: "🇬🇧 UK Life & Hacks", cultureSub: "Survival hacks, money tricks, and the unwritten rules of life in the UK.",
+  searchCulture: "Search tips & hacks…", copyTip: "Copy tip",
   settingsSub: "App preferences, language, and privacy.",
   theme: "Theme", language: "Language", apply: "Apply", freeRoute: "Free route available",
   darkMode: "🌙 Dark", lightMode: "☀️ Light", settings: "Settings",
@@ -102,6 +102,10 @@ const BASE_UI = {
   // My Checklist feature
   myChecklist: "My Progress",
   checklistIntro: "Track the key steps to settling in the UK.",
+  // Profile / Me tab
+  nextSteps: "⚡ Next Steps",
+  relatedGuides: "Related Guides",
+  settingsSub2: "Language, theme, privacy",
 };
 
 const UI_OVERRIDES = {

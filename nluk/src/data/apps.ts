@@ -159,11 +159,44 @@ export const APPS: SaveItem[] = [
     content: { en: { title: "Citizens Advice", desc: "Free advice on benefits, housing, work rights, debt, and legal issues. Find your nearest Citizens Advice bureau or use the online chat. Completely free and confidential." } },
     url: "https://www.citizensadvice.org.uk",
   },
+  // ─── Shopping ─────────────────────────────────────────────────
+  {
+    icon: "🍱",
+    cat: "Shopping",
+    content: { en: { title: "Too Good To Go — Cheap Surplus Food", desc: "Restaurants, supermarkets, and bakeries sell surplus food at 1/3 of the original price every evening. A £12 restaurant meal becomes a 'Magic Bag' for £3.99. Available in every UK city. One of the best ways to eat well on a tight budget." } },
+    url: "https://toogoodtogo.com/en-gb",
+  },
+  {
+    icon: "👗",
+    cat: "Shopping",
+    content: { en: { title: "Vinted — Free Second-Hand Clothes", desc: "UK's largest second-hand clothing marketplace. Free to buy and sell. Find professional suits, interview clothes, winter coats, and children's clothing for £2–£15. No listing fees for sellers. Great alternative to charity shops with wider selection." } },
+    url: "https://www.vinted.co.uk",
+  },
+  // ─── Connectivity ─────────────────────────────────────────────
+  {
+    icon: "📶",
+    cat: "Connectivity",
+    content: { en: { title: "Giffgaff — No Credit Check SIM", desc: "Pay-as-you-go and rolling monthly SIMs with no credit check, no contract, and no ID beyond your bank card. Plans from £10/month (40GB+). A key 'gap filler' for the first 12 months before you have enough UK credit history for a contract phone — which would lock you into 24 months you may be rejected for. Free SIM from giffgaff.com." } },
+    url: "https://www.giffgaff.com",
+  },
+  // ─── Health ───────────────────────────────────────────────────
+  {
+    icon: "🧠",
+    cat: "Health",
+    content: { en: { title: "NHS Talking Therapies — Self-Refer", desc: "Free NHS talking therapy (CBT, counselling, guided self-help) — no GP referral required. Self-refer online or by phone in your area. Wait times 2–12 weeks depending on location. Available in most languages via interpreter. One of the most underused services in the NHS." } },
+    url: "https://www.nhs.uk/mental-health/talking-therapies-medicine-treatments/talking-therapies-and-counselling/nhs-talking-therapies/",
+  },
   // ─── Community ────────────────────────────────────────────────
   {
     icon: "🍎",
     cat: "Community",
     content: { en: { title: "Olio — Free Food & Items", desc: "Neighbours share surplus food, furniture, and household items for free. Great for furnishing a new home on a tight budget. Also lists free food from cafés and supermarkets." } },
     url: "https://olioapp.com",
+  },
+  {
+    icon: "🏘️",
+    cat: "Community",
+    content: { en: { title: "Nextdoor — Your Local Neighbourhood", desc: "Connect with people in your immediate neighbourhood. Neighbours give away free furniture, warn about local scams, share recommendations for local services, and organise community events. The single fastest way to get embedded in your local community." } },
+    url: "https://nextdoor.co.uk",
   },
 ]

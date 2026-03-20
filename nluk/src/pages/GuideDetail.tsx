@@ -3,7 +3,8 @@ import { Helmet } from 'react-helmet-async'
 import { useEffect, useState } from 'react'
 import { Bookmark } from 'lucide-react'
 import { useApp } from '../context/AppContext.tsx'
-import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL } from '../data/guides.ts'
+import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL, GUIDE_RELATED } from '../data/guides.ts'
+import { t18 } from '../lib/utils.ts'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
 import QuickLinks from '../components/QuickLinks.tsx'
 import ShareBar from '../components/ShareBar.tsx'
@@ -20,7 +21,7 @@ interface GuideContent {
 export default function GuideDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { lang, ui, ab, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, ab, af, bookmarks, toggleBookmark } = useApp()
 
   const guide = id ? GUIDE_MAP[id] : undefined
 
@@ -133,6 +134,29 @@ export default function GuideDetail() {
       {wasTranslated && (
         <div style={{ textAlign: 'center', paddingBottom: 4 }}>
           <span className="auto-translated-badge">{ui.autoTranslated || '🌐 Auto-translated'}</span>
+        </div>
+      )}
+
+      {id && GUIDE_RELATED[id] && (
+        <div>
+          <div className="section-label">📎 {ui.relatedGuides || 'Related Guides'}</div>
+          <div className="card card-flush" style={{ margin: '0 var(--gutter) 12px' }}>
+            {GUIDE_RELATED[id].map(relId => {
+              const rg = GUIDE_MAP[relId]
+              if (!rg) return null
+              const rgc = t18(rg.content, lang)
+              return (
+                <button key={relId} className="list-row"
+                  onClick={() => { sessionStorage.setItem('nluk_last_guide', relId); navigate(`/guide/${relId}`) }}>
+                  <span className="list-row-icon">{rg.icon}</span>
+                  <div className="list-row-content">
+                    <div className="list-row-title">{rgc.title}</div>
+                  </div>
+                  <span className="list-row-arrow">{af}</span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       )}
 
