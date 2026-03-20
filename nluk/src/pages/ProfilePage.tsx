@@ -15,6 +15,34 @@ const STATUS_OPTIONS: { value: UserStatus; label: string }[] = [
   { value: 'settled',       label: '🇬🇧 Settled / Pre-Settled Status' },
 ]
 
+const STATUS_NEXT_STEPS: Partial<Record<UserStatus, { icon: string; text: string; path: string }[]>> = {
+  'asylum-seeker': [
+    { icon: '📋', text: 'Understand your rights while waiting', path: '/guide/asylum-waiting' },
+    { icon: '💳', text: 'Maximise your ASPEN card support', path: '/guide/aspen-card' },
+    { icon: '🏥', text: 'Register with a GP — you have the right immediately', path: '/guide/gp' },
+    { icon: '🧠', text: 'Access free mental health support', path: '/guide/mental' },
+  ],
+  'refugee': [
+    { icon: '⏰', text: 'You have 56 days — start the move-on process now', path: '/guide/move-on' },
+    { icon: '🏦', text: 'Open a bank account (Monzo — no credit check)', path: '/guide/bank' },
+    { icon: '💷', text: 'Claim Universal Credit today', path: '/guide/uc' },
+    { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
+    { icon: '🏘', text: 'Understand the real council housing process', path: '/guide/social-housing' },
+  ],
+  'other-visa': [
+    { icon: '📱', text: 'Set up your eVisa digital status', path: '/guide/evisa' },
+    { icon: '🔗', text: 'Generate a share code for work or renting', path: '/guide/sharecode' },
+    { icon: '💼', text: 'Know your employment rights', path: '/guide/employment-rights' },
+    { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
+  ],
+  'settled': [
+    { icon: '🏅', text: 'Check your path to Indefinite Leave to Remain', path: '/guide/ilr' },
+    { icon: '📊', text: 'Build your UK credit score for mortgages', path: '/guide/credit-score' },
+    { icon: '💰', text: 'Start investing tax-free with a Stocks & Shares ISA', path: '/guide/investing' },
+    { icon: '📜', text: 'UK rules every settled resident must know', path: '/guide/uk-rules' },
+  ],
+}
+
 export default function ProfilePage() {
   const { lang, ui, af, userStatus, setUserStatus, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
@@ -56,6 +84,24 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+
+      {/* ── Next Steps ───────────────────────────────────── */}
+      {userStatus && STATUS_NEXT_STEPS[userStatus] && (
+        <>
+          <div className="section-label">{ui.nextSteps || '⚡ Next Steps'}</div>
+          <div className="card card-flush" style={{ margin: '0 var(--gutter) 16px' }}>
+            {STATUS_NEXT_STEPS[userStatus]!.map(step => (
+              <button key={step.path} className="list-row" onClick={() => navigate(step.path)}>
+                <span className="list-row-icon" style={{ fontSize: '1.1rem' }}>{step.icon}</span>
+                <div className="list-row-content">
+                  <div className="list-row-title" style={{ fontSize: '0.9rem' }}>{step.text}</div>
+                </div>
+                <span className="list-row-arrow">{af}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* ── Progress Checklist ────────────────────────────── */}
       <ChecklistWidget ui={ui} />
