@@ -4,6 +4,7 @@ import { Search, Bookmark } from 'lucide-react'
 import { toast } from 'sonner'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { t18 } from '../lib/utils.ts'
@@ -68,6 +69,9 @@ export default function GuidesPage() {
     if (catFilter !== 'All') list = list.filter(g => g.cat === catFilter)
     return list
   }, [search, catFilter, fuseIndex])
+
+  // Animate category sections as filter changes
+  const [catListRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })
 
   // Group guides by category in a single O(n) pass, preserving insertion order for cats.
   const { cats, groupedByCat } = useMemo(() => {
@@ -248,6 +252,7 @@ export default function GuidesPage() {
       )}
 
       <div style={{ height: 6 }} />
+      <div ref={catListRef}>
       {cats.map(cat => (
         <div key={cat}>
           <div className="cat-header" style={{ color: CATEGORIES[cat]?.color }}>
@@ -288,6 +293,7 @@ export default function GuidesPage() {
           </div>
         </div>
       ))}
+      </div>
       <div className={styles.spacer} />
     </div>
   )
