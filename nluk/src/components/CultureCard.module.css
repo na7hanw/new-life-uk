@@ -35,6 +35,9 @@
 .body {
   overflow: hidden;
   min-height: 0;
+  /* NO padding here — padding on the grid child prevents 0fr from reaching true zero */
+}
+.bodyInner {
   border-top: 1px solid var(--bd);
   padding: 14px 16px;
 }

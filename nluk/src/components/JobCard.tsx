@@ -11,6 +11,7 @@ interface JobCardProps {
 
 const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
   const [open, setOpen] = useState(false)
+  const [showFullDesc, setShowFullDesc] = useState(false)
   const bodyId = useId()
   const jc = useMemo<Partial<JobContent>>(
     () => (j.content?.[lang] || j.content?.en || {}),
@@ -35,13 +36,20 @@ const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
         className={`${styles.jobBodyWrapper} ${open ? styles.jobBodyWrapperOpen : ''}`}
       >
         <div id={bodyId} className={styles.jobBody}>
+          {/* jobBodyInner carries padding — keeps grid child at true zero height when closed */}
+          <div className={styles.jobBodyInner}>
           {j.tags && (
             <div className={styles.jobTags}>
               {j.tags.map(t => <span key={t} className={styles.jobTag}>{t}</span>)}
             </div>
           )}
 
-          <p className={styles.jobDesc}>{jc.desc}</p>
+          <p className={`${styles.jobDesc} ${showFullDesc ? styles.jobDescExpanded : ''}`}>{jc.desc}</p>
+          {jc.desc && jc.desc.length > 200 && (
+            <button className={styles.readMoreBtn} onClick={() => setShowFullDesc(v => !v)}>
+              {showFullDesc ? 'Show less ▲' : 'Read more ▼'}
+            </button>
+          )}
 
           {j.docs?.length > 0 && (
             <div className={styles.jobSection}>
@@ -62,6 +70,7 @@ const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
               ))}
             </div>
           </div>
+          </div>{/* end jobBodyInner */}
         </div>
       </div>
     </div>

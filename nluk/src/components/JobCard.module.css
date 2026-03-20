@@ -55,10 +55,38 @@
 .jobBody {
   overflow: hidden;
   min-height: 0; /* allows the grid row to collapse to 0 */
+  /* NO padding here — padding on the grid child prevents 0fr from reaching true zero */
+}
+.jobBodyInner {
   border-top: 1px solid var(--bd);
   padding: 16px;
 }
-.jobDesc { font-size: .875rem; color: var(--t2); line-height: 1.55; margin: 0 0 14px; }
+.jobDesc {
+  font-size: .875rem;
+  color: var(--t2);
+  line-height: 1.55;
+  margin: 0 0 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.jobDescExpanded {
+  display: block;
+  overflow: visible;
+}
+.readMoreBtn {
+  background: none;
+  border: none;
+  color: var(--ac);
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+.readMoreBtn:hover { text-decoration: underline; }
 
 .jobSection { margin-bottom: 14px; }
 .jobSection:last-child { margin-bottom: 0; }

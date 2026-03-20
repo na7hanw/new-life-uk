@@ -54,14 +54,17 @@ const CultureCard = memo(function CultureCard({ emoji, content, lang, copyLabel,
       </button>
       <div className={clsx(styles.bodyWrapper, open && styles.bodyWrapperOpen)}>
         <div id={bodyId} className={styles.body}>
-          <p className={styles.bodyText}>{c?.body}</p>
-          <button
-            className={styles.copyBtn}
-            onClick={handleCopy}
-            aria-label={`Copy: ${c?.title}`}
-          >
-            📋 {copyLabel}
-          </button>
+          {/* bodyInner carries padding — keeps the grid child at true zero height when closed */}
+          <div className={styles.bodyInner}>
+            <p className={styles.bodyText}>{c?.body}</p>
+            <button
+              className={styles.copyBtn}
+              onClick={handleCopy}
+              aria-label={`Copy: ${c?.title}`}
+            >
+              📋 {copyLabel}
+            </button>
+          </div>
         </div>
       </div>
     </div>
