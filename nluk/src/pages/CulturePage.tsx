@@ -131,23 +131,27 @@ export default function CulturePage() {
                 <ChevronDown
                   size={16}
                   strokeWidth={2.5}
-                  style={{ color: 'var(--t3)', flexShrink: 0, transition: 'transform .2s', transform: isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)' }}
+                  className={`section-chevron${isCollapsed ? '' : ' open'}`}
                 />
               </span>
             </button>
-            {description && !isCollapsed && (
-              <p className="section-sub">{description}</p>
-            )}
-            {!isCollapsed && section.items.map(item => (
-              <CultureCard
-                key={item.title}
-                emoji={item.emoji}
-                content={{ en: { title: item.title, body: item.body } }}
-                lang={lang}
-                copyLabel={ui.copyTip || 'Copy tip'}
-                copiedLabel={ui.copied || 'Copied!'}
-              />
-            ))}
+            {/* CSS grid accordion — content stays in DOM for smooth height animation.
+                Zero-height when closed means nothing "leaks" through. */}
+            <div className={`accordion-body${isCollapsed && !search.trim() ? ' closed' : ''}`} aria-hidden={isCollapsed && !search.trim()}>
+              <div className="accordion-body-inner">
+                {description && <p className="section-sub">{description}</p>}
+                {section.items.map(item => (
+                  <CultureCard
+                    key={item.title}
+                    emoji={item.emoji}
+                    content={{ en: { title: item.title, body: item.body } }}
+                    lang={lang}
+                    copyLabel={ui.copyTip || 'Copy tip'}
+                    copiedLabel={ui.copied || 'Copied!'}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         )
       })}

@@ -26,14 +26,22 @@ a { color: inherit; text-decoration: none; }
 button { border: none; cursor: pointer; font-family: inherit; background: none; color: inherit; text-align: inherit; padding: 0; font-size: inherit; }
 ::-webkit-scrollbar { width: 0; height: 0; }
 
-/* RTL and Ethiopic font overrides */
-[dir="rtl"] { font-family: 'Arabic UI Text', 'Geeza Pro', 'Segoe UI', system-ui, sans-serif; line-height: 1.85; }
-/* Ge'ez characters render ~12% smaller than Latin at the same px — bump to optically match */
+/* ── Language-specific font stacks ──────────────────────────────────────────
+   Arabic / Farsi / Urdu: system Arabic fonts — best rendering at system level.
+   Ethiopic: bump size slightly; Ge'ez glyphs render ~12% smaller than Latin.
+   Latin-script languages (en, fr, pl, ro, uk): use Plus Jakarta Sans from
+   Google Fonts (loaded in index.html). Fall back to system-ui gracefully.
+   ─────────────────────────────────────────────────────────────────────────── */
+[dir="rtl"] {
+  font-family: 'Noto Naskh Arabic', 'Arabic UI Text', 'Geeza Pro', 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.85;
+  letter-spacing: 0;
+}
 .eth-font {
-  font-family: 'Kefa', 'Noto Sans Ethiopic', system-ui, sans-serif;
+  font-family: 'Noto Sans Ethiopic', 'Kefa', system-ui, sans-serif;
   font-size: 1.08rem;
   letter-spacing: 0.01em;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 /* Screen-reader only utility */

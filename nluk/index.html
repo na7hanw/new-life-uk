@@ -5,22 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#059669" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="description" content="Free multilingual guide for refugees, asylum seekers, and immigrants arriving in the UK. Step-by-step guides in 12 languages." />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Primary description -->
+  <meta name="description" content="Free multilingual guide for refugees, asylum seekers, and immigrants arriving in the UK. Step-by-step guides for housing, benefits, healthcare, work rights and more — in 12 languages. Works offline." />
+
+  <!-- Open Graph — controls preview cards when shared via WhatsApp, Telegram, etc. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="New Life UK — Free Refugee &amp; Immigrant Guide" />
+  <meta property="og:description" content="Free step-by-step guides for new arrivals in the UK: housing, Universal Credit, NHS, eVisa, work rights and more. 12 languages. Works offline." />
+  <meta property="og:image" content="/icon-512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:locale" content="en_GB" />
+
+  <!-- Twitter / X summary card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="New Life UK — Free Guide for Refugees &amp; Immigrants" />
+  <meta name="twitter:description" content="Free multilingual guide: housing, benefits, NHS, eVisa, work rights. 12 languages. Works offline." />
+  <meta name="twitter:image" content="/icon-512.png" />
+
+  <!-- Language fonts — non-blocking so they never delay first paint.
+       Plus Jakarta Sans  : Latin scripts (en, fr, pl, ro, uk).
+       Noto Naskh Arabic  : Arabic, Farsi, Urdu — high-quality Naskh for body text.
+       Noto Sans Ethiopic : Amharic, Tigrinya, Oromo. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Non-blocking font load: preload triggers fetch early; onload swaps rel to stylesheet -->
   <link rel="preload"
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap"
         as="style"
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap">
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap">
   </noscript>
+
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/icon-192.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
   <title>New Life UK — Free Survival Guide</title>
+
+  <!-- Cloudflare Web Analytics — cookieless, no IP tracking, no fingerprinting.
+       Token is injected at build time by vite.config.js define(); the sentinel
+       string '__CF_ANALYTICS_TOKEN__' is left when the env var is absent so
+       the guard below short-circuits and makes zero network requests. -->
+  <script>
+    (function () {
+      var t = '__CF_ANALYTICS_TOKEN__';
+      if (!t || t.indexOf('__CF') === 0) return;
+      var s = document.createElement('script');
+      s.defer = true;
+      s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+      s.setAttribute('data-cf-beacon', JSON.stringify({ token: t }));
+      document.head.appendChild(s);
+    })();
+  </script>
 </head>
 <body>
   <div id="root"></div>

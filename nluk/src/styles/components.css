@@ -24,8 +24,9 @@
   text-transform: uppercase;
   letter-spacing: .1em;
   padding: 20px var(--gutter) 8px var(--gutter);
-  border-left: 3px solid var(--ac);
-  margin-left: var(--gutter);
+  /* logical properties so border/margin flip in RTL */
+  border-inline-start: 3px solid var(--ac);
+  margin-inline-start: var(--gutter);
 }
 .dark .section-label { color: var(--ac); }
 .section-label-lg {
@@ -35,16 +36,16 @@
   text-transform: uppercase;
   letter-spacing: .08em;
   padding: 20px var(--gutter) 10px var(--gutter);
-  border-left: 3px solid var(--ac);
-  margin-left: var(--gutter);
-  background: linear-gradient(90deg, var(--ac2), transparent);
+  border-inline-start: 3px solid var(--ac);
+  margin-inline-start: var(--gutter);
+  background: linear-gradient(to right, var(--ac2), transparent);
 }
-.dark .section-label-lg { color: var(--ac); background: linear-gradient(90deg, rgba(52,211,153,.07), transparent); }
+.dark .section-label-lg { color: var(--ac); background: linear-gradient(to right, rgba(52,211,153,.07), transparent); }
 .section-sub {
   font-size: .875rem;
   color: var(--t2);
   margin: 0 var(--gutter) 12px;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 /* ─── Global Search Icon ─── */
@@ -122,8 +123,13 @@
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  /* Use logical direction so the fade appears at the reading-direction end */
+  -webkit-mask-image: linear-gradient(to inline-end, black 85%, transparent 100%);
   mask-image: linear-gradient(to right, black 85%, transparent 100%);
+}
+[dir="rtl"] .chip-bar {
+  -webkit-mask-image: linear-gradient(to left, black 85%, transparent 100%);
+  mask-image: linear-gradient(to left, black 85%, transparent 100%);
 }
 .chip {
   flex-shrink: 0;
@@ -411,12 +417,13 @@
   cursor: pointer;
   font: inherit;
   color: inherit;
-  text-align: left;
+  text-align: start;
   padding: 20px var(--gutter) 10px var(--gutter);
-  border-left: 3px solid var(--ac);
-  margin-left: var(--gutter);
+  border-inline-start: 3px solid var(--ac);
+  margin-inline-start: var(--gutter);
   background: linear-gradient(90deg, var(--ac2), transparent);
   gap: 8px;
+  min-height: 48px;
 }
 .culture-section-header:focus-visible { outline: 2px solid var(--ac); outline-offset: -2px; }
 .dark .culture-section-header { background: linear-gradient(90deg, rgba(52,211,153,.07), transparent); }
@@ -436,3 +443,27 @@
   line-height: 1.6;
 }
 .dark .culture-section-count { color: #042B1C; }
+
+/* ── Accordion body — CSS grid height animation.
+   Outer .accordion-body: grid container that collapses to 0 height.
+   Inner .accordion-body-inner: overflow-hidden so padding/content is clipped.
+   Padding lives on .accordion-body-inner (NOT on the grid container) so that
+   0fr truly means zero pixels — no visible leak of any kind. ── */
+.accordion-body {
+  display: grid;
+  grid-template-rows: 1fr;   /* open state */
+  transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.accordion-body.closed {
+  grid-template-rows: 0fr;   /* collapsed — zero height */
+}
+.accordion-body-inner {
+  overflow: hidden;
+}
+/* Rotate the chevron when open */
+.section-chevron {
+  color: var(--t3);
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.section-chevron.open { transform: rotate(180deg); }

@@ -15,6 +15,10 @@ export default defineConfig({
     // Expose package version as an env var so MorePage can display it without
     // bundling the entire package.json.
     'import.meta.env.VITE_APP_VERSION': JSON.stringify(pkg.version),
+    // Cloudflare Web Analytics token — replaced at build time.
+    // Set VITE_CF_ANALYTICS_TOKEN in your Cloudflare Pages environment variables.
+    // If absent, the sentinel string is left in the HTML and the beacon guard skips loading.
+    '__CF_ANALYTICS_TOKEN__': JSON.stringify(process.env.VITE_CF_ANALYTICS_TOKEN || ''),
   },
   build: {
     rollupOptions: {
