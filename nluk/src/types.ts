@@ -67,6 +67,8 @@ export interface SaveItem {
   content: I18nContent<SaveContent>
   url?: string
   cat?: string
+  /** Optional: id of a related guide in guides.ts for cross-navigation */
+  guideId?: string
 }
 
 export interface HelplineEntry {

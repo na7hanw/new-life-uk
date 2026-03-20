@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
 import type { UiStrings } from '../types'
 
@@ -15,15 +16,18 @@ interface ResourceCardProps {
   lang: string
   ui: UiStrings
   badge?: string
+  guideId?: string
 }
 
 /**
  * ResourceCard — shared card for free resources and career shortcuts.
  * Used by SavesPage and MorePage (replaces the near-identical SaveCard / GemCard pair).
+ * When guideId is provided, a "See guide →" button navigates to the related guide.
  */
-const ResourceCard = memo(function ResourceCard({ icon, content, url, lang, ui, badge }: ResourceCardProps) {
+const ResourceCard = memo(function ResourceCard({ icon, content, url, lang, ui, badge, guideId }: ResourceCardProps) {
   const id = content.en?.title
   const [c, translating, wasTranslated] = useTranslatedContent<ResourceContent>(content, lang, id)
+  const navigate = useNavigate()
 
   return (
     <div className={`content-card${translating ? ' translating' : ''}`}>
@@ -38,11 +42,23 @@ const ResourceCard = memo(function ResourceCard({ icon, content, url, lang, ui, 
       {wasTranslated && (
         <span className="auto-translated-badge">{ui.autoTranslated || '🌐 Auto-translated'}</span>
       )}
-      {url && (
-        <a href={url} target="_blank" rel="noopener noreferrer" className="link-btn" style={{ marginTop: 10 }}>
-          🔗 <span>{ui.openLink}</span> →
-        </a>
-      )}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: url || guideId ? 10 : 0 }}>
+        {url && (
+          <a href={url} target="_blank" rel="noopener noreferrer" className="link-btn">
+            🔗 <span>{ui.openLink}</span> →
+          </a>
+        )}
+        {guideId && (
+          <button
+            className="link-btn"
+            style={{ border: 'none', cursor: 'pointer' }}
+            onClick={() => navigate(`/guide/${guideId}`)}
+            aria-label={`Open guide for ${c?.title || ''}`}
+          >
+            📖 See guide →
+          </button>
+        )}
+      </div>
     </div>
   )
 })

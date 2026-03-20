@@ -4,7 +4,8 @@
  * Route redirect and 404 tests.
  * Verifies that the navigation rules from App.tsx behave correctly:
  *   - /work          → /work/jobs  (redirect)
- *   - /more          → /culture    (redirect)
+ *   - /more          → /settings   (redirect)
+ *   - /culture       → /saves      (redirect — UK Life is now inside Saves)
  *   - /unknown-path  → NotFoundPage (404)
  * and that the 404 page provides a "Go back home" link.
  */
@@ -35,8 +36,10 @@ function renderRoutes(initialPath: string) {
           {/* Redirects that mirror App.tsx */}
           <Route path="/work" element={<Navigate to="/work/jobs" replace />} />
           <Route path="/work/:subtab" element={<div>Work Jobs Page</div>} />
-          <Route path="/more" element={<Navigate to="/culture" replace />} />
-          <Route path="/culture" element={<div>Culture Page</div>} />
+          <Route path="/more" element={<Navigate to="/settings" replace />} />
+          <Route path="/settings" element={<div>Settings Page</div>} />
+          <Route path="/culture" element={<Navigate to="/saves" replace />} />
+          <Route path="/saves" element={<div>Saves Page</div>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </MemoryRouter>
@@ -69,14 +72,28 @@ describe('Route — /work redirect', () => {
 // ─── /more redirect ───────────────────────────────────────────────────────────
 
 describe('Route — /more redirect', () => {
-  it('redirects /more to /culture', () => {
+  it('redirects /more to /settings', () => {
     renderRoutes('/more')
-    expect(screen.getByTestId('pathname').textContent).toBe('/culture')
+    expect(screen.getByTestId('pathname').textContent).toBe('/settings')
   })
 
-  it('renders the culture content after redirect', () => {
+  it('renders the settings content after redirect', () => {
     renderRoutes('/more')
-    expect(screen.getByText('Culture Page')).not.toBeNull()
+    expect(screen.getByText('Settings Page')).not.toBeNull()
+  })
+})
+
+// ─── /culture redirect ────────────────────────────────────────────────────────
+
+describe('Route — /culture redirect', () => {
+  it('redirects /culture to /saves (UK Life is now inside Saves)', () => {
+    renderRoutes('/culture')
+    expect(screen.getByTestId('pathname').textContent).toBe('/saves')
+  })
+
+  it('renders saves content after /culture redirect', () => {
+    renderRoutes('/culture')
+    expect(screen.getByText('Saves Page')).not.toBeNull()
   })
 })
 
@@ -119,8 +136,8 @@ describe('Route — valid paths do not show 404', () => {
     expect(screen.queryByText('Page not found')).toBeNull()
   })
 
-  it('does not render NotFoundPage when navigating to /culture', () => {
-    renderRoutes('/culture')
+  it('does not render NotFoundPage when navigating to /saves', () => {
+    renderRoutes('/saves')
     expect(screen.queryByText('Page not found')).toBeNull()
   })
 })

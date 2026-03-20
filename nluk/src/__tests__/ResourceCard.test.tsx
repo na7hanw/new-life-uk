@@ -7,6 +7,7 @@
  */
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { render, screen, cleanup, act } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import ResourceCard from '../components/ResourceCard.tsx'
 
 const UI = {
@@ -27,22 +28,22 @@ describe('ResourceCard — English content', () => {
   }
 
   it('renders the English title', () => {
-    render(<ResourceCard icon="📱" content={content} lang="en" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="en" ui={UI} /></MemoryRouter>)
     expect(screen.getByText('Free SIM Card')).not.toBeNull()
   })
 
   it('renders the English description', () => {
-    render(<ResourceCard icon="📱" content={content} lang="en" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="en" ui={UI} /></MemoryRouter>)
     expect(screen.getByText('Get a free SIM with 40 GB.')).not.toBeNull()
   })
 
   it('renders the icon', () => {
-    const { container } = render(<ResourceCard icon="📱" content={content} lang="en" ui={UI} />)
+    const { container } = render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="en" ui={UI} /></MemoryRouter>)
     expect(container.textContent).toContain('📱')
   })
 
   it('does NOT show the auto-translated badge for English content', () => {
-    render(<ResourceCard icon="📱" content={content} lang="en" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="en" ui={UI} /></MemoryRouter>)
     expect(screen.queryByText('🌐 Auto-translated')).toBeNull()
   })
 })
@@ -56,17 +57,17 @@ describe('ResourceCard — native language content', () => {
   }
 
   it('renders the native-language title when a translation exists', () => {
-    render(<ResourceCard icon="📱" content={content} lang="fr" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="fr" ui={UI} /></MemoryRouter>)
     expect(screen.getByText('Carte SIM gratuite')).not.toBeNull()
   })
 
   it('renders the native-language description', () => {
-    render(<ResourceCard icon="📱" content={content} lang="fr" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="fr" ui={UI} /></MemoryRouter>)
     expect(screen.getByText('Obtenez une SIM gratuite.')).not.toBeNull()
   })
 
   it('does NOT show the auto-translated badge when a native translation exists', () => {
-    render(<ResourceCard icon="📱" content={content} lang="fr" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="fr" ui={UI} /></MemoryRouter>)
     expect(screen.queryByText('🌐 Auto-translated')).toBeNull()
   })
 })
@@ -79,18 +80,18 @@ describe('ResourceCard — link display', () => {
   }
 
   it('renders a link button when url prop is provided', () => {
-    render(<ResourceCard icon="📱" content={content} url="https://example.com" lang="en" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} url="https://example.com" lang="en" ui={UI} /></MemoryRouter>)
     const link = screen.getByRole('link')
     expect(link.getAttribute('href')).toBe('https://example.com')
   })
 
   it('link opens in a new tab', () => {
-    render(<ResourceCard icon="📱" content={content} url="https://example.com" lang="en" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} url="https://example.com" lang="en" ui={UI} /></MemoryRouter>)
     expect(screen.getByRole('link').getAttribute('target')).toBe('_blank')
   })
 
   it('does NOT render a link when no url is provided', () => {
-    render(<ResourceCard icon="📱" content={content} lang="en" ui={UI} />)
+    render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="en" ui={UI} /></MemoryRouter>)
     expect(screen.queryByRole('link')).toBeNull()
   })
 })
@@ -114,7 +115,7 @@ describe('ResourceCard — auto-translated badge', () => {
     }
 
     await act(async () => {
-      render(<ResourceCard icon="📱" content={content} lang="fr" ui={UI} />)
+      render(<MemoryRouter><ResourceCard icon="📱" content={content} lang="fr" ui={UI} /></MemoryRouter>)
     })
 
     expect(screen.queryByText('🌐 Auto-translated')).not.toBeNull()

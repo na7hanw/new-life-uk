@@ -34,9 +34,9 @@ describe('ChecklistWidget — collapsed', () => {
     expect(screen.getByText(/My Progress/)).not.toBeNull()
   })
 
-  it('shows "0/7 complete" on first render (nothing checked)', () => {
+  it('shows "0/8 complete" on first render (nothing checked)', () => {
     renderWidget()
-    expect(screen.getByText('0/7 complete')).not.toBeNull()
+    expect(screen.getByText(/0\/8 complete/)).not.toBeNull()
   })
 
   it('toggle button has aria-expanded="false" initially', () => {
@@ -68,12 +68,12 @@ describe('ChecklistWidget — expanded', () => {
     expect(btn.getAttribute('aria-expanded')).toBe('true')
   })
 
-  it('shows all seven checklist items', () => {
+  it('shows all eight checklist items', () => {
     renderWidget()
     fireEvent.click(screen.getByRole('button', { name: /My Progress/ }))
     // Each item has an aria-label like "Mark as done: Set up eVisa account"
     const checkboxes = screen.getAllByRole('button', { name: /Mark as done|Unmark/ })
-    expect(checkboxes.length).toBe(7)
+    expect(checkboxes.length).toBe(8)
   })
 
   it('collapses again when the toggle is clicked a second time', () => {
@@ -100,7 +100,7 @@ describe('ChecklistWidget — item toggling', () => {
     renderWidget()
     fireEvent.click(screen.getByRole('button', { name: /My Progress/ }))
     fireEvent.click(screen.getAllByRole('button', { name: /Mark as done/ })[0])
-    expect(screen.getByText('1/7 complete')).not.toBeNull()
+    expect(screen.getByText(/1\/8 complete/)).not.toBeNull()
   })
 
   it('un-marks an item (aria-pressed false) when clicked again', () => {
@@ -110,7 +110,7 @@ describe('ChecklistWidget — item toggling', () => {
     fireEvent.click(firstCheckbox) // mark done
     const doneBtn = screen.getByRole('button', { name: /Unmark: Set up eVisa account/ })
     fireEvent.click(doneBtn) // un-mark
-    expect(screen.getByText('0/7 complete')).not.toBeNull()
+    expect(screen.getByText(/0\/8 complete/)).not.toBeNull()
   })
 })
 
