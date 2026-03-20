@@ -1,5 +1,7 @@
-import { useState, useId, useRef, memo } from 'react'
+import { useState, useId, memo } from 'react'
 import { ChevronDown } from 'lucide-react'
+import { toast } from 'sonner'
+import clsx from 'clsx'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
 import styles from './CultureCard.module.css'
 
@@ -21,11 +23,10 @@ interface CultureCardProps {
  * CultureCard — collapsible tip card with built-in auto-translation.
  * Mirrors ResourceCard's translation pattern: useTranslatedContent handles
  * the MyMemory API call and localStorage caching transparently.
+ * Uses sonner toast for copy feedback instead of local copied state.
  */
 const CultureCard = memo(function CultureCard({ emoji, content, lang, copyLabel, copiedLabel }: CultureCardProps) {
   const [open, setOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const bodyId = useId()
 
   // id is derived from the stable English title — used as the cache key
@@ -34,16 +35,13 @@ const CultureCard = memo(function CultureCard({ emoji, content, lang, copyLabel,
 
   const handleCopy = () => {
     if (!c) return
-    const text = `${c.title}\n\n${c.body}`
-    navigator.clipboard?.writeText(text).then(() => {
-      setCopied(true)
-      if (copyTimer.current) clearTimeout(copyTimer.current)
-      copyTimer.current = setTimeout(() => setCopied(false), 2000)
+    navigator.clipboard?.writeText(`${c.title}\n\n${c.body}`).then(() => {
+      toast.success(copiedLabel, { duration: 1800 })
     })
   }
 
   return (
-    <div className={`${styles.card} ${open ? styles.cardOpen : ''}${translating ? ' translating' : ''}`}>
+    <div className={clsx(styles.card, open && styles.cardOpen, translating && 'translating')}>
       <button
         className={styles.header}
         onClick={() => setOpen(o => !o)}
@@ -54,15 +52,15 @@ const CultureCard = memo(function CultureCard({ emoji, content, lang, copyLabel,
         <span className={styles.title}>{c?.title}</span>
         <ChevronDown size={16} strokeWidth={2.5} className={styles.chevron} />
       </button>
-      <div className={`${styles.bodyWrapper} ${open ? styles.bodyWrapperOpen : ''}`}>
+      <div className={clsx(styles.bodyWrapper, open && styles.bodyWrapperOpen)}>
         <div id={bodyId} className={styles.body}>
           <p className={styles.bodyText}>{c?.body}</p>
           <button
             className={styles.copyBtn}
             onClick={handleCopy}
-            aria-label={copied ? copiedLabel : `Copy: ${c?.title}`}
+            aria-label={`Copy: ${c?.title}`}
           >
-            {copied ? '✅' : '📋'} {copied ? copiedLabel : copyLabel}
+            📋 {copyLabel}
           </button>
         </div>
       </div>

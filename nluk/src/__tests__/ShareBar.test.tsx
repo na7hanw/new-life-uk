@@ -81,17 +81,15 @@ describe('ShareBar', () => {
     expect(writeTextMock).toHaveBeenCalledWith(window.location.href)
   })
 
-  it('copy button shows "Copied!" aria-label after clicking', async () => {
-    vi.useFakeTimers()
+  it('copy button keeps "Copy link" aria-label after clicking (feedback via toast)', async () => {
     render(<ShareBar title="Test Guide" ui={UI} />)
     const btn = screen.getByLabelText('Copy link')
     fireEvent.click(btn)
     await act(async () => { await Promise.resolve() })  // flush clipboard promise
-    expect(btn.getAttribute('aria-label')).toBe('Copied!')
-    vi.useRealTimers()
+    expect(btn.getAttribute('aria-label')).toBe('Copy link')
   })
 
-  it('copy button reverts to "Copy link" aria-label after 2 seconds', async () => {
+  it('copy button aria-label is stable after 2 seconds', async () => {
     vi.useFakeTimers()
     render(<ShareBar title="Test Guide" ui={UI} />)
     const btn = screen.getByLabelText('Copy link')
