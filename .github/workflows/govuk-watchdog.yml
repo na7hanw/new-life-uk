@@ -1,0 +1,265 @@
+name: GOV.UK Content Watchdog
+
+# Weekly check: scrapes "Last updated" dates from key GOV.UK pages.
+# Opens a GitHub Issue automatically if any page has been updated since we last checked.
+# This keeps the app's legal content accurate without manual monitoring.
+
+on:
+  schedule:
+    # Every Monday at 07:00 UTC — before the working day starts
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+    inputs:
+      force_issue:
+        description: 'Open an issue even if no changes detected (for testing)'
+        required: false
+        default: 'false'
+
+jobs:
+  watchdog:
+    name: Check GOV.UK pages for updates
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run GOV.UK watchdog
+        id: watchdog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FORCE_ISSUE: ${{ github.event.inputs.force_issue }}
+          REPO: ${{ github.repository }}
+        run: |
+          node - <<'EOF'
+          const https = require('https')
+          const { execSync } = require('child_process')
+
+          // ── Pages to monitor ─────────────────────────────────────────────────
+          // Each entry: { url, guideId, title }
+          // The "lastUpdated" date is scraped from the GOV.UK metadata section.
+          const PAGES = [
+            {
+              url: 'https://www.gov.uk/evisa',
+              guideId: 'evisa',
+              title: 'eVisa — set up your UKVI account',
+            },
+            {
+              url: 'https://www.gov.uk/asylum-support',
+              guideId: 'asylum-waiting',
+              title: 'Asylum support (Section 95)',
+            },
+            {
+              url: 'https://www.gov.uk/universal-credit/how-to-claim',
+              guideId: 'uc',
+              title: 'Universal Credit — how to claim',
+            },
+            {
+              url: 'https://www.gov.uk/indefinite-leave-to-remain',
+              guideId: 'ilr',
+              title: 'Indefinite Leave to Remain (ILR)',
+            },
+            {
+              url: 'https://www.gov.uk/legal-aid',
+              guideId: 'legal-help',
+              title: 'Legal Aid',
+            },
+            {
+              url: 'https://www.gov.uk/government/publications/handling-applications-for-permission-to-take-employment-instruction/permission-to-work-and-volunteering-for-asylum-seekers-accessible',
+              guideId: 'permission-to-work',
+              title: 'Permission to Work for asylum seekers',
+            },
+            {
+              url: 'https://www.gov.uk/uk-family-visa',
+              guideId: 'family-reunion',
+              title: 'UK Family Visa (refugee family reunion)',
+            },
+            {
+              url: 'https://www.gov.uk/apply-home-office-travel-document',
+              guideId: 'ctd',
+              title: 'Convention Travel Document (CTD)',
+            },
+            {
+              url: 'https://www.gov.uk/national-minimum-wage-rates',
+              guideId: 'employment-rights',
+              title: 'National Minimum Wage rates',
+            },
+            {
+              url: 'https://www.gov.uk/prove-right-to-work',
+              guideId: 'sharecode',
+              title: 'Prove right to work (share codes)',
+            },
+          ]
+
+          // ── Cache file (stored as a workflow artifact on the repo) ────────────
+          // We use a simple JSON file committed to .github/govuk-watchdog-cache.json
+          // so we can detect changes between runs.
+          const CACHE_PATH = '.github/govuk-watchdog-cache.json'
+          let cache = {}
+          try {
+            const raw = require('fs').readFileSync(CACHE_PATH, 'utf8')
+            cache = JSON.parse(raw)
+          } catch {
+            // First run — no cache yet
+          }
+
+          // ── HTTP helper ────────────────────────────────────────────────────────
+          function fetchPage(url) {
+            return new Promise((resolve, reject) => {
+              const options = {
+                headers: {
+                  'User-Agent': 'Mozilla/5.0 (compatible; New-Life-UK-Watchdog/1.0)',
+                  Accept: 'text/html',
+                },
+                timeout: 15000,
+              }
+              const req = https.get(url, options, res => {
+                // Follow up to 3 redirects
+                if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+                  return fetchPage(res.headers.location).then(resolve).catch(reject)
+                }
+                let body = ''
+                res.on('data', d => { body += d })
+                res.on('end', () => resolve({ status: res.statusCode, body }))
+              })
+              req.on('error', reject)
+              req.on('timeout', () => { req.destroy(); reject(new Error('timeout')) })
+            })
+          }
+
+          // ── Date extractor ────────────────────────────────────────────────────
+          // GOV.UK uses <time datetime="2024-03-15"> inside a "Last updated" section
+          function extractLastUpdated(html) {
+            // GOV.UK pattern: <time datetime="YYYY-MM-DD"
+            const m = html.match(/<time[^>]+datetime="(\d{4}-\d{2}-\d{2})"/)
+            if (m) return m[1]
+            // Fallback: look for "Last updated" text near a date
+            const m2 = html.match(/Last updated:?\s*<[^>]*>([^<]{6,30})</)
+            if (m2) return m2[1].trim()
+            return null
+          }
+
+          // ── Main ──────────────────────────────────────────────────────────────
+          async function run() {
+            const changed = []
+            const newCache = { ...cache }
+            const today = new Date().toISOString().split('T')[0]
+
+            for (const page of PAGES) {
+              try {
+                console.log(`Checking: ${page.url}`)
+                const { body, status } = await fetchPage(page.url)
+                if (status !== 200) {
+                  console.warn(`  ⚠ HTTP ${status} — skipping`)
+                  continue
+                }
+                const lastUpdated = extractLastUpdated(body)
+                if (!lastUpdated) {
+                  console.warn(`  ⚠ Could not extract "Last updated" date`)
+                  continue
+                }
+                console.log(`  Last updated: ${lastUpdated} (cached: ${cache[page.guideId] || 'none'})`)
+                newCache[page.guideId] = lastUpdated
+
+                if (cache[page.guideId] && cache[page.guideId] !== lastUpdated) {
+                  changed.push({ ...page, previousDate: cache[page.guideId], newDate: lastUpdated })
+                }
+              } catch (e) {
+                console.warn(`  ✗ Error: ${e.message}`)
+              }
+              // Polite delay between requests
+              await new Promise(r => setTimeout(r, 1500))
+            }
+
+            // Write updated cache
+            require('fs').writeFileSync(CACHE_PATH, JSON.stringify(newCache, null, 2) + '\n', 'utf8')
+
+            // Commit updated cache so it persists across runs
+            try {
+              execSync('git config user.email "github-actions[bot]@users.noreply.github.com"', { stdio: 'ignore' })
+              execSync('git config user.name "github-actions[bot]"', { stdio: 'ignore' })
+              execSync(`git add ${CACHE_PATH}`, { stdio: 'ignore' })
+              execSync(`git commit -m "chore: update GOV.UK watchdog cache [skip ci]" || true`, { stdio: 'ignore' })
+              execSync('git push origin HEAD', { stdio: 'ignore' })
+            } catch (e) {
+              console.warn('Cache commit failed (first run or no changes):', e.message)
+            }
+
+            const forceIssue = process.env.FORCE_ISSUE === 'true'
+            if (changed.length === 0 && !forceIssue) {
+              console.log('\n✅ No GOV.UK page changes detected.')
+              return
+            }
+
+            // ── Open a GitHub Issue ───────────────────────────────────────────
+            const issuePages = forceIssue && changed.length === 0 ? PAGES.slice(0, 1).map(p => ({ ...p, previousDate: 'n/a', newDate: today })) : changed
+            const issueBody = [
+              '## GOV.UK Content Update Detected',
+              '',
+              'The following GOV.UK pages were updated since our last check. Please review the changes and update the corresponding app guides if the legal content has changed.',
+              '',
+              '| Guide ID | Page | Previous date | New date | Link |',
+              '|----------|------|---------------|----------|------|',
+              ...issuePages.map(p =>
+                `| \`${p.guideId}\` | ${p.title} | ${p.previousDate} | ${p.newDate} | [GOV.UK](${p.url}) |`
+              ),
+              '',
+              '### Action required',
+              '1. Click each link above and review the updated content.',
+              '2. Update the relevant guide in `nluk/src/data/guides.ts`.',
+              '3. Update `GUIDE_LAST_UPDATED["' + issuePages[0]?.guideId + '"]` to today\'s date.',
+              '4. Close this issue when all guides are verified or updated.',
+              '',
+              `_Detected on: ${today}_`,
+            ].join('\n')
+
+            const issueTitle = `⚠️ GOV.UK updates detected — ${issuePages.length} guide(s) may need review`
+
+            const payload = JSON.stringify({
+              title: issueTitle,
+              body: issueBody,
+              labels: ['content-audit', 'legal'],
+            })
+
+            const [owner, repo] = process.env.REPO.split('/')
+            const token = process.env.GITHUB_TOKEN
+            const options = {
+              hostname: 'api.github.com',
+              path: `/repos/${owner}/${repo}/issues`,
+              method: 'POST',
+              headers: {
+                Authorization: `token ${token}`,
+                'Content-Type': 'application/json',
+                'User-Agent': 'New-Life-UK-Watchdog/1.0',
+                Accept: 'application/vnd.github.v3+json',
+              },
+            }
+
+            await new Promise((resolve, reject) => {
+              const req = https.request(options, res => {
+                let body = ''
+                res.on('data', d => { body += d })
+                res.on('end', () => {
+                  const parsed = JSON.parse(body)
+                  if (res.statusCode === 201) {
+                    console.log(`\n✅ GitHub Issue opened: ${parsed.html_url}`)
+                    resolve()
+                  } else {
+                    reject(new Error(`GitHub API error ${res.statusCode}: ${body}`))
+                  }
+                })
+              })
+              req.on('error', reject)
+              req.write(payload)
+              req.end()
+            })
+          }
+
+          run().catch(e => { console.error(e); process.exit(1) })
+          EOF
