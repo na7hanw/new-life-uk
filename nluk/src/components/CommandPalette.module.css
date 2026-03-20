@@ -1,0 +1,195 @@
+/* ── Command Palette ────────────────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  z-index: 300;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  padding: 12vh 16px 0;
+}
+
+.panel {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--bd);
+  flex-shrink: 0;
+}
+
+.searchIcon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--tx);
+  font-family: inherit;
+  min-width: 0;
+}
+
+.input::placeholder {
+  color: var(--t3);
+}
+
+.escBadge {
+  background: var(--bg3);
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  color: var(--t2);
+  padding: 2px 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.escBadge:hover {
+  background: var(--bd);
+}
+
+.list {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 0;
+  flex: 1;
+}
+
+.list:empty {
+  display: none;
+}
+
+.empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--t2);
+  font-size: 0.9rem;
+}
+
+/* cmdk group heading */
+.list [cmdk-group-heading] {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--t3);
+  padding: 8px 16px 4px;
+}
+
+/* cmdk group */
+.list [cmdk-group]:not([hidden]) {
+  padding-bottom: 4px;
+}
+
+.list [cmdk-group] + [cmdk-group] {
+  border-top: 1px solid var(--sep, var(--bd));
+  margin-top: 4px;
+  padding-top: 4px;
+}
+
+/* cmdk item */
+.list [cmdk-item] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.1s;
+}
+
+.list [cmdk-item][aria-selected='true'],
+.list [cmdk-item]:hover {
+  background: var(--ac2);
+}
+
+.list [cmdk-item][aria-selected='true'] .itemTitle {
+  color: var(--ac);
+}
+
+.itemIcon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+
+.itemText {
+  min-width: 0;
+  flex: 1;
+}
+
+.itemTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--tx);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemSub {
+  font-size: 0.75rem;
+  color: var(--t2);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemArrow {
+  color: var(--t3);
+  flex-shrink: 0;
+  font-size: 0.8rem;
+}
+
+/* Keyboard shortcut hint at bottom */
+.footer {
+  border-top: 1px solid var(--bd);
+  padding: 8px 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.footerHint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--t3);
+}
+
+.kbd {
+  background: var(--bg3);
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.68rem;
+  font-family: monospace;
+  color: var(--t2);
+}

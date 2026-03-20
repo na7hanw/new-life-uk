@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ls, lsSet } from '../lib/utils.ts'
 import type { UiStrings } from '../types'
 import styles from './ChecklistWidget.module.css'
@@ -49,8 +50,11 @@ export default function ChecklistWidget({ ui }: ChecklistWidgetProps) {
   const doneCount = completed.length
   const totalCount = CHECKLIST_ITEMS.length
 
+  // Animate widget body expand/collapse and item appearance
+  const [widgetRef] = useAutoAnimate<HTMLDivElement>({ duration: 220 })
+
   return (
-    <div className={`card ${styles.widget}`}>
+    <div className={`card ${styles.widget}`} ref={widgetRef}>
       <button
         className={styles.toggle}
         onClick={() => setExpanded(e => !e)}

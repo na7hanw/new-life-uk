@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { BookOpen, Briefcase, Compass, Settings, ChevronUp, User } from 'lucide-react'
-import { Toaster } from 'sonner'
+import { BookOpen, Briefcase, Compass, Settings, ChevronUp, User, Search } from 'lucide-react'
+import { Toaster, toast } from 'sonner'
 import { useSwipeable } from 'react-swipeable'
+import { useRegisterSW } from 'virtual:pwa-register/react'
 import { useApp } from './context/AppContext.tsx'
 import { LANGS } from './data/ui-strings.ts'
 import { SOS_NUMBERS } from './data/emergency.ts'
@@ -13,6 +14,8 @@ import Logo from './components/Logo.tsx'
 import SOSModal from './components/SOSModal.tsx'
 import OnboardingOverlay, { shouldShowOnboarding } from './components/OnboardingOverlay.tsx'
 import styles from './App.module.css'
+
+const CommandPalette = lazy(() => import('./components/CommandPalette.tsx'))
 
 
 const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
@@ -79,6 +82,26 @@ export default function App() {
     navigator?.vibrate?.(10)
     navigate(path)
   }
+
+  // ── PWA update notification ──
+  const { needRefresh: [needRefresh], updateServiceWorker } = useRegisterSW()
+  useEffect(() => {
+    if (!needRefresh) return
+    toast('New guides and info available', {
+      duration: Infinity,
+      action: { label: 'Update now', onClick: () => updateServiceWorker(true) },
+    })
+  }, [needRefresh, updateServiceWorker])
+
+  // ── Global command palette (Cmd+K / Ctrl+K) ──
+  const [showPalette, setShowPalette] = useState(false)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setShowPalette(p => !p) }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [])
 
   // ── Onboarding — shown once after first language selection ──
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -225,6 +248,7 @@ export default function App() {
         <header className="app-header">
           <div className="header-brand"><Logo size={26} /><h1>{ui.app}</h1></div>
           <div className="header-actions">
+            <button className="btn-settings" onClick={() => setShowPalette(true)} aria-label={ui.search || 'Search everything'} title="Search (⌘K)"><Search size={18} strokeWidth={2} /></button>
             <button className="btn-settings" onClick={() => navigate('/settings')} aria-label={ui.settings}><Settings size={18} strokeWidth={2} /></button>
             <button className="btn-sos" onClick={() => { navigator?.vibrate?.(15); setSOS(true) }} aria-label="Emergency SOS">{ui.sos}</button>
           </div>
@@ -320,6 +344,11 @@ export default function App() {
 
       {/* CONSENT BANNER — shown once on first visit when Sentry is configured */}
       <ConsentBanner ui={ui} />
+
+      {/* COMMAND PALETTE — Cmd+K / search button in header */}
+      <Suspense fallback={null}>
+        <CommandPalette open={showPalette} onClose={() => setShowPalette(false)} />
+      </Suspense>
     </div>
   )
 }
