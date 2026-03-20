@@ -84,6 +84,23 @@ export default function GuidesPage() {
   return (
     <div className="page-enter">
 
+      {/* ── Hero — visible when no search is active ── */}
+      {!search && (
+        <div className={styles.hero}>
+          <div className={styles.heroBadge}>{ui.heroBadge || '🇬🇧 Free · Private · No account needed'}</div>
+          {userStatus ? (
+            <p className={styles.heroSub}>
+              {userStatus === 'asylum-seeker' && '⏳ Showing guides for asylum seekers. Go to Me → change status anytime.'}
+              {userStatus === 'refugee'       && '✅ Guides prioritised for newly recognised refugees.'}
+              {userStatus === 'other-visa'    && '🛂 Guides prioritised for your visa type.'}
+              {userStatus === 'settled'       && '🇬🇧 Guides for settled and pre-settled residents.'}
+            </p>
+          ) : (
+            <p className={styles.heroSub}>{ui.heroSub || 'Step-by-step guides for everything you need in the UK.'}</p>
+          )}
+        </div>
+      )}
+
       <div className="search-bar">
         <Search size={18} strokeWidth={2} className={styles.searchIcon} />
         <input className="search-input" placeholder={ui.search} value={search}

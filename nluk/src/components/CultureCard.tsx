@@ -1,31 +1,67 @@
-import { useState, useId, memo } from 'react'
+import { useState, useId, useRef, memo } from 'react'
 import { ChevronDown } from 'lucide-react'
+import { useTranslatedContent } from '../lib/useTranslation.ts'
 import styles from './CultureCard.module.css'
+
+interface CultureItemContent {
+  title: string
+  body: string
+}
 
 interface CultureCardProps {
   emoji: string
-  title: string
-  body: string
-  onCopy: () => void
-  copied: boolean
+  /** Full i18n content map — must include `en`. Auto-translates to `lang` via MyMemory. */
+  content: Record<string, CultureItemContent>
+  lang: string
   copyLabel: string
   copiedLabel: string
 }
 
-const CultureCard = memo(function CultureCard({ emoji, title, body, onCopy, copied, copyLabel, copiedLabel }: CultureCardProps) {
+/**
+ * CultureCard — collapsible tip card with built-in auto-translation.
+ * Mirrors ResourceCard's translation pattern: useTranslatedContent handles
+ * the MyMemory API call and localStorage caching transparently.
+ */
+const CultureCard = memo(function CultureCard({ emoji, content, lang, copyLabel, copiedLabel }: CultureCardProps) {
   const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const bodyId = useId()
+
+  // id is derived from the stable English title — used as the cache key
+  const id = content.en?.title
+  const [c, translating] = useTranslatedContent<CultureItemContent>(content, lang, id)
+
+  const handleCopy = () => {
+    if (!c) return
+    const text = `${c.title}\n\n${c.body}`
+    navigator.clipboard?.writeText(text).then(() => {
+      setCopied(true)
+      if (copyTimer.current) clearTimeout(copyTimer.current)
+      copyTimer.current = setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
   return (
-    <div className={`${styles.card} ${open ? styles.cardOpen : ''}`}>
-      <button className={styles.header} onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls={bodyId}>
+    <div className={`${styles.card} ${open ? styles.cardOpen : ''}${translating ? ' translating' : ''}`}>
+      <button
+        className={styles.header}
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        aria-controls={bodyId}
+      >
         <span className={styles.icon}>{emoji}</span>
-        <span className={styles.title}>{title}</span>
+        <span className={styles.title}>{c?.title}</span>
         <ChevronDown size={16} strokeWidth={2.5} className={styles.chevron} />
       </button>
       <div className={`${styles.bodyWrapper} ${open ? styles.bodyWrapperOpen : ''}`}>
         <div id={bodyId} className={styles.body}>
-          <p className={styles.bodyText}>{body}</p>
-          <button className={styles.copyBtn} onClick={onCopy} aria-label={copied ? copiedLabel : `Copy: ${title}`}>
+          <p className={styles.bodyText}>{c?.body}</p>
+          <button
+            className={styles.copyBtn}
+            onClick={handleCopy}
+            aria-label={copied ? copiedLabel : `Copy: ${c?.title}`}
+          >
             {copied ? '✅' : '📋'} {copied ? copiedLabel : copyLabel}
           </button>
         </div>
@@ -33,4 +69,5 @@ const CultureCard = memo(function CultureCard({ emoji, title, body, onCopy, copi
     </div>
   )
 })
+
 export default CultureCard
