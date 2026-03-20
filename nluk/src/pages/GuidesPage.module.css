@@ -73,6 +73,9 @@
 /* "For You" category header uses the green accent colour */
 .forYouHeader { color: var(--gn); }
 
+/* "Saved Guides" header uses the accent colour */
+.savedHeader { color: var(--ac); }
+
 /* Card with slightly wider horizontal margin than the default card */
 .cardGutter { margin: 0 var(--gutter) 12px; }
 
