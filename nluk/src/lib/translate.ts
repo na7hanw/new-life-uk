@@ -1,16 +1,58 @@
 // ─── Auto-Translation Service ────────────────────────────────────
 // Uses MyMemory API (free, no API key required, 100+ languages)
 // https://mymemory.translated.net/
-// Translations are cached in localStorage to minimise network calls
-// and work seamlessly offline after first use.
+//
+// Cache: IndexedDB via `idb` (unlimited storage, no 600-entry cap)
+// Concurrency: `p-limit` caps concurrent API requests at 3 to avoid
+//   exceeding MyMemory's free-tier rate limit (~1000 req/day).
+// On first load: migrates any existing localStorage cache automatically.
 
-const STORE_KEY = 'nluk_tx3'
+import { openDB, type IDBPDatabase } from 'idb'
+import pLimit from 'p-limit'
 
-// FNV-1a 32-bit hash constants
+const DB_NAME    = 'nluk-tx'
+const STORE_NAME = 'cache'
+const DB_VERSION = 1
+const OLD_LS_KEY = 'nluk_tx3'
+
+// ── IndexedDB setup ────────────────────────────────────────────────
+let _db: Promise<IDBPDatabase> | null = null
+
+function getDB(): Promise<IDBPDatabase> {
+  if (!_db) {
+    _db = openDB(DB_NAME, DB_VERSION, {
+      upgrade(db) {
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME)
+        }
+      },
+    })
+  }
+  return _db
+}
+
+// ── One-time localStorage → IndexedDB migration ────────────────────
+async function migrateFromLocalStorage(): Promise<void> {
+  try {
+    const raw = localStorage.getItem(OLD_LS_KEY)
+    if (!raw) return
+    const entries = Object.entries(JSON.parse(raw) as Record<string, string>)
+    const db = await getDB()
+    const tx = db.transaction(STORE_NAME, 'readwrite')
+    await Promise.all(entries.map(([k, v]) => tx.store.put(v, k)))
+    await tx.done
+    localStorage.removeItem(OLD_LS_KEY)
+  } catch {
+    // Migration not critical — continue silently
+  }
+}
+
+migrateFromLocalStorage()
+
+// ── FNV-1a 32-bit hash ─────────────────────────────────────────────
 const FNV_OFFSET = 2166136261
 const FNV_PRIME  = 16777619
 
-// FNV-1a 32-bit hash (fast, collision-resistant for short strings)
 function fnv1a(str: string): string {
   let h = FNV_OFFSET
   for (let i = 0; i < str.length; i++) {
@@ -24,41 +66,46 @@ function cacheKey(text: string, lang: string): string {
   return `${lang}:${fnv1a(text)}`
 }
 
-function loadCache(): Record<string, string> {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}') } catch { return {} }
-}
+// ── Rate limiter: max 3 concurrent API requests ────────────────────
+const limit = pLimit(3)
 
-function saveCache(cache: Record<string, string>): void {
-  try {
-    const entries = Object.entries(cache)
-    // Keep at most 600 entries to avoid bloating localStorage
-    const pruned = entries.length > 600
-      ? Object.fromEntries(entries.slice(-480))
-      : cache
-    localStorage.setItem(STORE_KEY, JSON.stringify(pruned))
-  } catch {
-    // Storage full — clear old translation cache and continue
-    try { localStorage.removeItem(STORE_KEY) } catch {}
-  }
-}
+// ── In-memory cache (survives within page session, fast synchronous lookup) ──
+// Sits in front of IDB so repeated calls within a session don't hit IndexedDB.
+const memCache = new Map<string, string>()
 
-// In-flight request deduplication: prevents parallel requests for same text+lang
+// ── In-flight deduplication ────────────────────────────────────────
 const inFlight = new Map<string, Promise<string>>()
 
 /**
  * Translate a single English string into targetLang.
  * Returns the translated text, or the original English on failure.
+ * Results are cached in IndexedDB indefinitely.
  */
 export async function translate(text: string, targetLang: string): Promise<string> {
   if (!text || !text.trim() || targetLang === 'en') return text
 
   const key = cacheKey(text, targetLang)
-  const cache = loadCache()
-  if (cache[key]) return cache[key]
 
+  // 1. Check in-memory cache (synchronous, zero-latency)
+  const memHit = memCache.get(key)
+  if (memHit) return memHit
+
+  // 2. Check IndexedDB cache (survives page reload)
+  try {
+    const db = await getDB()
+    const cached = await db.get(STORE_NAME, key) as string | undefined
+    if (cached) {
+      memCache.set(key, cached)
+      return cached
+    }
+  } catch {
+    // IDB unavailable (e.g. test environment) — fall through to API
+  }
+
+  // Deduplicate: if same key is already being fetched, share the promise
   if (inFlight.has(key)) return inFlight.get(key)!
 
-  const request = (async (): Promise<string> => {
+  const request = limit(async (): Promise<string> => {
     try {
       const controller = new AbortController()
       const timer = setTimeout(() => controller.abort(), 8000)
@@ -71,26 +118,30 @@ export async function translate(text: string, targetLang: string): Promise<strin
 
       if (json.responseStatus === 200 && json.responseData?.translatedText) {
         const translated = json.responseData.translatedText
-        const c = loadCache()
-        c[key] = translated
-        saveCache(c)
+        memCache.set(key, translated)
+        try {
+          const db = await getDB()
+          await db.put(STORE_NAME, translated, key)
+        } catch {
+          // IDB write failed — translation still returned to caller
+        }
         inFlight.delete(key)
         return translated
       }
     } catch {
-      // Timeout or network failure — fall through to English fallback
+      // Timeout, network error, or rate limit — fall through to English
     }
     inFlight.delete(key)
     return text
-  })()
+  })
 
   inFlight.set(key, request)
   return request
 }
 
 /**
- * Translate an array of English strings in parallel.
- * Returns a matching array of translated strings.
+ * Translate an array of English strings with concurrency control.
+ * At most 3 parallel API requests are made at any time.
  */
 export async function translateAll(texts: string[], targetLang: string): Promise<string[]> {
   if (targetLang === 'en') return texts
@@ -126,7 +177,11 @@ export async function translateContentObject<T extends Record<string, unknown>>(
   return out
 }
 
-/** Clear all cached translations (useful for debugging). */
-export function clearTranslationCache(): void {
-  try { localStorage.removeItem(STORE_KEY) } catch {}
+/** Clear all cached translations from both in-memory cache and IndexedDB. */
+export async function clearTranslationCache(): Promise<void> {
+  memCache.clear()
+  try {
+    const db = await getDB()
+    await db.clear(STORE_NAME)
+  } catch {}
 }

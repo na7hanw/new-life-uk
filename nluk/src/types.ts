@@ -241,6 +241,8 @@ export interface AppContextValue {
   setShowLang: (show: boolean) => void
   userStatus: UserStatus
   setUserStatus: (s: UserStatus) => void
+  statusDate: string
+  setStatusDate: (d: string) => void
   bookmarks: string[]
   toggleBookmark: (id: string) => void
   ui: UiStrings
