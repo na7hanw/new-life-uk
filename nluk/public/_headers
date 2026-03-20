@@ -14,7 +14,7 @@
   #   style-src  — unsafe-inline required for CSS-in-JS / CSS Modules runtime
   #   connect-src — self + MyMemory translation API + Sentry error ingest
   #   frame-ancestors — mirrors X-Frame-Options: DENY for modern browsers
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://api.mymemory.translated.net https://*.ingest.sentry.io; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.mymemory.translated.net https://*.ingest.sentry.io https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';
   # Cross-origin isolation headers for SharedArrayBuffer/performance APIs
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin

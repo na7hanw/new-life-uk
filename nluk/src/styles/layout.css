@@ -199,7 +199,7 @@
   flex-shrink: 0;
   min-width: 44px;
   min-height: 44px;
-  margin-right: -6px;
+  margin-inline-end: -6px;
 }
 .bookmark-btn.active {
   color: var(--ac3);
