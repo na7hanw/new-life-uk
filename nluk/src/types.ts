@@ -72,6 +72,10 @@ export interface SaveItem {
   cat?: string
   /** Optional: id of a related guide in guides.ts for cross-navigation */
   guideId?: string
+  /** Trust level for the resource (official | charity | commercial | community) */
+  trustLevel?: string
+  /** Human-readable date of last verification */
+  lastVerified?: string
 }
 
 export interface HelplineEntry {
@@ -236,6 +240,11 @@ export interface UiStrings {
   // My Checklist feature
   myChecklist?: string
   checklistIntro?: string
+  // Dynamic labels used in sub-tabs / sections
+  appsTab?: string
+  trending?: string
+  nextSteps?: string
+  relatedGuides?: string
   [key: string]: unknown
 }
 

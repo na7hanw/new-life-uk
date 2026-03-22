@@ -49,8 +49,8 @@ export async function initSentry(): Promise<void> {
       // Strip user context entirely — we never set it but belt-and-braces
       delete event.user
       // Remove breadcrumbs that contain navigation URLs or user-agent hints
-      if (event.breadcrumbs?.values) {
-        event.breadcrumbs.values = event.breadcrumbs.values
+      if (Array.isArray(event.breadcrumbs)) {
+        event.breadcrumbs = (event.breadcrumbs as Array<{ category?: string; data?: unknown }>)
           .filter(b => b.category !== 'navigation' && b.category !== 'ui.click')
           .map(b => {
             // Strip any data payload from remaining breadcrumbs

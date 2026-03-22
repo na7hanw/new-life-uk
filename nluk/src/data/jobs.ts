@@ -514,7 +514,7 @@ const JOB_IDS = [
   'security-officer', 'teaching-assistant', 'barista', 'hotel-hospitality',
   'support-worker', 'retail-assistant', 'private-hire-driver', 'refugee-employment-support',
 ]
-JOB_IDS.forEach((id, i) => { if (JOBS[i]) (JOBS[i] as Record<string, unknown>).id = id })
+JOB_IDS.forEach((id, i) => { if (JOBS[i]) ((JOBS[i] as unknown) as Record<string, unknown>).id = id })
 export const JOB_MAP: Record<string, Job> = Object.fromEntries(
   (JOBS as (Job & { id: string })[]).filter(j => j.id).map(j => [j.id, j])
 )

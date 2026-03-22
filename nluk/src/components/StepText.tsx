@@ -21,7 +21,8 @@ DOMPurify.addHook('afterSanitizeAttributes', (node) => {
 })
 
 // DOMPurify config for marked output — allows inline elements only
-const PURIFY_CONFIG: DOMPurify.Config = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const PURIFY_CONFIG: Record<string, any> = {
   ALLOWED_TAGS: ['a', 'strong', 'em', 'code', 'span'],
   ALLOWED_ATTR: ['href', 'rel', 'class'],
   ADD_ATTR: ['target'],

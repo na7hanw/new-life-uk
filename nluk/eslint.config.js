@@ -29,11 +29,20 @@ const sharedGlobals = {
   HTMLInputElement: 'readonly',
   HTMLElement: 'readonly',
   HTMLDivElement: 'readonly',
+  HTMLAnchorElement: 'readonly',
   URL: 'readonly',
   KeyboardEvent: 'readonly',
   TouchList: 'readonly',
   Touch: 'readonly',
+  TouchEvent: 'readonly',
   ServiceWorkerRegistration: 'readonly',
+  // Encoding
+  btoa: 'readonly',
+  atob: 'readonly',
+  // Fetch / Abort types
+  AbortSignal: 'readonly',
+  HeadersInit: 'readonly',
+  RequestInit: 'readonly',
 }
 
 export default [
