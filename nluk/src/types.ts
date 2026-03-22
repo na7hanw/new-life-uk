@@ -24,6 +24,21 @@ export type SosEntry = z.infer<typeof SOSSchema>
 
 export type UserStatus = 'asylum-seeker' | 'refugee' | 'other-visa' | 'settled' | ''
 
+/** What the user most wants to do next in the UK */
+export type UserAmbition = 'work' | 'study' | 'business' | 'volunteer' | ''
+
+/** Sector/industry the user is interested in working in */
+export type UserSector =
+  | 'healthcare'
+  | 'it'
+  | 'construction'
+  | 'care'
+  | 'hospitality'
+  | 'retail'
+  | 'education'
+  | 'admin'
+  | ''
+
 export interface Lang {
   code: string
   native: string
@@ -245,6 +260,28 @@ export interface UiStrings {
   trending?: string
   nextSteps?: string
   relatedGuides?: string
+  // Batch 3 — profile personalization
+  profileAmbitionLabel?: string
+  profileSectorLabel?: string
+  profileDocsLabel?: string
+  profileAmbitionWork?: string
+  profileAmbitionStudy?: string
+  profileAmbitionBusiness?: string
+  profileAmbitionVolunteer?: string
+  profileSectorHealthcare?: string
+  profileSectorIt?: string
+  profileSectorConstruction?: string
+  profileSectorCare?: string
+  profileSectorHospitality?: string
+  profileSectorRetail?: string
+  profileSectorEducation?: string
+  profileSectorAdmin?: string
+  profileDocsBrp?: string
+  profileDocsEvisa?: string
+  profileDocsPassport?: string
+  profileDocsEeaId?: string
+  profileDocsTravelDoc?: string
+  profileDocsHoLetter?: string
   [key: string]: unknown
 }
 
@@ -261,6 +298,15 @@ export interface AppContextValue {
   setUserStatus: (s: UserStatus) => void
   statusDate: string
   setStatusDate: (d: string) => void
+  /** What the user most wants to do next in the UK */
+  userAmbition: UserAmbition
+  setUserAmbition: (a: UserAmbition) => void
+  /** Sector/industry the user is most interested in */
+  userSector: UserSector
+  setUserSector: (s: UserSector) => void
+  /** Document IDs the user confirms they hold */
+  documentsHeld: string[]
+  toggleDocument: (docId: string) => void
   bookmarks: string[]
   toggleBookmark: (id: string) => void
   ui: UiStrings
