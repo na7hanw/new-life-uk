@@ -4,12 +4,17 @@
  * Critical: this app gives life-changing advice; a broken link matters.
  */
 import { describe, it, expect } from 'vitest'
-import { GUIDES, GUIDE_MAP, GUIDE_PRIORITY, GUIDE_LAST_UPDATED } from '../data/guides.ts'
+import { GUIDES, GUIDE_MAP, GUIDE_PRIORITY, GUIDE_LAST_UPDATED, GUIDE_TRUST_LEVEL, GUIDE_SOURCE_URL, GUIDE_RELATED } from '../data/guides.ts'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
 import { SOS_NUMBERS } from '../data/emergency.ts'
-import { APPS } from '../data/apps.ts'
+import { APPS, APP_TRUST_LEVEL } from '../data/apps.ts'
 import { CULTURE } from '../data/culture.ts'
 import { CHECKLIST_ITEMS } from '../components/ChecklistWidget.tsx'
+
+const BUSINESS_MONEY_GUIDE_IDS = [
+  'sole-trader', 'limited-company', 'home-business', 'business-records',
+  'companies-house-id', 'cic', 'before-you-invest', 'scam-warnings',
+]
 
 // ─── Guides ───────────────────────────────────────────────────────
 
@@ -203,6 +208,130 @@ describe('cross-link integrity — apps.ts guideIds', () => {
           GUIDE_MAP[app.guideId],
           `App "${app.content?.en?.title}" references unknown guideId: "${app.guideId}"`
         ).toBeTruthy()
+      }
+    }
+  })
+})
+
+// ─── Business & Money guides ─────────────────────────────────────────────────
+
+describe('Business & Money guides — content integrity', () => {
+  it('all Business & Money guide IDs exist in GUIDE_MAP', () => {
+    for (const id of BUSINESS_MONEY_GUIDE_IDS) {
+      expect(
+        GUIDE_MAP[id],
+        `Business & Money guide "${id}" is missing from GUIDE_MAP`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all Business & Money guides have English title and steps', () => {
+    for (const id of BUSINESS_MONEY_GUIDE_IDS) {
+      const g = GUIDE_MAP[id]
+      if (!g) continue
+      expect(g.content?.en?.title, `${id} missing English title`).toBeTruthy()
+      expect((g.content?.en?.steps?.length ?? 0), `${id} has no steps`).toBeGreaterThan(0)
+    }
+  })
+
+  it('all Business & Money guides have a sourceUrl', () => {
+    for (const id of BUSINESS_MONEY_GUIDE_IDS) {
+      expect(
+        GUIDE_SOURCE_URL[id],
+        `Business & Money guide "${id}" is missing a GUIDE_SOURCE_URL`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all Business & Money guides have a trust level', () => {
+    for (const id of BUSINESS_MONEY_GUIDE_IDS) {
+      expect(
+        GUIDE_TRUST_LEVEL[id],
+        `Business & Money guide "${id}" is missing a GUIDE_TRUST_LEVEL`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all Business & Money guides have a lastVerified date', () => {
+    for (const id of BUSINESS_MONEY_GUIDE_IDS) {
+      const verified = GUIDE_LAST_UPDATED[id as keyof typeof GUIDE_LAST_UPDATED]
+      expect(
+        verified,
+        `Business & Money guide "${id}" is missing a GUIDE_LAST_UPDATED entry`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all Business & Money guides have at least one official link', () => {
+    for (const id of BUSINESS_MONEY_GUIDE_IDS) {
+      const g = GUIDE_MAP[id]
+      if (!g || !g.links) continue
+      const hasGovOrOfficial = g.links.some(l =>
+        l.url.includes('gov.uk') || l.url.includes('fca.org.uk') ||
+        l.url.includes('actionfraud') || l.url.includes('moneyhelper') ||
+        l.url.includes('cicassociation') || l.url.includes('nationalcareers')
+      )
+      expect(
+        hasGovOrOfficial,
+        `Business & Money guide "${id}" has no official (gov.uk / fca.org.uk) link`
+      ).toBe(true)
+    }
+  })
+})
+
+// ─── GUIDE_TRUST_LEVEL integrity ─────────────────────────────────────────────
+
+describe('GUIDE_TRUST_LEVEL — integrity', () => {
+  it('every id in GUIDE_TRUST_LEVEL exists in GUIDES', () => {
+    const ids = new Set(GUIDES.map(g => g.id))
+    for (const id of Object.keys(GUIDE_TRUST_LEVEL)) {
+      expect(ids.has(id), `GUIDE_TRUST_LEVEL contains unknown guide id: "${id}"`).toBe(true)
+    }
+  })
+
+  it('GUIDE_TRUST_LEVEL only contains valid values', () => {
+    const valid = new Set(['official', 'ngo', 'charity', 'commercial'])
+    for (const [id, level] of Object.entries(GUIDE_TRUST_LEVEL)) {
+      expect(
+        valid.has(level),
+        `GUIDE_TRUST_LEVEL["${id}"] = "${level}" is not a valid trust level`
+      ).toBe(true)
+    }
+  })
+})
+
+// ─── APP_TRUST_LEVEL integrity ───────────────────────────────────────────────
+
+describe('APP_TRUST_LEVEL — integrity', () => {
+  it('every title in APP_TRUST_LEVEL exists in APPS', () => {
+    const appTitles = new Set(APPS.map(a => a.content?.en?.title))
+    for (const title of Object.keys(APP_TRUST_LEVEL)) {
+      expect(
+        appTitles.has(title),
+        `APP_TRUST_LEVEL contains unknown app: "${title}"`
+      ).toBe(true)
+    }
+  })
+})
+
+// ─── GUIDE_RELATED integrity ─────────────────────────────────────────────────
+
+describe('GUIDE_RELATED — cross-link integrity', () => {
+  it('every id in GUIDE_RELATED exists in GUIDES', () => {
+    const ids = new Set(GUIDES.map(g => g.id))
+    for (const id of Object.keys(GUIDE_RELATED)) {
+      expect(ids.has(id), `GUIDE_RELATED key "${id}" is not a known guide`).toBe(true)
+    }
+  })
+
+  it('every related guide id in GUIDE_RELATED exists in GUIDES', () => {
+    const ids = new Set(GUIDES.map(g => g.id))
+    for (const [id, related] of Object.entries(GUIDE_RELATED)) {
+      for (const relId of related) {
+        expect(
+          ids.has(relId),
+          `GUIDE_RELATED["${id}"] references unknown guide: "${relId}"`
+        ).toBe(true)
       }
     }
   })

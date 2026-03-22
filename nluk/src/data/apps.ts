@@ -3,6 +3,10 @@ import type { SaveItem } from '../types'
 /**
  * Essential apps every new arrival in the UK should install or bookmark.
  * Linked list displayed on the AppsPage (/saves/apps).
+ *
+ * Governance: each high-trust item is cross-referenced in APP_SOURCE_URL
+ * and APP_TRUST_LEVEL at the bottom of this file. New official / financial /
+ * identity items must be added to both maps when added to APPS.
  */
 export const APPS: SaveItem[] = [
   // ─── Health ───────────────────────────────────────────────────
@@ -211,4 +215,176 @@ export const APPS: SaveItem[] = [
     content: { en: { title: "Nextdoor — Your Local Neighbourhood", desc: "Connect with people in your immediate neighbourhood. Neighbours give away free furniture, warn about local scams, share recommendations for local services, and organise community events. The single fastest way to get embedded in your local community." } },
     url: "https://nextdoor.co.uk",
   },
+  // ─── Official Identity & Login ────────────────────────────────
+  {
+    icon: "🔐",
+    cat: "Identity & Login",
+    content: { en: { title: "GOV.UK One Login", desc: "The UK government's single sign-on system for all GOV.UK services. Use it to prove your identity online for Companies House director verification, HMRC Self Assessment, DWP benefits, and dozens of other services. Create a free account with your email, a password, and a photo ID." } },
+    url: "https://www.gov.uk/sign-in",
+    guideId: "companies-house-id",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "📋",
+    cat: "Identity & Login",
+    content: { en: { title: "Companies House — Register & File", desc: "The official UK company registration service. Register a new limited company (£50), file annual accounts and Confirmation Statements, and complete director identity verification. All directors must verify their identity through this service from 2025." } },
+    url: "https://www.gov.uk/register-your-company",
+    guideId: "limited-company",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  // ─── Digital ID / Proof of Age ────────────────────────────────
+  {
+    icon: "🪪",
+    cat: "Identity & Login",
+    content: { en: { title: "Yoti — Digital ID App", desc: "Free UK-accepted digital ID app. Add your passport or driving licence once and use Yoti as a digital proof of age or identity at participating venues, age-restricted purchases, and online services. Accepted by many UK organisations as a valid form of ID." } },
+    url: "https://www.yoti.com",
+    trustLevel: "commercial",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "🆔",
+    cat: "Identity & Login",
+    content: { en: { title: "EasyID — Digital Proof of Age", desc: "Free digital ID app for proving your age in UK shops, bars, and online. Add your passport or driving licence. Accepted by many UK retailers and venues under the PASS (Proof of Age Standards Scheme). Useful if you do not carry your passport." } },
+    url: "https://easyid.com",
+    trustLevel: "commercial",
+    lastVerified: "March 2026",
+  },
+  // ─── Training Platforms ───────────────────────────────────────
+  {
+    icon: "🎓",
+    cat: "Training",
+    content: { en: { title: "National Careers Service", desc: "Free government career advice service. Get a personalised action plan, explore career options, find courses and training, and get CV and interview help. Available online or via phone (0800 100 900, free). Also see in-person sessions at Jobcentre Plus." } },
+    url: "https://nationalcareers.service.gov.uk",
+    guideId: "uk-cv",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "📖",
+    cat: "Training",
+    content: { en: { title: "Free Courses for Jobs — GOV.UK", desc: "Hundreds of free Level 2 and Level 3 qualifications for adults in England who do not already have A levels or equivalent. Covers healthcare, construction, engineering, digital, business, and more. Funded by the government — free if eligible." } },
+    url: "https://www.gov.uk/guidance/free-courses-for-jobs",
+    guideId: "esol-education",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "💡",
+    cat: "Training",
+    content: { en: { title: "Skills Bootcamps — GOV.UK", desc: "Intensive training programmes (typically 12–16 weeks) in digital, green energy, construction, HGV driving, and engineering. Free for adults aged 19+ in England. Guaranteed job interview on completion. Especially good for career changers." } },
+    url: "https://www.gov.uk/guidance/find-a-skills-bootcamp",
+    guideId: "esol-education",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "🏆",
+    cat: "Training",
+    content: { en: { title: "Jobskilla — Free Skills Training", desc: "Free skills platform offering short online training in digital marketing, employability, and business skills. Courses take 1–8 hours. Includes a CV builder and job search tools. Particularly useful for people building their first UK work history." } },
+    url: "https://www.jobskilla.com",
+    trustLevel: "commercial",
+    lastVerified: "March 2026",
+  },
+  // ─── Business Setup / Self-Employment ────────────────────────
+  {
+    icon: "🧾",
+    cat: "Business & Money",
+    content: { en: { title: "Register as Self-Employed — HMRC", desc: "Register as a sole trader or self-employed person with HMRC online. Free, takes 30 minutes. Do it as soon as you start trading — you must register by 5 October in your second year of trading or face a fine." } },
+    url: "https://www.gov.uk/set-up-sole-trader",
+    guideId: "sole-trader",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "🏢",
+    cat: "Business & Money",
+    content: { en: { title: "Companies House — Register a Company", desc: "Register a UK limited company online for £50. Takes 24 hours. Includes guided setup for company name, address, directors, shareholders, and SIC code. Directors must also complete identity verification via GOV.UK One Login." } },
+    url: "https://www.gov.uk/register-your-company",
+    guideId: "limited-company",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "🤲",
+    cat: "Business & Money",
+    content: { en: { title: "Set Up a Social Enterprise / CIC", desc: "Information and application process for setting up a Community Interest Company (CIC) — a limited company structure designed for social enterprises and community businesses. Includes the CIC36 application form and CIC Regulator guidance." } },
+    url: "https://www.gov.uk/set-up-a-social-enterprise",
+    guideId: "cic",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  // ─── Money Safety ─────────────────────────────────────────────
+  {
+    icon: "🛡️",
+    cat: "Business & Money",
+    content: { en: { title: "MoneyHelper — Free Money Guidance", desc: "Free, impartial money and pensions guidance backed by the UK government. Covers budgeting, debt, savings, pensions, scams, and financial planning. Available in multiple languages. Delivered by the Money and Pensions Service (MaPS)." } },
+    url: "https://www.moneyhelper.org.uk",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "🔍",
+    cat: "Business & Money",
+    content: { en: { title: "FCA Financial Services Register", desc: "Check whether a financial firm or adviser is regulated by the FCA (Financial Conduct Authority) before trusting them with your money. Takes 60 seconds. If they are not on this register, do not send them money." } },
+    url: "https://register.fca.org.uk",
+    guideId: "before-you-invest",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "🚨",
+    cat: "Business & Money",
+    content: { en: { title: "Action Fraud — Report Scams", desc: "The UK's national reporting centre for fraud and cybercrime. Report if you have been scammed or are suspicious of a firm. Call 0300 123 2040 (24/7) or report online. Also check the FCA ScamSmart site for investment fraud." } },
+    url: "https://www.actionfraud.police.uk",
+    guideId: "scam-warnings",
+    trustLevel: "official",
+    lastVerified: "March 2026",
+  },
 ]
+
+// ─── Official source URLs for apps/resources ─────────────────────────────────
+// Enforced by tests: every high-risk app must appear here.
+export const APP_SOURCE_URL: Record<string, string> = {
+  'GOV.UK One Login':                       'https://www.gov.uk/sign-in',
+  'Companies House — Register & File':       'https://www.gov.uk/register-your-company',
+  'National Careers Service':               'https://nationalcareers.service.gov.uk',
+  'Free Courses for Jobs — GOV.UK':         'https://www.gov.uk/guidance/free-courses-for-jobs',
+  'Skills Bootcamps — GOV.UK':              'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+  'Register as Self-Employed — HMRC':       'https://www.gov.uk/set-up-sole-trader',
+  'Companies House — Register a Company':   'https://www.gov.uk/register-your-company',
+  'Set Up a Social Enterprise / CIC':       'https://www.gov.uk/set-up-a-social-enterprise',
+  'MoneyHelper — Free Money Guidance':      'https://www.moneyhelper.org.uk',
+  'FCA Financial Services Register':        'https://register.fca.org.uk',
+  'Action Fraud — Report Scams':            'https://www.actionfraud.police.uk',
+}
+
+// ─── Trust level for apps/resources ──────────────────────────────────────────
+// 'official' = GOV.UK / NHS / FCA / statutory body
+// 'ngo'       = registered charity or non-profit
+// 'charity'   = specifically Charity Commission registered
+// 'commercial' = private company (may still be reputable)
+export const APP_TRUST_LEVEL: Record<string, 'official' | 'ngo' | 'charity' | 'commercial'> = {
+  'GOV.UK One Login':                       'official',
+  'Companies House — Register & File':       'official',
+  'Yoti — Digital ID App':                  'commercial',
+  'EasyID — Digital Proof of Age':          'commercial',
+  'National Careers Service':               'official',
+  'Free Courses for Jobs — GOV.UK':         'official',
+  'Skills Bootcamps — GOV.UK':              'official',
+  'Jobskilla — Free Skills Training':       'commercial',
+  'Register as Self-Employed — HMRC':       'official',
+  'Companies House — Register a Company':   'official',
+  'Set Up a Social Enterprise / CIC':       'official',
+  'MoneyHelper — Free Money Guidance':      'official',
+  'FCA Financial Services Register':        'official',
+  'Action Fraud — Report Scams':            'official',
+  // Existing apps
+  'NHS App':                                'official',
+  'NHS 111 Online — Urgent Health Advice':  'official',
+  'Universal Credit — Manage Your Claim':   'official',
+  'UKVI — Check Your Immigration Status':   'official',
+  'Citizens Advice':                        'charity',
+  'NHS Talking Therapies — Self-Refer':     'official',
+}
