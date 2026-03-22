@@ -26,8 +26,9 @@ const CareerDetail = lazy(() => import('./pages/CareerDetail.tsx'))
 const JobDetail    = lazy(() => import('./pages/JobDetail.tsx'))
 const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
 const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
-const ProfilePage  = lazy(() => import('./pages/ProfilePage.tsx'))
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage.tsx'))
+const ProfilePage       = lazy(() => import('./pages/ProfilePage.tsx'))
+const DocumentScanner   = lazy(() => import('./pages/DocumentScanner.tsx'))
+const NotFoundPage      = lazy(() => import('./pages/NotFoundPage.tsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
@@ -301,6 +302,7 @@ export default function App() {
                 <Route path="/settings" element={<MorePage />} />
                 <Route path="/more" element={<Navigate to="/settings" replace />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/scan" element={<DocumentScanner />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </div>
