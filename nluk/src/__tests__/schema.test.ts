@@ -1,12 +1,42 @@
 /**
  * Content schema validation using Zod.
- * Ensures guide/cert/career data is structurally valid before it reaches users.
+ * Ensures guide/cert/career/app data is structurally valid before it reaches users.
  */
 import { describe, it, expect } from 'vitest'
 import { CERTS, CAREERS, CERT_SOURCE_URL, CAREER_SOURCE_URL } from '../data/jobs.ts'
-import { GUIDE_MAP, GUIDE_SOURCE_URL } from '../data/guides.ts'
+import { GUIDE_MAP, GUIDE_SOURCE_URL, GUIDE_TRUST_LEVEL } from '../data/guides.ts'
+import { APPS, APP_SOURCE_URL, APP_TRUST_LEVEL } from '../data/apps.ts'
 import { SOS_NUMBERS } from '../data/emergency.ts'
-import { GuideSchema, CertSchema, CareerSchema, SOSSchema } from '../lib/schema.ts'
+import { GuideSchema, CertSchema, CareerSchema, SOSSchema, SaveItemSchema } from '../lib/schema.ts'
+
+/** Guide IDs where financial, legal, or immigration advice is given. */
+const HIGH_RISK_GUIDE_IDS = [
+  // Immigration
+  'asylum-waiting', 'evisa', 'sharecode', 'permission-to-work', 'ilr', 'move-on', 'nrpf',
+  // Financial
+  'uc', 'bank', 'credit-score', 'tax', 'ni', 'investing',
+  // Business & Money
+  'sole-trader', 'limited-company', 'home-business', 'business-records',
+  'companies-house-id', 'cic', 'before-you-invest', 'scam-warnings',
+]
+
+/** App titles that deal with official identity, financial, or legal services. */
+const HIGH_RISK_APP_TITLES = [
+  'GOV.UK One Login',
+  'Companies House — Register & File',
+  'National Careers Service',
+  'Free Courses for Jobs — GOV.UK',
+  'Skills Bootcamps — GOV.UK',
+  'Register as Self-Employed — HMRC',
+  'Companies House — Register a Company',
+  'Set Up a Social Enterprise / CIC',
+  'MoneyHelper — Free Money Guidance',
+  'FCA Financial Services Register',
+  'Action Fraud — Report Scams',
+  'NHS App',
+  'Universal Credit — Manage Your Claim',
+  'UKVI — Check Your Immigration Status',
+]
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
@@ -115,6 +145,89 @@ describe('Emergency contacts schema', () => {
       if (!result.success) {
         throw new Error(`SOS entry "${entry.name}" failed: ${result.error.message}`)
       }
+    }
+  })
+})
+
+// ─── SaveItem (apps) schema ───────────────────────────────────────────────────
+
+describe('Apps / SaveItem schema', () => {
+  it('all apps pass SaveItem schema validation', () => {
+    expect(APPS.length).toBeGreaterThan(0)
+    for (const app of APPS) {
+      const result = SaveItemSchema.safeParse(app)
+      if (!result.success) {
+        throw new Error(`App "${app.content?.en?.title}" failed: ${result.error.message}`)
+      }
+    }
+  })
+
+  it('all app URLs are valid https URLs', () => {
+    for (const [title, url] of Object.entries(APP_SOURCE_URL)) {
+      expect(url, `App "${title}" sourceUrl must start with https://`).toMatch(/^https:\/\//)
+    }
+  })
+})
+
+// ─── Trust metadata — high-risk guide enforcement ────────────────────────────
+
+describe('Trust metadata — high-risk guides', () => {
+  it('all high-risk guides have a sourceUrl in GUIDE_SOURCE_URL', () => {
+    for (const id of HIGH_RISK_GUIDE_IDS) {
+      expect(
+        GUIDE_SOURCE_URL[id],
+        `High-risk guide "${id}" is missing a GUIDE_SOURCE_URL`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all high-risk guide sourceUrls start with https://', () => {
+    for (const id of HIGH_RISK_GUIDE_IDS) {
+      const url = GUIDE_SOURCE_URL[id]
+      if (url) {
+        expect(url, `High-risk guide "${id}" sourceUrl must be https://`).toMatch(/^https:\/\//)
+      }
+    }
+  })
+
+  it('all high-risk guides have a trust level in GUIDE_TRUST_LEVEL', () => {
+    for (const id of HIGH_RISK_GUIDE_IDS) {
+      expect(
+        GUIDE_TRUST_LEVEL[id],
+        `High-risk guide "${id}" is missing a GUIDE_TRUST_LEVEL entry`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all high-risk guides exist in GUIDE_MAP', () => {
+    for (const id of HIGH_RISK_GUIDE_IDS) {
+      expect(
+        GUIDE_MAP[id],
+        `HIGH_RISK_GUIDE_IDS contains unknown id: "${id}"`
+      ).toBeTruthy()
+    }
+  })
+})
+
+// ─── Trust metadata — high-risk app enforcement ──────────────────────────────
+
+describe('Trust metadata — high-risk apps', () => {
+  it('all high-risk app titles have a trust level in APP_TRUST_LEVEL', () => {
+    for (const title of HIGH_RISK_APP_TITLES) {
+      expect(
+        APP_TRUST_LEVEL[title],
+        `High-risk app "${title}" is missing an APP_TRUST_LEVEL entry`
+      ).toBeTruthy()
+    }
+  })
+
+  it('all high-risk apps exist in APPS', () => {
+    const appTitles = new Set(APPS.map(a => a.content?.en?.title))
+    for (const title of HIGH_RISK_APP_TITLES) {
+      expect(
+        appTitles.has(title),
+        `HIGH_RISK_APP_TITLES contains unknown app: "${title}"`
+      ).toBe(true)
     }
   })
 })
