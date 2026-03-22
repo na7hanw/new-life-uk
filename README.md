@@ -15,6 +15,10 @@ A free, multilingual PWA that helps refugees and asylum seekers navigate life in
 - **12 languages** — English, Arabic, Farsi, Urdu, Amharic, Tigrinya, Somali, Oromo, Ukrainian, Romanian, Polish, French
 - **SOS emergency screen** — one tap to see emergency numbers
 - **Jobs & careers** — refugee-friendly employers, certifications, right-to-work guidance
+- **Document Scanner** — photograph or PDF-upload a letter, extract and translate text via Tesseract.js OCR; entirely client-side, nothing uploaded
+- **Postcode lookup** — area, NHS, and constituency info via Postcodes.io (no key required)
+- **Company verifier** — check employer registration on the UK Companies House register (requires `VITE_CH_API_KEY`; falls back to direct website link)
+- **Immigration update feed** — live policy-change feed with action-needed callouts wired into guides and profiles
 - **Offline-ready PWA** — works without internet after first load
 - **Zero tracking** — no analytics, no cookies, no accounts, no data collection
 
@@ -26,9 +30,24 @@ A free, multilingual PWA that helps refugees and asylum seekers navigate life in
 | Routing | HashRouter (works on any CDN) |
 | PWA | vite-plugin-pwa + Workbox |
 | Styling | CSS modules |
-| Testing | Vitest |
+| Testing | Vitest (414 tests) |
+| OCR | Tesseract.js (client-side, no upload) |
+| PDF rendering | pdfjs-dist (lazy-loaded, page 1 → canvas → OCR) |
 | Deploy | Cloudflare Pages (CDN, HTTPS, CSP headers) |
 | CI | GitHub Actions |
+
+## External APIs
+
+All external calls are optional, free-tier, and degrade gracefully.
+
+| API | Key required | Used for |
+|-----|-------------|---------|
+| [Postcodes.io](https://postcodes.io) | No | Postcode → NHS area, constituency, region |
+| [Companies House](https://developer.company-information.service.gov.uk/) | Yes (`VITE_CH_API_KEY`) | Employer verification (anti-scam) — falls back to public website if key absent |
+| [LibreTranslate / Argos](https://libretranslate.com) | Optional (`VITE_LIBRE_ENDPOINT`) | Auto-translation pipeline |
+| [NLLB-200](https://ai.meta.com/research/no-language-left-behind/) | Optional (`VITE_NLLB_ENDPOINT`) | Low-resource language translation (am, ti, so, om) |
+| [Sentry](https://sentry.io) | Optional (`VITE_SENTRY_DSN`) | Runtime error monitoring (user-consented only) |
+| [MediaWiki REST API](https://en.wikipedia.org/api/rest_v1) | No | Glossary term definitions in guide steps |
 
 ## Getting started
 
@@ -53,6 +72,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) — content edits (broken links, new guid
 | File | What it controls |
 |------|----------------|
 | `nluk/src/data/guides.ts` | 26 step-by-step guides |
+| `nluk/src/data/immigration-updates.ts` | Policy change feed (action-needed, important, info) |
 | `nluk/src/data/jobs.ts` | Jobs, certifications, career paths |
 | `nluk/src/data/emergency.ts` | SOS emergency numbers |
 | `nluk/src/data/saves.ts` | Free resources and hidden gems |

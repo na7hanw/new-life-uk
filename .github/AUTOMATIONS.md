@@ -74,19 +74,61 @@ Two bundle-size workflows existed previously:
 
 ### Link-health: enhanced, not replaced
 
-`link-health.yml` (curl-based, daily, data files) and `broken-links.yml` (Lychee, PR gate, markdown files) are kept as **separate** workflows because they serve different purposes:
+`link-health.yml` (curl-based, daily, data files) and `broken-links.yml` (Lychee, PR gate, markdown + TypeScript data files) are kept as **separate** workflows because they serve different purposes:
 
-- `broken-links.yml` — fast PR gate; validates hyperlinks in documentation files
-- `link-health.yml` — daily maintenance; validates live URLs embedded in app data (jobs, guides, saves, apps, culture, emergency)
+- `broken-links.yml` — fast PR gate; validates hyperlinks in documentation and all TypeScript data files
+- `link-health.yml` — daily maintenance; validates live URLs embedded in app data (jobs, guides, saves, apps, culture, emergency, immigration-updates)
 
-`link-health.yml` was enhanced to:
-1. Scan **all six** data files (previously only `jobs.ts` and `guides.ts`)
-2. Include **file and line number** in the issue body so developers can jump directly to the broken reference
-3. Replace the previous issue before opening a new one (anti-spam — at most one open `broken-links` issue at any time)
+`link-health.yml` and `broken-links.yml` were both updated to scan **seven** data files:
+1. `guides.ts` — 26 step-by-step guides
+2. `saves.ts` — free resources and hidden gems
+3. `apps.ts` — essential apps
+4. `jobs.ts` — job listings and career resources
+5. `culture.ts` — culture tips
+6. `emergency.ts` — SOS emergency numbers
+7. `immigration-updates.ts` — official policy change feed *(added March 2026)*
+
+Additional improvements to `link-health.yml`:
+- Include **file and line number** in the issue body so developers can jump directly to the broken reference
+- Replace the previous issue before opening a new one (anti-spam — at most one open `broken-links` issue at any time)
+
+---
+
+## External APIs
+
+These are the external services the app calls at runtime. All degrade gracefully when not configured.
+
+| API | Env var | Required | Used for | Fallback |
+|-----|---------|----------|---------|---------|
+| [Postcodes.io](https://postcodes.io) | — | No | Postcode → NHS area / constituency | Shows "Postcode not found" |
+| [Companies House](https://developer.company-information.service.gov.uk/) | `VITE_CH_API_KEY` | For in-app search | Employer verification (anti-scam) | Shows link to public CH website |
+| [LibreTranslate / Argos](https://libretranslate.com) | `VITE_LIBRE_ENDPOINT` | No | Auto-translation pipeline | Falls back to Bergamot (browser) |
+| [NLLB-200](https://ai.meta.com/research/no-language-left-behind/) | `VITE_NLLB_ENDPOINT` | No | Low-resource languages (am, ti, so, om) | Falls back to LibreTranslate |
+| [MediaWiki REST API](https://en.wikipedia.org/api/rest_v1) | — | No | Glossary term popups in guide steps | Silently omitted |
+| [Sentry](https://sentry.io) | `VITE_SENTRY_DSN` | No | Production error monitoring | App works without it |
+
+> **No MyMemory, no Google Cloud Translation, no paid translation APIs.** All translation uses LibreTranslate/Argos (open-source, self-hostable) with optional NLLB-200 for Amharic, Tigrinya, Somali, and Oromo.
 
 ---
 
 ## Setup Instructions
+
+### 0. Companies House API Key (for employer verification)
+
+**Why:** Enables the in-app "Verify Employer" search in WorkHub. Without it the component shows a link to the public Companies House website (still functional, just not embedded).
+
+**Setup:**
+```bash
+# 1. Register at https://developer.company-information.service.gov.uk/
+# 2. Create an application (free)
+# 3. Copy your API key
+# 4. Add to Cloudflare Pages environment variables:
+#    - Pages project → Settings → Environment variables
+#    - Name: VITE_CH_API_KEY
+#    - Value: (paste your key)
+#    - Scope: Production (and optionally Preview)
+# Rate limit: 600 requests / 5 minutes (free tier, no usage cost)
+```
 
 ### 1. Snyk (Dependency Vulnerability Scanning)
 

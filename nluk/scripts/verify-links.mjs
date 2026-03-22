@@ -38,6 +38,7 @@ const DATA_FILES = [
   'src/data/jobs.ts',
   'src/data/culture.ts',
   'src/data/emergency.ts',
+  'src/data/immigration-updates.ts',
 ].map(f => resolve(ROOT, f))
 
 // Sites known to actively block CI/headless requests — treat any response as OK

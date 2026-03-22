@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
 import { useApp } from '../context/AppContext.tsx'
 import { GITHUB_URL } from '../data/emergency.ts'
@@ -63,6 +63,27 @@ export default function MorePage() {
           <h2 className="page-hero-title">⚙ {ui.settings}</h2>
           <p className="page-hero-sub">{ui.settingsSub}</p>
         </div>
+      </div>
+
+      {/* ── Utility tools ──────────────────────────────────── */}
+      <div className="section-label">🛠 Tools</div>
+      <div className={`card ${styles.cardGutter}`}>
+        <Link
+          to="/scan"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 12,
+            padding: '10px 0', textDecoration: 'none', color: 'var(--t1)',
+          }}
+        >
+          <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>📷</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Document Scanner</div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--t3)' }}>
+              Scan a letter or form — read and translate offline
+            </div>
+          </div>
+          <span style={{ color: 'var(--ac3)', fontWeight: 600 }}>›</span>
+        </Link>
       </div>
 
       <div className="section-label">{ui.theme}</div>

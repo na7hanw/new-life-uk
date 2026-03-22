@@ -19,24 +19,31 @@ const POSTCODES_BASE = 'https://api.postcodes.io'
 // Simple in-memory cache to avoid duplicate lookups
 const _cache = new Map<string, unknown>()
 
+/** Sentinel thrown when the network call itself fails (no connectivity, timeout, etc.) */
+export class PostcodesNetworkError extends Error {
+  constructor() { super('postcodes_network_error') }
+}
+
 async function pcFetch<T>(path: string): Promise<T | null> {
   const cached = _cache.get(path)
   if (cached !== undefined) return cached as T | null
 
+  let res: Response
   try {
-    const res = await fetch(`${POSTCODES_BASE}${path}`)
-    if (res.status === 404) {
-      _cache.set(path, null)
-      return null
-    }
-    if (!res.ok) return null
-    const json = await res.json() as { status: number; result: T }
-    const result = json.status === 200 ? json.result : null
-    _cache.set(path, result)
-    return result
+    res = await fetch(`${POSTCODES_BASE}${path}`)
   } catch {
+    throw new PostcodesNetworkError()
+  }
+
+  if (res.status === 404) {
+    _cache.set(path, null)
     return null
   }
+  if (!res.ok) return null
+  const json = await res.json() as { status: number; result: T }
+  const result = json.status === 200 ? json.result : null
+  _cache.set(path, result)
+  return result
 }
 
 // ── Types ──────────────────────────────────────────────────────────────────────

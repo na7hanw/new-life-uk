@@ -15,6 +15,7 @@ import {
   looksLikePostcode,
   describeArea,
   getNHSArea,
+  PostcodesNetworkError,
   type PostcodeResult,
 } from '../lib/postcodes.ts'
 import type { UiStrings } from '../types'
@@ -49,15 +50,22 @@ export default function PostcodeLookup({ savedPostcode, onSave, ui }: Props) {
     setResult(null)
     setConfirmed(false)
 
-    const data = await lookupPostcode(raw)
-    setLoading(false)
-
-    if (!data) {
-      setError('Postcode not found. Check the spelling and try again.')
-      return
+    try {
+      const data = await lookupPostcode(raw)
+      setLoading(false)
+      if (!data) {
+        setError('Postcode not found. Check the spelling and try again.')
+        return
+      }
+      setResult(data)
+    } catch (err) {
+      setLoading(false)
+      if (err instanceof PostcodesNetworkError) {
+        setError('Could not connect to postcodes.io. Check your internet connection and try again.')
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
     }
-
-    setResult(data)
   }
 
   const handleConfirm = () => {
