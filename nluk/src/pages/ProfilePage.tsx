@@ -5,6 +5,7 @@ import { differenceInDays, addDays, format, parseISO, isValid } from 'date-fns'
 import clsx from 'clsx'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP } from '../data/guides.ts'
+import { getSortedUpdates } from '../data/immigration-updates.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
 import PostcodeLookup from '../components/PostcodeLookup.tsx'
@@ -132,6 +133,14 @@ const SECTOR_OPTIONS: { value: NonNullable<import('../types').UserSector>; emoji
   { value: 'admin',        emoji: '📋', label: 'Admin & Office' },
 ]
 
+/** Guide IDs most relevant to each immigration status — used for update alerts */
+const STATUS_GUIDE_IDS: Record<string, string[]> = {
+  'asylum-seeker': ['asylum-waiting', 'permission-to-work', 'nrpf', 'evisa'],
+  'refugee':       ['move-on', 'uc', 'housing-help', 'family-reunion', 'ilr'],
+  'other-visa':    ['evisa', 'sharecode', 'work-rights', 'ilr'],
+  'settled':       ['ilr', 'evisa', 'sharecode'],
+}
+
 const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
   { id: 'brp',       emoji: '💳', label: 'BRP (Biometric Residence Permit)' },
   { id: 'evisa',     emoji: '📱', label: 'eVisa (UK digital status)' },
@@ -182,6 +191,39 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+
+      {/* ── Action-needed update alerts for user's status ─── */}
+      {userStatus && STATUS_GUIDE_IDS[userStatus] && (() => {
+        const relevantGuides = STATUS_GUIDE_IDS[userStatus]
+        const alerts = getSortedUpdates().filter(u =>
+          u.urgency === 'action-needed' &&
+          u.relatedGuideIds.some(g => relevantGuides.includes(g))
+        )
+        if (alerts.length === 0) return null
+        return (
+          <div style={{ margin: '0 var(--gutter) 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {alerts.map(u => (
+              <div key={u.id} style={{
+                padding: '10px 14px', borderRadius: 10,
+                background: 'color-mix(in srgb, #dc2626 7%, var(--bg2))',
+                border: '1.5px solid color-mix(in srgb, #dc2626 30%, transparent)',
+              }}>
+                <div style={{ fontWeight: 700, fontSize: '0.8rem', color: '#dc2626', marginBottom: 3 }}>
+                  ⚠️ Action needed
+                </div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--t1)', fontWeight: 600, marginBottom: 2 }}>
+                  {u.title}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--t2)' }}>{u.whatToDo}</div>
+                <a href={u.sourceUrl} target="_blank" rel="noopener noreferrer"
+                  style={{ fontSize: '0.76rem', color: '#dc2626', display: 'inline-block', marginTop: 4 }}>
+                  Official source →
+                </a>
+              </div>
+            ))}
+          </div>
+        )
+      })()}
 
       {/* ── My Goals (ambition) ──────────────────────────── */}
       <div className="section-label">{ui.profileAmbitionLabel || '🎯 My Goals'}</div>
