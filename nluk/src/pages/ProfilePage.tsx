@@ -7,6 +7,7 @@ import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP } from '../data/guides.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
+import PostcodeLookup from '../components/PostcodeLookup.tsx'
 import type { UserStatus } from '../types'
 import styles from './ProfilePage.module.css'
 
@@ -141,7 +142,7 @@ const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
 ]
 
 export default function ProfilePage() {
-  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [showStatusPicker, setShowStatusPicker] = useState(false)
 
@@ -238,6 +239,12 @@ export default function ProfilePage() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* ── My Area (postcode → NHS area, council) ────────── */}
+      <div className="section-label">{ui.profileAreaLabel as string || '📍 My Area'}</div>
+      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
+        <PostcodeLookup savedPostcode={userPostcode} onSave={setUserPostcode} ui={ui} />
       </div>
 
       {/* ── Next Steps ───────────────────────────────────── */}

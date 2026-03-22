@@ -307,6 +307,9 @@ export interface AppContextValue {
   /** Document IDs the user confirms they hold */
   documentsHeld: string[]
   toggleDocument: (docId: string) => void
+  /** User's saved UK postcode for local service discovery */
+  userPostcode: string
+  setUserPostcode: (p: string) => void
   bookmarks: string[]
   toggleBookmark: (id: string) => void
   ui: UiStrings

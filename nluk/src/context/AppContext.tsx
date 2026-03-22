@@ -33,6 +33,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [documentsHeld, setDocumentsHeld] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_docs', '[]')) } catch { return [] }
   })
+  const [userPostcode, setUserPostcode] = useState<string>(() => ls('nluk_postcode', ''))
   const [bookmarks, setBookmarks] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_bookmarks', '[]')) } catch { return [] }
   })
@@ -50,6 +51,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => { lsSet('nluk_ambition', userAmbition) }, [userAmbition])
   useEffect(() => { lsSet('nluk_sector', userSector) }, [userSector])
   useEffect(() => { lsSet('nluk_docs', JSON.stringify(documentsHeld)) }, [documentsHeld])
+  useEffect(() => { lsSet('nluk_postcode', userPostcode) }, [userPostcode])
   useEffect(() => { lsSet('nluk_bookmarks', JSON.stringify(bookmarks)) }, [bookmarks])
 
   const toggleDocument = (docId: string) => {
@@ -72,7 +74,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const af = L.rtl ? '‹' : '›'
 
   return (
-    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark, ui, L, dir, fontClass, ab, af }}>
+    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark, ui, L, dir, fontClass, ab, af }}>
       {children}
     </AppContext.Provider>
   )
