@@ -10,11 +10,16 @@
   # HSTS — enforce HTTPS for 2 years including all subdomains
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   # CSP:
-  #   script-src — self only; wasm-unsafe-eval needed by some Vite chunks
+  #   script-src — self only; wasm-unsafe-eval needed by Bergamot WASM engine and Vite chunks
   #   style-src  — unsafe-inline required for CSS-in-JS / CSS Modules runtime
-  #   connect-src — self + MyMemory translation API + Sentry error ingest
+  #   connect-src — self + translation providers (LibreTranslate/Argos public instance;
+  #                 optional self-hosted NLLB endpoint configured via VITE_NLLB_ENDPOINT) +
+  #                 Sentry error ingest + Cloudflare Analytics
+  #                 NOTE: No MyMemory, no Google Cloud Translation, no Azure, no DeepL.
+  #                 All translation is open-source / free. If a self-hosted NLLB endpoint
+  #                 is used, add its origin to connect-src in your Cloudflare Pages headers override.
   #   frame-ancestors — mirrors X-Frame-Options: DENY for modern browsers
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.mymemory.translated.net https://*.ingest.sentry.io https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://translate.argosopentech.com https://*.ingest.sentry.io https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';
   # Cross-origin isolation headers for SharedArrayBuffer/performance APIs
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
