@@ -59,6 +59,9 @@ const sharedGlobals = {
   CanvasRenderingContext2D: 'readonly',
   // Uint8Array (used in PDF rendering)
   Uint8Array: 'readonly',
+  // DOM error types used in fetch/API error handling
+  DOMException: 'readonly',
+  Response: 'readonly',
 }
 
 export default [

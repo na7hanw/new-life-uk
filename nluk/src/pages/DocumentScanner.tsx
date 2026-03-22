@@ -22,30 +22,12 @@ import { useApp } from '../context/AppContext.tsx'
 import { useOCR } from '../lib/useOCR.ts'
 import { translate } from '../lib/translate.ts'
 import { renderPDFFirstPage } from '../lib/renderPDFPage.ts'
+import {
+  MAX_FILE_MB, MAX_FILE_BYTES,
+  isAllowedFile, isSafePreviewUrl,
+} from '../lib/documentScannerSecurity.ts'
 import MachineTranslationBanner from '../components/MachineTranslationBanner.tsx'
 import styles from './DocumentScanner.module.css'
-
-const MAX_FILE_MB = 10
-const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024
-
-/** Explicit MIME allowlist — prevents relying solely on a user-controlled field. */
-const ALLOWED_IMAGE_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/heic',
-  'image/heif',
-  'image/gif',
-  'image/bmp',
-  'image/tiff',
-])
-const ALLOWED_PDF_TYPE = 'application/pdf'
-
-function isAllowedFile(file: File): 'image' | 'pdf' | null {
-  if (ALLOWED_IMAGE_TYPES.has(file.type)) return 'image'
-  if (file.type === ALLOWED_PDF_TYPE) return 'pdf'
-  return null
-}
 
 export default function DocumentScanner() {
   const navigate = useNavigate()
@@ -75,7 +57,7 @@ export default function DocumentScanner() {
     if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current)
     previewUrlRef.current = url
     // Only accept blob: or data: URLs — never external URLs in an img src
-    if (url.startsWith('blob:') || url.startsWith('data:image/')) {
+    if (isSafePreviewUrl(url)) {
       setPreview(url)
     }
   }

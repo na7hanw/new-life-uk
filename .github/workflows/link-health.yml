@@ -32,6 +32,7 @@ jobs:
             nluk/src/data/apps.ts \
             nluk/src/data/culture.ts \
             nluk/src/data/emergency.ts \
+            nluk/src/data/immigration-updates.ts \
             2>/dev/null | \
             sed 's/\([^:]*\):\([0-9]*\):\(.*\)/\1\t\2\t\3/')
 
@@ -108,6 +109,7 @@ jobs:
               'nluk/src/data/apps.ts',
               'nluk/src/data/culture.ts',
               'nluk/src/data/emergency.ts',
+              'nluk/src/data/immigration-updates.ts',
             ].map(f => `\`${f}\``).join(', ');
 
             const body = [

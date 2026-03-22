@@ -1,40 +1,21 @@
 /**
  * DocumentScanner — security regression tests
  *
- * Verifies the MIME allowlist and file-validation logic to prevent:
- *  - Arbitrary file types being passed to the OCR engine
- *  - Excessively large files being accepted
- *  - The preview URL being set to non-blob:/data: schemes
+ * Imports validation logic from documentScannerSecurity.ts — the single
+ * source of truth shared with DocumentScanner.tsx — so these tests stay
+ * in sync with production code automatically.
+ *
+ * Covers:
+ * - MIME allowlist (explicit set-based check, not prefix)
+ * - File size limit
+ * - Preview URL safety (only blob: and data:image/ accepted as img src)
  */
 import { describe, it, expect } from 'vitest'
-
-// ─── Re-export the pure validation logic for unit testing ─────────────────────
-// These constants mirror DocumentScanner.tsx (kept in sync manually).
-
-const MAX_FILE_MB = 10
-const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024
-
-const ALLOWED_IMAGE_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/heic',
-  'image/heif',
-  'image/gif',
-  'image/bmp',
-  'image/tiff',
-])
-const ALLOWED_PDF_TYPE = 'application/pdf'
-
-function isAllowedFile(file: { type: string }): 'image' | 'pdf' | null {
-  if (ALLOWED_IMAGE_TYPES.has(file.type)) return 'image'
-  if (file.type === ALLOWED_PDF_TYPE) return 'pdf'
-  return null
-}
-
-function isSafePreviewUrl(url: string): boolean {
-  return url.startsWith('blob:') || url.startsWith('data:image/')
-}
+import {
+  MAX_FILE_BYTES, MAX_FILE_MB,
+  isAllowedFile,
+  isSafePreviewUrl,
+} from '../lib/documentScannerSecurity.ts'
 
 // ─── MIME allowlist tests ─────────────────────────────────────────────────────
 
@@ -91,14 +72,16 @@ describe('DocumentScanner — MIME allowlist', () => {
 // ─── File size tests ──────────────────────────────────────────────────────────
 
 describe('DocumentScanner — file size limit', () => {
-  it('allows files exactly at the limit', () => {
-    expect(MAX_FILE_BYTES).toBe(MAX_FILE_BYTES)  // 10 MB
-    // A file of exactly MAX_FILE_BYTES is allowed (not strictly greater)
-    expect(MAX_FILE_BYTES > 0).toBe(true)
-  })
-
   it('MAX_FILE_BYTES is 10 MB', () => {
     expect(MAX_FILE_BYTES).toBe(10 * 1024 * 1024)
+  })
+
+  it('MAX_FILE_MB is 10', () => {
+    expect(MAX_FILE_MB).toBe(10)
+  })
+
+  it('MAX_FILE_BYTES equals MAX_FILE_MB × 1024 × 1024', () => {
+    expect(MAX_FILE_BYTES).toBe(MAX_FILE_MB * 1024 * 1024)
   })
 })
 

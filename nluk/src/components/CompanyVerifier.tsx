@@ -9,7 +9,7 @@
  */
 import { useState, useRef, type KeyboardEvent } from 'react'
 import { Search } from 'lucide-react'
-import { searchCompanies, describeCompanyStatus, formatCHAddress } from '../lib/companiesHouse.ts'
+import { searchCompanies, describeCompanyStatus, formatCHAddress, CH_KEY_AVAILABLE, CH_PUBLIC_SEARCH_URL } from '../lib/companiesHouse.ts'
 import type { CHSearchResult } from '../lib/companiesHouse.ts'
 import type { UiStrings } from '../types'
 import styles from './CompanyVerifier.module.css'
@@ -38,10 +38,16 @@ export default function CompanyVerifier({ ui, dir = 'ltr' }: Props) {
     setResults(null)
 
     try {
-      const items = await searchCompanies(q, 8)
+      const items = await searchCompanies(q, 8, abortRef.current.signal)
       setResults(items)
-    } catch {
-      setError('Could not reach Companies House. Check your connection and try again.')
+    } catch (err) {
+      if (err instanceof Error && err.message === 'CH_AUTH_REQUIRED') {
+        setError('__AUTH__')
+      } else if (err instanceof DOMException && err.name === 'AbortError') {
+        // request cancelled — ignore
+      } else {
+        setError('Could not reach Companies House. Check your connection and try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -53,6 +59,43 @@ export default function CompanyVerifier({ ui, dir = 'ltr' }: Props) {
 
   return (
     <div className={styles.wrap}>
+      {/* ── No-key fallback ──────────────────────────────────────── */}
+      {!CH_KEY_AVAILABLE && (
+        <div className={styles.tip} style={{ background: 'color-mix(in srgb, #f59e0b 8%, var(--bg2))', borderLeft: '3px solid #f59e0b' }}>
+          <span className={styles.tipIcon}>🔍</span>
+          <p className={styles.tipText}>
+            <strong>In-app search requires a Companies House API key.</strong>{' '}
+            You can still search the official register directly — it&rsquo;s free and instant:
+          </p>
+          <a
+            href={`${CH_PUBLIC_SEARCH_URL}/search?q=`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-block', marginTop: 6, fontWeight: 600, color: 'var(--ac3)', fontSize: '0.88rem' }}
+          >
+            Search Companies House website →
+          </a>
+        </div>
+      )}
+
+      {/* ── 401 auth error fallback ───────────────────────────────── */}
+      {error === '__AUTH__' && (
+        <div className={styles.tip} style={{ background: 'color-mix(in srgb, #f59e0b 8%, var(--bg2))', borderLeft: '3px solid #f59e0b' }}>
+          <span className={styles.tipIcon}>🔑</span>
+          <p className={styles.tipText}>
+            API authentication failed. Search the official register instead:
+          </p>
+          <a
+            href={`${CH_PUBLIC_SEARCH_URL}/search?q=${encodeURIComponent(query)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-block', marginTop: 6, fontWeight: 600, color: 'var(--ac3)', fontSize: '0.88rem' }}
+          >
+            Search &ldquo;{query}&rdquo; on Companies House →
+          </a>
+        </div>
+      )}
+
       {/* ── Anti-scam tip ─────────────────────────────────────── */}
       <div className={styles.tip}>
         <span className={styles.tipIcon}>🛡️</span>
@@ -103,7 +146,7 @@ export default function CompanyVerifier({ ui, dir = 'ltr' }: Props) {
       )}
 
       {/* ── Error ─────────────────────────────────────────────── */}
-      {error && (
+      {error && error !== '__AUTH__' && (
         <div className={styles.errorBox}>{error}</div>
       )}
 

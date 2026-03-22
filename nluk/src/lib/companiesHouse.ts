@@ -19,6 +19,12 @@
 const CH_BASE_URL = 'https://api.company-information.service.gov.uk'
 const CH_API_KEY: string = import.meta.env?.VITE_CH_API_KEY as string ?? ''
 
+/** True when an API key is configured for this deployment. */
+export const CH_KEY_AVAILABLE = Boolean(CH_API_KEY)
+
+/** Direct URL to the Companies House public search — used as fallback when no key. */
+export const CH_PUBLIC_SEARCH_URL = 'https://find-and-update.company-information.service.gov.uk'
+
 // Simple in-memory cache to avoid duplicate requests
 const _cache = new Map<string, unknown>()
 
@@ -30,15 +36,17 @@ function chHeaders(): HeadersInit {
   }
 }
 
-async function chFetch<T>(path: string): Promise<T> {
+async function chFetch<T>(path: string, signal?: AbortSignal): Promise<T> {
   const cached = _cache.get(path)
   if (cached) return cached as T
 
   const res = await fetch(`${CH_BASE_URL}${path}`, {
     headers: chHeaders(),
+    signal,
   })
 
   if (res.status === 404) return null as T
+  if (res.status === 401) throw new Error('CH_AUTH_REQUIRED')
   if (!res.ok) throw new Error(`Companies House API error: ${res.status}`)
 
   const data = await res.json() as T
@@ -92,11 +100,13 @@ export interface CHSearchResponse {
 export async function searchCompanies(
   query: string,
   itemsPerPage = 10,
+  signal?: AbortSignal,
 ): Promise<CHSearchResult[]> {
   if (!query || query.trim().length < 2) return []
   const q = encodeURIComponent(query.trim())
   const res = await chFetch<CHSearchResponse>(
-    `/search/companies?q=${q}&items_per_page=${itemsPerPage}`
+    `/search/companies?q=${q}&items_per_page=${itemsPerPage}`,
+    signal,
   )
   return res?.items ?? []
 }
