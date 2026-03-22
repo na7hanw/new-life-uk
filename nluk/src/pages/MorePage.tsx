@@ -163,6 +163,16 @@ export default function MorePage() {
             {ui.privacyBody || 'This app stores only your language preference and theme setting locally on your device. No personal information is collected or shared. There are no cookies and no user accounts.'}
           </p>
 
+          {/* ── Machine translation notice ── */}
+          <p className={styles.privacyTitle}>
+            🌐 {ui.mtProvider || 'Translation: open-source machine translation'}
+          </p>
+          <p className={styles.privacyBody}>
+            {ui.mtWarning || 'This app translates content automatically using free, open-source machine translation (LibreTranslate / Argos Translate, Bergamot, or NLLB-200). No commercial translation APIs (Google, Azure, DeepL) are used.'}
+            {' '}
+            {ui.mtWarningLegal || 'Machine translation may contain errors. Do not rely on translated content alone for legal, immigration, money, or official decisions — always check the official source.'}
+          </p>
+
           <p className={styles.privacyLocalLabel}>{ui.privacyLocal || 'Stored locally on your device only:'}</p>
           <ul className={styles.privacyKeyList}>
             {([

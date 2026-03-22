@@ -164,6 +164,12 @@ export interface UiStrings {
   langSuggest?: string
   langSuggestUse?: string
   langSuggestDismiss?: string
+  // Machine translation disclaimer
+  mtWarning?: string
+  mtWarningLegal?: string
+  mtProvider?: string
+  mtUnavailable?: string
+  mtDismiss?: string
   // Task 16 — status selector
   statusPickerTitle?: string
   statusPickerSub?: string

@@ -1,6 +1,9 @@
 /**
  * Tests for src/lib/translate.ts
  * Covers: translate(), translateAll(), translateContentObject(), caching, fallback.
+ *
+ * Provider: LibreTranslate / Argos Translate (POST /translate, { q, source, target })
+ * All fetch calls are mocked — no real network requests are made.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import {
@@ -12,13 +15,11 @@ import {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+/** Mock a successful LibreTranslate response. */
 function mockFetchSuccess(translatedText: string) {
   return vi.fn().mockResolvedValue({
     ok: true,
-    json: async () => ({
-      responseStatus: 200,
-      responseData: { translatedText },
-    }),
+    json: async () => ({ translatedText }),
   })
 }
 
@@ -47,9 +48,15 @@ describe('translate — English passthrough', () => {
     const result = await translate('   ', 'fr')
     expect(result).toBe('   ')
   })
+
+  it('returns original text for unsupported language with no provider', async () => {
+    // 'am' (Amharic) has no provider when NLLB endpoint is not configured
+    const result = await translate('Hello world', 'am')
+    expect(result).toBe('Hello world')
+  })
 })
 
-describe('translate — successful API response', () => {
+describe('translate — successful API response (LibreTranslate)', () => {
   beforeEach(() => {
     clearTranslationCache()
     vi.stubGlobal('fetch', mockFetchSuccess('Bonjour le monde'))
@@ -60,17 +67,22 @@ describe('translate — successful API response', () => {
     clearTranslationCache()
   })
 
-  it('returns the translated text from the API', async () => {
+  it('returns the translated text from the provider', async () => {
     const result = await translate('Hello world', 'fr')
     expect(result).toBe('Bonjour le monde')
   })
 
-  it('calls the MyMemory API with the correct URL shape', async () => {
+  it('calls LibreTranslate with a POST request and correct body fields', async () => {
     await translate('Hello', 'fr')
-    const url = (fetch as ReturnType<typeof vi.fn>).mock.calls[0][0]
-    expect(url).toContain('mymemory.translated.net')
-    expect(url).toContain('langpair=en|fr')
-    expect(url).toContain(encodeURIComponent('Hello'))
+    const calls = (fetch as ReturnType<typeof vi.fn>).mock.calls
+    expect(calls.length).toBeGreaterThan(0)
+    const [url, options] = calls[0]
+    expect(url).toContain('/translate')
+    expect(options.method).toBe('POST')
+    const body = JSON.parse(options.body)
+    expect(body.q).toBe('Hello')
+    expect(body.source).toBe('en')
+    expect(body.target).toBe('fr')
   })
 
   it('caches the result so a second call does not hit the network', async () => {
@@ -91,7 +103,7 @@ describe('translate — API failure fallback', () => {
     clearTranslationCache()
   })
 
-  it('returns the original English text when the API returns !ok', async () => {
+  it('returns the original English text when the provider returns !ok', async () => {
     const result = await translate('Hello world', 'ar')
     expect(result).toBe('Hello world')
   })

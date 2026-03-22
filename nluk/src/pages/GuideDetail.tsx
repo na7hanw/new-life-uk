@@ -7,6 +7,7 @@ import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL, GUIDE
 import { t18 } from '../lib/utils.ts'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
 import QuickLinks from '../components/QuickLinks.tsx'
+import MachineTranslationBanner from '../components/MachineTranslationBanner.tsx'
 import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
 import TTSButton from '../components/TTSButton.tsx'
@@ -132,9 +133,11 @@ export default function GuideDetail() {
       </div>
 
       {wasTranslated && (
-        <div style={{ textAlign: 'center', paddingBottom: 4 }}>
-          <span className="auto-translated-badge">{ui.autoTranslated || '🌐 Auto-translated'}</span>
-        </div>
+        <MachineTranslationBanner
+          lang={lang}
+          ui={ui}
+          highRisk={['Business & Money', 'Identity & Login'].includes(guide.cat)}
+        />
       )}
 
       {id && GUIDE_RELATED[id] && (

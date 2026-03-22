@@ -67,6 +67,12 @@ const BASE_UI = {
   autoTranslated: "🌐 Auto-translated", translating: "Translating…",
   installApp: "📲 Install App", installDone: "Installed!",
   langSuggest: "We detected your browser language:", langSuggestUse: "Use this language", langSuggestDismiss: "Keep English",
+  // Machine translation disclaimer (shown on all machine-translated content)
+  mtWarning: "This content was automatically translated using free, open-source machine translation and may contain errors.",
+  mtWarningLegal: "Do not rely on this translation alone for legal, immigration, money, or official decisions. Always check the official source.",
+  mtProvider: "Translation: open-source machine translation",
+  mtUnavailable: "Translation unavailable for this language. Showing original English.",
+  mtDismiss: "Got it",
   // PR #23 — privacy / GDPR
   privacyKeyLang: "Language preference", privacyKeyTheme: "Dark / light mode",
   privacyKeyTab: "Last work tab viewed", privacyKeyConsent: "Your crash-report consent choice",
