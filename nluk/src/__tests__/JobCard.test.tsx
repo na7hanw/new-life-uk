@@ -7,7 +7,13 @@
  */
 import { describe, it, expect, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import JobCard from '../components/JobCard.tsx'
+
+/** Wrap in MemoryRouter because JobCard uses useNavigate(). */
+function renderCard(props: Parameters<typeof JobCard>[0]) {
+  return render(<MemoryRouter><JobCard {...props} /></MemoryRouter>)
+}
 
 const JOB = {
   icon: '🏥',
@@ -37,30 +43,30 @@ afterEach(() => { cleanup() })
 
 describe('JobCard — collapsed', () => {
   it('renders the job role', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+    renderCard({ j: JOB, lang: "en", ui: UI })
     expect(screen.getByText('Healthcare Assistant')).not.toBeNull()
   })
 
   it('renders the toggle button with aria-expanded="false"', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+    renderCard({ j: JOB, lang: "en", ui: UI })
     const btn = screen.getByRole('button')
     expect(btn.getAttribute('aria-expanded')).toBe('false')
   })
 
   it('toggle button has an aria-controls attribute', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+    renderCard({ j: JOB, lang: "en", ui: UI })
     const btn = screen.getByRole('button')
     expect(btn.getAttribute('aria-controls')).toBeTruthy()
   })
 
   it('body wrapper has data-state="closed" when collapsed', () => {
-    const { container } = render(<JobCard j={JOB} lang="en" ui={UI} />)
+    const { container } = renderCard({ j: JOB, lang: "en", ui: UI })
     const wrapper = container.querySelector('[data-state]')
     expect(wrapper?.getAttribute('data-state')).toBe('closed')
   })
 
   it('body content element (aria-controls target) is in the DOM even when collapsed', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+    renderCard({ j: JOB, lang: "en", ui: UI })
     const btn = screen.getByRole('button')
     const controlsId = btn.getAttribute('aria-controls')
     expect(document.getElementById(controlsId)).not.toBeNull()
@@ -71,20 +77,20 @@ describe('JobCard — collapsed', () => {
 
 describe('JobCard — expanded', () => {
   it('body wrapper has data-state="open" after clicking the toggle button', () => {
-    const { container } = render(<JobCard j={JOB} lang="en" ui={UI} />)
+    const { container } = renderCard({ j: JOB, lang: "en", ui: UI })
     fireEvent.click(screen.getByRole('button'))
     const wrapper = container.querySelector('[data-state]')
     expect(wrapper?.getAttribute('data-state')).toBe('open')
   })
 
   it('sets aria-expanded="true" on the toggle button when open', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+    renderCard({ j: JOB, lang: "en", ui: UI })
     fireEvent.click(screen.getByRole('button'))
     expect(screen.getByRole('button').getAttribute('aria-expanded')).toBe('true')
   })
 
   it('job body element has an id that matches the button aria-controls', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+    renderCard({ j: JOB, lang: "en", ui: UI })
     const btn = screen.getByRole('button')
     const controlsId = btn.getAttribute('aria-controls')
     const body = document.getElementById(controlsId)
@@ -92,12 +98,12 @@ describe('JobCard — expanded', () => {
   })
 
   it('renders sponsorship pill when job has visa flag', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+    renderCard({ j: JOB, lang: "en", ui: UI })
     expect(screen.getByText('Sponsorship')).not.toBeNull()
   })
 
   it('renders the apply link in the DOM', () => {
-    render(<JobCard j={JOB} lang="en" ui={UI} />)
+    renderCard({ j: JOB, lang: "en", ui: UI })
     const link = screen.getByRole('link', { name: 'NHS Jobs' })
     expect(link.getAttribute('href')).toBe('https://www.jobs.nhs.uk/')
   })
@@ -107,7 +113,7 @@ describe('JobCard — expanded', () => {
 
 describe('JobCard — collapse after expand', () => {
   it('returns to data-state="closed" and aria-expanded="false" after second click', () => {
-    const { container } = render(<JobCard j={JOB} lang="en" ui={UI} />)
+    const { container } = renderCard({ j: JOB, lang: "en", ui: UI })
     const btn = screen.getByRole('button')
     fireEvent.click(btn)
     fireEvent.click(btn)
@@ -122,10 +128,10 @@ describe('JobCard — collapse after expand', () => {
 describe('JobCard — unique IDs across multiple instances', () => {
   it('two rendered cards have different aria-controls values', () => {
     const { container } = render(
-      <>
+      <MemoryRouter>
         <JobCard j={JOB} lang="en" ui={UI} />
         <JobCard j={JOB} lang="en" ui={UI} />
-      </>
+      </MemoryRouter>
     )
     const buttons = container.querySelectorAll('button')
     const id1 = buttons[0].getAttribute('aria-controls')
