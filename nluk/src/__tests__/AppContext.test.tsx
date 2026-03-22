@@ -178,3 +178,62 @@ describe('AppContext — derived RTL/font values', () => {
     expect(screen.getByTestId('dir').textContent).toBe('ltr')
   })
 })
+
+// ─── Profile personalization fields ───────────────────────────────────────────
+
+describe('AppContext — profile personalization', () => {
+  it('userAmbition defaults to empty string', () => {
+    function Inspector() {
+      const { userAmbition } = useApp()
+      return <span data-testid="ambition">{userAmbition}</span>
+    }
+    render(<AppProvider><Inspector /></AppProvider>)
+    expect(screen.getByTestId('ambition').textContent).toBe('')
+  })
+
+  it('setUserAmbition updates state and persists to localStorage', () => {
+    function Inspector() {
+      const { userAmbition, setUserAmbition } = useApp()
+      return (
+        <>
+          <span data-testid="ambition">{userAmbition}</span>
+          <button onClick={() => setUserAmbition('work')}>Set</button>
+        </>
+      )
+    }
+    render(<AppProvider><Inspector /></AppProvider>)
+    act(() => { fireEvent.click(screen.getByText('Set')) })
+    expect(screen.getByTestId('ambition').textContent).toBe('work')
+    expect(localStorage.getItem('nluk_ambition')).toBe('work')
+  })
+
+  it('userSector defaults to empty string', () => {
+    function Inspector() {
+      const { userSector } = useApp()
+      return <span data-testid="sector">{userSector}</span>
+    }
+    render(<AppProvider><Inspector /></AppProvider>)
+    expect(screen.getByTestId('sector').textContent).toBe('')
+  })
+
+  it('toggleDocument adds and removes document ids', () => {
+    function Inspector() {
+      const { documentsHeld, toggleDocument } = useApp()
+      return (
+        <>
+          <span data-testid="docs">{documentsHeld.join(',')}</span>
+          <button onClick={() => toggleDocument('brp')}>Toggle BRP</button>
+        </>
+      )
+    }
+    render(<AppProvider><Inspector /></AppProvider>)
+    expect(screen.getByTestId('docs').textContent).toBe('')
+
+    act(() => { fireEvent.click(screen.getByText('Toggle BRP')) })
+    expect(screen.getByTestId('docs').textContent).toBe('brp')
+    expect(localStorage.getItem('nluk_docs')).toContain('brp')
+
+    act(() => { fireEvent.click(screen.getByText('Toggle BRP')) })
+    expect(screen.getByTestId('docs').textContent).toBe('')
+  })
+})

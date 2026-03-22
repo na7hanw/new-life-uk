@@ -1,0 +1,266 @@
+/* ── Header ──────────────────────────────────────────────────────── */
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px var(--gutter) 4px;
+  font-size: 1.1rem;
+}
+
+.headerTitle h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.headerSub {
+  margin: 0 var(--gutter) 12px;
+  font-size: 0.82rem;
+  color: var(--t3);
+  line-height: 1.5;
+}
+
+/* ── Drop / upload zone ───────────────────────────────────────────── */
+.dropZone {
+  margin: 0 var(--gutter) 16px;
+  padding: 36px 24px;
+  border-radius: var(--r, 12px);
+  border: 2px dashed var(--sep);
+  background: var(--bg2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  text-align: center;
+  outline: none;
+}
+
+.dropZone:hover,
+.dropZone:focus-visible {
+  border-color: var(--ac);
+  background: color-mix(in srgb, var(--ac) 5%, var(--bg2));
+}
+
+.dropIcon {
+  font-size: 2.4rem;
+}
+
+.dropTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--t1);
+}
+
+.dropSub {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--t3);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+/* ── Preview ─────────────────────────────────────────────────────── */
+.previewWrap {
+  position: relative;
+  margin: 0 var(--gutter) 12px;
+}
+
+.preview {
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: var(--r, 12px);
+  border: 1px solid var(--sep);
+  background: #000;
+  display: block;
+}
+
+.resetBtn {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.75rem;
+  border: none;
+  cursor: pointer;
+}
+
+/* ── Progress card ───────────────────────────────────────────────── */
+.progressCard {
+  margin: 0 var(--gutter) 16px;
+  padding: 16px;
+  border-radius: var(--r, 12px);
+  background: var(--bg2);
+  border: 1px solid var(--sep);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progressBar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--sep);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--ac);
+  transition: width 0.3s ease;
+}
+
+.progressStage {
+  font-size: 0.82rem;
+  color: var(--t3);
+  text-align: center;
+}
+
+.cancelBtn {
+  align-self: center;
+  padding: 6px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--sep);
+  background: none;
+  color: var(--t2);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* ── Error ───────────────────────────────────────────────────────── */
+.errorBox {
+  margin: 0 var(--gutter) 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: color-mix(in srgb, #ef4444 8%, var(--bg2));
+  border: 1px solid color-mix(in srgb, #ef4444 25%, transparent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--t1);
+}
+
+.errorBox button {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, #ef4444 40%, transparent);
+  background: none;
+  color: #dc2626;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* ── Confidence badge ────────────────────────────────────────────── */
+.confidence {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--t3);
+  margin-inline-start: 8px;
+}
+
+/* ── Result card ─────────────────────────────────────────────────── */
+.resultCard {
+  margin: 0 var(--gutter) 16px;
+  border-radius: var(--r, 12px);
+  background: var(--bg2);
+  border: 1px solid var(--sep);
+  overflow: hidden;
+}
+
+.resultText {
+  padding: 14px 16px;
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--t1);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: inherit;
+  max-height: 320px;
+  overflow-y: auto;
+  border-bottom: 1px solid var(--sep);
+}
+
+/* ── Action buttons ──────────────────────────────────────────────── */
+.resultActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--sep);
+  background: var(--bg);
+  color: var(--t2);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.actionBtn:hover:not(:disabled),
+.actionBtn:focus-visible:not(:disabled) {
+  border-color: var(--ac3);
+  color: var(--t1);
+  outline: none;
+}
+
+.actionBtn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.actionBtnPrimary {
+  background: color-mix(in srgb, var(--ac) 10%, var(--bg));
+  border-color: var(--ac);
+  color: var(--ac);
+}
+
+/* ── Tips ────────────────────────────────────────────────────────── */
+.tips {
+  margin: 0 var(--gutter) 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg2);
+  border: 1px solid var(--sep);
+}
+
+.tipsTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--t1);
+  margin-bottom: 8px;
+}
+
+.tipsList {
+  margin: 0;
+  padding-inline-start: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.tipsList li {
+  font-size: 0.82rem;
+  color: var(--t2);
+  line-height: 1.5;
+}

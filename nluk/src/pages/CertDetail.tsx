@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
 import { CERT_MAP, JOBS_DATA_DATE, CERT_SOURCE_URL } from '../data/jobs.ts'
 import { useTranslatedContent, useTranslatedSteps } from '../lib/useTranslation.ts'
+import MachineTranslationBanner from '../components/MachineTranslationBanner.tsx'
 import QuickLinks from '../components/QuickLinks.tsx'
 import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
@@ -26,7 +27,7 @@ export default function CertDetail() {
     if (!cert) navigate('/work/certs')
   }, [cert, navigate])
 
-  const [cc, translating, wasTranslated] = useTranslatedContent<CertContent>(
+  const [cc, translating, _wasTranslated] = useTranslatedContent<CertContent>(
     cert?.content as Record<string, CertContent> | undefined,
     lang,
     id
@@ -105,11 +106,7 @@ export default function CertDetail() {
         </div>
       </div>
 
-      {wasTranslated && (
-        <div style={{ textAlign: 'center', paddingBottom: 4 }}>
-          <span className="auto-translated-badge">{ui.autoTranslated || '🌐 Auto-translated'}</span>
-        </div>
-      )}
+      <MachineTranslationBanner lang={lang} ui={ui} />
 
       <div className="guide-footer">
         <span className="guide-footer-verified">✓ Verified {JOBS_DATA_DATE}</span>

@@ -1,7 +1,8 @@
 import DOMPurify from 'dompurify'
 import { marked } from 'marked'
-import { useMemo, memo } from 'react'
-import type { JSX } from 'react'
+import { useMemo, memo, type JSX } from 'react'
+import GlossaryTerm from './GlossaryTerm.tsx'
+import { getGlossaryTermKeys } from '../data/glossary.ts'
 
 // ── One-time DOMPurify hook: validates href scheme + adds target/rel/class ──
 // Runs after each sanitize call on every <a> element that survives sanitization.
@@ -54,30 +55,99 @@ function applyUrgencyTags(html: string): string {
   })
 }
 
+// ── Process one plain-text segment through the full markdown pipeline ──────────
+function renderSegment(text: string): string {
+  if (!text) return ''
+  const plain = DOMPurify.sanitize(text, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] })
+  const normalized = normalizeBareUrls(plain)
+  const markdownHtml = marked.parseInline(normalized) as string
+  const safe = DOMPurify.sanitize(markdownHtml, PURIFY_CONFIG)
+  return applyUrgencyTags(safe)
+}
+
+// ── Build a sorted regex of all glossary term keys (longest first) ───────────
+// Built lazily and memoized for the lifetime of the module.
+let _glossaryPattern: RegExp | null = null
+
+function getGlossaryPattern(): RegExp {
+  if (_glossaryPattern) return _glossaryPattern
+  const keys = getGlossaryTermKeys()
+    // Sort longest first to prefer multi-word matches ("universal credit" > "uc")
+    .sort((a, b) => b.length - a.length)
+    // Escape regex special chars
+    .map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  // Word-boundary on each side; case-insensitive
+  _glossaryPattern = new RegExp(`\\b(${keys.join('|')})\\b`, 'gi')
+  return _glossaryPattern
+}
+
+/**
+ * Splits `text` into alternating [plain, glossaryTerm, plain, ...] segments.
+ * Only the FIRST occurrence of each glossary key is replaced (avoids popover
+ * clutter when the same term appears many times in a single step).
+ */
+function splitGlossarySegments(text: string): Array<{ type: 'plain' | 'glossary'; value: string }> {
+  const pattern = getGlossaryPattern()
+  pattern.lastIndex = 0  // reset since we use the shared stateful regex
+
+  const seen = new Set<string>()
+  const segments: Array<{ type: 'plain' | 'glossary'; value: string }> = []
+  let lastIndex = 0
+
+  for (const match of text.matchAll(pattern)) {
+    const matchedTerm = match[0]
+    const matchKey = matchedTerm.toLowerCase()
+    const start = match.index ?? 0
+
+    // Push the plain text before this match
+    if (start > lastIndex) {
+      segments.push({ type: 'plain', value: text.slice(lastIndex, start) })
+    }
+
+    if (!seen.has(matchKey)) {
+      // First occurrence — render as a glossary popover
+      seen.add(matchKey)
+      segments.push({ type: 'glossary', value: matchedTerm })
+    } else {
+      // Subsequent occurrences — render as plain text (no extra popovers)
+      segments.push({ type: 'plain', value: matchedTerm })
+    }
+
+    lastIndex = start + matchedTerm.length
+  }
+
+  // Remaining plain text after the last match
+  if (lastIndex < text.length) {
+    segments.push({ type: 'plain', value: text.slice(lastIndex) })
+  }
+
+  return segments.length > 0 ? segments : [{ type: 'plain', value: text }]
+}
+
 interface StepTextProps {
   text: string
 }
 
 const StepText = memo(function StepText({ text }: StepTextProps): JSX.Element {
-  const html = useMemo(() => {
-    // 1. Strip all HTML from raw input to prevent any injection before marked runs
-    const plain = DOMPurify.sanitize(text, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] })
+  const segments = useMemo(() => splitGlossarySegments(text), [text])
 
-    // 2. Convert bare URLs to markdown link syntax so marked renders them with the
-    //    scheme-stripped display text (e.g. https://www.gov.uk → www.gov.uk)
-    const normalized = normalizeBareUrls(plain)
+  // Fast path: no glossary terms found — use original single-span render
+  if (segments.length === 1 && segments[0].type === 'plain') {
+    const html = renderSegment(text)
+    return <span dangerouslySetInnerHTML={{ __html: html }} />
+  }
 
-    // 3. Parse markdown inline (handles **bold**, [label](url), _italic_)
-    const markdownHtml = marked.parseInline(normalized) as string
-
-    // 4. Sanitize marked output — DOMPurify hook adds target/rel/class to <a> elements
-    const safe = DOMPurify.sanitize(markdownHtml, PURIFY_CONFIG)
-
-    // 5. Convert remaining [URGENCY TAG] text into styled spans
-    return applyUrgencyTags(safe)
-  }, [text])
-
-  return <span dangerouslySetInnerHTML={{ __html: html }} />
+  return (
+    <span>
+      {segments.map((seg, i) =>
+        seg.type === 'glossary' ? (
+          <GlossaryTerm key={i} lookupKey={seg.value.toLowerCase()}>{seg.value}</GlossaryTerm>
+        ) : (
+          <span key={i} dangerouslySetInnerHTML={{ __html: renderSegment(seg.value) }} />
+        )
+      )}
+    </span>
+  )
 })
 
 export default StepText

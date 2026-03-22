@@ -45,7 +45,7 @@ This project uses multiple free GitHub integrations to catch bugs early, reduce 
 | **Release Drafter** | `release-drafter.yml` | push to `main` | Maintains a rolling draft release / changelog |
 | **Auto-labeler** | `labeler.yml` | PR opened/updated | Labels PRs by changed paths (content, ui, ci…) and adds size labels (XS → XL) |
 | **Dependabot Auto-merge** | `dependabot-auto-merge.yml` | PR from dependabot[bot] | Auto-merges patch/minor dependency updates once CI passes |
-| **Auto-translate** | `auto-translate.yml` | push to `main` (guides.ts), manual dispatch | Fills missing translations using Google Translate (if key set) or MyMemory; opens a PR |
+| **Auto-translate** | `auto-translate.yml` | push to `main` (guides.ts), manual dispatch | Fills missing translations using **LibreTranslate/Argos** (free, no key) and optionally a **self-hosted NLLB-200** endpoint for low-resource languages (am, ti, so, om, ur); opens a PR. **No Google Cloud Translation, no MyMemory, no paid APIs.** |
 | **Sentry Setup** | `sentry-setup.yml` | manual dispatch, monthly | One-time helper that prints Sentry project setup instructions |
 
 ### External integrations (no workflow file)
@@ -56,7 +56,7 @@ This project uses multiple free GitHub integrations to catch bugs early, reduce 
 | **Dependabot** | `.github/dependabot.yml` | Opens weekly PRs for outdated npm packages |
 | **Mergify** | `.mergify.yml` | Auto-merges patch/minor Dependabot PRs when CI passes; also mirrors the `dependabot-auto-merge.yml` logic |
 | **Husky + lint-staged** | `nluk/package.json`, `.husky/` | Pre-commit hook runs ESLint on staged files locally |
-| **GitLocalize** | `.gitlocalize` | Web UI for volunteer translators; auto-opens translation PRs |
+| **GitLocalize** | `.gitlocalize` | ⚠️ Legacy config — kept for reference only. All translations now use the automated open-source pipeline (LibreTranslate / NLLB). Human volunteer translation is welcome via standard PRs but is not a workflow dependency. |
 | **Sentry** | `nluk/src/lib/sentry.ts` | Runtime error tracking in production (requires `VITE_SENTRY_DSN` env var) |
 
 ---
@@ -105,7 +105,9 @@ Two bundle-size workflows existed previously:
 
 ### 2. Sentry (Production Error Monitoring)
 
-**Why:** Automatically catch JavaScript errors in production **before** users report them. Includes session replay and performance monitoring.
+**Why:** Automatically catch JavaScript errors in production **before** users report them. Includes anonymised error reporting and performance monitoring.
+
+> **Privacy note:** Session replay is intentionally **disabled** in this app. This app serves refugees and asylum seekers — session recording would be too privacy-invasive. The Sentry integration strips all PII (IP, user-agent, device fingerprint, cookies, navigation URLs) before any data leaves the browser. See `nluk/src/lib/sentry.ts` for the `beforeSend` filter.
 
 **Setup:**
 ```bash
@@ -136,18 +138,18 @@ Two bundle-size workflows existed previously:
 - Performance monitoring
 - Geographic + browser breakdown
 
-### 3. GitLocalize (Community Translation Management)
+### 3. GitLocalize (Legacy — not a workflow dependency)
 
-**Why:** Allows non-technical translators to contribute translations via web UI instead of editing code.
+**Status:** The `.gitlocalize` config file is retained for reference. The app no longer depends on volunteer human translation. All missing translations are filled automatically by the `auto-translate` workflow using LibreTranslate/Argos (free, open-source, no API key) and optionally a self-hosted NLLB-200 endpoint for low-resource languages.
 
-**Setup:**
-```bash
-# 1. Go to https://gitlocalize.com and sign up
-# 2. Connect your GitHub repo
-# 3. GitLocalize will auto-detect files in .gitlocalize config
-# 4. Invite translators to help
-# 5. When translations are done, GitLocalize auto-opens PRs
-```
+**Translation policy:**
+- No Google Cloud Translation, Azure Translator, DeepL, or any paid/commercial API
+- No MyMemory
+- Provider order: Bergamot (WASM, client-side) → LibreTranslate/Argos → NLLB-200 (self-hosted) → "translation unavailable"
+- All translated content shows a visible machine-translation disclaimer
+- Legal/financial/official-content pages show a stronger disclaimer
+
+**If you want community translation contributions:** contributors can open a standard PR editing `nluk/src/data/guides.ts` directly. The GitLocalize web UI remains available as a convenience but is not part of the automated pipeline.
 
 ### 4. Mergify (Auto-merge Safe PRs)
 

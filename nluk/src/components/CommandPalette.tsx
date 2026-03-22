@@ -111,6 +111,7 @@ export default function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
   return (
     <div className={styles.backdrop} onClick={onClose} onKeyDown={e => { if (e.key === 'Escape') onClose() }} role="presentation" dir={dir}>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- stopPropagation is needed to prevent backdrop close; role="dialog" is interactive */}
       <div className={styles.panel} role="dialog" aria-modal="true" aria-label="Search" onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
         <Command label="Global search" shouldFilter={false}>
           <div className={styles.inputWrap}>

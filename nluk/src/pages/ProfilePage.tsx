@@ -7,6 +7,7 @@ import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP } from '../data/guides.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
+import PostcodeLookup from '../components/PostcodeLookup.tsx'
 import type { UserStatus } from '../types'
 import styles from './ProfilePage.module.css'
 
@@ -113,8 +114,35 @@ function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; se
   )
 }
 
+const AMBITION_OPTIONS: { value: NonNullable<import('../types').UserAmbition>; emoji: string; label: string }[] = [
+  { value: 'work',      emoji: '💼', label: 'Get a Job' },
+  { value: 'study',     emoji: '📚', label: 'Study / Qualifications' },
+  { value: 'business',  emoji: '🚀', label: 'Start a Business' },
+  { value: 'volunteer', emoji: '🤝', label: 'Volunteer / Community' },
+]
+
+const SECTOR_OPTIONS: { value: NonNullable<import('../types').UserSector>; emoji: string; label: string }[] = [
+  { value: 'healthcare',   emoji: '🏥', label: 'Healthcare & NHS' },
+  { value: 'it',           emoji: '💻', label: 'IT & Technology' },
+  { value: 'construction', emoji: '🔨', label: 'Construction & Trades' },
+  { value: 'care',         emoji: '❤️',  label: 'Care & Social Work' },
+  { value: 'hospitality',  emoji: '🍽️',  label: 'Hospitality & Food' },
+  { value: 'retail',       emoji: '🛒', label: 'Retail & Customer Service' },
+  { value: 'education',    emoji: '🎓', label: 'Education & Childcare' },
+  { value: 'admin',        emoji: '📋', label: 'Admin & Office' },
+]
+
+const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
+  { id: 'brp',       emoji: '💳', label: 'BRP (Biometric Residence Permit)' },
+  { id: 'evisa',     emoji: '📱', label: 'eVisa (UK digital status)' },
+  { id: 'passport',  emoji: '📘', label: 'UK or Foreign Passport' },
+  { id: 'eea-id',    emoji: '🇪🇺', label: 'EEA ID Card (EU Settlement)' },
+  { id: 'travel-doc',emoji: '📄', label: 'Convention Travel Document' },
+  { id: 'ho-letter', emoji: '📬', label: 'Home Office Letter / ARC' },
+]
+
 export default function ProfilePage() {
-  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [showStatusPicker, setShowStatusPicker] = useState(false)
 
@@ -153,6 +181,70 @@ export default function ProfilePage() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* ── My Goals (ambition) ──────────────────────────── */}
+      <div className="section-label">{ui.profileAmbitionLabel || '🎯 My Goals'}</div>
+      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
+        <div className={styles.chipGrid}>
+          {AMBITION_OPTIONS.map(opt => (
+            <button
+              key={opt.value}
+              className={`${styles.chip}${userAmbition === opt.value ? ` ${styles.chipActive}` : ''}`}
+              onClick={() => setUserAmbition(userAmbition === opt.value ? '' : opt.value)}
+              aria-pressed={userAmbition === opt.value}
+            >
+              <span aria-hidden="true">{opt.emoji}</span>
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Sector Interest ───────────────────────────────── */}
+      {(userAmbition === 'work' || userAmbition === 'business' || !userAmbition) && (
+        <>
+          <div className="section-label">{ui.profileSectorLabel || '🏢 Sector Interest'}</div>
+          <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
+            <div className={styles.chipGrid}>
+              {SECTOR_OPTIONS.map(opt => (
+                <button
+                  key={opt.value}
+                  className={`${styles.chip}${userSector === opt.value ? ` ${styles.chipActive}` : ''}`}
+                  onClick={() => setUserSector(userSector === opt.value ? '' : opt.value)}
+                  aria-pressed={userSector === opt.value}
+                >
+                  <span aria-hidden="true">{opt.emoji}</span>
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── My Documents ─────────────────────────────────── */}
+      <div className="section-label">{ui.profileDocsLabel || '📂 Documents I Have'}</div>
+      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
+        <div className={styles.chipGrid}>
+          {DOCUMENT_OPTIONS.map(opt => (
+            <button
+              key={opt.id}
+              className={`${styles.chip}${documentsHeld.includes(opt.id) ? ` ${styles.chipActive}` : ''}`}
+              onClick={() => { navigator?.vibrate?.(5); toggleDocument(opt.id) }}
+              aria-pressed={documentsHeld.includes(opt.id)}
+            >
+              <span aria-hidden="true">{opt.emoji}</span>
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── My Area (postcode → NHS area, council) ────────── */}
+      <div className="section-label">{ui.profileAreaLabel as string || '📍 My Area'}</div>
+      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
+        <PostcodeLookup savedPostcode={userPostcode} onSave={setUserPostcode} ui={ui} />
       </div>
 
       {/* ── Next Steps ───────────────────────────────────── */}
@@ -222,6 +314,19 @@ export default function ProfilePage() {
           </button>
         </div>
       )}
+
+      {/* ── Document Scanner quick-access ────────────────── */}
+      <div className="section-label">🔧 Tools</div>
+      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
+        <button className="list-row" onClick={() => navigate('/scan')}>
+          <span className="list-row-icon">📷</span>
+          <div className="list-row-content">
+            <div className="list-row-title">Scan a Document</div>
+            <div className="list-row-sub">Photograph a letter or form to read and translate it</div>
+          </div>
+          <ChevronRight size={18} strokeWidth={2.5} style={{ color: 'var(--ac3)', flexShrink: 0 }} />
+        </button>
+      </div>
 
       {/* ── Settings link ────────────────────────────────── */}
       <div className="section-label">{ui.settings || 'Settings'}</div>

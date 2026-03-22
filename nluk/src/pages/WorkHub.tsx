@@ -7,6 +7,7 @@ import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
 import { t18, lsSet } from '../lib/utils.ts'
 import JobCard from '../components/JobCard.tsx'
 import EmptyState from '../components/EmptyState.tsx'
+import CompanyVerifier from '../components/CompanyVerifier.tsx'
 import styles from './WorkHub.module.css'
 
 export default function WorkHub() {
@@ -82,9 +83,10 @@ export default function WorkHub() {
     <div className="page-enter">
       <div className="sub-tabs" role="tablist">
         {[
-          { id: 'jobs', emoji: '🛵', label: ui.jobsTab },
-          { id: 'certs', emoji: '📋', label: ui.certsTab },
+          { id: 'jobs',   emoji: '🛵', label: ui.jobsTab },
+          { id: 'certs',  emoji: '📋', label: ui.certsTab },
           { id: 'career', emoji: '🚀', label: ui.careerTab },
+          { id: 'verify', emoji: '🛡️', label: (ui.chVerifyTab as string) || 'Verify' },
         ].map(t => (
           <button key={t.id} className={`sub-tab ${subtab === t.id ? 'active' : ''}`}
             onClick={() => handleSubtab(t.id)} role="tab" aria-selected={subtab === t.id}>
@@ -93,12 +95,14 @@ export default function WorkHub() {
         ))}
       </div>
 
-      <div className="search-bar">
-        <Search size={18} strokeWidth={2} className={styles.searchIcon} />
-        <input className="search-input" placeholder={searchPlaceholder} value={search}
-          onChange={e => setSearch(e.target.value)} dir={dir} aria-label={searchPlaceholder} />
-        {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
-      </div>
+      {subtab !== 'verify' && (
+        <div className="search-bar">
+          <Search size={18} strokeWidth={2} className={styles.searchIcon} />
+          <input className="search-input" placeholder={searchPlaceholder} value={search}
+            onChange={e => setSearch(e.target.value)} dir={dir} aria-label={searchPlaceholder} />
+          {search && <button className="search-clear" onClick={() => setSearch('')} aria-label="Clear">✕</button>}
+        </div>
+      )}
 
       {/* Status-specific banner on the Jobs tab */}
       {subtab === 'jobs' && userStatus === 'asylum-seeker' && (
@@ -192,6 +196,8 @@ export default function WorkHub() {
           </div>
         )
       )}
+      {subtab === 'verify' && <CompanyVerifier ui={ui} dir={dir} />}
+
       <div className={styles.spacer} />
     </div>
   )

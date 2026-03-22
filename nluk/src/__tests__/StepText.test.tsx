@@ -15,8 +15,12 @@ afterEach(() => { cleanup() })
 
 describe('StepText — plain text', () => {
   it('renders plain text with no links', () => {
+    // "GP" is a glossary term — it renders as a button with a dotted underline
+    // and a "·" indicator; the surrounding text is still plain.
     const { container } = render(<StepText text="Register with a GP." />)
-    expect(container.textContent).toBe('Register with a GP.')
+    // Check all the words are present (ignoring the glossary "·" indicator)
+    expect(container.textContent).toContain('Register with a')
+    expect(container.textContent).toContain('GP')
     expect(container.querySelectorAll('a').length).toBe(0)
   })
 

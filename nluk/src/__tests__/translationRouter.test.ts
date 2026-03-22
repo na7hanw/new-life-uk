@@ -170,8 +170,8 @@ describe('selectProvider — determinism', () => {
 // ─── isTranslationAvailable ───────────────────────────────────────────────────
 
 describe('isTranslationAvailable', () => {
-  it('returns false for English', () => {
-    expect(isTranslationAvailable('en')).toBe(false)
+  it('returns true for English (no translation needed — content is natively available)', () => {
+    expect(isTranslationAvailable('en')).toBe(true)
   })
 
   it('returns true for Arabic (LibreTranslate covers it)', () => {

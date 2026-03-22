@@ -43,6 +43,17 @@ const sharedGlobals = {
   AbortSignal: 'readonly',
   HeadersInit: 'readonly',
   RequestInit: 'readonly',
+  // File / Blob (used by Tesseract OCR and drag-drop file handling)
+  File: 'readonly',
+  Blob: 'readonly',
+  FileList: 'readonly',
+  FileReader: 'readonly',
+  // User feedback
+  alert: 'readonly',
+  // Clipboard API
+  ClipboardItem: 'readonly',
+  // HTMLSpanElement (used in GlossaryTerm ref)
+  HTMLSpanElement: 'readonly',
 }
 
 export default [
