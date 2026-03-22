@@ -10,7 +10,12 @@ import { CONSENT_KEY } from '../components/ConsentBanner.tsx'
 import type { BeforeInstallPromptEvent, UserStatus } from '../types'
 import styles from './MorePage.module.css'
 
-const ALL_KEYS = ['nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', 'nluk_status', CONSENT_KEY]
+const ALL_KEYS = [
+  'nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', 'nluk_status', CONSENT_KEY,
+  // user-progress keys — must also be cleared on "Clear all data"
+  'nluk_onboarded', 'nluk_checklist', 'nluk_bookmarks',
+  'nluk_recent_searches', 'nluk_guide_access', 'nluk_status_date',
+]
 
 export default function MorePage() {
   const { ui, L, dark, setDark, setShowLang, userStatus, setUserStatus, ab } = useApp()
@@ -161,12 +166,17 @@ export default function MorePage() {
           <p className={styles.privacyLocalLabel}>{ui.privacyLocal || 'Stored locally on your device only:'}</p>
           <ul className={styles.privacyKeyList}>
             {([
-              ['nluk_lang',    ui.privacyKeyLang    || 'Language preference'],
-              ['nluk_dark',    ui.privacyKeyTheme   || 'Dark / light mode'],
-              ['nluk_wtab',    ui.privacyKeyTab     || 'Last work tab viewed'],
-              ['nluk_status',  ui.statusLabel       || 'Your situation (asylum seeker / refugee etc.)'],
-              ['nluk_tx3',     'Cached translations (auto-translate)'],
-              [CONSENT_KEY,    ui.privacyKeyConsent || 'Your crash-report consent choice'],
+              ['nluk_lang',            ui.privacyKeyLang    || 'Language preference'],
+              ['nluk_dark',            ui.privacyKeyTheme   || 'Dark / light mode'],
+              ['nluk_wtab',            ui.privacyKeyTab     || 'Last work tab viewed'],
+              ['nluk_status',          ui.statusLabel       || 'Your situation (asylum seeker / refugee etc.)'],
+              ['nluk_tx3',             'Cached translations (auto-translate)'],
+              [CONSENT_KEY,            ui.privacyKeyConsent || 'Your crash-report consent choice'],
+              ['nluk_onboarded',       'Whether you have completed onboarding'],
+              ['nluk_checklist',       'Your setup checklist progress'],
+              ['nluk_bookmarks',       'Your saved guides and resources'],
+              ['nluk_recent_searches', 'Your recent search history (last 10 searches)'],
+              ['nluk_guide_access',    'Which guides you have opened (for recommendations)'],
             ] as [string, string][]).map(([k, v]) => (
               <li key={k} className={styles.privacyKeyItem}>
                 <code className={styles.privacyKeyCode}>{k}</code>{v}

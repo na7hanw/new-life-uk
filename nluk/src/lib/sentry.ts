@@ -19,6 +19,11 @@ export async function initSentry(): Promise<void> {
     // before it leaves the browser. IPs, user-agents, and device fingerprints
     // must never reach Sentry's servers.
     beforeSend(event) {
+      // Re-check consent at send time — if the user revoked consent after init,
+      // drop the event immediately before any data leaves the browser.
+      if (typeof window !== 'undefined' && localStorage.getItem('nluk_consent') !== 'granted') {
+        return null
+      }
       // Strip all request headers (may contain IP, user-agent, cookies)
       if (event.request) {
         delete event.request.headers
