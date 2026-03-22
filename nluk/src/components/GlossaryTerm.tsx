@@ -16,7 +16,7 @@
  * - Definition rendered in a non-modal panel (not a dialog) so screen readers
  *   can read it inline
  */
-import { useState, useEffect, useRef, type RefObject } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { lookupGlossaryTerm } from '../data/glossary.ts'
 import { fetchWikiSummary, wikiSummaryToDefinition } from '../lib/mediawiki.ts'
 import styles from './GlossaryTerm.module.css'
@@ -33,7 +33,7 @@ export default function GlossaryTerm({ children, lookupKey }: Props) {
   const [definition, setDefinition] = useState<string | null>(null)
   const [sourceUrl, setSourceUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const wrapRef = useRef<Element>(null) as RefObject<Element>
+  const wrapRef = useRef<HTMLSpanElement>(null)
 
   const term = lookupKey ?? children
 
@@ -66,7 +66,7 @@ export default function GlossaryTerm({ children, lookupKey }: Props) {
     if (!open) return
     const handleKey = (e: globalThis.KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
     const handleClick = (e: globalThis.MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as globalThis.Node)) {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as HTMLElement)) {
         setOpen(false)
       }
     }
