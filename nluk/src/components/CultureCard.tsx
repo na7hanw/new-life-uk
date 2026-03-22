@@ -8,6 +8,7 @@ import styles from './CultureCard.module.css'
 interface CultureItemContent {
   title: string
   body: string
+  [key: string]: unknown
 }
 
 interface CultureCardProps {

@@ -110,8 +110,8 @@ export default function CommandPalette({ open, onClose }: CommandPaletteProps) {
   if (!open) return null
 
   return (
-    <div className={styles.backdrop} onClick={onClose} role="dialog" aria-modal="true" aria-label="Search" dir={dir}>
-      <div className={styles.panel} onClick={e => e.stopPropagation()}>
+    <div className={styles.backdrop} onClick={onClose} onKeyDown={e => { if (e.key === 'Escape') onClose() }} role="presentation" dir={dir}>
+      <div className={styles.panel} role="dialog" aria-modal="true" aria-label="Search" onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
         <Command label="Global search" shouldFilter={false}>
           <div className={styles.inputWrap}>
             <span className={styles.searchIcon} aria-hidden="true">🔍</span>

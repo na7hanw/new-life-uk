@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense, type TouchEvent as ReactTouchEvent } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { BookOpen, Briefcase, Compass, Settings, ChevronUp, User, Search } from 'lucide-react'
 import { Toaster, toast } from 'sonner'
@@ -308,8 +308,8 @@ export default function App() {
         </ErrorBoundary>
       </main>
 
-      {/* TAB BAR */}
-      {!isDetail && !showLang && (
+      {/* TAB BAR — always visible so users can navigate home from any depth */}
+      {!showLang && (
         <nav className="tab-bar" aria-label="Main navigation">
           <div role="tablist" className={styles.tabListContents}>
             {TABS.map(t => (
@@ -328,7 +328,7 @@ export default function App() {
       {/* BACK-TO-TOP BUTTON — visible when scrolled down */}
       {(
         <button
-          className={`back-to-top${showBackToTop ? ' visible' : ''}${isDetail ? ' no-tab-bar' : ''}`}
+          className={`back-to-top${showBackToTop ? ' visible' : ''}`}
           onClick={scrollToTop}
           aria-label={ui.backToTop || 'Back to top'}
           tabIndex={showBackToTop ? 0 : -1}

@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, Bookmark } from 'lucide-react'
 import { toast } from 'sonner'
-import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useApp } from '../context/AppContext.tsx'
@@ -10,6 +9,7 @@ import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '.
 import { getTrendingGuideIds } from '../lib/search.ts'
 import { useRouteTranslation, type RouteString } from '../lib/useRouteTranslation.ts'
 import EmptyState from '../components/EmptyState.tsx'
+import ImmigrationUpdatesSection from '../components/ImmigrationUpdatesSection.tsx'
 import styles from './GuidesPage.module.css'
 
 // Guides to pin in the "For You" section per status
@@ -113,6 +113,9 @@ export default function GuidesPage() {
           )}
         </div>
       )}
+
+      {/* Official UK Updates — shown prominently when not searching */}
+      {!search && <ImmigrationUpdatesSection compact />}
 
       <div className="search-bar">
         <Search size={18} strokeWidth={2} className={styles.searchIcon} />

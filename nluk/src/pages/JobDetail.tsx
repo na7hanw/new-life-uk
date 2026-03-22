@@ -26,7 +26,7 @@ export default function JobDetail() {
   }, [job, navigate])
 
   const [jc, translating, wasTranslated] = useTranslatedContent<JobContent>(
-    job?.content as Record<string, JobContent> | undefined,
+    job?.content as unknown as Record<string, JobContent> | undefined,
     lang,
     id
   )

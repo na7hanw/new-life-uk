@@ -7,7 +7,6 @@ import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP } from '../data/guides.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
-import ImmigrationUpdatesSection from '../components/ImmigrationUpdatesSection.tsx'
 import type { UserStatus } from '../types'
 import styles from './ProfilePage.module.css'
 
@@ -174,13 +173,7 @@ export default function ProfilePage() {
         </>
       )}
 
-      {/* ── Immigration Updates ───────────────────────────── */}
-      <div className="section-label">📢 UK Immigration Updates</div>
-      <div style={{ margin: '0 var(--gutter) 16px' }}>
-        <ImmigrationUpdatesSection />
-      </div>
-
-      {/* ── 56-day move-on countdown (refugees only) ─────── */}
+{/* ── 56-day move-on countdown (refugees only) ─────── */}
       {userStatus === 'refugee' && (
         <MoveOnCountdown statusDate={statusDate} setStatusDate={setStatusDate} />
       )}
