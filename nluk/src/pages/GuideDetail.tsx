@@ -1,9 +1,10 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useEffect, useState } from 'react'
 import { Bookmark } from 'lucide-react'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP, GUIDE_LAST_UPDATED, GUIDE_DATA_DATE, GUIDE_SOURCE_URL, GUIDE_RELATED } from '../data/guides.ts'
+import { getUpdatesForGuide } from '../data/immigration-updates.ts'
 import { t18 } from '../lib/utils.ts'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
 import QuickLinks from '../components/QuickLinks.tsx'
@@ -98,6 +99,46 @@ export default function GuideDetail() {
         </div>
       </div>
 
+      {/* ── Rule-change callout — shown when this guide has action-needed updates */}
+      {id && (() => {
+        const urgent = getUpdatesForGuide(id).filter(u => u.urgency === 'action-needed')
+        if (urgent.length === 0) return null
+        return (
+          <div style={{
+            margin: '0 var(--gutter) 12px',
+            borderRadius: 12,
+            overflow: 'hidden',
+            border: '1.5px solid #dc2626',
+          }}>
+            {urgent.map(u => (
+              <div key={u.id} style={{
+                background: 'color-mix(in srgb, #dc2626 8%, var(--bg2))',
+                padding: '10px 14px',
+                borderBottom: '1px solid color-mix(in srgb, #dc2626 20%, transparent)',
+              }}>
+                <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#dc2626', marginBottom: 3 }}>
+                  ⚠️ Rule change — action may be needed
+                </div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--t1)', marginBottom: 4 }}>
+                  {u.whatChanged}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--t2)' }}>
+                  <strong>What to do:</strong> {u.whatToDo}
+                </div>
+                <a
+                  href={u.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontSize: '0.76rem', color: '#dc2626', display: 'block', marginTop: 5 }}
+                >
+                  Official source →
+                </a>
+              </div>
+            ))}
+          </div>
+        )
+      })()}
+
       {guide.links && guide.links.length > 0 && (
         <QuickLinks links={guide.links} label={`🔗 ${ui.applyLinks || 'Quick Links'}`} />
       )}
@@ -161,6 +202,26 @@ export default function GuideDetail() {
             })}
           </div>
         </div>
+      )}
+
+      {/* Scanner callout on document-heavy guides */}
+      {id && ['move-on', 'uc', 'housing-help', 'social-housing', 'family-reunion', 'ilr', 'asylum-waiting', 'evisa', 'sharecode', 'life-admin'].includes(id) && (
+        <Link
+          to="/scan"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 12,
+            margin: '0 var(--gutter) 12px', padding: '10px 14px',
+            borderRadius: 12, background: 'var(--bg2)', border: '1px solid var(--sep)',
+            textDecoration: 'none', color: 'var(--t1)',
+          }}
+        >
+          <span style={{ fontSize: '1.5rem' }}>📷</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, fontSize: '0.88rem' }}>Have a letter or document? Scan it</div>
+            <div style={{ fontSize: '0.76rem', color: 'var(--t3)' }}>Photograph it to read and translate — nothing uploaded</div>
+          </div>
+          <span style={{ color: 'var(--ac3)', fontWeight: 600 }}>›</span>
+        </Link>
       )}
 
       <div className="guide-footer">

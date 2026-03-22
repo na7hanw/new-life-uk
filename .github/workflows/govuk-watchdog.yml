@@ -95,6 +95,17 @@ jobs:
               guideId: 'sharecode',
               title: 'Prove right to work (share codes)',
             },
+            // ── New policy areas added March 2026 ──────────────────────────────
+            {
+              url: 'https://www.gov.uk/asylum-support/what-youll-get',
+              guideId: 'move-on',
+              title: 'Asylum support — what you\'ll get (move-on period)',
+            },
+            {
+              url: 'https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-refugee-leave',
+              guideId: 'ilr',
+              title: 'Immigration Rules Appendix Refugee Leave (30-month protection)',
+            },
           ]
 
           // ── Cache file (stored as a workflow artifact on the repo) ────────────

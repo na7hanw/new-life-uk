@@ -28,6 +28,7 @@ jobs:
             nluk/src/data/jobs.ts \
             nluk/src/data/culture.ts \
             nluk/src/data/emergency.ts \
+            nluk/src/data/immigration-updates.ts \
             2>/dev/null | sort -u > urls.txt
           echo "Extracted $(wc -l < urls.txt) unique URLs"
           cat urls.txt

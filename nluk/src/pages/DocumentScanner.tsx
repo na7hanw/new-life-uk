@@ -5,19 +5,47 @@
  * and extract the text via Tesseract.js OCR — entirely in the browser,
  * nothing sent to any server.
  *
+ * Security:
+ * - MIME type checked against an explicit allowlist (not just a prefix match)
+ * - File size capped at MAX_FILE_MB
+ * - Blob URLs are revoked when the component resets or unmounts
+ * - OCR output is rendered as plain text (<pre>), never via innerHTML
+ * - PDF page 1 is rendered to an offscreen canvas before OCR (pdfjs-dist,
+ *   loaded lazily so it does not bloat the initial bundle)
+ *
  * After extraction, users can translate the text to their language using
  * the existing translate.ts pipeline.
  */
-import { useRef, useState, type ChangeEvent, type DragEvent } from 'react'
+import { useRef, useState, useEffect, type ChangeEvent, type DragEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext.tsx'
 import { useOCR } from '../lib/useOCR.ts'
 import { translate } from '../lib/translate.ts'
+import { renderPDFFirstPage } from '../lib/renderPDFPage.ts'
 import MachineTranslationBanner from '../components/MachineTranslationBanner.tsx'
 import styles from './DocumentScanner.module.css'
 
 const MAX_FILE_MB = 10
 const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024
+
+/** Explicit MIME allowlist — prevents relying solely on a user-controlled field. */
+const ALLOWED_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+  'image/gif',
+  'image/bmp',
+  'image/tiff',
+])
+const ALLOWED_PDF_TYPE = 'application/pdf'
+
+function isAllowedFile(file: File): 'image' | 'pdf' | null {
+  if (ALLOWED_IMAGE_TYPES.has(file.type)) return 'image'
+  if (file.type === ALLOWED_PDF_TYPE) return 'pdf'
+  return null
+}
 
 export default function DocumentScanner() {
   const navigate = useNavigate()
@@ -28,21 +56,68 @@ export default function DocumentScanner() {
   const [translation, setTranslation] = useState<string | null>(null)
   const [translating, setTranslating] = useState(false)
   const [copyLabel, setCopyLabel]     = useState('Copy text')
+  const [pdfPending, setPdfPending]   = useState(false)
+  const [pdfError, setPdfError]       = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const previewUrlRef = useRef<string | null>(null)
 
-  const handleFile = (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      return // silently ignore non-image drops
+  // Revoke any outstanding blob URL when it is replaced or the component unmounts
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current)
+        previewUrlRef.current = null
+      }
     }
-    if (file.size > MAX_FILE_BYTES) {
-      alert(`Please choose an image smaller than ${MAX_FILE_MB} MB.`)
-      return
+  }, [])
+
+  const setPreviewUrl = (url: string) => {
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current)
+    previewUrlRef.current = url
+    // Only accept blob: or data: URLs — never external URLs in an img src
+    if (url.startsWith('blob:') || url.startsWith('data:image/')) {
+      setPreview(url)
     }
+  }
+
+  const handleImage = (file: File) => {
     const url = URL.createObjectURL(file)
-    setPreview(url)
+    setPreviewUrl(url)
     setTranslation(null)
     setCopyLabel('Copy text')
+    setPdfError(null)
     run(file)
+  }
+
+  const handlePDF = async (file: File) => {
+    setPdfPending(true)
+    setPdfError(null)
+    setTranslation(null)
+    setCopyLabel('Copy text')
+    try {
+      const imageBlob = await renderPDFFirstPage(file)
+      const url = URL.createObjectURL(imageBlob)
+      setPreviewUrl(url)
+      run(imageBlob)
+    } catch (err) {
+      setPdfError(err instanceof Error ? err.message : 'Could not render PDF. Try a clearer scan.')
+    } finally {
+      setPdfPending(false)
+    }
+  }
+
+  const handleFile = (file: File) => {
+    const fileType = isAllowedFile(file)
+    if (!fileType) return   // silently ignore unsupported types
+    if (file.size > MAX_FILE_BYTES) {
+      alert(`Please choose a file smaller than ${MAX_FILE_MB} MB.`)
+      return
+    }
+    if (fileType === 'pdf') {
+      handlePDF(file)
+    } else {
+      handleImage(file)
+    }
   }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -78,13 +153,20 @@ export default function DocumentScanner() {
 
   const handleReset = () => {
     cancel()
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current)
+      previewUrlRef.current = null
+    }
     setPreview(null)
     setTranslation(null)
     setCopyLabel('Copy text')
+    setPdfError(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   const displayText = translation ?? result?.text ?? ''
+
+  const isBusy = loading || pdfPending
 
   return (
     <article className="page-enter">
@@ -102,7 +184,7 @@ export default function DocumentScanner() {
       </div>
 
       {/* ── Upload / Camera zone ──────────────────────────────── */}
-      {!preview && !loading && (
+      {!preview && !isBusy && (
         <div
           className={styles.dropZone}
           onDrop={handleDrop}
@@ -115,11 +197,11 @@ export default function DocumentScanner() {
         >
           <span className={styles.dropIcon} aria-hidden="true">📄</span>
           <p className={styles.dropTitle}>Tap to take a photo or upload</p>
-          <p className={styles.dropSub}>JPG, PNG, HEIC · max {MAX_FILE_MB} MB</p>
+          <p className={styles.dropSub}>JPG, PNG, HEIC, PDF · max {MAX_FILE_MB} MB</p>
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,application/pdf"
             capture="environment"
             onChange={handleInputChange}
             className={styles.hiddenInput}
@@ -129,11 +211,21 @@ export default function DocumentScanner() {
         </div>
       )}
 
+      {/* ── PDF rendering pending ─────────────────────────────── */}
+      {pdfPending && (
+        <div className={styles.progressCard}>
+          <div className={styles.progressBar}>
+            <div className={styles.progressFill} style={{ width: '25%' }} />
+          </div>
+          <div className={styles.progressStage}>Rendering PDF page 1…</div>
+        </div>
+      )}
+
       {/* ── Image preview ─────────────────────────────────────── */}
       {preview && (
         <div className={styles.previewWrap}>
           <img src={preview} alt="Document preview" className={styles.preview} />
-          {!loading && (
+          {!isBusy && (
             <button className={styles.resetBtn} onClick={handleReset} aria-label="Scan a different document">
               ✕ Scan different document
             </button>
@@ -153,15 +245,15 @@ export default function DocumentScanner() {
       )}
 
       {/* ── Error ────────────────────────────────────────────── */}
-      {error && (
+      {(error || pdfError) && (
         <div className={styles.errorBox}>
-          <span>⚠️ {error}</span>
+          <span>⚠️ {error || pdfError}</span>
           <button onClick={handleReset}>Try again</button>
         </div>
       )}
 
       {/* ── Results ──────────────────────────────────────────── */}
-      {result && !loading && (
+      {result && !isBusy && (
         <>
           <div className="section-label">
             📝 Extracted Text
@@ -215,7 +307,7 @@ export default function DocumentScanner() {
       )}
 
       {/* ── Tips ─────────────────────────────────────────────── */}
-      {!result && !loading && (
+      {!result && !isBusy && (
         <div className={styles.tips}>
           <div className={styles.tipsTitle}>📸 Tips for best results</div>
           <ul className={styles.tipsList}>
@@ -224,6 +316,7 @@ export default function DocumentScanner() {
             <li>Lay the document flat on a dark surface</li>
             <li>Make sure all text is inside the frame</li>
             <li>If the result is wrong, try a closer or better-lit photo</li>
+            <li>For PDFs, only the first page is scanned</li>
           </ul>
         </div>
       )}

@@ -151,12 +151,20 @@ describe('IMMIGRATION_UPDATES — trust labelling', () => {
 // ─── Sorting ──────────────────────────────────────────────────────────────────
 
 describe('getSortedUpdates', () => {
-  it('returns updates sorted newest-first by publishedAt', () => {
+  it('sorts by urgency first (action-needed → important → info), then newest-first within each tier', () => {
     const sorted = getSortedUpdates()
+    const urgencyOrder: Record<string, number> = { 'action-needed': 0, 'important': 1, 'info': 2 }
     for (let i = 0; i < sorted.length - 1; i++) {
-      const a = new Date(sorted[i].publishedAt).getTime()
-      const b = new Date(sorted[i + 1].publishedAt).getTime()
-      expect(a, `Item at position ${i} is older than item at ${i + 1}`).toBeGreaterThanOrEqual(b)
+      const a = urgencyOrder[sorted[i].urgency]
+      const b = urgencyOrder[sorted[i + 1].urgency]
+      if (a === b) {
+        // Within same urgency tier, should be newest-first
+        const aDate = new Date(sorted[i].publishedAt).getTime()
+        const bDate = new Date(sorted[i + 1].publishedAt).getTime()
+        expect(aDate, `Dates out of order within urgency tier at positions ${i}/${i + 1}`).toBeGreaterThanOrEqual(bDate)
+      } else {
+        expect(a, `Urgency out of order at positions ${i}/${i + 1}`).toBeLessThanOrEqual(b)
+      }
     }
   })
 
@@ -204,6 +212,52 @@ describe('getUpdatesForGuide', () => {
   it('returns empty array for an ID that appears in no update', () => {
     const results = getUpdatesForGuide('__nonexistent_guide_id__')
     expect(results).toEqual([])
+  })
+})
+
+// ─── Required topic coverage ─────────────────────────────────────────────────
+// These are the critical policy changes that must always have an update card.
+
+describe('IMMIGRATION_UPDATES — required topic coverage', () => {
+  it('has a card covering the 42-day move-on period', () => {
+    const card = IMMIGRATION_UPDATES.find(u =>
+      u.relatedGuideIds.includes('move-on') &&
+      (u.title.includes('42') || u.summary.includes('42 day') || u.id.includes('move-on'))
+    )
+    expect(card, 'Missing move-on 42-day update card').toBeTruthy()
+  })
+
+  it('has a card covering the family reunion route closure', () => {
+    const card = IMMIGRATION_UPDATES.find(u =>
+      u.relatedGuideIds.includes('family-reunion') &&
+      u.urgency === 'action-needed'
+    )
+    expect(card, 'Missing family reunion closure action-needed card').toBeTruthy()
+  })
+
+  it('has a card covering 30-month refugee protection', () => {
+    const card = IMMIGRATION_UPDATES.find(u =>
+      u.relatedGuideIds.includes('ilr') &&
+      (u.title.includes('30') || u.summary.includes('30 month') || u.id.includes('30-month'))
+    )
+    expect(card, 'Missing 30-month refugee protection card').toBeTruthy()
+  })
+
+  it('has a card covering permission-to-work changes', () => {
+    const card = IMMIGRATION_UPDATES.find(u =>
+      u.relatedGuideIds.includes('permission-to-work')
+    )
+    expect(card, 'Missing permission-to-work update card').toBeTruthy()
+  })
+
+  it('action-needed cards are the most prominent (appear first in sorted feed)', () => {
+    const sorted = getSortedUpdates()
+    const firstNonActionNeeded = sorted.findIndex(u => u.urgency !== 'action-needed')
+    if (firstNonActionNeeded > 0) {
+      for (let i = 0; i < firstNonActionNeeded; i++) {
+        expect(sorted[i].urgency).toBe('action-needed')
+      }
+    }
   })
 })
 

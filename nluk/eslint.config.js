@@ -54,6 +54,11 @@ const sharedGlobals = {
   ClipboardItem: 'readonly',
   // HTMLSpanElement (used in GlossaryTerm ref)
   HTMLSpanElement: 'readonly',
+  // Canvas (used in PDF rendering)
+  HTMLCanvasElement: 'readonly',
+  CanvasRenderingContext2D: 'readonly',
+  // Uint8Array (used in PDF rendering)
+  Uint8Array: 'readonly',
 }
 
 export default [

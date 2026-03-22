@@ -5,6 +5,7 @@ import { differenceInDays, addDays, format, parseISO, isValid } from 'date-fns'
 import clsx from 'clsx'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP } from '../data/guides.ts'
+import { getSortedUpdates } from '../data/immigration-updates.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
 import PostcodeLookup from '../components/PostcodeLookup.tsx'
@@ -26,7 +27,7 @@ const STATUS_NEXT_STEPS: Partial<Record<UserStatus, { icon: string; text: string
     { icon: '🧠', text: 'Access free mental health support', path: '/guide/mental' },
   ],
   'refugee': [
-    { icon: '⏰', text: 'You have 56 days — start the move-on process now', path: '/guide/move-on' },
+    { icon: '⏰', text: 'Start the move-on process now — 42-day deadline', path: '/guide/move-on' },
     { icon: '🏦', text: 'Open a bank account (Monzo — no credit check)', path: '/guide/bank' },
     { icon: '💷', text: 'Claim Universal Credit today', path: '/guide/uc' },
     { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
@@ -53,7 +54,7 @@ function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; se
   let daysLeft = 0
   let deadline: Date | null = null
   if (isDateValid && grantedDate) {
-    deadline = addDays(grantedDate, 56)
+    deadline = addDays(grantedDate, 42)
     daysLeft = differenceInDays(deadline, new Date())
   }
 
@@ -74,7 +75,7 @@ function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; se
               </div>
               <div className={styles.deadlineSub}>
                 {isPast
-                  ? 'Your 56-day move-on period has ended — contact your council immediately'
+                  ? 'Your move-on deadline has passed — contact your council immediately'
                   : daysLeft === 0
                     ? 'Your move-on deadline is today — act now'
                     : 'to claim Universal Credit and secure housing'}
@@ -82,7 +83,7 @@ function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; se
             </>
           ) : (
             <>
-              <div className={styles.deadlineDays}>56-day move-on</div>
+              <div className={styles.deadlineDays}>42-day move-on</div>
               <div className={styles.deadlineSub}>Enter your status grant date to see your deadline</div>
             </>
           )}
@@ -131,6 +132,14 @@ const SECTOR_OPTIONS: { value: NonNullable<import('../types').UserSector>; emoji
   { value: 'education',    emoji: '🎓', label: 'Education & Childcare' },
   { value: 'admin',        emoji: '📋', label: 'Admin & Office' },
 ]
+
+/** Guide IDs most relevant to each immigration status — used for update alerts */
+const STATUS_GUIDE_IDS: Record<string, string[]> = {
+  'asylum-seeker': ['asylum-waiting', 'permission-to-work', 'nrpf', 'evisa'],
+  'refugee':       ['move-on', 'uc', 'housing-help', 'family-reunion', 'ilr'],
+  'other-visa':    ['evisa', 'sharecode', 'work-rights', 'ilr'],
+  'settled':       ['ilr', 'evisa', 'sharecode'],
+}
 
 const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
   { id: 'brp',       emoji: '💳', label: 'BRP (Biometric Residence Permit)' },
@@ -182,6 +191,39 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+
+      {/* ── Action-needed update alerts for user's status ─── */}
+      {userStatus && STATUS_GUIDE_IDS[userStatus] && (() => {
+        const relevantGuides = STATUS_GUIDE_IDS[userStatus]
+        const alerts = getSortedUpdates().filter(u =>
+          u.urgency === 'action-needed' &&
+          u.relatedGuideIds.some(g => relevantGuides.includes(g))
+        )
+        if (alerts.length === 0) return null
+        return (
+          <div style={{ margin: '0 var(--gutter) 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {alerts.map(u => (
+              <div key={u.id} style={{
+                padding: '10px 14px', borderRadius: 10,
+                background: 'color-mix(in srgb, #dc2626 7%, var(--bg2))',
+                border: '1.5px solid color-mix(in srgb, #dc2626 30%, transparent)',
+              }}>
+                <div style={{ fontWeight: 700, fontSize: '0.8rem', color: '#dc2626', marginBottom: 3 }}>
+                  ⚠️ Action needed
+                </div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--t1)', fontWeight: 600, marginBottom: 2 }}>
+                  {u.title}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--t2)' }}>{u.whatToDo}</div>
+                <a href={u.sourceUrl} target="_blank" rel="noopener noreferrer"
+                  style={{ fontSize: '0.76rem', color: '#dc2626', display: 'inline-block', marginTop: 4 }}>
+                  Official source →
+                </a>
+              </div>
+            ))}
+          </div>
+        )
+      })()}
 
       {/* ── My Goals (ambition) ──────────────────────────── */}
       <div className="section-label">{ui.profileAmbitionLabel || '🎯 My Goals'}</div>
@@ -265,13 +307,26 @@ export default function ProfilePage() {
         </>
       )}
 
-{/* ── 56-day move-on countdown (refugees only) ─────── */}
+{/* ── Move-on countdown (refugees only) ─────────────── */}
       {userStatus === 'refugee' && (
         <MoveOnCountdown statusDate={statusDate} setStatusDate={setStatusDate} />
       )}
 
       {/* ── Progress Checklist ────────────────────────────── */}
       <ChecklistWidget ui={ui} />
+
+      {/* ── Document Scanner quick-access ────────────────── */}
+      <div className="section-label">🔧 Tools</div>
+      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
+        <button className="list-row" onClick={() => navigate('/scan')}>
+          <span className="list-row-icon">📷</span>
+          <div className="list-row-content">
+            <div className="list-row-title">Scan a Document</div>
+            <div className="list-row-sub">Photograph a letter or form to read and translate it</div>
+          </div>
+          <ChevronRight size={18} strokeWidth={2.5} style={{ color: 'var(--ac3)', flexShrink: 0 }} />
+        </button>
+      </div>
 
       {/* ── Saved Guides ─────────────────────────────────── */}
       {bookmarks.length > 0 ? (
@@ -314,19 +369,6 @@ export default function ProfilePage() {
           </button>
         </div>
       )}
-
-      {/* ── Document Scanner quick-access ────────────────── */}
-      <div className="section-label">🔧 Tools</div>
-      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
-        <button className="list-row" onClick={() => navigate('/scan')}>
-          <span className="list-row-icon">📷</span>
-          <div className="list-row-content">
-            <div className="list-row-title">Scan a Document</div>
-            <div className="list-row-sub">Photograph a letter or form to read and translate it</div>
-          </div>
-          <ChevronRight size={18} strokeWidth={2.5} style={{ color: 'var(--ac3)', flexShrink: 0 }} />
-        </button>
-      </div>
 
       {/* ── Settings link ────────────────────────────────── */}
       <div className="section-label">{ui.settings || 'Settings'}</div>
