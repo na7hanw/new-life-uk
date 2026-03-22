@@ -26,7 +26,7 @@ const STATUS_NEXT_STEPS: Partial<Record<UserStatus, { icon: string; text: string
     { icon: '🧠', text: 'Access free mental health support', path: '/guide/mental' },
   ],
   'refugee': [
-    { icon: '⏰', text: 'You have 56 days — start the move-on process now', path: '/guide/move-on' },
+    { icon: '⏰', text: 'Start the move-on process now — 42-day deadline', path: '/guide/move-on' },
     { icon: '🏦', text: 'Open a bank account (Monzo — no credit check)', path: '/guide/bank' },
     { icon: '💷', text: 'Claim Universal Credit today', path: '/guide/uc' },
     { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
@@ -53,7 +53,7 @@ function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; se
   let daysLeft = 0
   let deadline: Date | null = null
   if (isDateValid && grantedDate) {
-    deadline = addDays(grantedDate, 56)
+    deadline = addDays(grantedDate, 42)
     daysLeft = differenceInDays(deadline, new Date())
   }
 
@@ -74,7 +74,7 @@ function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; se
               </div>
               <div className={styles.deadlineSub}>
                 {isPast
-                  ? 'Your 56-day move-on period has ended — contact your council immediately'
+                  ? 'Your move-on deadline has passed — contact your council immediately'
                   : daysLeft === 0
                     ? 'Your move-on deadline is today — act now'
                     : 'to claim Universal Credit and secure housing'}
@@ -82,7 +82,7 @@ function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; se
             </>
           ) : (
             <>
-              <div className={styles.deadlineDays}>56-day move-on</div>
+              <div className={styles.deadlineDays}>42-day move-on</div>
               <div className={styles.deadlineSub}>Enter your status grant date to see your deadline</div>
             </>
           )}
@@ -265,13 +265,26 @@ export default function ProfilePage() {
         </>
       )}
 
-{/* ── 56-day move-on countdown (refugees only) ─────── */}
+{/* ── Move-on countdown (refugees only) ─────────────── */}
       {userStatus === 'refugee' && (
         <MoveOnCountdown statusDate={statusDate} setStatusDate={setStatusDate} />
       )}
 
       {/* ── Progress Checklist ────────────────────────────── */}
       <ChecklistWidget ui={ui} />
+
+      {/* ── Document Scanner quick-access ────────────────── */}
+      <div className="section-label">🔧 Tools</div>
+      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
+        <button className="list-row" onClick={() => navigate('/scan')}>
+          <span className="list-row-icon">📷</span>
+          <div className="list-row-content">
+            <div className="list-row-title">Scan a Document</div>
+            <div className="list-row-sub">Photograph a letter or form to read and translate it</div>
+          </div>
+          <ChevronRight size={18} strokeWidth={2.5} style={{ color: 'var(--ac3)', flexShrink: 0 }} />
+        </button>
+      </div>
 
       {/* ── Saved Guides ─────────────────────────────────── */}
       {bookmarks.length > 0 ? (
@@ -314,19 +327,6 @@ export default function ProfilePage() {
           </button>
         </div>
       )}
-
-      {/* ── Document Scanner quick-access ────────────────── */}
-      <div className="section-label">🔧 Tools</div>
-      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
-        <button className="list-row" onClick={() => navigate('/scan')}>
-          <span className="list-row-icon">📷</span>
-          <div className="list-row-content">
-            <div className="list-row-title">Scan a Document</div>
-            <div className="list-row-sub">Photograph a letter or form to read and translate it</div>
-          </div>
-          <ChevronRight size={18} strokeWidth={2.5} style={{ color: 'var(--ac3)', flexShrink: 0 }} />
-        </button>
-      </div>
 
       {/* ── Settings link ────────────────────────────────── */}
       <div className="section-label">{ui.settings || 'Settings'}</div>

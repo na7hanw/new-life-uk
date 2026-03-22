@@ -23,6 +23,6 @@ body:
     attributes:
       label: How urgent is this for new arrivals?
       options:
-        - Critical — needed in first 56 days
+        - Critical — needed urgently (within 42 days of refugee status grant)
         - Important — needed in first 6 months
         - Nice to have

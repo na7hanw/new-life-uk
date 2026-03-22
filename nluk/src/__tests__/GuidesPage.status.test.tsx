@@ -82,8 +82,8 @@ describe('GuidesPage — For You section', () => {
     const forYouHeaders = container.querySelectorAll('.cat-header')
     const forYouHeader = Array.from(forYouHeaders).find(el => el.textContent?.includes('For You'))
     expect(forYouHeader).not.toBeNull()
-    // The 56-Day Move-On Period guide should appear (id: move-on)
-    expect(screen.queryAllByText(/56-Day Move-On Period/i).length).toBeGreaterThan(0)
+    // The Move-On guide should appear (id: move-on)
+    expect(screen.queryAllByText(/Move-On: Starting Your Independent Life/i).length).toBeGreaterThan(0)
   })
 
   it('renders asylum-seeker-specific guides in the For You section', () => {

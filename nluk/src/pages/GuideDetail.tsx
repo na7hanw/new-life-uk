@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useEffect, useState } from 'react'
 import { Bookmark } from 'lucide-react'
@@ -161,6 +161,26 @@ export default function GuideDetail() {
             })}
           </div>
         </div>
+      )}
+
+      {/* Scanner callout on document-heavy guides */}
+      {id && ['move-on', 'uc', 'housing-help', 'social-housing', 'family-reunion', 'ilr', 'asylum-waiting', 'evisa', 'sharecode', 'life-admin'].includes(id) && (
+        <Link
+          to="/scan"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 12,
+            margin: '0 var(--gutter) 12px', padding: '10px 14px',
+            borderRadius: 12, background: 'var(--bg2)', border: '1px solid var(--sep)',
+            textDecoration: 'none', color: 'var(--t1)',
+          }}
+        >
+          <span style={{ fontSize: '1.5rem' }}>📷</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, fontSize: '0.88rem' }}>Have a letter or document? Scan it</div>
+            <div style={{ fontSize: '0.76rem', color: 'var(--t3)' }}>Photograph it to read and translate — nothing uploaded</div>
+          </div>
+          <span style={{ color: 'var(--ac3)', fontWeight: 600 }}>›</span>
+        </Link>
       )}
 
       <div className="guide-footer">

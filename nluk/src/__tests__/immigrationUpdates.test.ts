@@ -151,12 +151,20 @@ describe('IMMIGRATION_UPDATES — trust labelling', () => {
 // ─── Sorting ──────────────────────────────────────────────────────────────────
 
 describe('getSortedUpdates', () => {
-  it('returns updates sorted newest-first by publishedAt', () => {
+  it('sorts by urgency first (action-needed → important → info), then newest-first within each tier', () => {
     const sorted = getSortedUpdates()
+    const urgencyOrder: Record<string, number> = { 'action-needed': 0, 'important': 1, 'info': 2 }
     for (let i = 0; i < sorted.length - 1; i++) {
-      const a = new Date(sorted[i].publishedAt).getTime()
-      const b = new Date(sorted[i + 1].publishedAt).getTime()
-      expect(a, `Item at position ${i} is older than item at ${i + 1}`).toBeGreaterThanOrEqual(b)
+      const a = urgencyOrder[sorted[i].urgency]
+      const b = urgencyOrder[sorted[i + 1].urgency]
+      if (a === b) {
+        // Within same urgency tier, should be newest-first
+        const aDate = new Date(sorted[i].publishedAt).getTime()
+        const bDate = new Date(sorted[i + 1].publishedAt).getTime()
+        expect(aDate, `Dates out of order within urgency tier at positions ${i}/${i + 1}`).toBeGreaterThanOrEqual(bDate)
+      } else {
+        expect(a, `Urgency out of order at positions ${i}/${i + 1}`).toBeLessThanOrEqual(b)
+      }
     }
   })
 
