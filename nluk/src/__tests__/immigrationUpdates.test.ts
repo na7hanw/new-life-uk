@@ -215,6 +215,52 @@ describe('getUpdatesForGuide', () => {
   })
 })
 
+// ─── Required topic coverage ─────────────────────────────────────────────────
+// These are the critical policy changes that must always have an update card.
+
+describe('IMMIGRATION_UPDATES — required topic coverage', () => {
+  it('has a card covering the 42-day move-on period', () => {
+    const card = IMMIGRATION_UPDATES.find(u =>
+      u.relatedGuideIds.includes('move-on') &&
+      (u.title.includes('42') || u.summary.includes('42 day') || u.id.includes('move-on'))
+    )
+    expect(card, 'Missing move-on 42-day update card').toBeTruthy()
+  })
+
+  it('has a card covering the family reunion route closure', () => {
+    const card = IMMIGRATION_UPDATES.find(u =>
+      u.relatedGuideIds.includes('family-reunion') &&
+      u.urgency === 'action-needed'
+    )
+    expect(card, 'Missing family reunion closure action-needed card').toBeTruthy()
+  })
+
+  it('has a card covering 30-month refugee protection', () => {
+    const card = IMMIGRATION_UPDATES.find(u =>
+      u.relatedGuideIds.includes('ilr') &&
+      (u.title.includes('30') || u.summary.includes('30 month') || u.id.includes('30-month'))
+    )
+    expect(card, 'Missing 30-month refugee protection card').toBeTruthy()
+  })
+
+  it('has a card covering permission-to-work changes', () => {
+    const card = IMMIGRATION_UPDATES.find(u =>
+      u.relatedGuideIds.includes('permission-to-work')
+    )
+    expect(card, 'Missing permission-to-work update card').toBeTruthy()
+  })
+
+  it('action-needed cards are the most prominent (appear first in sorted feed)', () => {
+    const sorted = getSortedUpdates()
+    const firstNonActionNeeded = sorted.findIndex(u => u.urgency !== 'action-needed')
+    if (firstNonActionNeeded > 0) {
+      for (let i = 0; i < firstNonActionNeeded; i++) {
+        expect(sorted[i].urgency).toBe('action-needed')
+      }
+    }
+  })
+})
+
 // ─── Source URL integrity ─────────────────────────────────────────────────────
 
 describe('IMMIGRATION_UPDATES — source URL integrity', () => {
