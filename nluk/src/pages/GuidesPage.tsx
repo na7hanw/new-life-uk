@@ -7,8 +7,8 @@ import Fuse from 'fuse.js'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
-import { t18 } from '../lib/utils.ts'
 import { getTrendingGuideIds } from '../lib/search.ts'
+import { useRouteTranslation, type RouteString } from '../lib/useRouteTranslation.ts'
 import EmptyState from '../components/EmptyState.tsx'
 import styles from './GuidesPage.module.css'
 
@@ -23,9 +23,16 @@ const STATUS_GUIDES: Record<string, string[]> = {
 // Enrich guides with keyword aliases once at module load (not on every component mount).
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
 
+// Pre-build route strings for all guide titles and summaries (stable module-scope reference).
+const GUIDE_ROUTE_STRINGS: RouteString[] = GUIDES.flatMap(g => [
+  { key: `${g.id}:title`,   text: g.content.en.title },
+  { key: `${g.id}:summary`, text: g.content.en.summary },
+])
+
 export default function GuidesPage() {
   const { lang, ui, dir, af, userStatus, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
+  const { t: routeT, isReady: routeReady } = useRouteTranslation('guides', GUIDE_ROUTE_STRINGS, lang)
   const [search, setSearch] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
   const [catFilter, setCatFilter] = useState('All')
@@ -133,7 +140,7 @@ export default function GuidesPage() {
                   <button key={id} className="chip"
                     onMouseDown={e => e.preventDefault()}
                     onClick={() => navigate(`/guide/${id}`)}>
-                    {g.icon} {t18(g.content, lang).title}
+                    {g.icon} {routeT(`${id}:title`)}
                   </button>
                 )
               })}
@@ -160,6 +167,13 @@ export default function GuidesPage() {
         ))}
       </div>
 
+      {!routeReady && lang !== 'en' && (
+        <div className="translating-row" role="status">
+          <span className="translating-spinner" />
+          <span>{ui.translating || 'Translating…'}</span>
+        </div>
+      )}
+
       {filtered.length === 0 && (
         <EmptyState message={ui.noResults} />
       )}
@@ -174,17 +188,16 @@ export default function GuidesPage() {
               .map(id => GUIDE_MAP[id])
               .filter(Boolean)
               .map(g => {
-                const gc = t18(g.content, lang)
                 return (
                   <div key={g.id} className="list-row-wrap">
                     <button className="list-row list-row-main"
                       ref={el => { guideBtnRefs.current[g.id] = el }}
                       onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
-                      aria-label={gc.title}>
+                      aria-label={routeT(`${g.id}:title`)}>
                       <span className="list-row-icon">{g.icon}</span>
                       <div className="list-row-content">
-                        <div className="list-row-title">{gc.title}</div>
-                        <div className="list-row-sub">{gc.summary}</div>
+                        <div className="list-row-title">{routeT(`${g.id}:title`)}</div>
+                        <div className="list-row-sub">{routeT(`${g.id}:summary`)}</div>
                       </div>
                       <span className="list-row-arrow">{af}</span>
                     </button>
@@ -217,17 +230,16 @@ export default function GuidesPage() {
               .map(id => GUIDE_MAP[id])
               .filter(Boolean)
               .map(g => {
-                const gc = t18(g.content, lang)
                 return (
                   <div key={g.id} className="list-row-wrap">
                     <button className="list-row list-row-main"
                       ref={el => { guideBtnRefs.current[g.id] = el }}
                       onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
-                      aria-label={gc.title}>
+                      aria-label={routeT(`${g.id}:title`)}>
                       <span className="list-row-icon">{g.icon}</span>
                       <div className="list-row-content">
-                        <div className="list-row-title">{gc.title}</div>
-                        <div className="list-row-sub">{gc.summary}</div>
+                        <div className="list-row-title">{routeT(`${g.id}:title`)}</div>
+                        <div className="list-row-sub">{routeT(`${g.id}:summary`)}</div>
                       </div>
                       <span className="list-row-arrow">{af}</span>
                     </button>
@@ -260,17 +272,16 @@ export default function GuidesPage() {
           </div>
           <div className={`card card-flush ${styles.cardGutter}`}>
             {groupedByCat[cat].map(g => {
-              const gc = t18(g.content, lang)
               return (
                 <div key={g.id} className="list-row-wrap">
                   <button className="list-row list-row-main"
                     ref={el => { guideBtnRefs.current[g.id] = el }}
                     onClick={() => { sessionStorage.setItem('nluk_last_guide', g.id); navigate(`/guide/${g.id}`) }}
-                    aria-label={gc.title}>
+                    aria-label={routeT(`${g.id}:title`)}>
                     <span className="list-row-icon">{g.icon}</span>
                     <div className="list-row-content">
-                      <div className="list-row-title">{gc.title}</div>
-                      <div className="list-row-sub">{gc.summary}</div>
+                      <div className="list-row-title">{routeT(`${g.id}:title`)}</div>
+                      <div className="list-row-sub">{routeT(`${g.id}:summary`)}</div>
                     </div>
                     <span className="list-row-arrow">{af}</span>
                   </button>
