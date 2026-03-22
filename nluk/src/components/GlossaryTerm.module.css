@@ -1,0 +1,116 @@
+/* ── Wrapper ──────────────────────────────────────────────────────── */
+.wrap {
+  position: relative;
+  display: inline;
+}
+
+/* ── Term button ──────────────────────────────────────────────────── */
+.term {
+  display: inline;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--ac3);
+  text-underline-offset: 3px;
+  border-radius: 2px;
+}
+
+.term:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Indicator dot ─────────────────────────────────────────────────── */
+.dot {
+  font-size: 0.6em;
+  color: var(--ac);
+  vertical-align: super;
+  margin-inline-start: 1px;
+  pointer-events: none;
+}
+
+/* ── Popover card ──────────────────────────────────────────────────── */
+.popover {
+  display: block;
+  position: absolute;
+  inset-inline-start: 0;
+  top: calc(100% + 5px);
+  z-index: 120;
+  width: min(300px, 90vw);
+  background: var(--bg);
+  border: 1px solid var(--sep);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+  padding: 10px 12px 10px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+/* Ensure popover is not cut off on right side */
+@media (max-width: 400px) {
+  .popover {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+  }
+}
+
+/* ── Popover header ────────────────────────────────────────────────── */
+.popoverHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.popoverTitle {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--t1);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--t3);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  background: var(--bg2);
+  color: var(--t1);
+}
+
+/* ── Popover body ──────────────────────────────────────────────────── */
+.popoverBody {
+  display: block;
+  color: var(--t2);
+}
+
+.loadingText {
+  color: var(--t3);
+  font-style: italic;
+}
+
+/* ── Source link ────────────────────────────────────────────────────── */
+.sourceLink {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: var(--ac);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.sourceLink:hover {
+  text-decoration: underline;
+}
