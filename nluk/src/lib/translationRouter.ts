@@ -106,9 +106,11 @@ export function selectProvider(targetLang: string): ProviderID {
 }
 
 /**
- * Returns true when at least one free/open-source provider supports the language.
+ * Returns true when the language is available — either no translation is needed
+ * (English) or at least one free/open-source provider supports the language.
  * Use this to decide whether to show a "translation unavailable" badge.
  */
 export function isTranslationAvailable(targetLang: string): boolean {
+  if (!targetLang || targetLang === 'en') return true
   return selectProvider(targetLang) !== 'none'
 }

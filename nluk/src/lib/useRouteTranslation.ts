@@ -103,8 +103,10 @@ export function useRouteTranslation(
       if (cancelRef.current) return
 
       const m: Record<string, string> = {}
-      strings.forEach(({ key }, i) => {
-        m[key] = results[i]
+      strings.forEach(({ key, text }, i) => {
+        // Fall back to English when the provider returns an empty string
+        // (better to show the original than to show nothing)
+        m[key] = results[i] || text
       })
 
       setTranslatedMap(m)

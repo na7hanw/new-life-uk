@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useApp } from '../context/AppContext.tsx'
 import { JOB_MAP, JOBS_DATA_DATE, JOB_SOURCE_URL } from '../data/jobs.ts'
 import { useTranslatedContent } from '../lib/useTranslation.ts'
+import MachineTranslationBanner from '../components/MachineTranslationBanner.tsx'
 import QuickLinks from '../components/QuickLinks.tsx'
 import ShareBar from '../components/ShareBar.tsx'
 import TTSButton from '../components/TTSButton.tsx'
@@ -25,7 +26,7 @@ export default function JobDetail() {
     if (!job) navigate('/work/jobs')
   }, [job, navigate])
 
-  const [jc, translating, wasTranslated] = useTranslatedContent<JobContent>(
+  const [jc, translating, _wasTranslated] = useTranslatedContent<JobContent>(
     job?.content as unknown as Record<string, JobContent> | undefined,
     lang,
     id
@@ -107,11 +108,7 @@ export default function JobDetail() {
         </div>
       </div>
 
-      {wasTranslated && (
-        <div style={{ textAlign: 'center', paddingBottom: 4 }}>
-          <span className="auto-translated-badge">{ui.autoTranslated || '🌐 Auto-translated'}</span>
-        </div>
-      )}
+      <MachineTranslationBanner lang={lang} ui={ui} />
 
       <div className="guide-footer">
         <span className="guide-footer-verified">✓ Verified {JOBS_DATA_DATE}</span>
