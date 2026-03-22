@@ -47,6 +47,7 @@ export interface JobContent {
 }
 
 export interface Job {
+  id?: string
   icon: string
   pay: string
   visa?: boolean
@@ -54,6 +55,8 @@ export interface Job {
   docs?: string[]
   content: I18nContent<JobContent>
   applyLinks?: JobApplyLink[]
+  /** Optional: ids of related guides in guides.ts for cross-navigation */
+  guideIds?: string[]
 }
 
 export interface SaveContent {

@@ -4,11 +4,12 @@
  * Critical: this app gives life-changing advice; a broken link matters.
  */
 import { describe, it, expect } from 'vitest'
-import { GUIDES, GUIDE_PRIORITY, GUIDE_LAST_UPDATED } from '../data/guides.ts'
+import { GUIDES, GUIDE_MAP, GUIDE_PRIORITY, GUIDE_LAST_UPDATED } from '../data/guides.ts'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
 import { SOS_NUMBERS } from '../data/emergency.ts'
 import { APPS } from '../data/apps.ts'
 import { CULTURE } from '../data/culture.ts'
+import { CHECKLIST_ITEMS } from '../components/ChecklistWidget.tsx'
 
 // ─── Guides ───────────────────────────────────────────────────────
 
@@ -177,6 +178,51 @@ describe('GUIDE_LAST_UPDATED — freshness', () => {
         parsed.getTime(),
         `GUIDE_LAST_UPDATED["${id}"] = "${dateStr}" is older than 12 months`
       ).toBeGreaterThan(cutoff.getTime())
+    }
+  })
+})
+
+// ─── Cross-link integrity ────────────────────────────────────────────────────
+
+describe('cross-link integrity — checklist guide IDs', () => {
+  it('every CHECKLIST_ITEMS guideId exists in GUIDE_MAP', () => {
+    for (const item of CHECKLIST_ITEMS) {
+      expect(
+        GUIDE_MAP[item.guideId],
+        `ChecklistWidget item "${item.id}" references unknown guideId: "${item.guideId}"`
+      ).toBeTruthy()
+    }
+  })
+})
+
+describe('cross-link integrity — apps.ts guideIds', () => {
+  it('every app guideId (when set) exists in GUIDE_MAP', () => {
+    for (const app of APPS) {
+      if (app.guideId) {
+        expect(
+          GUIDE_MAP[app.guideId],
+          `App "${app.content?.en?.title}" references unknown guideId: "${app.guideId}"`
+        ).toBeTruthy()
+      }
+    }
+  })
+})
+
+describe('cross-link integrity — career links use https://', () => {
+  it('all career links use https://', () => {
+    for (const c of CAREERS) {
+      for (const link of c.links ?? []) {
+        expect(link.url, `${c.content?.en?.title} > "${link.name}" — not https`).toMatch(/^https:\/\//)
+      }
+    }
+  })
+
+  it('every career has at least one step', () => {
+    for (const c of CAREERS) {
+      expect(
+        (c.steps?.en?.length ?? 0),
+        `${c.content?.en?.title} has no steps`
+      ).toBeGreaterThan(0)
     }
   })
 })

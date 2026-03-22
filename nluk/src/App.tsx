@@ -23,6 +23,7 @@ const GuideDetail  = lazy(() => import('./pages/GuideDetail.tsx'))
 const WorkHub      = lazy(() => import('./pages/WorkHub.tsx'))
 const CertDetail   = lazy(() => import('./pages/CertDetail.tsx'))
 const CareerDetail = lazy(() => import('./pages/CareerDetail.tsx'))
+const JobDetail    = lazy(() => import('./pages/JobDetail.tsx'))
 const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
 const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
 const ProfilePage  = lazy(() => import('./pages/ProfilePage.tsx'))
@@ -41,7 +42,7 @@ export default function App() {
   useEffect(() => {
     const prev = prevPathRef.current
     const curr = location.pathname
-    const isDetailPath = (p: string) => /^\/(guide|cert|career)\//.test(p)
+    const isDetailPath = (p: string) => /^\/(guide|cert|career|job)\//.test(p)
     if (!isDetailPath(curr) && isDetailPath(prev)) {
       setNavClass('nav-left')
     } else {
@@ -50,7 +51,7 @@ export default function App() {
     prevPathRef.current = curr
   }, [location.pathname])
 
-  const isDetail = /^\/(guide|cert|career)\//.test(location.pathname) || location.pathname === '/settings'
+  const isDetail = /^\/(guide|cert|career|job)\//.test(location.pathname) || location.pathname === '/settings'
   const [routeAnn, setRouteAnn] = useState('')
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function App() {
       p.startsWith('/work')   ? 'Work and jobs' :
       p.startsWith('/cert/')  ? 'Certificate detail' :
       p.startsWith('/career/')? 'Career path detail' :
+      p.startsWith('/job/')   ? 'Job detail' :
       p === '/saves'      ? 'Saved resources and UK Life' : ''
     setRouteAnn(ann)
   }, [location.pathname])
@@ -292,6 +294,7 @@ export default function App() {
                 <Route path="/work/:subtab" element={<WorkHub />} />
                 <Route path="/cert/:id" element={<CertDetail />} />
                 <Route path="/career/:id" element={<CareerDetail />} />
+                <Route path="/job/:id" element={<JobDetail />} />
                 <Route path="/saves" element={<SavesPage />} />
                 <Route path="/saves/apps" element={<Navigate to="/saves" replace />} />
                 <Route path="/culture" element={<Navigate to="/saves" replace />} />

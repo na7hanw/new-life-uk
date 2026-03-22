@@ -11,25 +11,29 @@ export const APPS: SaveItem[] = [
     cat: "Health",
     content: { en: { title: "NHS App", desc: "Book GP appointments, order repeat prescriptions, and view your health records. Free on iOS and Android. Download on your first day — you will use it regularly." } },
     url: "https://www.nhs.uk/nhs-app/",
+    guideId: "gp",
   },
   {
     icon: "📞",
     cat: "Health",
     content: { en: { title: "NHS 111 Online — Urgent Health Advice", desc: "Get urgent (non-emergency) medical advice 24/7. The website asks you questions and tells you exactly what to do next. Faster than A&E for minor problems. Also call 111 free." } },
     url: "https://111.nhs.uk",
+    guideId: "gp",
   },
   // ─── Finance ──────────────────────────────────────────────────
   {
     icon: "🏦",
     cat: "Finance",
-    content: { en: { title: "Monzo — Free Bank Account", desc: "Open a free UK bank account in minutes using just your eVisa share code and a selfie. No credit checks. Instant account number and sort code for receiving benefits, wages, and paying bills." } },
+    content: { en: { title: "Monzo — Free Bank Account", desc: "Open a free UK bank account in minutes using just your eVisa share code and a selfie. No credit checks. Instant account number and sort code for receiving benefits, wages, and paying bills. ⚠ Requires eVisa share code — an ARC card alone is NOT accepted." } },
     url: "https://monzo.com",
+    guideId: "bank",
   },
   {
     icon: "💳",
     cat: "Finance",
-    content: { en: { title: "Revolut — Free Bank Account", desc: "Another free UK bank account popular with new arrivals. Open with your eVisa share code and a selfie. Also supports international money transfers at competitive rates." } },
+    content: { en: { title: "Revolut — Free Bank Account", desc: "Another free UK bank account popular with new arrivals. Open with your eVisa share code and a selfie. Also supports international money transfers at competitive rates. ⚠ Requires eVisa share code — an ARC card alone is NOT accepted." } },
     url: "https://www.revolut.com",
+    guideId: "bank",
   },
   {
     icon: "💱",
@@ -43,6 +47,7 @@ export const APPS: SaveItem[] = [
     cat: "Benefits",
     content: { en: { title: "Universal Credit — Manage Your Claim", desc: "Manage your UC claim via the GOV.UK website: submit journal entries, book Jobcentre appointments, check payment dates, and report changes. Works on any phone browser — bookmark it for easy access." } },
     url: "https://www.gov.uk/sign-in-universal-credit",
+    guideId: "uc",
   },
   // ─── Immigration ──────────────────────────────────────────────
   {
@@ -50,6 +55,7 @@ export const APPS: SaveItem[] = [
     cat: "Immigration",
     content: { en: { title: "UKVI — Check Your Immigration Status", desc: "View and share your digital immigration status (eVisa). Generate a share code to prove your right to work, rent, or access services. No physical document needed." } },
     url: "https://www.gov.uk/view-prove-immigration-status",
+    guideId: "evisa",
   },
   // ─── Transport ────────────────────────────────────────────────
   {
@@ -120,24 +126,28 @@ export const APPS: SaveItem[] = [
     cat: "Jobs",
     content: { en: { title: "Indeed — Job Search", desc: "The UK's most-used job board. Search by job type, location, and salary. Upload your CV and apply in one tap. Set job alerts to receive new matches by email. Completely free." } },
     url: "https://uk.indeed.com",
+    guideId: "work-rights",
   },
   {
     icon: "🔗",
     cat: "Jobs",
     content: { en: { title: "LinkedIn — Professional Network", desc: "Build your professional profile, connect with people in your field, and apply for jobs directly. Many UK employers search LinkedIn before hiring. Free basic account." } },
     url: "https://www.linkedin.com",
+    guideId: "uk-cv",
   },
   {
     icon: "📋",
     cat: "Jobs",
     content: { en: { title: "Reed — Job Search", desc: "One of the UK's largest job boards covering all industries and skill levels. Particularly strong for admin, healthcare, and social care roles. Search by location, salary, and contract type. Free to use and apply." } },
     url: "https://www.reed.co.uk",
+    guideId: "uk-cv",
   },
   {
     icon: "🎯",
     cat: "Jobs",
     content: { en: { title: "TotalJobs — Job Search", desc: "Major UK job board with strong coverage of engineering, construction, and professional services. Good for people with overseas qualifications looking to re-enter their profession. Free to search, upload your CV, and apply." } },
     url: "https://www.totaljobs.com",
+    guideId: "uk-enic",
   },
   // ─── Learning ─────────────────────────────────────────────────
   {
@@ -158,6 +168,7 @@ export const APPS: SaveItem[] = [
     cat: "Advice",
     content: { en: { title: "Citizens Advice", desc: "Free advice on benefits, housing, work rights, debt, and legal issues. Find your nearest Citizens Advice bureau or use the online chat. Completely free and confidential." } },
     url: "https://www.citizensadvice.org.uk",
+    guideId: "legal-help",
   },
   // ─── Shopping ─────────────────────────────────────────────────
   {
@@ -185,6 +196,7 @@ export const APPS: SaveItem[] = [
     cat: "Health",
     content: { en: { title: "NHS Talking Therapies — Self-Refer", desc: "Free NHS talking therapy (CBT, counselling, guided self-help) — no GP referral required. Self-refer online or by phone in your area. Wait times 2–12 weeks depending on location. Available in most languages via interpreter. One of the most underused services in the NHS." } },
     url: "https://www.nhs.uk/mental-health/talking-therapies-medicine-treatments/talking-therapies-and-counselling/nhs-talking-therapies/",
+    guideId: "mental",
   },
   // ─── Community ────────────────────────────────────────────────
   {

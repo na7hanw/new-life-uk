@@ -1,10 +1,11 @@
 import { useState, useId, useMemo, memo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
 import styles from './JobCard.module.css'
 import type { Job, JobContent, UiStrings } from '../types'
 
 interface JobCardProps {
-  j: Job
+  j: Job & { id?: string }
   lang: string
   ui: Pick<UiStrings, 'docsNeeded' | 'jobsApplyTo'>
 }
@@ -13,6 +14,7 @@ const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
   const [open, setOpen] = useState(false)
   const [showFullDesc, setShowFullDesc] = useState(false)
   const bodyId = useId()
+  const navigate = useNavigate()
   const jc = useMemo<Partial<JobContent>>(
     () => (j.content?.[lang] || j.content?.en || {}),
     [j, lang]
@@ -70,6 +72,19 @@ const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
               ))}
             </div>
           </div>
+
+          {j.id && (
+            <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+              <button
+                className={styles.jobApplyChip}
+                style={{ border: 'none', cursor: 'pointer', background: 'var(--surface2)' }}
+                onClick={() => navigate(`/job/${j.id}`)}
+                aria-label={`Open full page for ${jc.role}`}
+              >
+                📄 Full details &amp; share →
+              </button>
+            </div>
+          )}
           </div>{/* end jobBodyInner */}
         </div>
       </div>

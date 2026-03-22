@@ -15,7 +15,7 @@ interface ChecklistItem {
   icon: string
 }
 
-const CHECKLIST_ITEMS: ChecklistItem[] = [
+export const CHECKLIST_ITEMS: ChecklistItem[] = [
   { id: 'evisa',   label: 'Set up eVisa account',              guideId: 'evisa',        icon: '📱' },
   { id: 'bank',    label: 'Open a bank account',               guideId: 'bank',         icon: '🏦' },
   { id: 'gp',      label: 'Register with a GP',                guideId: 'gp',           icon: '🏥' },
@@ -23,7 +23,7 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   { id: 'uc',      label: 'Apply for Universal Credit',         guideId: 'uc',           icon: '💷' },
   { id: 'housing', label: 'Find housing or join housing list',  guideId: 'housing-help', icon: '🏠' },
   { id: 'legal',   label: 'Get free legal advice if needed',   guideId: 'legal-help',   icon: '⚖️' },
-  { id: 'degree',  label: 'Verify overseas degrees (UK ENIC)', guideId: 're-qualify',   icon: '🎓' },
+  { id: 'degree',  label: 'Verify overseas degrees (UK ENIC)', guideId: 'uk-enic',      icon: '🎓' },
 ]
 
 interface ChecklistWidgetProps {
