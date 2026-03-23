@@ -37,6 +37,10 @@ export type UserSector =
   | 'retail'
   | 'education'
   | 'admin'
+  | 'property'
+  | 'transport'
+  | 'finance'
+  | 'interpreting'
   | ''
 
 export interface Lang {

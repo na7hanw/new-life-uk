@@ -233,6 +233,61 @@ export const JOBS: Job[] = [
       { name: "IRC UK — Employment Support", url: "https://www.rescue.org/uk/employment-support-refugees-uk" }, // Added March 2026 - agency link
     ],
   },
+  {
+    icon: "🗣️",
+    content: { en: { role: "Bilingual Support Worker / Community Interpreter", desc: "Use your language skills to help refugees, asylum seekers, and migrants access health, housing, and social services. Roles exist in NHS trusts, councils, housing associations, and refugee charities. ⚠ RIGHT TO WORK REQUIRED for paid roles. Volunteer interpreter roles are available without PTW — see the community interpreting guide." } },
+    pay: "£11–£18/hr (paid) | Voluntary available",
+    tags: ["Languages needed", "NHS / Council / Charity", "Volunteer route available"],
+    docs: ["Share code (Right to Work) for paid roles", "ARC card for volunteer roles", "DBS check (employer arranges)"],
+    guideIds: ["community-interpreting", "permission-to-work", "volunteering"],
+    applyLinks: [
+      { name: "NHS Jobs — Interpreter / Bilingual roles", url: "https://www.jobs.nhs.uk/candidate/search?keywords=interpreter+bilingual" },
+      { name: "Do-it — Language Volunteer Roles", url: "https://do-it.org" },
+      { name: "Refugee Council — volunteer interpreter", url: "https://www.refugeecouncil.org.uk/get-involved/volunteer/" },
+    ],
+  },
+  {
+    icon: "🏠",
+    content: { en: { role: "Lettings Assistant / Trainee Letting Negotiator", desc: "Support a lettings team at a residential estate agency — handling enquiries, arranging viewings, preparing tenancy documents, and supporting landlords and tenants. No prior UK experience required. A driving licence is often useful for viewings and site visits." } },
+    pay: "£20K–£26K (rising to £30K+ with experience)",
+    tags: ["No prior UK experience required", "Driving licence helpful", "Career progression path"],
+    docs: ["Share code (Right to Work)", "Photo ID", "Two references"],
+    guideIds: ["becoming-a-letting-agent", "work-rights"],
+    applyLinks: [
+      { name: "Propertymark — lettings jobs board", url: "https://www.propertymark.co.uk/professional-development/qualifications.html" },
+      { name: "Indeed — trainee letting negotiator", url: "https://uk.indeed.com/jobs?q=trainee+letting+negotiator" },
+      { name: "Rightmove Careers", url: "https://www.rightmoveplc.com/careers/" },
+      { name: "Find a Lettings Apprenticeship (GOV.UK)", url: "https://www.findapprenticeship.service.gov.uk/" },
+    ],
+  },
+  {
+    icon: "🚜",
+    content: { en: { role: "Plant Operative — Dumper / Telehandler / Roller / Marshaller", desc: "Operate construction plant and machinery on civil engineering, road, and housing sites. CPCS or NPORS card required. Beginner-friendly first tickets: forward-tipping dumper (A09), roller (A26), plant marshal (A73), telehandler (A17). ⚠ RIGHT TO WORK REQUIRED." } },
+    pay: "£14–£19/hr",
+    tags: ["CPCS or NPORS card required", "Stacking tickets = higher pay", "CITB grant available"],
+    docs: ["Share code (Right to Work)", "CPCS or NPORS card (required on site)", "Safety boots and PPE (often provided)"],
+    guideIds: ["plant-tickets-guide", "work-rights"],
+    applyLinks: [
+      { name: "CPCS — book tests (CITB)", url: "https://www.cpcs.uk.com/cpcs-testing/" },
+      { name: "Find Skills Bootcamp — Construction (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },
+      { name: "Hays Construction Plant Operative Jobs", url: "https://www.hays.co.uk/construction-jobs" },
+      { name: "Indeed — plant operative jobs", url: "https://uk.indeed.com/jobs?q=plant+operative" },
+    ],
+  },
+  {
+    icon: "🏭",
+    content: { en: { role: "Forklift Operative — Counterbalance / Reach / Telehandler", desc: "Operate forklifts in warehouses, distribution centres, logistics hubs, and manufacturing sites. Training must meet HSE ACOP L117 standard. Most employers require proof of accredited training. ⚠ RIGHT TO WORK REQUIRED." } },
+    pay: "£12.71–£16/hr",
+    tags: ["Counterbalance / Reach / Rough terrain", "Warehouse / Logistics / Manufacturing", "ACOP L117 training required"],
+    docs: ["Share code (Right to Work)", "Accredited forklift training certificate", "Safety boots"],
+    guideIds: ["forklift-training-guide", "work-rights"],
+    applyLinks: [
+      { name: "RTITB — find a training centre", url: "https://www.rtitb.com/course-locator/" },
+      { name: "Indeed — forklift operator jobs", url: "https://uk.indeed.com/jobs?q=forklift+operator" },
+      { name: "Amazon Jobs UK — warehouse & forklift", url: "https://www.amazon.jobs/en/search?country=GBR" },
+      { name: "Manpower Logistics Jobs", url: "https://www.manpower.co.uk" },
+    ],
+  },
 ];
 
 // ─── CERTS ───────────────────────────────────────────────────────
@@ -505,6 +560,242 @@ export const CERTS = [
       { name: "Hazard perception test guide (GOV.UK)", url: "https://www.gov.uk/theory-test/hazard-perception-test" },
     ],
   },
+  {
+    icon: "🗣️",
+    id: "wea-community-interpreting-l2",
+    content: { en: { title: "WEA Level 2 Community Interpreting", sector: "Public services, NHS, housing, education, courts" } },
+    time: "24–30 weeks part-time (online)", cost: "Free (Adult Skills Fund — eligible after 6 months in UK)",
+    freeRoute: "Fully funded via Adult Skills Fund for asylum seekers 6 months+ in the UK and recognised refugees. No tuition fee. Show ARC card at enrolment.",
+    steps: { en: [
+      "Find the course: go to wea.org.uk/find-a-course and search 'community interpreting'. The WEA runs this online — accessible from anywhere in England including Norfolk.",
+      "Eligibility: you must have been lawfully in the UK for at least 6 months (asylum seekers included), be 19+, and meet the language entry requirement. You will be informally assessed at enrolment for your English and your second language.",
+      "What you will study: consecutive interpreting technique (listen → notes → interpret), professional ethics and boundaries, impartiality and accuracy, role of the interpreter in different settings (health, housing, legal, education).",
+      "Assessment: practical interpreting roleplay + written assignments. No formal exam. Portfolio-based.",
+      "On completion: progress to Level 3 Community Interpreting (1 year), then the DPSI (Diploma in Public Service Interpreting, Chartered Institute of Linguists) for courts and legal settings.",
+      "If your status changes mid-course: the ESFA mid-year continuity provision normally allows you to complete the specific learning aim you started while eligible. Speak to your WEA administrator immediately — do NOT withdraw without checking.",
+      "⚠ Training is studying, not working. You do NOT need the Right to Work to take this course.",
+    ]},
+    links: [
+      { name: "WEA — Find a Community Interpreting Course", url: "https://www.wea.org.uk/find-a-course" },
+      { name: "CIOL — DPSI (next progression step)", url: "https://www.ciol.org.uk/dpsi" },
+    ],
+    studyLinks: [
+      { name: "NRPSI — National Register of Public Service Interpreters", url: "https://www.nrpsi.org.uk" },
+    ],
+  },
+  {
+    icon: "🏠",
+    id: "propertymark-l3",
+    content: { en: { title: "Propertymark Level 3 Certificate in Property Agency", sector: "Residential lettings, sales, commercial property" } },
+    time: "3–6 months part-time", cost: "£600–£900 / Free Courses for Jobs route available",
+    freeRoute: "Check Free Courses for Jobs (gov.uk/free-courses-for-jobs) — some property qualifications are funded at Level 3. Also check if your employer will fund it as CPD.",
+    steps: { en: [
+      "Propertymark is the UK's leading property professional body. Level 3 Certificate is the benchmark qualification for residential lettings and property management.",
+      "Study route: Propertymark online learning platform — self-paced with tutor support.",
+      "Modules covered: property law and practice, landlord and tenant law, lettings and property management, professional ethics.",
+      "Assessment: written assignments + multiple-choice exam at Propertymark-approved test centre.",
+      "After qualifying: apply for Propertymark membership (ARLA Propertymark for lettings professionals) — the recognised mark for UK letting agents.",
+      "Scotland note: Scottish property agents are required to be registered with the Scottish Letting Agent Register and complete mandatory training under the Letting Agent Code of Practice.",
+      "⚠ Check Free Courses for Jobs first — Level 3 property qualifications may be available fully funded.",
+    ]},
+    links: [
+      { name: "Propertymark — qualifications", url: "https://www.propertymark.co.uk/professional-development/qualifications.html" },
+      { name: "Free Courses for Jobs (GOV.UK)", url: "https://www.gov.uk/free-courses-for-jobs" },
+    ],
+    studyLinks: [
+      { name: "Scottish Letting Agent Register", url: "https://www.gov.scot/policies/private-renting/letting-agent-register/" },
+    ],
+  },
+  {
+    icon: "🏢",
+    id: "cih-l3-lettings",
+    content: { en: { title: "CIH Level 3 — Letting & Managing Residential Property", sector: "Residential lettings, housing management, property administration" } },
+    time: "6–12 months part-time", cost: "£650–£900 / Free Courses for Jobs route available",
+    freeRoute: "Level 3 CIH qualifications may be available via Free Courses for Jobs for eligible adults. Check gov.uk/free-courses-for-jobs and search for the CIH qualification.",
+    steps: { en: [
+      "CIH (Chartered Institute of Housing) is the leading professional body for the housing sector in the UK. This Level 3 award is specifically designed for lettings and property management professionals.",
+      "Covers: lettings law (Housing Act 1988, Tenant Fees Act 2019), tenancy management, property standards, landlord and tenant obligations, tenancy disputes and resolution.",
+      "Study via CIH Online — self-paced with tutor support. Some FE colleges also offer it.",
+      "Assessment: written assignments, no formal exam.",
+      "On completion: work toward CIH Associate or full membership — opens housing association, council housing, and private sector roles.",
+      "⚠ This qualification is more comprehensive than Propertymark for housing management roles. Both are valued by different employer types.",
+    ]},
+    links: [
+      { name: "CIH Online Learning", url: "https://www.cih.org/learning-and-development/qualifications/" },
+      { name: "Free Courses for Jobs (GOV.UK)", url: "https://www.gov.uk/free-courses-for-jobs" },
+    ],
+    studyLinks: [],
+  },
+  {
+    icon: "🏡",
+    id: "cih-l3-housing",
+    content: { en: { title: "CIH Level 3 — Housing Practice", sector: "Housing associations, councils, homelessness, housing support" } },
+    time: "6–12 months part-time", cost: "£650–£900 / Free Courses for Jobs route available",
+    freeRoute: "Level 3 CIH Housing Practice may be available fully funded via Free Courses for Jobs for eligible adults (gov.uk/free-courses-for-jobs). Also check your employer's CPD budget.",
+    steps: { en: [
+      "CIH Level 3 Housing Practice is the broader qualification covering the full housing sector — not just lettings. It is the recognised entry credential for housing officer, housing support worker, and homelessness officer roles.",
+      "Covers: social and affordable housing, allocations, homelessness legislation (Housing Act 1996), tenancy sustainment, customer service in housing, housing benefit basics.",
+      "More relevant than Propertymark if you are targeting housing associations (Orbit, L&Q, Clarion, Peabody), council housing teams, or homelessness/housing support roles.",
+      "Study via CIH Online or selected FE colleges. Self-paced with tutor support.",
+      "After Level 3: progress to CIH Level 4 Certificate in Housing or the CIH Level 5 Diploma for senior/management roles.",
+    ]},
+    links: [
+      { name: "CIH Online Learning", url: "https://www.cih.org/learning-and-development/qualifications/" },
+      { name: "Free Courses for Jobs (GOV.UK)", url: "https://www.gov.uk/free-courses-for-jobs" },
+    ],
+    studyLinks: [],
+  },
+  {
+    icon: "🚧",
+    id: "cpcs-red-card",
+    content: { en: { title: "CPCS Red Trained Operator Card", sector: "Construction plant operation, civil engineering, infrastructure" } },
+    time: "2–5 days initial training + theory and practical tests", cost: "£300–£900 depending on plant category / CITB grant available",
+    freeRoute: "CITB Grant: if your employer is CITB-registered, they can claim a grant toward plant training costs. Ask your employer. Also check Construction Skills Bootcamps at gov.uk/guidance/find-a-skills-bootcamp.",
+    steps: { en: [
+      "CPCS (Construction Plant Competence Scheme) is the main plant operator certification scheme in the UK, run by CITB. The Red Card is the entry-level trained operator card — valid for 2 years.",
+      "Step 1: Sit the CITB Health, Safety and Environment (H&SE) test for Plant Operators — book at citb.co.uk. Cost: £22.50.",
+      "Step 2: Complete the CPCS technical test for your specific category with a CPCS-registered training provider. Categories include: A09 Forward Tipping Dumper, A17 Telescopic Handler, A26 Ride-on Roller, A36 360° Excavator, A73 Plant Marshal.",
+      "Step 3: Apply for your CPCS Red Card — valid 2 years. You must complete an NVQ Level 2 within that time to upgrade to the Blue Competence Card.",
+      "Blue Card upgrade: complete a relevant NVQ Level 2 in Plant Operations. Many colleges and training providers offer this. The Blue Card is the full competence card — valid for 5 years and renewable.",
+      "Multiple tickets: each plant category requires its own test. Building a portfolio of 2–3 tickets significantly increases your daily rate and hirability.",
+      "⚠ Do not confuse CPCS with CSCS — they are different schemes. CSCS is for construction workers; CPCS is specifically for plant operators.",
+    ]},
+    links: [
+      { name: "CPCS — categories and testing (CITB)", url: "https://www.cpcs.uk.com/cpcs-testing/" },
+      { name: "CITB H&SE Test — book online", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/book-a-test/" },
+      { name: "Find Skills Bootcamp (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },
+    ],
+    studyLinks: [
+      { name: "Free CITB mock test", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/prepare-for-the-hse-test/" },
+    ],
+  },
+  {
+    icon: "🟡",
+    id: "npors-plant",
+    content: { en: { title: "NPORS Plant Operator Card", sector: "Construction, agriculture, logistics, utilities, waste" } },
+    time: "1–3 days per category", cost: "£200–£600 per category / CITB grant may apply",
+    freeRoute: "NPORS training courses are sometimes available through Construction Skills Bootcamps (gov.uk/guidance/find-a-skills-bootcamp) and CITB grant-funded employers.",
+    steps: { en: [
+      "NPORS (National Plant Operators Registration Scheme) is an alternative to CPCS — accepted on many UK construction and infrastructure sites. Some sites accept either CPCS or NPORS; always check with the main contractor first.",
+      "Popular NPORS categories: A01 Telescopic Handler, A04 Forward Tipping Dumper, A06 360° Excavator, A11 Roller, A09 Forklift (counterbalance), A30 Slinger/Signaller, A44 Plant Marshal, A85 MEWP (mobile elevating work platform).",
+      "Two NPORS card types: (1) NPORS Trained Operator Card — for novices after initial training and assessment; (2) NPORS National Competency Card (NCC) — for experienced operators who have completed an NVQ Level 2.",
+      "Training: find a NPORS-registered training provider. Many cover multiple categories in one booking.",
+      "NPORS is widely used in the utilities sector (water, power, telecoms) and is the main scheme in some regions of Scotland and Northern Ireland.",
+      "Slinger/Signaller and Plant Marshal cards: these are often the fastest entry-point cards and are in demand on larger sites.",
+    ]},
+    links: [
+      { name: "NPORS — find a training provider", url: "https://npors.com/training-providers/" },
+      { name: "CITB Grant (for NPORS training)", url: "https://www.citb.co.uk/levy-grants-and-funding/grants/" },
+    ],
+    studyLinks: [],
+  },
+  {
+    icon: "🔧",
+    id: "forklift-training-hse",
+    content: { en: { title: "Forklift Operator Training (HSE ACOP L117)", sector: "Warehousing, logistics, manufacturing, construction, retail distribution" } },
+    time: "3–5 days basic training (counterbalance) + assessments", cost: "£300–£600 for initial training",
+    freeRoute: "Ask your employer — under HSE rules, the employer is responsible for ensuring operators are competent. Many employers fund training for new starters. Also check Jobcentre Flexible Support Fund.",
+    steps: { en: [
+      "There is no single 'national forklift licence'. The HSE (Health and Safety Executive) sets the standard through ACOP L117 (Safe Use of Lift Trucks). Training must meet this standard but can be delivered by any competent training provider.",
+      "Three stages of operator training under ACOP L117: (1) Basic training — the fundamentals of operating that type of truck; (2) Job-specific training — the particular conditions where you'll work; (3) Familiarisation — hands-on practice with the actual truck at your workplace.",
+      "Truck types: Counterbalance (most common, outdoors and indoors), Reach truck (warehouse, tall racking), Rough terrain (construction sites), Pallet truck (warehouse), VNA (very narrow aisle — specialist). Each type requires its own training.",
+      "Look for training from RTITB-accredited providers — RTITB is the main trade association for materials handling training in the UK and their accreditation is widely recognised by employers.",
+      "After training: your employer issues a site authorisation — a formal record that you are trained and authorised to operate that truck at that site. Keep a copy.",
+      "Refresher training: recommended every 3–5 years, or after any incident, significant break from operating, or change of truck type.",
+      "Progression: experienced operators can train toward RTITB Lift Truck Instructor status after typically 3+ years' operating experience.",
+    ]},
+    links: [
+      { name: "RTITB — find an accredited training centre", url: "https://www.rtitb.com/course-locator/" },
+      { name: "HSE — safe use of lift trucks (ACOP L117)", url: "https://www.hse.gov.uk/pubns/books/l117.htm" },
+    ],
+    studyLinks: [
+      { name: "HSE — lift trucks guidance", url: "https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm" },
+    ],
+  },
+  {
+    icon: "🚚",
+    id: "hgv-bootcamp",
+    content: { en: { title: "HGV Driver — Skills Bootcamp", sector: "Road haulage, logistics, supermarket supply chain, construction" } },
+    time: "7–8 weeks", cost: "Free (fully funded by government for eligible adults 19+)",
+    freeRoute: "The HGV Driver Skills Bootcamp is fully funded by the government. You must be 19+, have a full category B (car) licence, pass a medical (D4), and not have an existing HGV licence. Includes a guaranteed employer interview on completion.",
+    steps: { en: [
+      "Find the Bootcamp: go to gov.uk/guidance/find-a-skills-bootcamp and search 'HGV' or 'LGV'. You need to be 19+, employed, self-employed, or recently unemployed. Must have a full cat B (car) licence.",
+      "Medical (D4): you must pass a DVLA medical standard D4 before applying for your provisional LGV entitlement. Cost: approx £50–£100 at a registered GP. Some providers arrange this for you.",
+      "Provisional entitlement: apply for provisional LGV Category C1 (up to 7.5 tonnes) or C (over 7.5 tonnes) or C+E (articulated). Apply online at DVLA.",
+      "Training breakdown: theory training → multiple choice test (£26) → hazard perception test → car-and-trailer test → Category C theory and practical → Driver CPC Initial Qualification (4 tests).",
+      "Driver CPC (Certificate of Professional Competence): required for all professional HGV drivers. The Bootcamp includes the full CPC Initial Qualification — Case Study + Practical Demonstration.",
+      "Guaranteed employer interview: on Bootcamp completion, providers connect you with logistics companies (Tesco, Royal Mail, Eddie Stobart, etc.) with a guaranteed interview.",
+      "⚠ You need full Right to Work before starting — this is an employment-linked programme. Asylum seekers with permission to work (after 12 months) may apply.",
+      "ADR upgrade: after getting your Category C or C+E licence, you can add ADR (dangerous goods) certification — opens chemical, fuel, and gas transport roles at higher rates.",
+    ]},
+    links: [
+      { name: "Find an HGV Skills Bootcamp (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" },
+      { name: "Apply for provisional LGV licence (DVLA)", url: "https://www.gov.uk/become-lorry-bus-driver" },
+      { name: "Driver CPC explained (GOV.UK)", url: "https://www.gov.uk/driver-cpc-training" },
+    ],
+    studyLinks: [
+      { name: "Official theory test revision (GOV.UK)", url: "https://www.gov.uk/take-practice-theory-test" },
+    ],
+  },
+  {
+    icon: "📋",
+    id: "driver-cpc",
+    content: { en: { title: "Driver CPC — Certificate of Professional Competence", sector: "HGV, coach/bus, PCV driving (all professional LGV/PCV drivers)" } },
+    time: "Initial: 4 tests (included in HGV Bootcamp) | Periodic: 35 hrs per 5 years", cost: "Initial: included in HGV Bootcamp | Periodic: approx £150–£250 per 7-hr block",
+    freeRoute: "Initial CPC is free via HGV Skills Bootcamp. Periodic CPC training may be funded by your employer (most large operators fund it as a legal requirement). Ask your employer before paying.",
+    steps: { en: [
+      "Driver CPC is mandatory for all professional HGV (LGV) and bus/coach (PCV) drivers in the UK. You cannot legally drive professionally for hire or reward without it.",
+      "Initial CPC (for new drivers): 4 tests — Theory (multiple choice), Hazard Perception, Case Study, and Practical Demonstration. All included in the HGV Skills Bootcamp.",
+      "Periodic CPC (for existing drivers): 35 hours of approved training every 5 years, organised as 7-hour blocks. Covers road safety, vehicle standards, eco-driving, regulations.",
+      "Your Driver Qualification Card (DQC) shows your CPC status — carry it when driving professionally.",
+      "After becoming a Driver CPC trainer: RTITB offers a Driver CPC Instructor qualification (see RTITB Instructor cert). You must have at least 2 years' professional driving experience.",
+    ]},
+    links: [
+      { name: "Driver CPC explained (GOV.UK)", url: "https://www.gov.uk/driver-cpc-training" },
+      { name: "Find approved Driver CPC training (GOV.UK)", url: "https://www.gov.uk/find-driver-cpc-course" },
+    ],
+    studyLinks: [],
+  },
+  {
+    icon: "☢️",
+    id: "adr-driver",
+    content: { en: { title: "ADR — Dangerous Goods Driver Licence", sector: "Chemical transport, fuel tankers, gas distribution, pharmaceutical logistics" } },
+    time: "4 days (core + class-specific modules)", cost: "£500–£900 (not usually funded by Bootcamps)",
+    freeRoute: "ADR is rarely government-funded. Most employers who need ADR drivers either fund it directly or pay a significant premium for drivers who already hold it. Negotiate with your employer.",
+    steps: { en: [
+      "ADR (Agreement concerning the International Carriage of Dangerous Goods by Road) is the international standard for transporting hazardous materials. In the UK, it is administered by DVSA.",
+      "ADR is an upgrade for drivers who already hold a Cat C or C+E licence. You cannot get ADR without an existing professional driving licence.",
+      "Structure: Core module (2 days, mandatory for all) + class-specific modules. Classes include: Class 2 (gases), Class 3 (flammable liquids / fuel tankers), Class 6 (toxic/infectious), Class 8 (corrosives).",
+      "Assessment: written exam at the end of the course. Certificate issued by your course provider, registered with DVSA.",
+      "ADR licence valid 5 years, then refresher course required.",
+      "Pay premium: ADR drivers command £2–£5/hr more than standard HGV drivers in most sectors. Fuel tanker ADR drivers earn up to £50K+.",
+      "⚠ This is a later-stage qualification. Get your Cat C + Driver CPC first.",
+    ]},
+    links: [
+      { name: "ADR training explained (GOV.UK)", url: "https://www.gov.uk/transport-dangerous-goods/adr-the-european-agreement" },
+      { name: "Find ADR training providers (DVSA)", url: "https://www.gov.uk/find-dvsa-adr-examiner" },
+    ],
+    studyLinks: [],
+  },
+  {
+    icon: "🎓",
+    id: "rtitb-instructor",
+    content: { en: { title: "RTITB Lift Truck Instructor — Later-Stage Credential", sector: "Forklift/MHE training delivery, logistics sector training, corporate training" } },
+    time: "4–5 days (experienced operators only)", cost: "£800–£1,200",
+    freeRoute: "Not typically government-funded. Most instructors are funded by their training provider employer or self-fund. Some CITB grants may apply if the employer is registered.",
+    steps: { en: [
+      "⚠ LATER-STAGE QUALIFICATION: This is for experienced operators only. Most providers require at least 2–3 years of regular operating experience before acceptance.",
+      "RTITB is the Registered Lift Truck Instructor Training Body — the main accreditation for materials handling equipment trainers in the UK.",
+      "Course structure: instructor technique, lesson planning, practical coaching and assessment skills, legal and regulatory knowledge, assessment of candidates.",
+      "On completion: register as an RTITB Lift Truck Instructor. You can then deliver forklift training commercially, employed by a training company or self-employed.",
+      "Self-employed instructors can earn £200–£500 per training day. Rates higher for rare equipment types.",
+      "Progression: some instructors go on to become RTITB registered training providers (RTPs) — running their own training business.",
+    ]},
+    links: [
+      { name: "RTITB — Instructor qualification", url: "https://www.rtitb.com/training/instructor-training/" },
+    ],
+    studyLinks: [],
+  },
 ];
 
 // ─── Stable string IDs for Jobs (order matches JOBS array above) ──
@@ -513,6 +804,7 @@ const JOB_IDS = [
   'construction-labourer', 'hgv-driver', 'kitchen-porter', 'cleaning',
   'security-officer', 'teaching-assistant', 'barista', 'hotel-hospitality',
   'support-worker', 'retail-assistant', 'private-hire-driver', 'refugee-employment-support',
+  'bilingual-support-worker', 'lettings-assistant', 'plant-operative', 'forklift-operative',
 ]
 JOB_IDS.forEach((id, i) => { if (JOBS[i]) ((JOBS[i] as unknown) as Record<string, unknown>).id = id })
 export const JOB_MAP: Record<string, Job> = Object.fromEntries(
@@ -537,12 +829,19 @@ export const JOB_SOURCE_URL: Record<string, string> = {
   'retail-assistant':         'https://www.asda.jobs',
   'private-hire-driver':      'https://www.gov.uk/taxi-driver-licence',
   'refugee-employment-support': 'https://refugeeemploymentnetwork.org/',
+  'bilingual-support-worker': 'https://www.nrpsi.org.uk',
+  'lettings-assistant':       'https://www.propertymark.co.uk/professional-development/qualifications.html',
+  'plant-operative':          'https://www.cpcs.uk.com/cpcs-testing/',
+  'forklift-operative':       'https://www.rtitb.com/course-locator/',
 }
 
 // ─── Stable string IDs for Certs (order matches array above) ────
 const CERT_IDS = [
   'dbs-check', 'food-hygiene', 'cscs-card', 'sia-licence', 'first-aid',
   'forklift', 'hgv-licence', 'care-cert', 'personal-licence', 'phv-licence', 'driving-theory',
+  'wea-community-interpreting-l2', 'propertymark-l3', 'cih-l3-lettings', 'cih-l3-housing',
+  'cpcs-red-card', 'npors-plant', 'forklift-training-hse',
+  'hgv-bootcamp', 'driver-cpc', 'adr-driver', 'rtitb-instructor',
 ]
 CERT_IDS.forEach((id, i) => { (CERTS[i] as Record<string, unknown>).id = id })
 export const CERT_MAP: Record<string, Cert> = Object.fromEntries((CERTS as unknown as Cert[]).map(c => [c.id, c]))
@@ -560,6 +859,13 @@ export const CAREERS = [
   { id: "social-work", icon: "🤝", content: { en: { title: "Social Work & Support Work", salary: "£22K–£45K+" } }, tags: ["HCPC", "Social Work England", "Care Cert"], steps: { en: ["Support Worker is one of the most accessible, high-demand entry roles in the UK — no prior UK experience required. Start within weeks of getting refugee status.", "The Care Certificate (15-standard induction, free from employer) is your entry credential. NHS, care homes, charities, and councils all hire Support Workers immediately.", "Support Worker salary: £22K–£28K. Senior Support Worker: £28K–£35K. Many roles offer shift premiums, overtime, and free training.", "If you have a relevant overseas degree (social sciences, psychology, health, education), you can train as a qualified Social Worker. Social Work England is the UK regulator.", "The ASYE (Assessed and Supported Year in Employment) is a paid first year of practice after qualifying — all employers provide this automatically.", "Qualifying routes: MA Social Work (2 years, funded bursary available), or fast-track Frontline/Step Up programmes for graduates (salaried, competitive).", "High-demand specialisms with better pay: mental health, learning disabilities, children's services (CYPS), domestic abuse support, refugee resettlement (directly relevant).", "Organisations specifically hiring refugees and people with lived experience: Nacro, St Mungo's, Shelter, Mind, Rethink, local councils.", "Overseas social work qualifications: assessed by Social Work England — contact them at socialworkengland.org.uk for your specific route.", "HCPC (Health and Care Professions Council) regulates social workers in some devolved nations — check requirements for Scotland, Wales, Northern Ireland separately."] }, links: [{ name: "Social Work England", url: "https://www.socialworkengland.org.uk/" }, { name: "Frontline (fast-track social work)", url: "https://thefrontline.org.uk/" }, { name: "Step Up to Social Work", url: "https://www.gov.uk/guidance/step-up-to-social-work" }, { name: "NHS Jobs — Support Worker", url: "https://www.jobs.nhs.uk/" }] },
   { id: "data-analyst", icon: "📈", content: { en: { title: "Data Analyst / Data Science", salary: "£28K–£65K+" } }, tags: ["Google", "SQL", "Python", "Power BI"], steps: { en: ["**Why this is one of the best pivots for professionals with a finance or engineering background:** If you've worked with numbers, spreadsheets, financial models, valuation reports, or project data, you already think like a data analyst. UK employers care far more about proven analytical skills than about the specific sector you worked in.", "**Timeline:** You can land your first junior data analyst role within 3–6 months of focused self-study and certification — no degree conversion needed. This is one of the fastest, cheapest, and most durable career pivots available.", "**Step 1 — Free foundation (weeks 1–4):** Complete the Google Data Analytics Certificate (free on Coursera with financial aid — apply at coursera.org/googlecerts). Covers spreadsheets, SQL, R, Tableau, and the full data lifecycle. Recognised by 150+ UK employers including Accenture, Capgemini, and PWC.", "**Step 2 — SQL (weeks 1–6, run in parallel):** SQL is the single most important skill for data analysts. Learn it free: SQLZoo.net, Mode Analytics SQL Tutorial, and W3Schools SQL. Practice on real datasets at Kaggle.com (free, open datasets). Complete at least 5 Kaggle projects to show on your CV.", "**Step 3 — Power BI or Tableau (weeks 3–8):** These are the most in-demand visualisation tools in UK businesses. Microsoft Power BI has a free desktop version and free learning path at learn.microsoft.com. Add a Power BI certification (PL-300, ~£130) to your CV.", "**Step 4 — Python basics (optional but high value, weeks 6–12):** Pandas + Matplotlib libraries are used in most data roles above junior. Learn free at Kaggle.com/learn/python. You do NOT need to be a programmer — you need to be able to load, clean, and visualise data.", "**Step 5 — Build a portfolio (weeks 4–12, run throughout):** Create 3–5 projects on GitHub using real datasets. Ideal topics for your background: property price analysis, construction cost trends, bank loan default modelling. These directly signal transferable expertise to UK hiring managers.", "**UK ENIC for your degree:** Get your BSc and MBA assessed by UK ENIC (£49 per qualification at enic.org.uk). This adds a line to your CV stating 'UK Level 6 equivalent / UK Level 7 equivalent' — essential for employers who filter by UK academic level.", "**Entry-level roles to target:** Data Analyst, Reporting Analyst, Business Analyst, MI Analyst, Finance Analyst. Starting salary: £28K–£38K. Many councils, NHS trusts, housing associations, and banks specifically recruit internationally experienced analysts.", "**Apprenticeships:** A Level 4 Data Analyst Apprenticeship lets you earn £22K–£28K while getting certified on the job — search findapprenticeship.service.gov.uk. Employers include Barclays, NHS, and the Cabinet Office.", "**Progression:** Junior → Mid → Senior Data Analyst (£45K–£65K) → Data Science (£55K–£90K). The MBA positions you to transition into BI Manager, Analytics Manager, or Head of Data within 3–5 years.", "**Refugee-specific support:** Code Your Future (codeyourfuture.io) offers free intensive tech training programmes for refugees including Python and data skills. Breaking Barriers has employer connections across the tech sector."] }, links: [{ name: "Google Data Analytics Certificate (Coursera)", url: "https://www.coursera.org/professional-certificates/google-data-analytics" }, { name: "Microsoft Power BI Training (free)", url: "https://learn.microsoft.com/en-us/training/powerplatform/power-bi" }, { name: "Kaggle — free datasets and courses", url: "https://www.kaggle.com/learn" }, { name: "Code Your Future (refugee tech training)", url: "https://codeyourfuture.io/" }, { name: "Find a Data Analyst Apprenticeship", url: "https://www.findapprenticeship.service.gov.uk/" }] },
   { id: "quantity-surveying", icon: "📐", content: { en: { title: "Quantity Surveying", salary: "£32K–£80K+" } }, tags: ["RICS", "MRICS", "Construction", "Cost Management"], steps: { en: ["**What a Quantity Surveyor (QS) does:** QSs manage all costs on a construction project from initial estimates through to final accounts — preventing projects going over budget. The UK construction sector spends £150B+ a year and there is a severe shortage of experienced QSs. This is one of the most transferable careers for professionals with any combination of engineering, finance, or property backgrounds.", "**Why this is an ideal pivot for engineers with finance experience:** Civil engineers understand construction methods and materials. Finance professionals understand cost control, contracts, and risk. If you have both, you are already thinking like a QS. UK RICS explicitly values international experience in both disciplines.", "**Two routes to MRICS (Quantity Surveying pathway):**\n• **Route 1 — APC (Assessment of Professional Competence):** If you have a relevant degree (engineering OR finance) and 2+ years relevant experience, you can enter the RICS APC directly. Email join@rics.org to confirm eligibility.\n• **Route 2 — Senior Professional APC (SPA):** If you hold a postgraduate degree (e.g. MBA) AND 5+ years' relevant experience, the SPA route may let you skip the standard training period entirely. Ask RICS specifically about this.", "**Step 1:** Get your degree(s) assessed by UK ENIC (£49 each at enic.org.uk). This establishes UK academic equivalence — essential for RICS assessment.", "**Step 2:** Register with RICS as AssocRICS (Associate) first — achievable in months, lets you work as a professional QS while completing MRICS. RICS covers the cost of the first year's membership for refugees via their diversity programme — ask when you contact them.", "**Step 3 — Entry roles:** Assistant QS, Junior Cost Consultant, Estimator, Commercial Manager (graduate). Many roles require only a relevant degree and some experience — your engineering + finance combination is a genuine competitive advantage.", "**Core skills to evidence:** cost planning, bill of quantities preparation, tender analysis, contract administration (NEC and JCT are the UK standards), valuation of works done (directly maps to bank property valuation experience). Learn NEC3/NEC4 contracts with free resources from the NEC website.", "**Top UK employers:** Turner & Townsend, Gleeds, Arcadis, Faithful+Gould, AECOM, Mott MacDonald (commercial team), Galliford Try, Balfour Beatty, and all major UK housebuilders (Taylor Wimpey, Persimmon, Bellway).", "**Salary progression:** Assistant QS £32K–£40K → QS £42K–£55K → Senior QS £55K–£70K → Commercial Director £80K–£120K. The UK infrastructure boom (HS2, nuclear, housing targets) means demand will remain high for 10+ years.", "**RefuAid loans** (up to £10,000 interest-free) can cover RICS assessment fees, NEC contract training, and any top-up qualifications.", "**Breaking Barriers** has a built-environment employer track specifically for refugees — they can provide CV review, interview coaching, and direct employer introductions in the construction sector."] }, links: [{ name: "RICS — Quantity Surveying routes", url: "https://www.rics.org/surveying-profession/join-rics/assessment-of-professional-competence-apc/quantity-surveying-and-construction/" }, { name: "RICS Senior Professional APC", url: "https://www.rics.org/surveying-profession/join-rics/assessment-of-professional-competence-apc/" }, { name: "UK ENIC (degree recognition)", url: "https://www.enic.org.uk/Qualifications/SOC/Default.aspx" }, { name: "NEC Contracts (free resources)", url: "https://www.neccontract.com/" }, { name: "Breaking Barriers — built environment", url: "https://breaking-barriers.co.uk/refugee-support/employment/" }] },
+  { id: "community-interpreter", icon: "🗣️", content: { en: { title: "Community Interpreter / Bilingual Support Worker", salary: "£22K–£45K (employed) | £25–£50/hr (freelance DPSI)" } }, tags: ["NRPSI", "DPSI", "WEA", "Bilingual", "No PTW for training"], steps: { en: ["Community interpreting is one of the strongest accessible career paths for bilingual people with strong English — and uniquely, the training (not the job) is available to asylum seekers from 6 months, without the right to work.", "Two routes: (1) Employed bilingual support worker / interpreter at an NHS trust, council, charity, or housing association — salary £22K–£30K, permanent or sessional; (2) Self-employed public service interpreter — register with NRPSI, invoice public bodies directly — £25–£50/hr freelance.", "Training while waiting: WEA Level 2 Certificate in Community Interpreting is fully funded (Adult Skills Fund), delivered online, accessible from anywhere in England. 24–30 weeks part-time. No right to work needed — this is studying, not working.", "Level 2 → Level 3 → DPSI: the Diploma in Public Service Interpreting (Chartered Institute of Linguists) is the gold standard for courts, police, NHS Trusts, and immigration tribunal interpreting — the highest rates.", "NRPSI registration: after qualifying, register on the National Register of Public Service Interpreters (nrpsi.org.uk) — this is how public sector bodies find and book interpreters. Required for most formal NHS and court bookings.", "Language pairs in demand in the UK (as of 2026): Arabic, Romanian, Polish, Punjabi, Urdu, Somali, Tigrinya, Amharic, Kurdish (Kurmanji and Sorani), Pashto, Dari, Albanian, Farsi. East African languages are in particularly high demand in NHS East of England and local councils.", "Volunteer route while waiting for status: contact Refugee Council, British Red Cross, and local refugee charities as a bilingual volunteer. Volunteering builds your NRPSI portfolio, provides references, and is directly counted as experience.", "Right to Work and paid work: once you have refugee status, you can register as self-employed with HMRC (free, 20 minutes online), set up a simple invoice template, and approach council, NHS, and police interpreter rosters directly.", "For those with a DPSI: courts and immigration tribunal interpreting commands £35–£65/hr for rare languages. The Language Line, thebigword, and Capita Translation also hire registered interpreters as sessional workers.", "Long-term business route: some NRPSI interpreters scale into running their own Language Service Provider (LSP) — particularly strong for rare East African languages where few UK agencies have large rosters."] }, links: [{ name: "WEA — Level 2 Community Interpreting", url: "https://www.wea.org.uk/find-a-course" }, { name: "NRPSI — National Register", url: "https://www.nrpsi.org.uk" }, { name: "DPSI — Chartered Institute of Linguists", url: "https://www.ciol.org.uk/dpsi" }] },
+  { id: "letting-agent", icon: "🏠", content: { en: { title: "Letting Agent / Property Manager", salary: "£22K–£45K (employed) | OTE £30K–£60K with commission" } }, tags: ["Propertymark", "CIH", "ARLA", "Driving licence useful"], steps: { en: ["Letting agents market residential properties, arrange viewings, vet tenants, manage tenancy agreements, liaise with landlords and tenants, and ensure the process meets legal requirements. It is part of the estate-agent career family (National Careers Service classification).", "Entry routes: (1) Trainee negotiator / lettings assistant — no prior UK experience required; (2) Admin / receptionist role at an estate agent — very accessible first step; (3) Level 2 Junior Estate Agent Apprenticeship — earn while you qualify.", "A driving licence is often useful or required for viewings and property visits. If you don't have a UK licence, see the Driving Theory Test cert and the Exchange Foreign Driving Licence guide.", "Qualifications: Propertymark Level 3 Certificate in Property Agency (ARLA Propertymark) is the residential lettings benchmark. CIH Level 3 in Letting & Managing Residential Property is equally valued and covers more housing management ground.", "Salary structure: base salary £20K–£26K + commission on lettings negotiated. Senior negotiators and branch managers earn £30K–£45K OTE. Property managers (no commission) typically earn £25K–£35K.", "Scotland has different requirements: letting agents must be registered with the Scottish Letting Agent Register and meet mandatory training requirements under the Letting Agent Code of Practice (Statutory Code). This is a formal regulatory requirement, not optional.", "Progression path: Lettings Assistant → Lettings Negotiator → Senior Negotiator → Branch Manager → Area Manager → Director. Many branch managers make partner/director in 5–7 years.", "Related routes: with Propertymark or CIH qualifications, you can also move into: property management (residential block management), housing officer (council or housing association), social housing officer, and estate management.", "Key employers in Norfolk and the East: Savills (Norwich), Arnolds Keys (Norwich), Brown & Co, Brown&Co and William H Brown lettings — plus national chains (Connells, Hunters, Belvoir, Martin & Co franchisees).", "Right to Work required for all employed and apprenticeship routes."] }, links: [{ name: "Propertymark — qualifications", url: "https://www.propertymark.co.uk/professional-development/qualifications.html" }, { name: "CIH — Letting & Managing Residential Property", url: "https://www.cih.org/learning-and-development/qualifications/" }, { name: "National Careers Service — Letting Agents", url: "https://nationalcareers.service.gov.uk/job-profiles/estate-agent" }, { name: "Find an Apprenticeship (GOV.UK)", url: "https://www.findapprenticeship.service.gov.uk/" }] },
+  { id: "plant-operator", icon: "🚜", content: { en: { title: "Plant Operator — Construction & Civil Engineering", salary: "£28K–£50K+ (multiple tickets)" } }, tags: ["CPCS", "NPORS", "NVQ L2", "CITB"], steps: { en: ["Plant operators drive and control construction machinery — from forward-tipping dumpers and rollers on small housing sites to large excavators on major infrastructure projects. The UK construction sector employs over 2 million workers and has persistent plant operator shortages.", "Two main certification schemes: (1) CPCS (Construction Plant Competence Scheme, run by CITB) — used by most large main contractors and on major infrastructure; (2) NPORS (National Plant Operators Registration Scheme) — used by utilities, smaller contractors, and some public sector sites. Some sites accept both; always check.", "Beginner-friendly first tickets: A09 Forward Tipping Dumper (CPCS) or A04 Dumper (NPORS) — these are the most common first plant tickets, cost £300–£600 for training and assessment, and open most entry-level site operative roles.", "Other accessible beginner tickets: Roller (CPCS A26 / NPORS A11), Plant Marshal (CPCS A73 / NPORS A44), Slinger/Signaller (CPCS A40) — the last two are sometimes offered as 1-day courses.", "Card progression: CPCS Red Card (Trained Operator) → complete NVQ Level 2 Plant Operations → CPCS Blue Card (Competent Operator). The Blue Card is the full professional card, valid 5 years.", "Stacking tickets: each additional plant category (excavator, telehandler, MEWP) adds to your rate. Operators with 3+ CPCS categories earn £36K–£50K+. Excavator operators on major civils projects can earn £45K–£55K.", "CITB grants: if you are employed by a CITB-registered employer, your training costs may be grant-funded. Ask before paying. Skills Bootcamps may also fund initial plant training — search at gov.uk/guidance/find-a-skills-bootcamp.", "Civil engineering background: for those with a civil engineering degree, plant operation experience combined with your qualification can fast-track you into site foreman, site agent, or project engineer roles much faster than non-graduate plant operators.", "⚠ Right to Work required for all employed plant operator roles. CPCS testing itself does not require RTW."] }, links: [{ name: "CPCS — categories and testing", url: "https://www.cpcs.uk.com/cpcs-testing/" }, { name: "NPORS — training providers", url: "https://npors.com/training-providers/" }, { name: "CITB Grants", url: "https://www.citb.co.uk/levy-grants-and-funding/grants/" }] },
+  { id: "forklift-operator", icon: "🏭", content: { en: { title: "Forklift Operator — Warehousing & Logistics", salary: "£25K–£35K (employed) | £14–£16/hr (agency)" } }, tags: ["ACOP L117", "RTITB", "Counterbalance", "Reach truck"], steps: { en: ["Forklift operators move goods in warehouses, distribution centres, logistics hubs, retail backrooms, and manufacturing sites. The UK logistics sector employs over 2 million people and consistently has forklift operator vacancies.", "Unlike plant, there is no mandatory national forklift licence. The HSE sets the standard through ACOP L117 — training must be accredited and cover basic, job-specific, and familiarisation stages. Employers must ensure operators are competent.", "Common truck types to train on: (1) Counterbalance forklift — the most widely used, works indoors and outdoors; (2) Reach truck — warehouse tall-racking, indoor only; (3) Pallet truck (powered) — lower-level warehouse; (4) Rough terrain forklift — construction/civils sites.", "Find an RTITB-accredited training centre at rtitb.com/course-locator. RTITB accreditation is the most widely recognised by UK employers. Basic counterbalance training: 3–5 days + assessment.", "Agency route: many workers start via warehousing agencies (Manpower, Brook Street, Gi Group, Randstad) — agencies often offer fork training as part of their worker onboarding. Ask explicitly.", "Amazon, DHL, Royal Mail, Tesco, Sainsbury's, B&Q, and major logistics providers all hire forklift operators continuously. Amazon's Fulfilment Centre training programme often includes on-the-job fork certification.", "Progression: after 2–3 years operating, consider RTITB Lift Truck Instructor qualification (see cert) — opens training delivery roles at £200–£400+/day.", "⚠ Right to Work required for all employed roles. Training itself does not require RTW."] }, links: [{ name: "RTITB — find training centre", url: "https://www.rtitb.com/course-locator/" }, { name: "HSE — forklift guidance (ACOP L117)", url: "https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm" }] },
+  { id: "hgv-driver-career", icon: "🚛", content: { en: { title: "HGV / LGV Driver — Career Pathway", salary: "£32K–£50K | ADR £38K–£55K+" } }, tags: ["Cat C", "Cat C+E", "Driver CPC", "ADR", "Skills Bootcamp"], steps: { en: ["The UK has a structural shortage of HGV drivers — approximately 60,000 vacancies as of 2026. The government's HGV Skills Bootcamp provides a fully funded route from zero to qualified Cat C driver with Driver CPC.", "Prerequisites: full Category B (car) driving licence, age 18+, pass a DVLA D4 medical (costs approx £50–£100). You do NOT need an existing HGV licence. The Bootcamp is free for eligible adults 19+ (employed, self-employed, or recently unemployed).", "Bootcamp pathway: Provisional LGV → Theory test → Hazard perception → Category C practical → Driver CPC Initial Qualification (4 elements). Total: approximately 7–8 weeks.", "Licence categories: Cat C (rigid vehicles over 3.5T) → Cat C+E (articulated/artic, 'artic driver') → the most in-demand and highest-paid. C+E drivers typically earn £3–£8K more per year than Cat C.", "Driver CPC: mandatory for all professional HGV drivers. Initial CPC comes from the Bootcamp. Periodic CPC: 35 hours of approved training every 5 years (usually funded by your employer).", "ADR upgrade: after gaining your licence, add ADR certification to transport dangerous goods (fuel, chemicals, gas). This opens tanker driver roles at £38K–£55K+. ADR training costs £500–£900 but opens a significant pay premium.", "⭐ Driving instructor route: experienced LGV drivers can qualify as Driver CPC Instructors through RTITB (see driver-cpc-instructor career) — opens training delivery as a business or employed trainer.", "⚠ Right to Work required to start the Bootcamp and for all HGV driving employment. Asylum seekers who have been granted Permission to Work (12 months+) and meet the RQF Level 6 threshold should check the specific skilled occupation list — commercial driving is not currently on the shortage occupation list so standard RTW required after status."] }, links: [{ name: "Find HGV Skills Bootcamp (GOV.UK)", url: "https://www.gov.uk/guidance/find-a-skills-bootcamp" }, { name: "Become a lorry driver (GOV.UK)", url: "https://www.gov.uk/become-lorry-bus-driver" }, { name: "Driver CPC (GOV.UK)", url: "https://www.gov.uk/driver-cpc-training" }, { name: "ADR — dangerous goods (GOV.UK)", url: "https://www.gov.uk/transport-dangerous-goods" }] },
+  { id: "forklift-instructor", icon: "🎓", content: { en: { title: "Lift Truck Instructor — Later-Stage Career", salary: "£30K–£45K (employed trainer) | £200–£500/day (self-employed)" } }, tags: ["RTITB", "Later stage", "2-3 yrs experience first", "Train the trainer"], steps: { en: ["⭐ LATER-STAGE CAREER: this route requires 2–3 years of active forklift/materials handling equipment operating experience before a training provider will accept you on the instructor course.", "RTITB (Registered Lift Truck Instructor Training Body) is the main accreditation body for materials handling equipment trainers in the UK. RTITB instructor registration is the most widely recognised by UK employers and training companies.", "Instructor qualification: 4–5 day intensive course covering instructor technique, lesson planning, assessment skills, legal framework, and candidate coaching. Assessment by RTITB examiner.", "After qualifying: register as an RTITB instructor. Can be employed by a training company or self-employed. Self-employed instructors typically charge £200–£400 per day for counterbalance courses, higher for specialist equipment.", "Building a business: self-employed RTITB instructors can approach warehouses, logistics companies, and manufacturing sites directly. Many do not have in-house trainers and buy ad-hoc training. A portfolio of 3–4 regular client sites builds a sustainable business.", "RTITB also offers Registered Training Provider (RTP) status for instructors who want to run their own accredited training centre — a significant business upgrade.", "Related progression: Driver CPC Instructor (see driver-cpc-instructor career) is a natural parallel qualification — serving both the forklift and logistics markets."] }, links: [{ name: "RTITB — Instructor Training", url: "https://www.rtitb.com/training/instructor-training/" }] },
+  { id: "driver-cpc-instructor", icon: "🚐", content: { en: { title: "Driver CPC Instructor — Later-Stage Career", salary: "£30K–£45K (employed) | £250–£500/day (self-employed)" } }, tags: ["RTITB", "Later stage", "LGV/PCV experience needed", "Periodic CPC delivery"], steps: { en: ["⭐ LATER-STAGE CAREER: requires at least 2 years of professional LGV or PCV driving experience and a current Driver CPC. Not an entry-level route.", "Driver CPC Periodic Training must be delivered by a DVSA-approved training organisation. RTITB offers a Driver CPC Instructor Training programme for experienced LGV/PCV drivers who want to deliver periodic training.", "What Driver CPC instructors teach: road safety updates, eco-driving, tachograph regulations, drivers' hours rules, load security, customer service in transport, digital tools. Topics must be approved by DVSA.", "Periodic training format: 7-hour blocks (5 blocks = 35 hours over 5 years). Instructors deliver these to groups of professional drivers. Group sizes: typically 8–12 participants.", "Self-employed route: register as a DVSA-approved training organisation (requires a formal application and fee). Once approved, you can deliver CPC training commercially and invoice transport companies and training providers.", "Market: every professional HGV and bus/coach driver in the UK needs 35 hours of CPC periodic training every 5 years — the market is ongoing and mandatory. Stable demand.", "Combined with RTITB: Driver CPC + Lift Truck Instructor gives you two complementary training credentials serving the whole logistics sector. Together these make a viable self-employed training business."] }, links: [{ name: "RTITB — Driver CPC Instructor Training", url: "https://www.rtitb.com/training/driver-cpc-instructor/" }, { name: "DVSA — becoming a Driver CPC trainer (GOV.UK)", url: "https://www.gov.uk/driver-cpc-training" }] },
 ];
 
 // ─── Stable string IDs for Careers (order matches array above) ──
@@ -567,6 +873,8 @@ const CAREER_IDS = [
   'civil-engineering', 'tech-digital', 'finance', 'project-management',
   'healthcare', 'green-energy', 'translation', 'property-valuation', 'social-work',
   'data-analyst', 'quantity-surveying',
+  'community-interpreter', 'letting-agent', 'plant-operator', 'forklift-operator',
+  'hgv-driver-career', 'forklift-instructor', 'driver-cpc-instructor',
 ]
 CAREER_IDS.forEach((id, i) => { (CAREERS[i] as Record<string, unknown>).id = id })
 export const CAREER_MAP: Record<string, Career> = Object.fromEntries((CAREERS as unknown as Career[]).map(c => [c.id, c]))
@@ -587,6 +895,17 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   'personal-licence': 'https://www.gov.uk/find-licences/premises-licence',
   'phv-licence':      'https://www.gov.uk/taxi-driver-licence',
   'driving-theory':   'https://www.gov.uk/book-theory-test',
+  'wea-community-interpreting-l2': 'https://www.wea.org.uk/find-a-course',
+  'propertymark-l3':  'https://www.propertymark.co.uk/professional-development/qualifications.html',
+  'cih-l3-lettings':  'https://www.cih.org/learning-and-development/qualifications/',
+  'cih-l3-housing':   'https://www.cih.org/learning-and-development/qualifications/',
+  'cpcs-red-card':    'https://www.cpcs.uk.com/cpcs-testing/',
+  'npors-plant':      'https://npors.com/training-providers/',
+  'forklift-training-hse': 'https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm',
+  'hgv-bootcamp':     'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+  'driver-cpc':       'https://www.gov.uk/driver-cpc-training',
+  'adr-driver':       'https://www.gov.uk/transport-dangerous-goods',
+  'rtitb-instructor': 'https://www.rtitb.com/training/instructor-training/',
 }
 
 // ─── Official source URLs per career (keyed by CAREER_IDS values) ─
@@ -602,4 +921,11 @@ export const CAREER_SOURCE_URL: Record<string, string> = {
   'social-work':         'https://www.socialworkengland.org.uk/',
   'data-analyst':        'https://www.coursera.org/professional-certificates/google-data-analytics',
   'quantity-surveying':  'https://www.rics.org/surveying-profession/join-rics/assessment-of-professional-competence-apc/quantity-surveying-and-construction/',
+  'community-interpreter': 'https://www.nrpsi.org.uk',
+  'letting-agent':        'https://www.propertymark.co.uk/professional-development/qualifications.html',
+  'plant-operator':       'https://www.cpcs.uk.com/cpcs-testing/',
+  'forklift-operator':    'https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm',
+  'hgv-driver-career':    'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+  'forklift-instructor':  'https://www.rtitb.com/training/instructor-training/',
+  'driver-cpc-instructor':'https://www.gov.uk/driver-cpc-training',
 }
