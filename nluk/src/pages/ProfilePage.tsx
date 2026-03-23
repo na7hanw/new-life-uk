@@ -22,6 +22,8 @@ const STATUS_NEXT_STEPS: Partial<Record<UserStatus, { icon: string; text: string
   'asylum-seeker': [
     { icon: '📋', text: 'Understand your rights while waiting', path: '/guide/asylum-waiting' },
     { icon: '💳', text: 'Maximise your ASPEN card support', path: '/guide/aspen-card' },
+    { icon: '🗣️', text: 'Community interpreting — train while waiting (no PTW needed)', path: '/guide/community-interpreting' },
+    { icon: '📖', text: 'Strong English? Your real learning path', path: '/guide/advanced-learner' },
     { icon: '🏥', text: 'Register with a GP — you have the right immediately', path: '/guide/gp' },
     { icon: '🧠', text: 'Access free mental health support', path: '/guide/mental' },
   ],
@@ -279,7 +281,7 @@ const SECTOR_OPTIONS: { value: NonNullable<import('../types').UserSector>; emoji
 
 /** Guide IDs most relevant to each immigration status — used for update alerts */
 const STATUS_GUIDE_IDS: Record<string, string[]> = {
-  'asylum-seeker': ['asylum-waiting', 'permission-to-work', 'nrpf', 'evisa'],
+  'asylum-seeker': ['asylum-waiting', 'permission-to-work', 'nrpf', 'evisa', 'community-interpreting', 'advanced-learner'],
   'refugee':       ['move-on', 'refugee-integration', 'uc', 'housing-help', 'family-reunion', 'ilr'],
   'other-visa':    ['evisa', 'sharecode', 'work-rights', 'ilr'],
   'settled':       ['ilr', 'evisa', 'sharecode'],
