@@ -796,6 +796,126 @@ export const CERTS = [
     ],
     studyLinks: [],
   },
+  {
+    icon: "🗣️",
+    id: "eastcoast-community-interpreting-l2",
+    content: { en: { title: "East Coast College Level 2 Community Interpreting", sector: "Public services, NHS, housing, education, courts" } },
+    time: "1 academic year (part-time)", cost: "Free (Adult Skills Fund — 6 months+ in UK)",
+    freeRoute: "Fully funded via Adult Skills Fund for eligible adults 19+. Show ARC card or BRP at enrolment. East Coast College serves Norfolk and Suffolk.",
+    steps: { en: [
+      "East Coast College (Great Yarmouth and Lowestoft campuses) offers a structured in-person/blended community interpreting programme — a strong regional alternative to the WEA online route.",
+      "Eligibility: 19+, lawfully in the UK for at least 6 months (asylum seekers included), strong English and a second community language. You will be assessed at enrolment.",
+      "What you will study: consecutive interpreting technique, note-taking methods, professional ethics and boundaries, impartiality, terminology in health, housing, legal, and education settings.",
+      "Assessment: practical roleplay assessments and written assignments. Portfolio-based — no formal written exam.",
+      "On completion: progress to Level 3 Community Interpreting, then the DPSI (Diploma in Public Service Interpreting, CIOL) for courts and legal settings.",
+      "Norfolk note: East Coast College is particularly useful if you are in the Norwich / Great Yarmouth / Lowestoft area and prefer in-person learning over the WEA's fully online route.",
+      "If your status changes mid-course: the ESFA mid-year continuity provision normally allows you to complete the specific learning aim you started while eligible. Contact your tutor immediately — do NOT withdraw without checking.",
+      "⚠ Training is studying, not working. You do NOT need the Right to Work to take this course.",
+    ]},
+    links: [
+      { name: "East Coast College — find a course", url: "https://www.eastcoast.ac.uk" },
+      { name: "CIOL — DPSI (next progression step)", url: "https://www.ciol.org.uk/dpsi" },
+    ],
+    studyLinks: [
+      { name: "NRPSI — National Register of Public Service Interpreters", url: "https://www.nrpsi.org.uk" },
+    ],
+  },
+  {
+    icon: "🏠",
+    id: "junior-estate-agent-l2-apprenticeship",
+    content: { en: { title: "Junior Estate Agent Level 2 Apprenticeship", sector: "Residential lettings, sales, property agency" } },
+    time: "12–18 months (while earning)", cost: "Free — fully funded via Apprenticeship Levy",
+    freeRoute: "100% employer-funded through the Apprenticeship Levy. You earn a wage throughout. No tuition fee. Minimum wage or above during training.",
+    steps: { en: [
+      "The Junior Estate Agent Standard is a formal Level 2 apprenticeship approved by the Institute for Apprenticeships and Technical Education (IfATE). It is recognised by Skills England and listed on GOV.UK's apprenticeship service.",
+      "What you do: work as a trainee in a residential lettings or sales office — handling enquiries, arranging viewings, supporting tenancy documentation, and dealing with landlords and tenants. On-the-job learning counts toward the standard.",
+      "Who pays: your employer pays nothing if they have 50+ staff (Apprenticeship Levy covers it) or a maximum of 5% of the training cost (typically £500) if they are a small employer.",
+      "Find an apprenticeship: search at findapprenticeship.service.gov.uk — filter by 'Junior Estate Agent' or 'Lettings'. Major employers: Connells, Countrywide, Spicerhaart, Hunters, and local independent agents.",
+      "Entry requirements: no prior qualifications required. Good communication skills and Right to Work. A driving licence is helpful for viewings.",
+      "End-point assessment: practical observation, professional discussion, and a knowledge test. Completed with a DVSA-approved end-point assessment organisation.",
+      "On completion: Level 2 Junior Estate Agent Standard. Progress to Propertymark Level 3 (ARLA) or CIH Level 3 for senior negotiator or manager roles.",
+      "⚠ Right to Work is required for all apprenticeships. Asylum seekers cannot normally take an apprenticeship until refugee status is granted.",
+    ]},
+    links: [
+      { name: "Find an Estate Agent Apprenticeship (GOV.UK)", url: "https://www.findapprenticeship.service.gov.uk/" },
+      { name: "Junior Estate Agent Standard (IfATE)", url: "https://www.instituteforapprenticeships.org/apprenticeship-standards/junior-estate-agent-v1-0" },
+      { name: "Apprenticeship funding guide (GOV.UK)", url: "https://www.gov.uk/guidance/apprenticeship-funding" },
+    ],
+    studyLinks: [
+      { name: "Propertymark — career pathways", url: "https://www.propertymark.co.uk/professional-development/qualifications.html" },
+    ],
+  },
+  {
+    icon: "🚜",
+    id: "cpcs-forward-tipping-dumper-a09",
+    content: { en: { title: "CPCS A09 — Forward Tipping Dumper", sector: "Construction, civil engineering, housebuilding, road works" } },
+    time: "2–3 days training + theory test + practical test", cost: "£300–£600 total (H&SE test £22.50 + training + card £38) / CITB grant available",
+    freeRoute: "CITB Grant: if you work for a CITB-registered employer, they can claim a grant toward training costs. Also check Construction Skills Bootcamps at gov.uk/guidance/find-a-skills-bootcamp.",
+    steps: { en: [
+      "The CPCS A09 Forward Tipping Dumper is one of the most beginner-friendly and widely available first plant tickets in the UK. A dumper moves loose material — soil, aggregate, concrete — on site and is used on most housing, road, and civil engineering projects.",
+      "Prerequisites: no prior plant experience required. You must pass the CITB Health, Safety & Environment (H&SE) test for Plant Operators before your CPCS assessment. Book at citb.co.uk. Cost: £22.50.",
+      "Training: 2–3 days at a CPCS-registered training provider. Covers: pre-use checks, controls, loading and tipping safely, slopes and site hazards, working near excavations and overhead lines.",
+      "Assessment: CPCS technical theory test (multiple choice) + practical test by a CPCS assessor. Both must be passed in the same visit.",
+      "On passing: apply for the CPCS Red Trained Operator Card (A09 category) — valid for 2 years. Card fee: £38.",
+      "Blue Card upgrade: within 2 years, complete an NVQ Level 2 in Plant Operations (Construction) to upgrade to the CPCS Blue Competence Card — valid 5 years, renewable, and required by many main contractors.",
+      "Why start here: the A09 is one of the most common first tickets. Stack additional categories — roller (A26), telehandler (A17), plant marshal (A73) — each one adds to your daily rate and hirability.",
+      "CITB Grant: ask your employer before booking. CITB-registered employers can claim a training grant that significantly reduces the cost.",
+    ]},
+    links: [
+      { name: "CPCS — categories and testing (CITB)", url: "https://www.cpcs.uk.com/cpcs-testing/" },
+      { name: "Book CITB H&SE test", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/book-a-test/" },
+      { name: "CITB Grants", url: "https://www.citb.co.uk/levy-grants-and-funding/grants/" },
+    ],
+    studyLinks: [
+      { name: "Free CITB mock test (official)", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/prepare-for-the-hse-test/" },
+    ],
+  },
+  {
+    icon: "📋",
+    id: "citb-hse-test",
+    content: { en: { title: "CITB Health, Safety & Environment Test", sector: "Construction (required for CSCS, CPCS, and some NPORS cards)" } },
+    time: "Under 1 hour (book online, sit at a CITB test centre)", cost: "£22.50 per attempt",
+    freeRoute: "Not free — but the £22.50 fee is low and often covered by your employer or a Skills Bootcamp provider. Ask before paying yourself.",
+    steps: { en: [
+      "The CITB Health, Safety & Environment (H&SE) test is a prerequisite for most UK construction industry cards: CSCS (all operatives), CPCS (plant operators), and some NPORS pathways. It is administered by CITB and sat at approved test centres across the UK.",
+      "Which version to book: (1) Operative — for general site workers (CSCS Green Card route); (2) Specialist — for specific trades (electrician, plumber, scaffolder — check CSCS website); (3) Plant Operators — for CPCS plant categories (A09 dumper, A17 telehandler, A26 roller, A36 excavator, A73 marshal); (4) Supervisors — for CSCS Gold Card; (5) Managers and Professionals — for CSCS White/Black Card.",
+      "Format: 50 multiple choice questions, 45 minutes. Immediate result. Result valid for 2 years.",
+      "Book online at citb.co.uk or by phone. Bring photo ID on the day. Test centres are located across the UK.",
+      "Free preparation: CITB provides a free official mock test — use it. The real test uses the same question bank. Most candidates pass first time with 1–2 hours of preparation using the free mock.",
+      "Cost: £22.50 per attempt. If you fail, wait 24 hours before rebooking. Up to 3 attempts before a cooling-off period applies.",
+      "⚠ This test is a prerequisite for card applications — it is not the card itself. After passing, you must separately apply for your CSCS, CPCS, or NPORS card.",
+    ]},
+    links: [
+      { name: "Book CITB H&SE test", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/book-a-test/" },
+      { name: "CSCS card application", url: "https://www.cscs.uk.com/applying-for-cards/" },
+    ],
+    studyLinks: [
+      { name: "Free CITB mock test (official)", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/prepare-for-the-hse-test/" },
+      { name: "Which H&SE test version do I need? (CITB)", url: "https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/" },
+    ],
+  },
+  {
+    icon: "🎓",
+    id: "rtitb-driver-cpc-instructor",
+    content: { en: { title: "RTITB Driver CPC Instructor — Later-Stage Credential", sector: "HGV/LGV/PCV periodic training delivery, transport sector training" } },
+    time: "4–5 days (experienced professional drivers only)", cost: "£800–£1,200",
+    freeRoute: "Not typically government-funded. Most candidates are funded by their training provider employer or self-fund. Negotiate with a training company that wants to expand its CPC delivery portfolio.",
+    steps: { en: [
+      "⚠ LATER-STAGE QUALIFICATION: requires at least 2 years of professional LGV or PCV driving experience and a current Driver Qualification Card (DQC). This is not an entry-level route.",
+      "RTITB (Registered Lift Truck Instructor Training Body) also offers Driver CPC Instructor training for experienced LGV and PCV drivers who want to deliver Driver CPC periodic training to other professional drivers.",
+      "What Driver CPC instructors teach: 7-hour periodic training blocks covering road safety, tachograph regulations, drivers' hours rules, eco-driving, load security, customer service. All topics must be DVSA-approved.",
+      "Course structure: instructor technique, lesson planning, delivering DVSA-approved content, assessment and record-keeping, legal framework for periodic training delivery.",
+      "On completion: you can apply to become a DVSA-registered training organisation — required to deliver CPC training commercially. The DVSA registration is a separate formal application.",
+      "Market: every professional HGV and bus/coach driver in the UK must complete 35 hours of periodic CPC training every 5 years — the demand is mandatory and ongoing, not seasonal.",
+      "Self-employed route: once DVSA-registered, you can deliver training independently and invoice transport companies, logistics providers, and driver agencies. Day rates: £250–£500 per training day.",
+      "Combined credential: Driver CPC Instructor + RTITB Lift Truck Instructor (see rtitb-instructor cert) covers both the road transport and warehouse/logistics training markets — a strong combination for a self-employed training business.",
+    ]},
+    links: [
+      { name: "RTITB — Driver CPC Instructor Training", url: "https://www.rtitb.com/training/driver-cpc-instructor/" },
+      { name: "DVSA — becoming a Driver CPC trainer (GOV.UK)", url: "https://www.gov.uk/driver-cpc-training" },
+    ],
+    studyLinks: [],
+  },
 ];
 
 // ─── Stable string IDs for Jobs (order matches JOBS array above) ──
@@ -842,6 +962,8 @@ const CERT_IDS = [
   'wea-community-interpreting-l2', 'propertymark-l3', 'cih-l3-lettings', 'cih-l3-housing',
   'cpcs-red-card', 'npors-plant', 'forklift-training-hse',
   'hgv-bootcamp', 'driver-cpc', 'adr-driver', 'rtitb-instructor',
+  'eastcoast-community-interpreting-l2', 'junior-estate-agent-l2-apprenticeship',
+  'cpcs-forward-tipping-dumper-a09', 'citb-hse-test', 'rtitb-driver-cpc-instructor',
 ]
 CERT_IDS.forEach((id, i) => { (CERTS[i] as Record<string, unknown>).id = id })
 export const CERT_MAP: Record<string, Cert> = Object.fromEntries((CERTS as unknown as Cert[]).map(c => [c.id, c]))
@@ -906,6 +1028,11 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   'driver-cpc':       'https://www.gov.uk/driver-cpc-training',
   'adr-driver':       'https://www.gov.uk/transport-dangerous-goods',
   'rtitb-instructor': 'https://www.rtitb.com/training/instructor-training/',
+  'eastcoast-community-interpreting-l2': 'https://www.eastcoast.ac.uk',
+  'junior-estate-agent-l2-apprenticeship': 'https://www.instituteforapprenticeships.org/apprenticeship-standards/junior-estate-agent-v1-0',
+  'cpcs-forward-tipping-dumper-a09': 'https://www.cpcs.uk.com/cpcs-testing/',
+  'citb-hse-test':    'https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/book-a-test/',
+  'rtitb-driver-cpc-instructor': 'https://www.rtitb.com/training/driver-cpc-instructor/',
 }
 
 // ─── Official source URLs per career (keyed by CAREER_IDS values) ─
