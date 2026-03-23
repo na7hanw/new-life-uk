@@ -14,7 +14,7 @@ import styles from './GuidesPage.module.css'
 
 // Guides to pin in the "For You" section per status
 const STATUS_GUIDES: Record<string, string[]> = {
-  'asylum-seeker': ['re-qualify', 'permission-to-work', 'volunteering', 'asylum-waiting'],
+  'asylum-seeker': ['community-interpreting', 'advanced-learner', 're-qualify', 'permission-to-work', 'volunteering', 'asylum-waiting'],
   'refugee':       ['move-on', 'refugee-integration', 'uc', 'housing-help'],
   'other-visa':    ['work-rights', 'evisa', 'sharecode'],
   'settled':       ['ilr', 'evisa', 'sharecode'],
