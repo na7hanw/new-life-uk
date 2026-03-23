@@ -8,7 +8,6 @@ import { GUIDE_MAP } from '../data/guides.ts'
 import { getSortedUpdates } from '../data/immigration-updates.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
-import PostcodeLookup from '../components/PostcodeLookup.tsx'
 import type { UserStatus } from '../types'
 import styles from './ProfilePage.module.css'
 
@@ -28,6 +27,7 @@ const STATUS_NEXT_STEPS: Partial<Record<UserStatus, { icon: string; text: string
   ],
   'refugee': [
     { icon: '⏰', text: 'Start the move-on process now — 42-day deadline', path: '/guide/move-on' },
+    { icon: '🌱', text: 'Your full integration roadmap — year 1 to year 5', path: '/guide/refugee-integration' },
     { icon: '🏦', text: 'Open a bank account (Monzo — no credit check)', path: '/guide/bank' },
     { icon: '💷', text: 'Claim Universal Credit today', path: '/guide/uc' },
     { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
@@ -115,6 +115,150 @@ function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; se
   )
 }
 
+// ── Asylum Milestones: FE college (6 months) + PTW (12 months) ─────────────────
+function MilestonePill({ label, icon, reached, daysLeft, date, guideId, desc }: {
+  label: string; icon: string; reached: boolean; daysLeft: number; date: Date | null; guideId: string; desc: string
+}) {
+  const navigate = useNavigate()
+  return (
+    <div style={{
+      padding: '10px 14px', borderRadius: 10,
+      background: reached ? 'color-mix(in srgb, #16a34a 8%, var(--bg2))' : 'var(--bg2)',
+      border: `1.5px solid ${reached ? '#16a34a' : 'var(--sep)'}`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+        <span style={{ fontSize: '1.2rem' }}>{icon}</span>
+        <span style={{ fontWeight: 700, fontSize: '0.82rem', color: reached ? '#16a34a' : 'var(--t1)' }}>
+          {reached ? '✅ Available now' : `${daysLeft} days away`}
+        </span>
+        <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--t3)' }}>
+          {date ? format(date, 'd MMM yyyy') : ''}
+        </span>
+      </div>
+      <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--t1)', marginBottom: 2 }}>{label}</div>
+      <div style={{ fontSize: '0.78rem', color: 'var(--t2)', marginBottom: reached ? 6 : 0 }}>{desc}</div>
+      {reached && (
+        <button
+          style={{ fontSize: '0.78rem', color: 'var(--ac3)', fontWeight: 600, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+          onClick={() => navigate(`/guide/${guideId}`)}
+        >
+          Read guide →
+        </button>
+      )}
+    </div>
+  )
+}
+
+function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setClaimDate: (d: string) => void }) {
+  const navigate = useNavigate()
+  const parsed = claimDate ? parseISO(claimDate) : null
+  const valid  = parsed !== null && isValid(parsed)
+
+  function milestone(months: number): { daysLeft: number; date: Date; reached: boolean } | null {
+    if (!valid || !parsed) return null
+    const target = addDays(parsed, months * 30.44)
+    const daysLeft = differenceInDays(target, new Date())
+    return { daysLeft, date: target, reached: daysLeft <= 0 }
+  }
+
+  const fe  = milestone(6)
+  const ptw = milestone(12)
+
+  return (
+    <div style={{ margin: '0 var(--gutter) 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div style={{ fontSize: '0.78rem', color: 'var(--t2)', marginBottom: 4 }}>
+        Track your milestones while waiting — enter the date you first claimed asylum.
+      </div>
+
+      {/* ESOL — always available */}
+      <div style={{
+        padding: '10px 14px', borderRadius: 10,
+        background: 'color-mix(in srgb, #16a34a 8%, var(--bg2))',
+        border: '1.5px solid #16a34a',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+          <span style={{ fontSize: '1.2rem' }}>🗣️</span>
+          <span style={{ fontWeight: 700, fontSize: '0.82rem', color: '#16a34a' }}>✅ Available now</span>
+        </div>
+        <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--t1)', marginBottom: 2 }}>Free ESOL English Classes</div>
+        <div style={{ fontSize: '0.78rem', color: 'var(--t2)', marginBottom: 6 }}>
+          ESOL classes are free for all asylum seekers from day one — no waiting period, no conditions.
+        </div>
+        <button
+          style={{ fontSize: '0.78rem', color: 'var(--ac3)', fontWeight: 600, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+          onClick={() => navigate('/guide/esol-education')}
+        >
+          Find classes →
+        </button>
+      </div>
+
+      {valid && fe ? (
+        <MilestonePill
+          icon="🎓"
+          label="FE College Courses (NVQ, BTEC, vocational)"
+          desc="After 6 months in the UK you can access publicly funded Further Education — level 2 & 3 vocational qualifications, not just ESOL. Show your ARC card when enrolling."
+          reached={fe.reached}
+          daysLeft={fe.daysLeft}
+          date={fe.date}
+          guideId="esol-education"
+        />
+      ) : (
+        <div style={{
+          padding: '10px 14px', borderRadius: 10,
+          background: 'var(--bg2)', border: '1.5px solid var(--sep)',
+          fontSize: '0.82rem', color: 'var(--t2)',
+        }}>
+          <span style={{ fontSize: '1.2rem' }}>🎓</span>{' '}
+          <strong>FE college courses</strong> — available after 6 months. Enter your claim date to see your eligibility date.
+        </div>
+      )}
+
+      {valid && ptw ? (
+        <MilestonePill
+          icon="🔓"
+          label="Permission to Work (if decision still pending)"
+          desc="After 12 months without a decision (through no fault of your own) you can apply for permission to work in skilled/graduate roles."
+          reached={ptw.reached}
+          daysLeft={ptw.daysLeft}
+          date={ptw.date}
+          guideId="permission-to-work"
+        />
+      ) : (
+        <div style={{
+          padding: '10px 14px', borderRadius: 10,
+          background: 'var(--bg2)', border: '1.5px solid var(--sep)',
+          fontSize: '0.82rem', color: 'var(--t2)',
+        }}>
+          <span style={{ fontSize: '1.2rem' }}>🔓</span>{' '}
+          <strong>Permission to Work</strong> — available after 12 months waiting. Enter your claim date to track.
+        </div>
+      )}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+        <label htmlFor="claim-date-input" style={{ fontSize: '0.8rem', color: 'var(--t2)', whiteSpace: 'nowrap' }}>
+          Claim date:
+        </label>
+        <input
+          id="claim-date-input"
+          type="date"
+          value={claimDate}
+          max={new Date().toISOString().slice(0, 10)}
+          onChange={e => setClaimDate(e.target.value)}
+          aria-label="Date you first claimed asylum"
+          style={{ flex: 1, fontSize: '0.85rem', padding: '4px 8px', borderRadius: 8, border: '1px solid var(--sep)', background: 'var(--bg2)', color: 'var(--t1)' }}
+        />
+        {claimDate && (
+          <button
+            onClick={() => setClaimDate('')}
+            aria-label="Clear date"
+            style={{ fontSize: '0.8rem', color: 'var(--t3)', background: 'none', border: 'none', cursor: 'pointer' }}
+          >✕</button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 const AMBITION_OPTIONS: { value: NonNullable<import('../types').UserAmbition>; emoji: string; label: string }[] = [
   { value: 'work',      emoji: '💼', label: 'Get a Job' },
   { value: 'study',     emoji: '📚', label: 'Study / Qualifications' },
@@ -136,7 +280,7 @@ const SECTOR_OPTIONS: { value: NonNullable<import('../types').UserSector>; emoji
 /** Guide IDs most relevant to each immigration status — used for update alerts */
 const STATUS_GUIDE_IDS: Record<string, string[]> = {
   'asylum-seeker': ['asylum-waiting', 'permission-to-work', 'nrpf', 'evisa'],
-  'refugee':       ['move-on', 'uc', 'housing-help', 'family-reunion', 'ilr'],
+  'refugee':       ['move-on', 'refugee-integration', 'uc', 'housing-help', 'family-reunion', 'ilr'],
   'other-visa':    ['evisa', 'sharecode', 'work-rights', 'ilr'],
   'settled':       ['ilr', 'evisa', 'sharecode'],
 }
@@ -151,7 +295,7 @@ const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
 ]
 
 export default function ProfilePage() {
-  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [showStatusPicker, setShowStatusPicker] = useState(false)
 
@@ -283,11 +427,13 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* ── My Area (postcode → NHS area, council) ────────── */}
-      <div className="section-label">{ui.profileAreaLabel as string || '📍 My Area'}</div>
-      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
-        <PostcodeLookup savedPostcode={userPostcode} onSave={setUserPostcode} ui={ui} />
-      </div>
+      {/* ── Asylum Milestones (asylum-seekers only) ───────── */}
+      {userStatus === 'asylum-seeker' && (
+        <>
+          <div className="section-label">⏳ Milestones While Waiting</div>
+          <AsylumMilestones claimDate={claimDate} setClaimDate={setClaimDate} />
+        </>
+      )}
 
       {/* ── Next Steps ───────────────────────────────────── */}
       {userStatus && STATUS_NEXT_STEPS[userStatus] && (
