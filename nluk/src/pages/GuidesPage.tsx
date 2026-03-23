@@ -15,7 +15,7 @@ import styles from './GuidesPage.module.css'
 // Guides to pin in the "For You" section per status
 const STATUS_GUIDES: Record<string, string[]> = {
   'asylum-seeker': ['re-qualify', 'permission-to-work', 'volunteering', 'asylum-waiting'],
-  'refugee':       ['move-on', 'uc', 'housing-help'],
+  'refugee':       ['move-on', 'refugee-integration', 'uc', 'housing-help'],
   'other-visa':    ['work-rights', 'evisa', 'sharecode'],
   'settled':       ['ilr', 'evisa', 'sharecode'],
 }
@@ -29,6 +29,13 @@ const GUIDE_ROUTE_STRINGS: RouteString[] = GUIDES.flatMap(g => [
   { key: `${g.id}:summary`, text: g.content.en.summary },
 ])
 
+// Read last 5 guide IDs from localStorage (set by GuideDetail on each visit)
+function useGuideHistory(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem('nluk_guide_history') || '[]')
+  } catch { return [] }
+}
+
 export default function GuidesPage() {
   const { lang, ui, dir, af, userStatus, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
@@ -37,6 +44,7 @@ export default function GuidesPage() {
   const [searchFocused, setSearchFocused] = useState(false)
   const [catFilter, setCatFilter] = useState('All')
   const guideBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+  const guideHistory = useGuideHistory()
 
   useEffect(() => {
     // Restore focus to the last guide the user navigated away from
@@ -116,6 +124,36 @@ export default function GuidesPage() {
 
       {/* Official UK Updates — shown prominently when not searching */}
       {!search && <ImmigrationUpdatesSection compact />}
+
+      {/* Continue Reading — last visited guides */}
+      {!search && guideHistory.length > 0 && (
+        <div style={{ margin: '0 var(--gutter) 8px' }}>
+          <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+            📖 Continue Reading
+          </div>
+          <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 2 }}>
+            {guideHistory.map(id => {
+              const g = GUIDE_MAP[id]
+              if (!g) return null
+              return (
+                <button
+                  key={id}
+                  onClick={() => { sessionStorage.setItem('nluk_last_guide', id); navigate(`/guide/${id}`) }}
+                  style={{
+                    flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6,
+                    padding: '6px 10px', borderRadius: 20,
+                    background: 'var(--bg2)', border: '1px solid var(--sep)',
+                    fontSize: '0.8rem', color: 'var(--t1)', cursor: 'pointer', whiteSpace: 'nowrap',
+                  }}
+                >
+                  <span>{g.icon}</span>
+                  <span>{routeT(`${id}:title`)}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Document Scanner quick-action */}
       {!search && (

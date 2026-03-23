@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { getHighPriorityUpdates } from '../data/immigration-updates.ts'
 import type { SosEntry, UiStrings } from '../types'
 
 interface SOSModalProps {
@@ -34,6 +35,8 @@ function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }: SOSModalProps) {
 
   if (!showSOS) return null
 
+  const actionAlerts = getHighPriorityUpdates().filter(u => u.urgency === 'action-needed').slice(0, 2)
+
   return (
     <div
       className="modal-backdrop"
@@ -48,6 +51,27 @@ function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }: SOSModalProps) {
         <p id="sos-modal-desc" style={{ fontSize: '.85rem', color: 'var(--t2)', marginBottom: 8, lineHeight: 1.55 }}>
           {ui.sosDesc || 'All numbers below are free to call, 24/7.'}
         </p>
+
+        {/* Action-needed immigration alerts */}
+        {actionAlerts.length > 0 && (
+          <div style={{ marginBottom: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {actionAlerts.map(u => (
+              <div key={u.id} style={{
+                padding: '8px 12px', borderRadius: 8,
+                background: 'color-mix(in srgb, #dc2626 8%, var(--bg2))',
+                border: '1.5px solid color-mix(in srgb, #dc2626 30%, transparent)',
+              }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#dc2626', marginBottom: 2 }}>⚠️ Action needed</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--t1)', marginBottom: 2 }}>{u.title}</div>
+                <div style={{ fontSize: '0.76rem', color: 'var(--t2)' }}>{u.whatToDo}</div>
+                <a href={u.sourceUrl} target="_blank" rel="noopener noreferrer"
+                  style={{ fontSize: '0.72rem', color: '#dc2626', display: 'inline-block', marginTop: 2 }}>
+                  Official source →
+                </a>
+              </div>
+            ))}
+          </div>
+        )}
         {SOS_NUMBERS.map(s => (
           <a key={s.name} href={`tel:${s.phone}`}
             style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 0', borderBottom: '1px solid var(--bd)' }}

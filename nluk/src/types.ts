@@ -298,6 +298,9 @@ export interface AppContextValue {
   setUserStatus: (s: UserStatus) => void
   statusDate: string
   setStatusDate: (d: string) => void
+  /** ISO date string of when the user first claimed asylum (for milestone tracking) */
+  claimDate: string
+  setClaimDate: (d: string) => void
   /** What the user most wants to do next in the UK */
   userAmbition: UserAmbition
   setUserAmbition: (a: UserAmbition) => void

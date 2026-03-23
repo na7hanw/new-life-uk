@@ -28,6 +28,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [showLang, setShowLang] = useState<boolean>(() => !ls('nluk_lang', ''))
   const [userStatus, setUserStatus] = useState<UserStatus>(() => ls('nluk_status', '') as UserStatus)
   const [statusDate, setStatusDate] = useState<string>(() => ls('nluk_status_date', ''))
+  const [claimDate, setClaimDate] = useState<string>(() => ls('nluk_claim_date', ''))
   const [userAmbition, setUserAmbition] = useState<UserAmbition>(() => ls('nluk_ambition', '') as UserAmbition)
   const [userSector, setUserSector] = useState<UserSector>(() => ls('nluk_sector', '') as UserSector)
   const [documentsHeld, setDocumentsHeld] = useState<string[]>(() => {
@@ -48,6 +49,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => { lsSet('nluk_dark', String(dark)) }, [dark])
   useEffect(() => { lsSet('nluk_status', userStatus) }, [userStatus])
   useEffect(() => { lsSet('nluk_status_date', statusDate) }, [statusDate])
+  useEffect(() => { lsSet('nluk_claim_date', claimDate) }, [claimDate])
   useEffect(() => { lsSet('nluk_ambition', userAmbition) }, [userAmbition])
   useEffect(() => { lsSet('nluk_sector', userSector) }, [userSector])
   useEffect(() => { lsSet('nluk_docs', JSON.stringify(documentsHeld)) }, [documentsHeld])
@@ -74,7 +76,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const af = L.rtl ? '‹' : '›'
 
   return (
-    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark, ui, L, dir, fontClass, ab, af }}>
+    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark, ui, L, dir, fontClass, ab, af }}>
       {children}
     </AppContext.Provider>
   )

@@ -31,6 +31,16 @@ export default function GuideDetail() {
     if (!guide) navigate('/')
   }, [guide, navigate])
 
+  // ── Track last-read history (last 5 guides, for GuidesPage "Continue Reading") ──
+  useEffect(() => {
+    if (!id || !guide) return
+    try {
+      const prev: string[] = JSON.parse(localStorage.getItem('nluk_guide_history') || '[]')
+      const next = [id, ...prev.filter(g => g !== id)].slice(0, 5)
+      localStorage.setItem('nluk_guide_history', JSON.stringify(next))
+    } catch { /* ignore */ }
+  }, [id, guide])
+
   const [gc, translating, wasTranslated] = useTranslatedContent<GuideContent>(
     guide?.content as Record<string, GuideContent> | undefined,
     lang,
