@@ -26,8 +26,40 @@ export const GuideContentSchema = z
   .object({ en: GuideTranslationShape })
   .catchall(GuideTranslationShape)
 
-/** Trust level for content sourcing governance. */
+/** Broad trust tier for content sourcing governance. */
 export const TrustLevelSchema = z.enum(['official', 'ngo', 'charity', 'commercial'])
+export type TrustLevel = z.infer<typeof TrustLevelSchema>
+
+/**
+ * Fine-grained source label that classifies the type of authority behind an entry.
+ * Used alongside trustLevel for governance badges and test enforcement on high-risk content.
+ *
+ * official-government  Statutory bodies: GOV.UK, HMRC, DVLA, Home Office, NHS
+ * official-scheme      Regulated industry schemes: CSCS, CITB, DVSA
+ * awarding-body        Accredited qualification bodies: City & Guilds, NOCN, Pearson
+ * official-guidance    Official guidance / codes of practice (non-statutory)
+ * training-provider    Accredited college or training provider
+ * support-tool         App or portal that assists users but holds no authority
+ */
+export const SourceLabelSchema = z.enum([
+  'official-government',
+  'official-scheme',
+  'awarding-body',
+  'official-guidance',
+  'training-provider',
+  'support-tool',
+])
+export type SourceLabel = z.infer<typeof SourceLabelSchema>
+
+/** Display metadata for each source label used in UI badges and test reporting. */
+export const SOURCE_LABEL_META: Record<SourceLabel, { emoji: string; display: string }> = {
+  'official-government': { emoji: '🏛️', display: 'Official government' },
+  'official-scheme':     { emoji: '✅', display: 'Official scheme' },
+  'awarding-body':       { emoji: '🎓', display: 'Awarding body' },
+  'official-guidance':   { emoji: '📋', display: 'Official guidance' },
+  'training-provider':   { emoji: '🏫', display: 'Training provider' },
+  'support-tool':        { emoji: '🛠️', display: 'Support tool' },
+}
 
 export const GuideSchema = z.object({
   id: z.string().min(1),
@@ -40,6 +72,8 @@ export const GuideSchema = z.object({
   bring: z.array(z.string()).optional(),
   // ── Trust metadata (optional; enforced for high-risk content via tests) ──
   trustLevel: TrustLevelSchema.optional(),
+  sourceLabel: SourceLabelSchema.optional(),
+  lastVerified: z.string().optional(),
   warnings: z.array(z.string()).optional(),
   limitations: z.array(z.string()).optional(),
   relatedGuideIds: z.array(z.string()).optional(),
@@ -71,6 +105,11 @@ export const CertSchema = z.object({
   steps: z.object({ en: StepsArrayShape }).catchall(StepsArrayShape),
   links: z.array(LinkSchema).optional(),
   studyLinks: z.array(LinkSchema).optional(),
+  // ── Trust metadata ──
+  trustLevel: TrustLevelSchema.optional(),
+  sourceLabel: SourceLabelSchema.optional(),
+  lastVerified: z.string().optional(),
+  eligibilityNotes: z.array(z.string()).optional(),
 })
 
 // ─── Career ──────────────────────────────────────────────────────────────────
@@ -89,6 +128,11 @@ export const CareerSchema = z.object({
   /** `en` is required; any other language key must supply the full steps array. */
   steps: z.object({ en: StepsArrayShape }).catchall(StepsArrayShape),
   links: z.array(LinkSchema).optional(),
+  // ── Trust metadata ──
+  trustLevel: TrustLevelSchema.optional(),
+  sourceLabel: SourceLabelSchema.optional(),
+  lastVerified: z.string().optional(),
+  eligibilityNotes: z.array(z.string()).optional(),
 })
 
 // ─── SaveItem (apps / resources) ────────────────────────────────────────────
@@ -111,6 +155,7 @@ export const SaveItemSchema = z.object({
   guideId: z.string().optional(),
   // Trust metadata (optional inline; external maps enforced for high-risk items)
   trustLevel: TrustLevelSchema.optional(),
+  sourceLabel: SourceLabelSchema.optional(),
   lastVerified: z.string().optional(),
 })
 
