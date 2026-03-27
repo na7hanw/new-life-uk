@@ -287,6 +287,47 @@ export const APPS: SaveItem[] = [
     trustLevel: "commercial",
     lastVerified: "March 2026",
   },
+  // ─── CPCS / CSCS Lifting Lane ─────────────────────────────────
+  {
+    icon: "🪝",
+    cat: "Training",
+    content: { en: { title: "CITB — CPCS A40 Slinger/Signaller Course", desc: "Book the CPCS A40 Slinger/Signaller course (5-day beginner or 4-day refresher) at the National Construction College. The personal first step in the lifting lane. Pass the CITB Operatives HS&E test before booking. Cost: £695–£895 + £48 card fee." } },
+    url: "https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-slingersignaller-a40-5-days/",
+    guideId: "my-personal-sequence-lifting-lane",
+    trustLevel: "official",
+    resourceType: "official-scheme",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "🏗️",
+    cat: "Training",
+    content: { en: { title: "CITB — CPCS A62 Crane Supervisor Course", desc: "Book the CPCS A62 Crane Supervisor course (5-day) — the next step after gaining lifting experience. Requires the CITB Supervisors HS&E test (not Operatives). Must have documented on-site lifting experience before attending. Cost: £950–£1,200 + £48 card fee." } },
+    url: "https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-crane-supervisor-a62/",
+    guideId: "my-personal-sequence-lifting-lane",
+    trustLevel: "official",
+    resourceType: "official-scheme",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "🦺",
+    cat: "Training",
+    content: { en: { title: "CITB — CPCS A73 Plant & Vehicle Marshaller", desc: "Book the optional CPCS A73 Plant & Vehicle Marshaller course (3-day). Adds a second CPCS category to your card — useful for sites where you supervise plant movement on the ground. Cost: £495–£695 + £48 card fee." } },
+    url: "https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-plant-and-vehicle-marshaller-a73/",
+    guideId: "my-personal-sequence-lifting-lane",
+    trustLevel: "official",
+    resourceType: "official-scheme",
+    lastVerified: "March 2026",
+  },
+  {
+    icon: "💳",
+    cat: "Training",
+    content: { en: { title: "CSCS — Apply for Your Card", desc: "Apply for a CSCS card after completing your CPCS or other qualifying course. Green Labourer card: £58.50 (pass CITB Health, Safety & Environment test). White AQP card: requires Ecctis ISS + PSV — a Statement of Comparability (SoC) alone is not sufficient for the AQP route." } },
+    url: "https://www.cscs.uk.com/applying-for-cards/",
+    guideId: "my-personal-sequence-lifting-lane",
+    trustLevel: "official",
+    resourceType: "official-scheme",
+    lastVerified: "March 2026",
+  },
   // ─── Business Setup / Self-Employment ────────────────────────
   {
     icon: "🧾",
@@ -347,6 +388,10 @@ export const APPS: SaveItem[] = [
 // ─── Official source URLs for apps/resources ─────────────────────────────────
 // Enforced by tests: every high-risk app must appear here.
 export const APP_SOURCE_URL: Record<string, string> = {
+  'CITB — CPCS A40 Slinger/Signaller Course': 'https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-slingersignaller-a40-5-days/',
+  'CITB — CPCS A62 Crane Supervisor Course':  'https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-crane-supervisor-a62/',
+  'CITB — CPCS A73 Plant & Vehicle Marshaller': 'https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-plant-and-vehicle-marshaller-a73/',
+  'CSCS — Apply for Your Card':               'https://www.cscs.uk.com/applying-for-cards/',
   'GOV.UK One Login':                       'https://www.gov.uk/sign-in',
   'Companies House — Register & File':       'https://www.gov.uk/register-your-company',
   'National Careers Service':               'https://nationalcareers.service.gov.uk',
@@ -366,6 +411,10 @@ export const APP_SOURCE_URL: Record<string, string> = {
 // 'charity'   = specifically Charity Commission registered
 // 'commercial' = private company (may still be reputable)
 export const APP_TRUST_LEVEL: Record<string, 'official' | 'ngo' | 'charity' | 'commercial'> = {
+  'CITB — CPCS A40 Slinger/Signaller Course': 'official',
+  'CITB — CPCS A62 Crane Supervisor Course':  'official',
+  'CITB — CPCS A73 Plant & Vehicle Marshaller': 'official',
+  'CSCS — Apply for Your Card':               'official',
   'GOV.UK One Login':                       'official',
   'Companies House — Register & File':       'official',
   'Yoti — Digital ID App':                  'commercial',

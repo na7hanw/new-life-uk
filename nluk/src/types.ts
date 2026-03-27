@@ -28,6 +28,12 @@ export type SourceLabel = z.infer<typeof SourceLabelSchema>
 
 export type UserStatus = 'asylum-seeker' | 'refugee' | 'other-visa' | 'settled' | ''
 
+/** Which qualification lane the user is personally working towards */
+export type TargetLane = 'lifting' | ''
+
+/** Whether the user has an Ecctis ISS+PSV (AQP-ready) or SoC-only (not sufficient for White Card) */
+export type EcctisStatus = 'soc-only' | 'aqp-ready' | ''
+
 /** What the user most wants to do next in the UK */
 export type UserAmbition = 'work' | 'study' | 'business' | 'volunteer' | ''
 
@@ -325,6 +331,17 @@ export interface AppContextValue {
   setUserPostcode: (p: string) => void
   bookmarks: string[]
   toggleBookmark: (id: string) => void
+  /** Which qualification lane the user is personally working towards */
+  targetLane: TargetLane
+  setTargetLane: (l: TargetLane) => void
+  /** Cert IDs the user confirms they have already achieved */
+  credentialsHeld: string[]
+  toggleCredential: (certId: string) => void
+  /** Ecctis document status: soc-only = SoC only (AQP not ready); aqp-ready = ISS+PSV obtained */
+  ecctisStatus: EcctisStatus
+  setEcctisStatus: (s: EcctisStatus) => void
+  /** Computed: next cert ID the user should pursue in the lifting lane, or '' */
+  nextLiftingCredential: string
   ui: UiStrings
   L: Lang
   dir: 'ltr' | 'rtl'
