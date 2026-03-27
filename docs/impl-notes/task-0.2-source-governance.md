@@ -6,30 +6,45 @@ _Internal implementation note. Last updated: 2026-03-27._
 
 ## Summary of changes
 
-Extended `lib/schema.ts` with a new `SourceLabelSchema` Zod enum and `SOURCE_LABEL_META` display map.
-Added `sourceLabel`, `lastVerified`, and `eligibilityNotes` fields to all content schemas.
-Added test enforcement for official-source URL domain checks.
+Extended `lib/schema.ts` with `SourceLabelSchema` (a Zod enum) and `SOURCE_LABEL_META` (display
+map). The field is named `resourceType` on every content object. All schemas also received
+`lastVerified` and `eligibilityNotes` where missing. Tests enforce official-domain URLs for
+authoritative entries.
+
+Key principle: the `resourceType` field distinguishes **official route ownership**
+(CITB owns construction training; CSCS owns card issuance; DVSA owns driving instruction approval)
+from **this app's support role** (`support-service`). Content that is not authored or regulated
+by the tagged body must never carry an authority label it does not hold.
 
 ---
 
-## New enum — `SourceLabelSchema`
+## `resourceType` enum — `SourceLabelSchema`
 
 Location: `nluk/src/lib/schema.ts`
 
 ```typescript
 export const SourceLabelSchema = z.enum([
-  'official-government',   // GOV.UK, HMRC, DVLA, Home Office, NHS
-  'official-scheme',       // CSCS, CITB, DVSA-approved schemes
-  'awarding-body',         // City & Guilds, NOCN, Pearson, BTEC
+  'official-government',   // GOV.UK, HMRC, DVLA, Home Office, NHS — statutory body
+  'official-scheme',       // CSCS, CITB, DVSA — regulated industry scheme
+  'awarding-body',         // City & Guilds, NOCN, Pearson, BTEC — accredited qualification body
   'official-guidance',     // Official guidance / codes of practice (non-statutory)
-  'training-provider',     // Accredited college or training provider
-  'support-tool',          // App or portal that assists users, no authoritative standing
+  'professional-body',     // NRPSI, RICS, NMC, ICE, CIOL — sector professional body
+  'approved-provider',     // Ofsted/regulator-approved training provider or college
+  'support-service',       // App or portal supporting users; holds no regulatory authority
 ])
 ```
 
-`TrustLevel` ('official' | 'ngo' | 'charity' | 'commercial') is unchanged — it controls filtering
-and display tiers. `SourceLabel` is the fine-grained classification of *what kind* of authority
-is behind the content.
+### Choosing the right label
+
+| Situation | Label |
+|---|---|
+| Content sourced from GOV.UK, NHS, HMRC, Home Office | `official-government` |
+| Content sourced from CSCS, CITB, DVSA, SIA | `official-scheme` |
+| Content sourced from City & Guilds, NOCN, Pearson, BTEC | `awarding-body` |
+| Official guidance document, code of practice (non-statutory) | `official-guidance` |
+| Content sourced from NRPSI, RICS, NMC, ICE, CIOL | `professional-body` |
+| Content about an Ofsted/regulator-approved training provider | `approved-provider` |
+| App, portal, or tool that helps users but is not a regulator | `support-service` |
 
 ---
 
@@ -41,102 +56,103 @@ export const SOURCE_LABEL_META: Record<SourceLabel, { emoji: string; display: st
   'official-scheme':     { emoji: '✅', display: 'Official scheme' },
   'awarding-body':       { emoji: '🎓', display: 'Awarding body' },
   'official-guidance':   { emoji: '📋', display: 'Official guidance' },
-  'training-provider':   { emoji: '🏫', display: 'Training provider' },
-  'support-tool':        { emoji: '🛠️', display: 'Support tool' },
+  'professional-body':   { emoji: '🏅', display: 'Professional body' },
+  'approved-provider':   { emoji: '🏫', display: 'Approved provider' },
+  'support-service':     { emoji: '🛠️', display: 'Support service' },
 }
 ```
 
-Import from `lib/schema.ts` wherever UI badges need rendering.
+Import from `lib/schema.ts` wherever UI badges need rendering. A test enforces that this map
+stays exhaustive as the enum grows.
 
 ---
 
 ## Schema field additions per content type
 
-### GuideSchema (existing content type)
+### GuideSchema
 
-| New field | Type | Notes |
+| Field | Type | Notes |
 |---|---|---|
-| `sourceLabel` | `SourceLabel?` | Fine-grained authority classification |
+| `trustLevel` | `TrustLevel?` | Broad tier — was already present |
+| `resourceType` | `SourceLabel?` | Fine-grained authority classification |
 | `lastVerified` | `string?` | Human-readable date, e.g. `"March 2026"` |
 
-`sourceUrl` for guides continues to live in the external `GUIDE_SOURCE_URL` map (enforced by tests).
-`trustLevel` was already present.
+`sourceUrl` for guides lives in the external `GUIDE_SOURCE_URL` map (enforced by tests).
 
-### CertSchema (new content type)
+### CertSchema (data file to be created)
 
-| New field | Type | Notes |
+| Field | Type | Notes |
 |---|---|---|
 | `trustLevel` | `TrustLevel?` | Broad tier |
-| `sourceLabel` | `SourceLabel?` | Fine-grained authority classification |
+| `resourceType` | `SourceLabel?` | Fine-grained authority classification |
 | `lastVerified` | `string?` | Human-readable date |
 | `eligibilityNotes` | `string[]?` | Who is eligible / restrictions |
 
-`sourceUrl` for certs continues in the external `CERT_SOURCE_URL` map (enforced by tests).
+`sourceUrl` lives in `CERT_SOURCE_URL` external map.
 
-### CareerSchema (new content type)
+### CareerSchema (data file to be created)
 
-| New field | Type | Notes |
+| Field | Type | Notes |
 |---|---|---|
 | `trustLevel` | `TrustLevel?` | Broad tier |
-| `sourceLabel` | `SourceLabel?` | Fine-grained authority classification |
+| `resourceType` | `SourceLabel?` | Fine-grained authority classification |
 | `lastVerified` | `string?` | Human-readable date |
 | `eligibilityNotes` | `string[]?` | Who is eligible / restrictions |
 
-`sourceUrl` for careers continues in the external `CAREER_SOURCE_URL` map (enforced by tests).
+`sourceUrl` lives in `CAREER_SOURCE_URL` external map.
 
-### SaveItemSchema (apps / tools)
+### SaveItemSchema — apps / tools
 
-| New field | Type | Notes |
+| Field | Type | Notes |
 |---|---|---|
-| `sourceLabel` | `SourceLabel?` | Fine-grained authority classification |
-
-`trustLevel` and `lastVerified` were already present.
+| `trustLevel` | `TrustLevel?` | Broad tier — was already present |
+| `resourceType` | `SourceLabel?` | Fine-grained authority classification |
+| `lastVerified` | `string?` | Human-readable date — was already present |
 
 ---
 
 ## Exported types
 
-Both are exported from `lib/schema.ts` and re-exported from `types.ts`:
+Both exported from `lib/schema.ts` and re-exported from `types.ts`:
 
 ```typescript
 export type TrustLevel = z.infer<typeof TrustLevelSchema>
 export type SourceLabel = z.infer<typeof SourceLabelSchema>
 ```
 
-`SaveItem` interface in `types.ts` now uses `TrustLevel` (not `string`) and adds `SourceLabel`.
+`SaveItem` interface in `types.ts` uses `TrustLevel` (typed, not `string`) and `SourceLabel`
+for `resourceType`.
 
 ---
 
 ## Test enforcement
 
-Added to `__tests__/schema.test.ts` — describe block: **"Source label governance"**
+`__tests__/schema.test.ts` — describe block: **"Source label governance"**
 
-1. `SOURCE_LABEL_META covers all SourceLabel enum values` — ensures the display map is exhaustive.
-2. `guides with official-government or official-scheme sourceLabel have an official sourceUrl` —
-   checks `GUIDE_SOURCE_URL[id]` is on one of: `gov.uk`, `nhs.uk`, `cscs.uk.com`, `citb.co.uk`, `dvsa.gov.uk`.
-3. Same check for certs (against `CERT_SOURCE_URL`).
-4. Same check for careers (against `CAREER_SOURCE_URL`).
+1. `SOURCE_LABEL_META covers all SourceLabel (resourceType) enum values` — exhaustiveness check.
+2. `guides with official-government or official-scheme resourceType have an official sourceUrl` —
+   `GUIDE_SOURCE_URL[id]` must be on: `gov.uk`, `nhs.uk`, `cscs.uk.com`, `citb.co.uk`, `dvsa.gov.uk`.
+3. Same check for certs (`CERT_SOURCE_URL`).
+4. Same check for careers (`CAREER_SOURCE_URL`).
 
-These tests enforce the rule: CSCS, CITB, DVSA routes must link to official pages, not third-party
-intermediaries like training companies or magazine explainers.
+This enforces the rule that CSCS, CITB, and DVSA entries point to official pages, not
+third-party training companies, magazine explainers, or intermediaries.
 
 ---
 
-## Convention for new entries
-
-Every new cert, career, guide, or app entry added in subsequent tasks must include:
+## Convention for every new entry
 
 ```typescript
 {
   // ...content fields...
-  trustLevel:    'official',          // broad tier
-  sourceLabel:   'official-scheme',   // specific authority type
-  lastVerified:  'March 2026',        // human-readable date
-  // sourceUrl goes in the external map (CERT_SOURCE_URL / GUIDE_SOURCE_URL etc.)
-  // eligibilityNotes on certs/careers: ['Must have right to work', ...]
+  trustLevel:   'official',          // broad tier
+  resourceType: 'official-scheme',   // specific authority type
+  lastVerified: 'March 2026',        // human-readable date
+  // sourceUrl → CERT_SOURCE_URL / GUIDE_SOURCE_URL / CAREER_SOURCE_URL external map
+  // eligibilityNotes (certs/careers): ['Must have right to work', ...]
 }
 ```
 
-Official-source entries (`official-government`, `official-scheme`, `awarding-body`) must use the
-actual official page (e.g. `cscs.uk.com/get-your-card`, `gov.uk/dvsa`) rather than secondary
-explainers or training-company landing pages.
+Official-source entries (`official-government`, `official-scheme`, `awarding-body`,
+`professional-body`) must use the actual official page — not a secondary explainer,
+not a training company's landing page, not a magazine article.
