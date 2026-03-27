@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { LANGS, UI } from '../data/ui-strings.ts'
 import { ls, lsSet } from '../lib/utils.ts'
-import type { AppContextValue, UserStatus, UserAmbition, UserSector } from '../types'
+import type { AppContextValue, UserStatus, UserAmbition, UserSector, TargetLane, EcctisStatus } from '../types'
 
 const AppContext = createContext<AppContextValue | null>(null)
 
@@ -38,6 +38,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [bookmarks, setBookmarks] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_bookmarks', '[]')) } catch { return [] }
   })
+  const [targetLane, setTargetLane] = useState<TargetLane>(() => ls('nluk_target_lane', '') as TargetLane)
+  const [credentialsHeld, setCredentialsHeld] = useState<string[]>(() => {
+    try { return JSON.parse(ls('nluk_credentials', '[]')) } catch { return [] }
+  })
+  const [ecctisStatus, setEcctisStatus] = useState<EcctisStatus>(() => ls('nluk_ecctis', '') as EcctisStatus)
 
   useEffect(() => {
     const L2 = LANGS.find(l => l.code === lang) || LANGS[0]
@@ -55,6 +60,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => { lsSet('nluk_docs', JSON.stringify(documentsHeld)) }, [documentsHeld])
   useEffect(() => { lsSet('nluk_postcode', userPostcode) }, [userPostcode])
   useEffect(() => { lsSet('nluk_bookmarks', JSON.stringify(bookmarks)) }, [bookmarks])
+  useEffect(() => { lsSet('nluk_target_lane', targetLane) }, [targetLane])
+  useEffect(() => { lsSet('nluk_credentials', JSON.stringify(credentialsHeld)) }, [credentialsHeld])
+  useEffect(() => { lsSet('nluk_ecctis', ecctisStatus) }, [ecctisStatus])
 
   const toggleDocument = (docId: string) => {
     setDocumentsHeld(prev =>
@@ -68,6 +76,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     )
   }
 
+  const toggleCredential = (certId: string) => {
+    setCredentialsHeld(prev =>
+      prev.includes(certId) ? prev.filter(c => c !== certId) : [...prev, certId]
+    )
+  }
+
+  // Derived: next cert to pursue in the lifting lane (A40 → A62)
+  const nextLiftingCredential: string = (() => {
+    if (targetLane !== 'lifting') return ''
+    if (!credentialsHeld.includes('cpcs-a40')) return 'cpcs-a40'
+    if (!credentialsHeld.includes('cpcs-a62')) return 'cpcs-a62'
+    return ''
+  })()
+
   const L = LANGS.find(l => l.code === lang) || LANGS[0]
   const ui = UI[lang] || UI.en
   const dir = L.rtl ? 'rtl' : 'ltr'
@@ -76,7 +98,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const af = L.rtl ? '‹' : '›'
 
   return (
-    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark, ui, L, dir, fontClass, ab, af }}>
+    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
       {children}
     </AppContext.Provider>
   )
