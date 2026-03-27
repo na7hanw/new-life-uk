@@ -10,6 +10,8 @@ import {
   CertSchema,
   CareerSchema,
   SOSSchema,
+  TrustLevelSchema,
+  SourceLabelSchema,
 } from './lib/schema'
 
 // ─── Inferred types ─────────────────────────────────────────────────────────
@@ -19,6 +21,8 @@ export type Guide = z.infer<typeof GuideSchema>
 export type Cert = z.infer<typeof CertSchema>
 export type Career = z.infer<typeof CareerSchema>
 export type SosEntry = z.infer<typeof SOSSchema>
+export type TrustLevel = z.infer<typeof TrustLevelSchema>
+export type SourceLabel = z.infer<typeof SourceLabelSchema>
 
 // ─── Additional types not covered by Zod schemas ────────────────────────────
 
@@ -91,9 +95,11 @@ export interface SaveItem {
   cat?: string
   /** Optional: id of a related guide in guides.ts for cross-navigation */
   guideId?: string
-  /** Trust level for the resource (official | charity | commercial | community) */
-  trustLevel?: string
-  /** Human-readable date of last verification */
+  /** Broad trust tier (official | ngo | charity | commercial) */
+  trustLevel?: TrustLevel
+  /** Fine-grained source authority label */
+  sourceLabel?: SourceLabel
+  /** Human-readable date of last verification, e.g. "March 2026" */
   lastVerified?: string
 }
 

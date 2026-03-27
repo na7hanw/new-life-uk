@@ -7,7 +7,7 @@ import { CERTS, CAREERS, CERT_SOURCE_URL, CAREER_SOURCE_URL } from '../data/jobs
 import { GUIDE_MAP, GUIDE_SOURCE_URL, GUIDE_TRUST_LEVEL } from '../data/guides.ts'
 import { APPS, APP_SOURCE_URL, APP_TRUST_LEVEL } from '../data/apps.ts'
 import { SOS_NUMBERS } from '../data/emergency.ts'
-import { GuideSchema, CertSchema, CareerSchema, SOSSchema, SaveItemSchema } from '../lib/schema.ts'
+import { GuideSchema, CertSchema, CareerSchema, SOSSchema, SaveItemSchema, SourceLabelSchema } from '../lib/schema.ts'
 
 /** Guide IDs where financial, legal, or immigration advice is given. */
 const HIGH_RISK_GUIDE_IDS = [
@@ -228,6 +228,69 @@ describe('Trust metadata — high-risk apps', () => {
         appTitles.has(title),
         `HIGH_RISK_APP_TITLES contains unknown app: "${title}"`
       ).toBe(true)
+    }
+  })
+})
+
+// ─── Source label governance ──────────────────────────────────────────────────
+
+const VALID_SOURCE_LABELS = new Set(SourceLabelSchema.options)
+
+/** Domains whose URLs are authoritative for official-government / official-scheme entries. */
+const OFFICIAL_DOMAINS = [
+  'gov.uk', 'nhs.uk', 'cscs.uk.com', 'citb.co.uk', 'dvsa.gov.uk',
+]
+
+describe('Source label governance', () => {
+  it('SOURCE_LABEL_META covers all SourceLabel enum values', () => {
+    // Import at test time to avoid circular issues
+    const { SOURCE_LABEL_META } = require('../lib/schema.ts')
+    for (const label of VALID_SOURCE_LABELS) {
+      expect(SOURCE_LABEL_META[label], `Missing SOURCE_LABEL_META entry for "${label}"`).toBeTruthy()
+      expect(SOURCE_LABEL_META[label].display).toBeTruthy()
+      expect(SOURCE_LABEL_META[label].emoji).toBeTruthy()
+    }
+  })
+
+  it('guides with official-government or official-scheme sourceLabel have an official sourceUrl', () => {
+    for (const guide of Object.values(GUIDE_MAP)) {
+      const label = (guide as { sourceLabel?: string }).sourceLabel
+      if (label === 'official-government' || label === 'official-scheme') {
+        const url = GUIDE_SOURCE_URL[guide.id] ?? ''
+        const isOfficial = OFFICIAL_DOMAINS.some(d => url.includes(d))
+        expect(
+          isOfficial,
+          `Guide "${guide.id}" has sourceLabel "${label}" but sourceUrl "${url}" is not on an official domain`,
+        ).toBe(true)
+      }
+    }
+  })
+
+  it('certs with official-government or official-scheme sourceLabel have an official sourceUrl', () => {
+    for (const cert of CERTS) {
+      const label = (cert as { sourceLabel?: string }).sourceLabel
+      if (label === 'official-government' || label === 'official-scheme') {
+        const url = CERT_SOURCE_URL[cert.id] ?? ''
+        const isOfficial = OFFICIAL_DOMAINS.some(d => url.includes(d))
+        expect(
+          isOfficial,
+          `Cert "${cert.id}" has sourceLabel "${label}" but sourceUrl "${url}" is not on an official domain`,
+        ).toBe(true)
+      }
+    }
+  })
+
+  it('careers with official-government or official-scheme sourceLabel have an official sourceUrl', () => {
+    for (const career of CAREERS) {
+      const label = (career as { sourceLabel?: string }).sourceLabel
+      if (label === 'official-government' || label === 'official-scheme') {
+        const url = CAREER_SOURCE_URL[career.id] ?? ''
+        const isOfficial = OFFICIAL_DOMAINS.some(d => url.includes(d))
+        expect(
+          isOfficial,
+          `Career "${career.id}" has sourceLabel "${label}" but sourceUrl "${url}" is not on an official domain`,
+        ).toBe(true)
+      }
     }
   })
 })
