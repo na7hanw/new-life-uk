@@ -97,8 +97,8 @@ export interface SaveItem {
   guideId?: string
   /** Broad trust tier (official | ngo | charity | commercial) */
   trustLevel?: TrustLevel
-  /** Fine-grained source authority label */
-  sourceLabel?: SourceLabel
+  /** Fine-grained resource type — distinguishes official route ownership from app support role */
+  resourceType?: SourceLabel
   /** Human-readable date of last verification, e.g. "March 2026" */
   lastVerified?: string
 }

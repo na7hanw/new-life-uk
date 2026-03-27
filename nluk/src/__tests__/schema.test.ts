@@ -242,7 +242,7 @@ const OFFICIAL_DOMAINS = [
 ]
 
 describe('Source label governance', () => {
-  it('SOURCE_LABEL_META covers all SourceLabel enum values', () => {
+  it('SOURCE_LABEL_META covers all SourceLabel (resourceType) enum values', () => {
     // Import at test time to avoid circular issues
     const { SOURCE_LABEL_META } = require('../lib/schema.ts')
     for (const label of VALID_SOURCE_LABELS) {
@@ -252,43 +252,43 @@ describe('Source label governance', () => {
     }
   })
 
-  it('guides with official-government or official-scheme sourceLabel have an official sourceUrl', () => {
+  it('guides with official-government or official-scheme resourceType have an official sourceUrl', () => {
     for (const guide of Object.values(GUIDE_MAP)) {
-      const label = (guide as { sourceLabel?: string }).sourceLabel
+      const label = (guide as { resourceType?: string }).resourceType
       if (label === 'official-government' || label === 'official-scheme') {
         const url = GUIDE_SOURCE_URL[guide.id] ?? ''
         const isOfficial = OFFICIAL_DOMAINS.some(d => url.includes(d))
         expect(
           isOfficial,
-          `Guide "${guide.id}" has sourceLabel "${label}" but sourceUrl "${url}" is not on an official domain`,
+          `Guide "${guide.id}" has resourceType "${label}" but sourceUrl "${url}" is not on an official domain`,
         ).toBe(true)
       }
     }
   })
 
-  it('certs with official-government or official-scheme sourceLabel have an official sourceUrl', () => {
+  it('certs with official-government or official-scheme resourceType have an official sourceUrl', () => {
     for (const cert of CERTS) {
-      const label = (cert as { sourceLabel?: string }).sourceLabel
+      const label = (cert as { resourceType?: string }).resourceType
       if (label === 'official-government' || label === 'official-scheme') {
         const url = CERT_SOURCE_URL[cert.id] ?? ''
         const isOfficial = OFFICIAL_DOMAINS.some(d => url.includes(d))
         expect(
           isOfficial,
-          `Cert "${cert.id}" has sourceLabel "${label}" but sourceUrl "${url}" is not on an official domain`,
+          `Cert "${cert.id}" has resourceType "${label}" but sourceUrl "${url}" is not on an official domain`,
         ).toBe(true)
       }
     }
   })
 
-  it('careers with official-government or official-scheme sourceLabel have an official sourceUrl', () => {
+  it('careers with official-government or official-scheme resourceType have an official sourceUrl', () => {
     for (const career of CAREERS) {
-      const label = (career as { sourceLabel?: string }).sourceLabel
+      const label = (career as { resourceType?: string }).resourceType
       if (label === 'official-government' || label === 'official-scheme') {
         const url = CAREER_SOURCE_URL[career.id] ?? ''
         const isOfficial = OFFICIAL_DOMAINS.some(d => url.includes(d))
         expect(
           isOfficial,
-          `Career "${career.id}" has sourceLabel "${label}" but sourceUrl "${url}" is not on an official domain`,
+          `Career "${career.id}" has resourceType "${label}" but sourceUrl "${url}" is not on an official domain`,
         ).toBe(true)
       }
     }

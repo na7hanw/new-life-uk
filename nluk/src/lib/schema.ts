@@ -31,34 +31,38 @@ export const TrustLevelSchema = z.enum(['official', 'ngo', 'charity', 'commercia
 export type TrustLevel = z.infer<typeof TrustLevelSchema>
 
 /**
- * Fine-grained source label that classifies the type of authority behind an entry.
+ * Fine-grained resource type that classifies the type of authority behind an entry.
  * Used alongside trustLevel for governance badges and test enforcement on high-risk content.
+ * Distinguishes official route ownership (CITB/CSCS/DVSA/etc.) from this app's support role.
  *
  * official-government  Statutory bodies: GOV.UK, HMRC, DVLA, Home Office, NHS
  * official-scheme      Regulated industry schemes: CSCS, CITB, DVSA
- * awarding-body        Accredited qualification bodies: City & Guilds, NOCN, Pearson
+ * awarding-body        Accredited qualification bodies: City & Guilds, NOCN, Pearson, BTEC
  * official-guidance    Official guidance / codes of practice (non-statutory)
- * training-provider    Accredited college or training provider
- * support-tool         App or portal that assists users but holds no authority
+ * professional-body    Sector professional bodies: NRPSI, RICS, NMC, ICE, CIOL
+ * approved-provider    Ofsted/regulator-approved training provider or college
+ * support-service      App or portal that supports users but holds no regulatory authority
  */
 export const SourceLabelSchema = z.enum([
   'official-government',
   'official-scheme',
   'awarding-body',
   'official-guidance',
-  'training-provider',
-  'support-tool',
+  'professional-body',
+  'approved-provider',
+  'support-service',
 ])
 export type SourceLabel = z.infer<typeof SourceLabelSchema>
 
-/** Display metadata for each source label used in UI badges and test reporting. */
+/** Display metadata for each resource type used in UI badges and test reporting. */
 export const SOURCE_LABEL_META: Record<SourceLabel, { emoji: string; display: string }> = {
   'official-government': { emoji: '🏛️', display: 'Official government' },
   'official-scheme':     { emoji: '✅', display: 'Official scheme' },
   'awarding-body':       { emoji: '🎓', display: 'Awarding body' },
   'official-guidance':   { emoji: '📋', display: 'Official guidance' },
-  'training-provider':   { emoji: '🏫', display: 'Training provider' },
-  'support-tool':        { emoji: '🛠️', display: 'Support tool' },
+  'professional-body':   { emoji: '🏅', display: 'Professional body' },
+  'approved-provider':   { emoji: '🏫', display: 'Approved provider' },
+  'support-service':     { emoji: '🛠️', display: 'Support service' },
 }
 
 export const GuideSchema = z.object({
@@ -72,7 +76,7 @@ export const GuideSchema = z.object({
   bring: z.array(z.string()).optional(),
   // ── Trust metadata (optional; enforced for high-risk content via tests) ──
   trustLevel: TrustLevelSchema.optional(),
-  sourceLabel: SourceLabelSchema.optional(),
+  resourceType: SourceLabelSchema.optional(),
   lastVerified: z.string().optional(),
   warnings: z.array(z.string()).optional(),
   limitations: z.array(z.string()).optional(),
@@ -107,7 +111,7 @@ export const CertSchema = z.object({
   studyLinks: z.array(LinkSchema).optional(),
   // ── Trust metadata ──
   trustLevel: TrustLevelSchema.optional(),
-  sourceLabel: SourceLabelSchema.optional(),
+  resourceType: SourceLabelSchema.optional(),
   lastVerified: z.string().optional(),
   eligibilityNotes: z.array(z.string()).optional(),
 })
@@ -130,7 +134,7 @@ export const CareerSchema = z.object({
   links: z.array(LinkSchema).optional(),
   // ── Trust metadata ──
   trustLevel: TrustLevelSchema.optional(),
-  sourceLabel: SourceLabelSchema.optional(),
+  resourceType: SourceLabelSchema.optional(),
   lastVerified: z.string().optional(),
   eligibilityNotes: z.array(z.string()).optional(),
 })
@@ -155,7 +159,7 @@ export const SaveItemSchema = z.object({
   guideId: z.string().optional(),
   // Trust metadata (optional inline; external maps enforced for high-risk items)
   trustLevel: TrustLevelSchema.optional(),
-  sourceLabel: SourceLabelSchema.optional(),
+  resourceType: SourceLabelSchema.optional(),
   lastVerified: z.string().optional(),
 })
 
