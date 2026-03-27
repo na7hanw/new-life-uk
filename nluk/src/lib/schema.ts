@@ -114,6 +114,12 @@ export const CertSchema = z.object({
   resourceType: SourceLabelSchema.optional(),
   lastVerified: z.string().optional(),
   eligibilityNotes: z.array(z.string()).optional(),
+  /**
+   * Founder-first display order: lower = surfaced first in default (no-search) browsing.
+   * Represents the recommended start sequence for a newly-granted refugee building UK credentials.
+   * Undefined = no special priority; sorted to end of list.
+   */
+  founderOrder: z.number().int().positive().optional(),
 })
 
 // ─── Career ──────────────────────────────────────────────────────────────────
@@ -137,6 +143,12 @@ export const CareerSchema = z.object({
   resourceType: SourceLabelSchema.optional(),
   lastVerified: z.string().optional(),
   eligibilityNotes: z.array(z.string()).optional(),
+  /**
+   * Founder-first display order: lower = surfaced first in default (no-search) browsing.
+   * Represents the most impactful career paths for a newly-granted refugee.
+   * Undefined = no special priority; sorted to end of list.
+   */
+  founderOrder: z.number().int().positive().optional(),
 })
 
 // ─── SaveItem (apps / resources) ────────────────────────────────────────────
