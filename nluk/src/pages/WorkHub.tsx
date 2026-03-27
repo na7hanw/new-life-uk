@@ -4,10 +4,18 @@ import { Search } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
+import type { Cert, Career } from '../types'
 import { t18, lsSet } from '../lib/utils.ts'
 import JobCard from '../components/JobCard.tsx'
 import EmptyState from '../components/EmptyState.tsx'
 import styles from './WorkHub.module.css'
+
+// Founder-first sort: items with a founderOrder bubble to the top (ascending).
+// Items without founderOrder fall to the end. Stable sort preserves original
+// order within each group, keeping the data-file curation intentional.
+function byFounderOrder<T extends { founderOrder?: number }>(items: T[]): T[] {
+  return [...items].sort((a, b) => (a.founderOrder ?? 9999) - (b.founderOrder ?? 9999))
+}
 
 export default function WorkHub() {
   const { subtab = 'jobs' } = useParams()
@@ -68,13 +76,18 @@ export default function WorkHub() {
     search.trim() ? jobFuse.search(search).map(r => r.item) : JOBS,
   [search, jobFuse])
 
+  // Default (no search): founder-first ordering surfaces grant-ready qualifications first.
+  // With search active: Fuse.js relevance order takes over (standard behaviour).
+  const certsFounderFirst = useMemo(() => byFounderOrder(CERTS as unknown as Cert[]), [])
+  const careersFounderFirst = useMemo(() => byFounderOrder(CAREERS as unknown as Career[]), [])
+
   const filteredCerts = useMemo(() =>
-    search.trim() ? (certFuse.search(search).map(r => r.item) as typeof CERTS) : CERTS,
-  [search, certFuse])
+    search.trim() ? (certFuse.search(search).map(r => r.item) as typeof CERTS) : certsFounderFirst as typeof CERTS,
+  [search, certFuse, certsFounderFirst])
 
   const filteredCareers = useMemo(() =>
-    search.trim() ? (careerFuse.search(search).map(r => r.item) as typeof CAREERS) : CAREERS,
-  [search, careerFuse])
+    search.trim() ? (careerFuse.search(search).map(r => r.item) as typeof CAREERS) : careersFounderFirst as typeof CAREERS,
+  [search, careerFuse, careersFounderFirst])
 
   const searchPlaceholder = ui.searchWork || 'Search…'
 
@@ -139,6 +152,29 @@ export default function WorkHub() {
         <EmptyState message={ui.noResults} />
       )}
 
+      {/* Grant-status banners for the Certs tab */}
+      {subtab === 'certs' && userStatus === 'refugee' && (
+        <div className={`tip-banner ${styles.tipBannerGutter}`}>
+          <span className="tip-icon">🔓</span>
+          <p className="tip-text">
+            <strong>You have full right to work.</strong>{' '}
+            All qualifications below are open to you — the list is sorted to put the most impactful first.
+          </p>
+        </div>
+      )}
+      {subtab === 'certs' && userStatus === 'asylum-seeker' && (
+        <div className={`tip-banner ${styles.tipBannerGutter}`}>
+          <span className="tip-icon">📚</span>
+          <p className="tip-text">
+            <strong>Prepare now.</strong>{' '}
+            Study for these qualifications while waiting — once refugee status is granted you can apply immediately.{' '}
+            <button className={styles.inlineLink} onClick={() => navigate('/guide/get-qualified-first')}>
+              See the qualification guide →
+            </button>
+          </p>
+        </div>
+      )}
+
       {subtab === 'certs' && (
         filteredCerts.length === 0 ? (
           <EmptyState message={ui.noResults} />
@@ -146,6 +182,8 @@ export default function WorkHub() {
           <div className={`card card-flush ${styles.cardGutter}`}>
             {filteredCerts.map((c) => {
               const cc = t18(c.content, lang)
+              const certTyped = c as unknown as Cert
+              const isGrantReady = !search.trim() && certTyped.founderOrder !== undefined && certTyped.founderOrder <= 20
               return (
                 <button key={c.id} className={`list-row ${styles.rowAlignTop}`}
                   ref={el => { certBtnRefs.current[c.id] = el }}
@@ -155,6 +193,7 @@ export default function WorkHub() {
                   <div className="list-row-content">
                     <div className="list-row-title">{cc.title}</div>
                     <div className="list-row-sub">{cc.sector}</div>
+                    {isGrantReady && <span className="pill-green">Grant-ready</span>}
                     <span className="pill-free">{ui.freeRoute}</span>
                   </div>
                   <span className="list-row-arrow">{af}</span>
@@ -163,6 +202,29 @@ export default function WorkHub() {
             })}
           </div>
         )
+      )}
+
+      {/* Grant-status banners for the Career tab */}
+      {subtab === 'career' && userStatus === 'refugee' && (
+        <div className={`tip-banner ${styles.tipBannerGutter}`}>
+          <span className="tip-icon">🚀</span>
+          <p className="tip-text">
+            <strong>You have full right to work.</strong>{' '}
+            These career paths are sorted by how quickly you can enter them with refugee status — start with the first.
+          </p>
+        </div>
+      )}
+      {subtab === 'career' && userStatus === 'asylum-seeker' && (
+        <div className={`tip-banner ${styles.tipBannerGutter}`}>
+          <span className="tip-icon">📚</span>
+          <p className="tip-text">
+            <strong>Research now, move fast later.</strong>{' '}
+            Explore these paths while waiting — the first options unlock immediately when status is granted.{' '}
+            <button className={styles.inlineLink} onClick={() => navigate('/guide/work-rights')}>
+              Check work rights →
+            </button>
+          </p>
+        </div>
       )}
 
       {subtab === 'career' && (
