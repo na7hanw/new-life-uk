@@ -141,26 +141,26 @@ describe('Founder-first careers — sort order', () => {
   })
 })
 
-// ─── Grant-ready badge threshold ─────────────────────────────────────────────
+// ─── "Start here" badge threshold (founderOrder ≤ 20) ────────────────────────
 
-describe('Grant-ready badge threshold (founderOrder ≤ 20)', () => {
-  it('cscs-card has founderOrder ≤ 20 (qualifies for grant-ready badge)', () => {
+describe('"Start here" badge threshold (founderOrder ≤ 20)', () => {
+  it('cscs-card has founderOrder ≤ 20 (qualifies for Start-here badge)', () => {
     const cert = certsTyped.find(c => c.id === 'cscs-card')
-    expect(cert?.founderOrder, 'cscs-card founderOrder must be ≤ 20 for grant-ready badge').toBeLessThanOrEqual(20)
+    expect(cert?.founderOrder, 'cscs-card founderOrder must be ≤ 20 for Start-here badge').toBeLessThanOrEqual(20)
   })
 
-  it('cpcs-a40 has founderOrder ≤ 20 (qualifies for grant-ready badge)', () => {
+  it('cpcs-a40 has founderOrder ≤ 20 (qualifies for Start-here badge)', () => {
     const cert = certsTyped.find(c => c.id === 'cpcs-a40')
-    expect(cert?.founderOrder, 'cpcs-a40 founderOrder must be ≤ 20 for grant-ready badge').toBeLessThanOrEqual(20)
+    expect(cert?.founderOrder, 'cpcs-a40 founderOrder must be ≤ 20 for Start-here badge').toBeLessThanOrEqual(20)
   })
 
-  it('first-aid has founderOrder ≤ 20 (qualifies for grant-ready badge)', () => {
+  it('first-aid has founderOrder ≤ 20 (qualifies for Start-here badge)', () => {
     const cert = certsTyped.find(c => c.id === 'first-aid')
-    expect(cert?.founderOrder, 'first-aid founderOrder must be ≤ 20 for grant-ready badge').toBeLessThanOrEqual(20)
+    expect(cert?.founderOrder, 'first-aid founderOrder must be ≤ 20 for Start-here badge').toBeLessThanOrEqual(20)
   })
 
-  it('exactly 3 certs have founderOrder ≤ 20 (grant-ready badge count is intentional)', () => {
-    const grantReadyCerts = certsTyped.filter(c => c.founderOrder !== undefined && c.founderOrder <= 20)
-    expect(grantReadyCerts.length, 'Grant-ready badge count should be exactly 3 (cscs-card, cpcs-a40, first-aid)').toBe(3)
+  it('exactly 3 certs have founderOrder ≤ 20 (Start-here badge count is intentional)', () => {
+    const badgeCerts = certsTyped.filter(c => c.founderOrder !== undefined && c.founderOrder <= 20)
+    expect(badgeCerts.length, 'Start-here badge count should be exactly 3 (cscs-card, cpcs-a40, first-aid)').toBe(3)
   })
 })

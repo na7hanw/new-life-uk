@@ -64,6 +64,9 @@ export default function CareerDetail() {
             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 5 }}>
               {career.tags.map(t => <span key={t} className="pill pill-light">{t}</span>)}
             </div>
+            {career.founderOrder !== undefined && career.founderOrder <= 20 && (
+              <span className="pill-green" style={{ display: 'inline-block', marginTop: 4 }}>Start here</span>
+            )}
             <div className="detail-salary">{pc.salary}</div>
           </div>
         </div>

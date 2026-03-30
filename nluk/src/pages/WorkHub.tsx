@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { Search } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
-import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
+import { JOBS, CERTS, CAREERS, CERT_MAP } from '../data/jobs.ts'
 import type { Cert, Career } from '../types'
 import { t18, lsSet } from '../lib/utils.ts'
 import JobCard from '../components/JobCard.tsx'
@@ -20,7 +20,7 @@ function byFounderOrder<T extends { founderOrder?: number }>(items: T[]): T[] {
 export default function WorkHub() {
   const { subtab = 'jobs' } = useParams()
   const navigate = useNavigate()
-  const { lang, ui, af, dir, userStatus } = useApp()
+  const { lang, ui, af, dir, userStatus, targetLane, nextLiftingCredential } = useApp()
   const certBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const careerBtnRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const [search, setSearch] = useState('')
@@ -175,6 +175,20 @@ export default function WorkHub() {
         </div>
       )}
 
+      {/* Lifting-lane next-step prompt — only when user has opted into the lane */}
+      {subtab === 'certs' && targetLane === 'lifting' && nextLiftingCredential && !search.trim() && (
+        <div className={`tip-banner ${styles.tipBannerGutter}`}>
+          <span className="tip-icon">🎯</span>
+          <p className="tip-text">
+            <strong>Your next step:</strong>{' '}
+            <button className={styles.inlineLink}
+              onClick={() => { sessionStorage.setItem('nluk_last_cert', nextLiftingCredential); navigate(`/cert/${nextLiftingCredential}`) }}>
+              {CERT_MAP[nextLiftingCredential]?.content?.en?.title ?? nextLiftingCredential} →
+            </button>
+          </p>
+        </div>
+      )}
+
       {subtab === 'certs' && (
         filteredCerts.length === 0 ? (
           <EmptyState message={ui.noResults} />
@@ -193,7 +207,7 @@ export default function WorkHub() {
                   <div className="list-row-content">
                     <div className="list-row-title">{cc.title}</div>
                     <div className="list-row-sub">{cc.sector}</div>
-                    {isGrantReady && <span className="pill-green">Grant-ready</span>}
+                    {isGrantReady && <span className="pill-green">Start here</span>}
                     <span className="pill-free">{ui.freeRoute}</span>
                   </div>
                   <span className="list-row-arrow">{af}</span>
@@ -234,6 +248,8 @@ export default function WorkHub() {
           <div className={`card card-flush ${styles.cardGutter}`}>
             {filteredCareers.map((p) => {
               const pc = t18(p.content, lang)
+              const careerTyped = p as unknown as Career
+              const isCareerGrantReady = !search.trim() && careerTyped.founderOrder !== undefined && careerTyped.founderOrder <= 20
               return (
                 <button key={p.id} className={`list-row ${styles.rowAlignTop}`}
                   ref={el => { careerBtnRefs.current[p.id] = el }}
@@ -245,6 +261,7 @@ export default function WorkHub() {
                     <div className={styles.tagsRow}>
                       {p.tags.map(t => <span key={t} className="career-tag">{t}</span>)}
                     </div>
+                    {isCareerGrantReady && <span className="pill-green">Start here</span>}
                     <div className={styles.careerSalary}>{pc.salary}</div>
                   </div>
                   <span className="list-row-arrow">{af}</span>
