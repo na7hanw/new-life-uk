@@ -193,7 +193,7 @@ export default function WorkHub() {
                   <div className="list-row-content">
                     <div className="list-row-title">{cc.title}</div>
                     <div className="list-row-sub">{cc.sector}</div>
-                    {isGrantReady && <span className="pill-green">Grant-ready</span>}
+                    {isGrantReady && <span className="pill-green">Start here</span>}
                     <span className="pill-free">{ui.freeRoute}</span>
                   </div>
                   <span className="list-row-arrow">{af}</span>
