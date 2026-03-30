@@ -65,6 +65,9 @@ export default function CertDetail() {
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 6 }}>
               <span className="pill pill-light">{cert.time}</span>
               <span className="pill pill-light">{cert.cost}</span>
+              {cert.founderOrder !== undefined && cert.founderOrder <= 20 && (
+                <span className="pill-green">Start here</span>
+              )}
             </div>
           </div>
         </div>
