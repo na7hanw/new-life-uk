@@ -87,8 +87,8 @@ describe('Founder-first certs — sort order', () => {
 // ─── Careers: tagging coverage ───────────────────────────────────────────────
 
 describe('Founder-first careers — tagging', () => {
-  it('at least 6 careers have founderOrder defined', () => {
-    expect(taggedCareers.length, 'Fewer than 6 careers tagged with founderOrder').toBeGreaterThanOrEqual(6)
+  it('at least 10 careers have founderOrder defined', () => {
+    expect(taggedCareers.length, 'Fewer than 10 careers tagged with founderOrder').toBeGreaterThanOrEqual(10)
   })
 
   it('all founderOrder values are positive integers', () => {
@@ -126,18 +126,25 @@ describe('Founder-first careers — sort order', () => {
     expect(idx, 'translation should be first in founder-first career list').toBe(0)
   })
 
-  it('tech-digital is in the top 3 by founderOrder', () => {
+  it('gas-engineer is in the top 3 by founderOrder (fastest high-earning trade, UK shortage)', () => {
+    const sorted = byFounderOrder(careersTyped)
+    const idx = sorted.findIndex(c => c.id === 'gas-engineer')
+    expect(CAREER_MAP['gas-engineer'], 'gas-engineer career missing from CAREER_MAP').toBeTruthy()
+    expect(idx, 'gas-engineer should be in the top 3 founder-first careers').toBeLessThan(3)
+  })
+
+  it('tech-digital is in the top 6 by founderOrder', () => {
     const sorted = byFounderOrder(careersTyped)
     const idx = sorted.findIndex(c => c.id === 'tech-digital')
     expect(CAREER_MAP['tech-digital'], 'tech-digital career missing from CAREER_MAP').toBeTruthy()
-    expect(idx, 'tech-digital should be in the top 3 founder-first careers').toBeLessThan(3)
+    expect(idx, 'tech-digital should be in the top 6 founder-first careers').toBeLessThan(6)
   })
 
-  it('healthcare is in the top 5 by founderOrder', () => {
+  it('healthcare is in the top 10 by founderOrder', () => {
     const sorted = byFounderOrder(careersTyped)
     const idx = sorted.findIndex(c => c.id === 'healthcare')
     expect(CAREER_MAP['healthcare'], 'healthcare career missing from CAREER_MAP').toBeTruthy()
-    expect(idx, 'healthcare should be in the top 5 founder-first careers').toBeLessThan(5)
+    expect(idx, 'healthcare should be in the top 10 founder-first careers').toBeLessThan(10)
   })
 })
 
