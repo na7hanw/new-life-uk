@@ -1,0 +1,381 @@
+# Portal Scanner Configuration — UK Job Search
+# Configured for: Housing, Admin, Data, Translation, NHS, Trades, Driving
+# Last updated: April 2026
+
+title_filter:
+  positive:
+    # Housing & Property
+    - "Housing Officer"
+    - "Housing Support"
+    - "Housing Assistant"
+    - "Housing Advisor"
+    - "Housing Manager"
+    - "Lettings Officer"
+    - "Allocations Officer"
+    - "Tenancy Officer"
+    - "Property Officer"
+    # Admin & Business Support
+    - "Administrator"
+    - "Administration Officer"
+    - "Business Support"
+    - "Business Support Officer"
+    - "Office Manager"
+    - "Team Administrator"
+    - "Executive Assistant"
+    - "Administrative Assistant"
+    - "Coordinator"
+    - "Operations Assistant"
+    # Data & Analytics
+    - "Data Analyst"
+    - "Data Assistant"
+    - "BI Analyst"
+    - "Reporting Analyst"
+    - "Data Entry"
+    - "Information Officer"
+    - "Management Information"
+    # Customer Service & Contact Centre
+    - "Customer Service"
+    - "Customer Advisor"
+    - "Customer Support"
+    - "Contact Centre"
+    - "Call Centre Agent"
+    - "Service Advisor"
+    # Translation & Interpreting
+    - "Interpreter"
+    - "Translator"
+    - "Language Support"
+    - "Bilingual Support"
+    - "Amharic"
+    - "Tigrinya"
+    - "Community Interpreter"
+    # NHS & Healthcare Admin
+    - "NHS Administrator"
+    - "Healthcare Administrator"
+    - "Medical Secretary"
+    - "Patient Services"
+    - "Ward Clerk"
+    - "Receptionist"
+    - "Admin Band"
+    # Driving & Logistics
+    - "HGV Driver"
+    - "LGV Driver"
+    - "Delivery Driver"
+    - "Van Driver"
+    - "Driver"
+    - "Logistics Operative"
+    - "Warehouse Operative"
+    # Trades
+    - "Gas Engineer"
+    - "Heating Engineer"
+    - "Plumber"
+    - "Electrician"
+    - "Electrical Apprentice"
+    - "Gas Apprentice"
+    - "Train Driver"
+    - "Train Operator"
+    - "Trainee Train Driver"
+  negative:
+    - "Senior Manager"
+    - "Director"
+    - "Head of"
+    - "Chief"
+    - "VP "
+    - "Vice President"
+    - "Consultant"
+    - "Partner"
+    - "Principal Consultant"
+    - "PhD"
+    - "Solicitor"
+    - "Barrister"
+  seniority_boost:
+    - "Senior"
+    - "Lead"
+    - "Principal"
+    - "Specialist"
+
+# -- Search queries for UK job boards --
+
+search_queries:
+  # NHS Jobs
+  - name: NHS Jobs — Housing & Admin
+    query: 'site:jobs.nhs.uk "Housing Officer" OR "Administrator" OR "Business Support" OR "Data Analyst"'
+    enabled: true
+
+  - name: NHS Jobs — Healthcare Admin Band 2-4
+    query: 'site:jobs.nhs.uk "Band 2" OR "Band 3" OR "Band 4" "administrator" OR "receptionist" OR "clerk" OR "support worker"'
+    enabled: true
+
+  - name: NHS Jobs — Interpreter & Language Support
+    query: 'site:jobs.nhs.uk "interpreter" OR "Amharic" OR "Tigrinya" OR "language support" OR "bilingual"'
+    enabled: true
+
+  # Indeed UK
+  - name: Indeed UK — Housing Officer
+    query: 'site:uk.indeed.com "Housing Officer" OR "Housing Support Worker" OR "Tenancy Officer" UK'
+    enabled: true
+
+  - name: Indeed UK — Admin & Business Support
+    query: 'site:uk.indeed.com "Business Support Officer" OR "Administrator" OR "Office Administrator" council OR housing OR NHS'
+    enabled: true
+
+  - name: Indeed UK — Data Analyst Entry
+    query: 'site:uk.indeed.com "Data Analyst" entry level OR junior OR graduate UK "£22" OR "£24" OR "£26"'
+    enabled: true
+
+  - name: Indeed UK — Interpreter Amharic Tigrinya
+    query: 'site:uk.indeed.com "Amharic" OR "Tigrinya" interpreter OR translator OR "language support"'
+    enabled: true
+
+  - name: Indeed UK — HGV Driver
+    query: 'site:uk.indeed.com "HGV Driver" OR "LGV Driver" Class 1 OR Class 2 UK'
+    enabled: true
+
+  - name: Indeed UK — Train Driver Trainee
+    query: 'site:uk.indeed.com "Train Driver" OR "Trainee Train Driver" OR "Driver Manager Trainee" UK'
+    enabled: true
+
+  # Reed UK
+  - name: Reed — Housing & Council Jobs
+    query: 'site:reed.co.uk "Housing Officer" OR "Housing Support" OR "Tenancy Officer" council OR housing association'
+    enabled: true
+
+  - name: Reed — Admin & Business Support
+    query: 'site:reed.co.uk "Administrator" OR "Business Support" OR "Office Administrator" public sector OR council OR NHS'
+    enabled: true
+
+  - name: Reed — Data Analyst UK
+    query: 'site:reed.co.uk "Data Analyst" entry OR junior OR graduate UK'
+    enabled: true
+
+  # CV-Library
+  - name: CV-Library — Housing Jobs
+    query: 'site:cv-library.co.uk "Housing Officer" OR "Housing Support Worker" OR "Allocations Officer" UK'
+    enabled: true
+
+  - name: CV-Library — Admin Public Sector
+    query: 'site:cv-library.co.uk "Administrator" "public sector" OR council OR NHS OR "housing association"'
+    enabled: true
+
+  # Totaljobs
+  - name: Totaljobs — Housing & Admin
+    query: 'site:totaljobs.com "Housing Officer" OR "Housing Support" OR "Business Support Officer" UK'
+    enabled: true
+
+  - name: Totaljobs — Interpreter UK
+    query: 'site:totaljobs.com "interpreter" OR "translator" Amharic OR Tigrinya OR "community language" UK'
+    enabled: true
+
+  # Guardian Jobs (public sector)
+  - name: Guardian Jobs — Public Sector
+    query: 'site:jobs.theguardian.com "Housing Officer" OR "Data Analyst" OR "Business Support" council OR NHS'
+    enabled: true
+
+  # Local Government Jobs
+  - name: LG Jobs — Council Roles
+    query: 'site:lgjobs.com "Housing Officer" OR "Housing Support" OR "Administrator" OR "Business Support Officer"'
+    enabled: true
+
+  # Train Operating Companies
+  - name: TOC Jobs — Train Driver
+    query: '"Trainee Train Driver" OR "Train Operator Trainee" site:jobs.nationalrail.co.uk OR site:avantitravels.co.uk OR site:tpexpress.co.uk OR site:crosscountrytrains.co.uk'
+    enabled: true
+
+  # Trades
+  - name: Indeed — Gas Engineer Apprentice
+    query: 'site:uk.indeed.com "Gas Engineer" OR "Heating Engineer" apprentice OR trainee OR entry UK'
+    enabled: true
+
+  - name: Indeed — Electrical Apprentice
+    query: 'site:uk.indeed.com "Electrical Apprentice" OR "Electrician Apprentice" level 3 OR "AM2" UK'
+    enabled: true
+
+# -- Tracked companies with direct careers pages --
+
+tracked_companies:
+  # Housing Associations
+  - name: Clarion Housing Group
+    careers_url: https://jobs.clarionhg.co.uk/
+    enabled: true
+    notes: Largest housing association in UK, ~125k homes
+
+  - name: Sanctuary Group
+    careers_url: https://www.sanctuary.co.uk/our-group/jobs
+    enabled: true
+    notes: Major housing association and care provider
+
+  - name: Places for People
+    careers_url: https://www.placesforpeople.co.uk/careers/
+    enabled: true
+    notes: Large mixed social/market housing provider
+
+  - name: L&Q Group
+    careers_url: https://www.lqgroup.org.uk/about-us/careers/
+    enabled: true
+    notes: Major London & South housing association
+
+  - name: Peabody Trust
+    careers_url: https://careers.peabody.org.uk/
+    enabled: true
+    notes: London housing association, admin and support roles
+
+  - name: Riverside Group
+    careers_url: https://www.riverside.org.uk/careers/
+    enabled: true
+    notes: Northwest-based housing association
+
+  - name: Great Places Housing Group
+    careers_url: https://www.greatplaces.org.uk/careers
+    enabled: true
+    notes: Northwest housing, Bolton is in their patch
+
+  - name: Bolton at Home
+    careers_url: https://www.boltonathome.org.uk/jobs
+    enabled: true
+    notes: Local Bolton-based housing association
+
+  - name: Wigan & Leigh Housing
+    careers_url: https://www.wlhomes.org.uk/careers
+    enabled: true
+    notes: Greater Manchester housing provider
+
+  # Councils
+  - name: Bolton Council
+    careers_url: https://www.bolton.gov.uk/jobs
+    enabled: true
+    notes: Local authority — housing, admin, support roles
+
+  - name: Manchester City Council
+    careers_url: https://jobs.manchester.gov.uk/
+    enabled: true
+    notes: Large council, many entry/mid admin and housing roles
+
+  - name: Wigan Council
+    careers_url: https://www.wigan.gov.uk/Council/Jobs/Jobs.aspx
+    enabled: true
+    notes: Greater Manchester council
+
+  - name: Salford City Council
+    careers_url: https://www.salford.gov.uk/your-council/jobs-with-the-council/
+    enabled: true
+    notes: Greater Manchester council
+
+  # Outsourced Public Services
+  - name: Serco UK
+    careers_url: https://www.serco.com/en/regions/uk-and-europe/careers
+    enabled: true
+    notes: Housing management, admin, support — major government contractor
+
+  - name: Mears Group
+    careers_url: https://www.mearsgroup.co.uk/careers/
+    enabled: true
+    notes: Housing maintenance and management, asylum accommodation
+
+  - name: Sodexo UK
+    careers_url: https://uk.sodexo.com/en/careers.html
+    enabled: true
+    notes: Facilities and support services for councils/NHS
+
+  - name: Mitie
+    careers_url: https://www.mitie.com/careers/
+    enabled: true
+    notes: FM, security, cleaning, admin — many entry roles
+
+  # NHS Trusts
+  - name: Bolton NHS Foundation Trust
+    careers_url: https://www.boltonft.nhs.uk/work-for-us/
+    enabled: true
+    notes: Local NHS trust — Band 2-4 admin, receptionist, clerk
+
+  - name: Greater Manchester Mental Health NHS Trust
+    careers_url: https://www.gmmh.nhs.uk/work-for-us/
+    enabled: true
+    notes: Mental health services, admin support roles
+
+  - name: NHS Jobs (national portal)
+    careers_url: https://www.jobs.nhs.uk/
+    enabled: true
+    notes: National NHS portal — search housing, admin, Band 2-4
+
+  # Translation & Interpreting Agencies
+  - name: Language Line UK
+    careers_url: https://www.languageline.com/en-gb/careers
+    enabled: true
+    notes: Largest phone interpreting provider — Amharic & Tigrinya high value
+
+  - name: thebigword
+    careers_url: https://www.thebigword.com/en/careers
+    enabled: true
+    notes: Leeds-based translation/interpreting agency, NHS supplier
+
+  - name: Capita Translation & Interpreting
+    careers_url: https://www.capitatranslationinterpreting.co.uk/careers
+    enabled: true
+    notes: Public sector interpreting, Home Office and NHS supplier
+
+  - name: Absolute Interpreting
+    careers_url: https://www.absoluteinterpreting.com/work-with-us/
+    enabled: true
+    notes: Community interpreting agency
+
+  - name: Pearl Linguistics
+    careers_url: https://www.pearllinguistics.com/careers/
+    enabled: true
+    notes: London-based, Amharic listed as supported language
+
+  # Train Operating Companies
+  - name: Avanti West Coast
+    careers_url: https://www.avantiwestcoast.co.uk/about-us/careers
+    enabled: true
+    notes: West Coast Mainline — trainee driver programmes
+
+  - name: Northern Trains
+    careers_url: https://www.northernrailway.co.uk/jobs
+    enabled: true
+    notes: Northwest England — covers Bolton area
+
+  - name: TransPennine Express
+    careers_url: https://www.tpexpress.co.uk/about-tpx/jobs
+    enabled: true
+    notes: TPE covers Manchester, Leeds, Liverpool
+
+  - name: CrossCountry Trains
+    careers_url: https://www.crosscountrytrains.co.uk/careers
+    enabled: true
+    notes: National routes including Northwest
+
+  - name: Trenitalia c2c
+    careers_url: https://www.c2c-online.co.uk/about-c2c/careers/
+    enabled: true
+    notes: Essex/London routes
+
+  # Logistics & Delivery
+  - name: Royal Mail
+    careers_url: https://jobs.royalmail.com/
+    enabled: true
+    notes: Parcel delivery, HGV, operational roles
+
+  - name: DHL UK
+    careers_url: https://careers.dhl.com/global/en/united-kingdom
+    enabled: true
+    notes: Logistics — HGV, warehouse, admin
+
+  - name: Hermes / Evri
+    careers_url: https://careers.evridelivery.co.uk/
+    enabled: true
+    notes: Courier delivery, van driver roles
+
+  - name: Wincanton
+    careers_url: https://www.wincanton.co.uk/careers/
+    enabled: true
+    notes: HGV logistics, warehouse management
+
+  # General Job Boards
+  - name: Reed UK
+    careers_url: https://www.reed.co.uk/
+    enabled: true
+    notes: Major UK job board — use search queries above
+
+  - name: NHS Jobs
+    careers_url: https://www.jobs.nhs.uk/
+    enabled: true
+    notes: Official NHS recruitment portal
