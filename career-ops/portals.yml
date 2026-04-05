@@ -1,6 +1,8 @@
 # Portal Scanner Configuration — UK Job Search
-# Configured for: Housing, Admin, Data, Translation, NHS, Trades, Driving
+# Configured for: Housing, Admin, Data, Translation, NHS, Trades, Driving + Volunteering
 # Last updated: April 2026
+# NOTE: While RTW is pending, use the volunteering search queries at the bottom.
+# All paid role queries are ready for when refugee status is granted.
 
 title_filter:
   positive:
@@ -379,3 +381,75 @@ tracked_companies:
     careers_url: https://www.jobs.nhs.uk/
     enabled: true
     notes: Official NHS recruitment portal
+
+# ============================================================
+# VOLUNTEERING ORGANISATIONS (use while RTW is pending)
+# Asylum seekers CAN volunteer — GOV.UK confirmed
+# Goal: build UK CV line, references, and sector contacts
+# Priority: language/interpreter roles, housing, admin, refugee support
+# ============================================================
+
+volunteering_orgs:
+  - name: Breaking Barriers — Greater Manchester
+    url: https://breaking-barriers.co.uk/get-involved/volunteer/volunteer-opportunities/
+    focus: Employment support for refugees; interpreter, mentor, admin roles
+    why: Direct match — they support people in your exact situation; Amharic/Tigrinya interpreters are rare and valued
+    contact: via online form on website
+
+  - name: Manchester Refugee Support Network (MRSN)
+    url: https://mrsn.org.uk/volunteering/
+    focus: Advice, admin, interpreting; Microsoft Office skills needed
+    why: Admin volunteer role builds direct UK office experience; they welcome refugees as volunteers
+    contact: volunteerapplications@mrsn.org.uk
+
+  - name: Cheetham Hill Advice Centre
+    url: https://cheethamadvice.org.uk/volunteer
+    focus: Casework support assistant, interpreter (specifically listed Tigrinya)
+    why: Tigrinya listed as a needed language; 9-week free training provided; builds advice sector skills
+    contact: via website form
+
+  - name: Refugee Action — Greater Manchester
+    url: https://www.refugee-action.org.uk/support-us/volunteers/
+    focus: Refugee support, interpreter, casework assistance
+    why: National organisation with GM office; strong reference for housing/public sector jobs
+    contact: via website
+
+  - name: British Red Cross — Refugee Support
+    url: https://www.redcross.org.uk/get-involved/volunteer/refugee-support-volunteer
+    focus: Practical support, language assistance, befriending refugees
+    why: Nationally recognised reference; language skills directly useful
+    contact: via website
+
+  - name: Boaz Trust — Manchester
+    url: https://www.boaztrust.org.uk/
+    focus: Housing and support for destitute asylum seekers
+    why: Housing sector experience; directly relevant to housing officer career path
+    contact: via website
+
+  - name: Greater Manchester Refugee Welcome Programme — Bolton Partnership
+    url: https://www.boltondes.org.uk/news/article/26/greater-manchester-refugee-welcome-programme-the-bolton-partnership
+    focus: Integration support, employment barriers, skills
+    why: Local Bolton programme; builds council/public sector contacts directly
+    contact: via Bolton Council / BSCA / BRASS
+
+# Volunteering search queries (for WebSearch scan mode)
+volunteering_search_queries:
+  - name: Volunteer interpreter Amharic Tigrinya UK
+    query: 'volunteer "interpreter" OR "translator" "Amharic" OR "Tigrinya" UK refugee OR asylum OR NHS'
+    enabled: true
+
+  - name: Volunteer admin refugee support Greater Manchester
+    query: 'volunteer "admin" OR "casework support" "refugee" OR "asylum" Greater Manchester OR Bolton'
+    enabled: true
+
+  - name: Volunteer housing support UK
+    query: 'volunteer "housing support" OR "housing officer" UK refugee OR homeless'
+    enabled: true
+
+  - name: Do-it volunteering platform — language
+    query: 'site:do-it.org "Amharic" OR "Tigrinya" OR "interpreter" volunteer'
+    enabled: true
+
+  - name: Reach Volunteering — admin skills
+    query: 'site:reachvolunteering.org.uk "admin" OR "administration" OR "coordinator" refugee OR asylum'
+    enabled: true

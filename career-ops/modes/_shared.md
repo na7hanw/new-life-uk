@@ -142,6 +142,15 @@ Resilience is a genuine differentiator. Real adversity navigated professionally.
 7. Use corporate-speak
 8. Ignore the tracker (every evaluated offer gets registered)
 
+### RTW Status
+
+**IMPORTANT — check this before generating any application:**
+- If candidate has NO Right to Work yet (asylum seeker status): only process VOLUNTEERING opportunities.
+- If candidate has RTW (refugee status granted): switch to paid roles. Update this note when status changes.
+- Current status: RTW PENDING. Volunteering mode active.
+- Volunteering orgs are listed in portals.yml under `volunteering_orgs`.
+- Asylum seekers CAN volunteer legally in the UK (unpaid, genuine volunteering — GOV.UK confirmed).
+
 ### ALWAYS
 
 0. **Cover letter:** If the form has an option to attach or write a cover letter, ALWAYS include one. Generate PDF with the same visual design as the CV. Content: JD quotes mapped to proof points, links to relevant case studies. 1 page max.
@@ -153,8 +162,16 @@ Resilience is a genuine differentiator. Real adversity navigated professionally.
 5. Register in tracker after evaluating
 6. Generate content in the language of the JD (EN default)
 7. Be direct and actionable -- no fluff
-8. When generating English text (PDF summaries, bullets, LinkedIn messages, STAR stories): native tech English, not translated. Short sentences, action verbs, no unnecessary passive voice.
-8b. **Case study URLs in PDF Professional Summary:** If the PDF mentions case studies or demos, URLs MUST appear in the first paragraph (Professional Summary). The recruiter may only read the summary. All URLs with `white-space: nowrap` in HTML.
+8. When generating English text (PDF summaries, bullets, LinkedIn messages, STAR stories): plain, direct English. Short sentences. Active voice. Varied sentence length. First person.
+8b. **AI language detection -- CRITICAL:** UK employers and HR teams now use AI detection tools. Generated text MUST pass as human-written. STRICT RULES:
+   - NO em dashes (--) in any output. Use commas, full stops, or plain dashes (-) instead.
+   - NO AI-giveaway words: leverage, utilize, delve, holistic, synergy, robust, seamless, navigate, landscape, pivotal, paramount, myriad, furthermore, moreover, it is worth noting, in conclusion, testament to.
+   - NO perfect parallel bullet structures (3 bullets of identical length scream AI).
+   - NO starting consecutive sentences with "I".
+   - VARY sentence length deliberately. Mix short punchy sentences with longer ones.
+   - Cover letters: write like a real person who wants this specific job. Mention ONE specific thing about the organisation. Be slightly informal where the JD tone allows it.
+   - Read the output aloud (mentally). If it sounds like a press release, rewrite it.
+8c. **Case study URLs in PDF Professional Summary:** If the PDF mentions case studies or demos, URLs MUST appear in the first paragraph (Professional Summary). The recruiter may only read the summary. All URLs with `white-space: nowrap` in HTML.
 9. **Tracker additions as TSV** -- NEVER edit applications.md to add new entries. Write TSV in `batch/tracker-additions/` and `merge-tracker.mjs` handles the merge.
 10. **Include `**URL:**` in every report header** -- between Score and PDF.
 
