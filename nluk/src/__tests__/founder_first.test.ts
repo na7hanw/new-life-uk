@@ -7,9 +7,9 @@
  *   - At least 6 careers must have founderOrder defined
  *   - founderOrder values within each collection are unique (no ties ambiguity)
  *   - Sorting by founderOrder puts tagged items before untagged
- *   - The top-3 certs by founderOrder include the lifting lane entry (cpcs-a40)
- *     and the most accessible construction entry (cscs-card)
- *   - The top-3 careers include a language/interpreting path and a digital path
+ *   - The top-3 certs by founderOrder are universally applicable:
+ *     cscs-card (10), first-aid (12), dbs-check (16)
+ *   - The top-3 careers include language/interpreting, housing, and digital paths
  *   - founderOrder values are all positive integers (schema constraint)
  */
 import { describe, it, expect } from 'vitest'
@@ -69,11 +69,11 @@ describe('Founder-first certs — sort order', () => {
     expect(idx, 'cscs-card should be in the top 3 founder-first certs').toBeLessThan(3)
   })
 
-  it('cpcs-a40 is in the top 3 by founderOrder', () => {
+  it('dbs-check is in the top 3 by founderOrder', () => {
     const sorted = byFounderOrder(certsTyped)
-    const idx = sorted.findIndex(c => c.id === 'cpcs-a40')
-    expect(idx, 'cpcs-a40 not found in CERTS').toBeGreaterThanOrEqual(0)
-    expect(idx, 'cpcs-a40 (lifting lane start) should be in the top 3 founder-first certs').toBeLessThan(3)
+    const idx = sorted.findIndex(c => c.id === 'dbs-check')
+    expect(idx, 'dbs-check not found in CERTS').toBeGreaterThanOrEqual(0)
+    expect(idx, 'dbs-check (universal credential for housing/care/admin) should be in the top 3 founder-first certs').toBeLessThan(3)
   })
 
   it('first-aid is in the top 5 by founderOrder', () => {
@@ -87,8 +87,8 @@ describe('Founder-first certs — sort order', () => {
 // ─── Careers: tagging coverage ───────────────────────────────────────────────
 
 describe('Founder-first careers — tagging', () => {
-  it('at least 6 careers have founderOrder defined', () => {
-    expect(taggedCareers.length, 'Fewer than 6 careers tagged with founderOrder').toBeGreaterThanOrEqual(6)
+  it('at least 10 careers have founderOrder defined', () => {
+    expect(taggedCareers.length, 'Fewer than 10 careers tagged with founderOrder').toBeGreaterThanOrEqual(10)
   })
 
   it('all founderOrder values are positive integers', () => {
@@ -126,18 +126,25 @@ describe('Founder-first careers — sort order', () => {
     expect(idx, 'translation should be first in founder-first career list').toBe(0)
   })
 
-  it('tech-digital is in the top 3 by founderOrder', () => {
+  it('gas-engineer is in the top 3 by founderOrder (fastest high-earning trade, UK shortage)', () => {
+    const sorted = byFounderOrder(careersTyped)
+    const idx = sorted.findIndex(c => c.id === 'gas-engineer')
+    expect(CAREER_MAP['gas-engineer'], 'gas-engineer career missing from CAREER_MAP').toBeTruthy()
+    expect(idx, 'gas-engineer should be in the top 3 founder-first careers').toBeLessThan(3)
+  })
+
+  it('tech-digital is in the top 6 by founderOrder', () => {
     const sorted = byFounderOrder(careersTyped)
     const idx = sorted.findIndex(c => c.id === 'tech-digital')
     expect(CAREER_MAP['tech-digital'], 'tech-digital career missing from CAREER_MAP').toBeTruthy()
-    expect(idx, 'tech-digital should be in the top 3 founder-first careers').toBeLessThan(3)
+    expect(idx, 'tech-digital should be in the top 6 founder-first careers').toBeLessThan(6)
   })
 
-  it('healthcare is in the top 5 by founderOrder', () => {
+  it('healthcare is in the top 10 by founderOrder', () => {
     const sorted = byFounderOrder(careersTyped)
     const idx = sorted.findIndex(c => c.id === 'healthcare')
     expect(CAREER_MAP['healthcare'], 'healthcare career missing from CAREER_MAP').toBeTruthy()
-    expect(idx, 'healthcare should be in the top 5 founder-first careers').toBeLessThan(5)
+    expect(idx, 'healthcare should be in the top 10 founder-first careers').toBeLessThan(10)
   })
 })
 
@@ -149,9 +156,9 @@ describe('"Start here" badge threshold (founderOrder ≤ 20)', () => {
     expect(cert?.founderOrder, 'cscs-card founderOrder must be ≤ 20 for Start-here badge').toBeLessThanOrEqual(20)
   })
 
-  it('cpcs-a40 has founderOrder ≤ 20 (qualifies for Start-here badge)', () => {
-    const cert = certsTyped.find(c => c.id === 'cpcs-a40')
-    expect(cert?.founderOrder, 'cpcs-a40 founderOrder must be ≤ 20 for Start-here badge').toBeLessThanOrEqual(20)
+  it('dbs-check has founderOrder ≤ 20 (qualifies for Start-here badge)', () => {
+    const cert = certsTyped.find(c => c.id === 'dbs-check')
+    expect(cert?.founderOrder, 'dbs-check founderOrder must be ≤ 20 for Start-here badge').toBeLessThanOrEqual(20)
   })
 
   it('first-aid has founderOrder ≤ 20 (qualifies for Start-here badge)', () => {
@@ -161,6 +168,6 @@ describe('"Start here" badge threshold (founderOrder ≤ 20)', () => {
 
   it('exactly 3 certs have founderOrder ≤ 20 (Start-here badge count is intentional)', () => {
     const badgeCerts = certsTyped.filter(c => c.founderOrder !== undefined && c.founderOrder <= 20)
-    expect(badgeCerts.length, 'Start-here badge count should be exactly 3 (cscs-card, cpcs-a40, first-aid)').toBe(3)
+    expect(badgeCerts.length, 'Start-here badge count should be exactly 3 (cscs-card, first-aid, dbs-check)').toBe(3)
   })
 })

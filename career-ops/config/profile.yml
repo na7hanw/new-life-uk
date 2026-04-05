@@ -1,0 +1,114 @@
+# Career-Ops Profile — Personalised for UK Job Search
+# Last updated: April 2026
+
+candidate:
+  full_name: "[YOUR FULL NAME]"           # Update before generating PDFs
+  email: "[YOUR EMAIL]"
+  phone: "[YOUR UK PHONE]"               # e.g. +44 7xxx xxxxxx
+  location: "Westhoughton, Bolton, BL5 3SB"
+  linkedin: ""                           # Add when set up
+  portfolio_url: ""
+  github: ""
+  twitter: ""
+
+target_roles:
+  # UK-wide — not restricted to any region. Open to relocate for the right role.
+  primary:
+    - "Housing Officer"
+    - "Housing Support Worker"
+    - "Data Analyst"
+    - "Administrator"
+    - "Business Support Officer"
+  archetypes:
+    - name: "Housing / Public Services"
+      level: "Entry–Mid"
+      fit: "primary"
+    - name: "Data Analyst / BI"
+      level: "Entry–Mid"
+      fit: "primary"
+    - name: "Admin / Business Support"
+      level: "Entry–Mid"
+      fit: "primary"
+    - name: "Customer Service / Contact Centre"
+      level: "Entry"
+      fit: "secondary"
+    - name: "Translation / Interpreting"
+      level: "Freelance/Entry"
+      fit: "primary"
+    - name: "NHS Support / Healthcare Admin"
+      level: "Band 2–4"
+      fit: "secondary"
+    - name: "Gas & Heating Engineer"
+      level: "Apprentice"
+      fit: "adjacent"
+    - name: "Electrician"
+      level: "Apprentice"
+      fit: "adjacent"
+    - name: "HGV / Professional Driver"
+      level: "Entry"
+      fit: "adjacent"
+    - name: "Train Driver"
+      level: "Trainee"
+      fit: "adjacent"
+
+narrative:
+  headline: "MBA-qualified professional with civil engineering and property finance background — now building a UK career"
+  exit_story: >
+    Held senior roles in property valuation and business management in Ethiopia.
+    Now in the UK pursuing refugee status, with full Right to Work on grant.
+    Bringing an MBA, a BSc in Civil Engineering, and 5+ years of professional experience
+    — combined with native Amharic and Tigrinya language skills that are critically rare
+    in UK public services, NHS, courts, and local authorities.
+    Open to any sector where I can contribute and grow. Prioritising roles that start
+    strong and scale — ideally to management or self-employment within 3–5 years.
+  superpowers:
+    - "Rare language skills — Amharic + Tigrinya (critically rare in UK NHS, courts, councils)"
+    - "Professional communication and stakeholder management (MBA level)"
+    - "Financial and analytical thinking (5 years bank property valuation)"
+    - "Civil engineering technical foundation (BSc + project experience)"
+    - "Resilience and adaptability — navigated complex professional transition"
+  proof_points:
+    - name: "Property Valuation — Bank Ethiopia"
+      url: ""
+      hero_metric: "5 years valuing residential and commercial properties for bank lending decisions"
+    - name: "MBA"
+      url: ""
+      hero_metric: "Postgraduate management qualification — UK ENIC recognition pending"
+    - name: "Civil Engineering BSc"
+      url: ""
+      hero_metric: "Undergraduate degree — structural, civil, and project engineering"
+
+compensation:
+  target_range: "£22,000–£45,000"
+  currency: "GBP"
+  minimum: "£21,000"
+  location_flexibility: "UK-wide. Can relocate for the right opportunity."
+
+location:
+  country: "United Kingdom"
+  city: "Westhoughton, Bolton (currently — open to relocate anywhere in UK)"
+  timezone: "GMT/BST"
+  visa_status: "Awaiting refugee status. Full Right to Work granted on refugee status decision."
+  rtw_note: >
+    Currently holding asylum seeker status. Right to Work is granted automatically
+    on refugee status approval. All applications target roles available on full RTW grant.
+
+languages:
+  - language: "Amharic"
+    level: "Native"
+    note: "Critically rare in UK. NHS, courts, councils, Home Office all need Amharic interpreters."
+  - language: "Tigrinya"
+    level: "Fluent"
+    note: "Also rare in UK. High demand in asylum/refugee services."
+  - language: "English"
+    level: "Professional/Fluent"
+    note: "Professional written and spoken. Strong enough for all UK employment."
+
+certifications_to_target:
+  - "DBS Check (Enhanced) — required for housing, care, admin, NHS"
+  - "First Aid at Work (HSE-approved) — universal, many employers fund"
+  - "CSCS Green Card — site access for construction-adjacent roles"
+  - "CIH Level 2 Housing (online, 4–6 weeks) — for housing officer applications"
+  - "Google Data Analytics Certificate (free via Coursera) — data analyst entry"
+  - "Gas Safe ACS — longer term, highest self-employment ceiling"
+  - "JIB Gold Card / Electrical NVQ — longer term, EV/solar growth"

@@ -34,7 +34,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [documentsHeld, setDocumentsHeld] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_docs', '[]')) } catch { return [] }
   })
-  const [userPostcode, setUserPostcode] = useState<string>(() => ls('nluk_postcode', ''))
+  const [userPostcode, setUserPostcode] = useState<string>(() => ls('nluk_postcode', 'BL5 3SB'))
   const [bookmarks, setBookmarks] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_bookmarks', '[]')) } catch { return [] }
   })
