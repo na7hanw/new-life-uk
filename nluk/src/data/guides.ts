@@ -238,6 +238,7 @@ export const GUIDE_SOURCE_URL = {
   'driving':        'https://www.gov.uk/driving-licence-fees',
   'vehicle-ownership': 'https://www.gov.uk/vehicle-tax',
   'interpreting':   'https://www.nrpsi.org.uk',
+  'housing-broker':    'https://www.propertymark.co.uk/professional-development/qualifications-licensing/propertymark-qualifications.html',
   'housing-brokerage': 'https://www.gov.uk/lettings-agency-work-uk',
   'uk-enic':        'https://www.enic.org.uk/Qualifications/SOC/Default.aspx',
   'uk-cv':          'https://nationalcareers.service.gov.uk/get-a-job/cv-sections',
