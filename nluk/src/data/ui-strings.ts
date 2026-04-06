@@ -23,7 +23,7 @@ const BASE_UI = {
   search: "Search guides…", noResults: "No results found.", searchWork: "Search jobs, certs, careers…",
   cost: "Cost", time: "Time", bring: "What to bring", steps: "Steps", keyInfo: "Key Info",
   visaQ: "What's your visa situation?", forYou: "For You", quickActions: "Quick Actions", helplines: "Helplines",
-  jobsTab: "Jobs", certsTab: "Certs", careerTab: "Careers",
+  jobsTab: "Jobs", certsTab: "Certs", careerTab: "Careers", volunteerTab: "Volunteer",
   savesTitle: "Free Resources", savesSub: "Things most new arrivals never find out about.",
   appsTab: "📲 Apps", discoverFreeTab: "🆓 Free", discoverGemsTab: "💎 Gems",
   searchDiscover: "Search resources…",

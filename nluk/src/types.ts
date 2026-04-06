@@ -145,6 +145,7 @@ export interface UiStrings {
   jobsTab: string
   certsTab: string
   careerTab: string
+  volunteerTab: string
   savesTitle: string
   savesSub: string
   gemsTitle: string
