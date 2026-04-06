@@ -4,6 +4,9 @@ import { Search } from 'lucide-react'
 import Fuse from 'fuse.js'
 import { useApp } from '../context/AppContext.tsx'
 import { JOBS, CERTS, CAREERS, CERT_MAP } from '../data/jobs.ts'
+import { VOLUNTEERING } from '../data/volunteering.ts'
+import ResourceCard from '../components/ResourceCard.tsx'
+import type { ResourceContent } from '../components/ResourceCard.tsx'
 import type { Cert, Career } from '../types'
 import { t18, lsSet } from '../lib/utils.ts'
 import JobCard from '../components/JobCard.tsx'
@@ -95,9 +98,10 @@ export default function WorkHub() {
     <div className="page-enter">
       <div className="sub-tabs" role="tablist">
         {[
-          { id: 'jobs',   emoji: '🛵', label: ui.jobsTab },
-          { id: 'certs',  emoji: '📋', label: ui.certsTab },
-          { id: 'career', emoji: '🚀', label: ui.careerTab },
+          { id: 'jobs',      emoji: '🛵', label: ui.jobsTab },
+          { id: 'certs',     emoji: '📋', label: ui.certsTab },
+          { id: 'career',    emoji: '🚀', label: ui.careerTab },
+          { id: 'volunteer', emoji: '🙋', label: ui.volunteerTab || 'Volunteer' },
         ].map(t => (
           <button key={t.id} className={`sub-tab ${subtab === t.id ? 'active' : ''}`}
             onClick={() => handleSubtab(t.id)} role="tab" aria-selected={subtab === t.id}>
@@ -270,6 +274,37 @@ export default function WorkHub() {
             })}
           </div>
         )
+      )}
+      {/* ── Volunteer tab ─────────────────────────────────────────── */}
+      {subtab === 'volunteer' && (
+        <>
+          <div className="section-sub" style={{ paddingTop: 12, paddingBottom: 4 }}>
+            Volunteering is <strong>always allowed</strong> for asylum seekers — no permission needed.
+            These Bolton/Manchester orgs specifically need Amharic and Tigrinya speakers.
+          </div>
+          {VOLUNTEERING.filter(org =>
+            !search.trim() ||
+            org.content.en.title.toLowerCase().includes(search.toLowerCase()) ||
+            org.content.en.desc.toLowerCase().includes(search.toLowerCase()) ||
+            org.tags.some(t => t.toLowerCase().includes(search.toLowerCase()))
+          ).map(org => (
+            <ResourceCard
+              key={org.content.en.title}
+              icon={org.icon}
+              content={org.content as Record<string, ResourceContent>}
+              url={org.url}
+              lang={lang}
+              ui={ui}
+              badge={org.location}
+            />
+          ))}
+          {VOLUNTEERING.filter(org =>
+            !search.trim() ||
+            org.content.en.title.toLowerCase().includes(search.toLowerCase()) ||
+            org.content.en.desc.toLowerCase().includes(search.toLowerCase()) ||
+            org.tags.some(t => t.toLowerCase().includes(search.toLowerCase()))
+          ).length === 0 && <EmptyState message={ui.noResults} />}
+        </>
       )}
       <div className={styles.spacer} />
     </div>
