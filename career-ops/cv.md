@@ -8,7 +8,7 @@ Westhoughton, Bolton, Greater Manchester, BL5 3SB
 
 ## Summary
 
-MBA-qualified professional with a BSc in Civil Engineering and 5+ years of experience in property valuation, financial analysis, and business management. Native Amharic speaker with fluent Tigrinya — both critically scarce in UK public services, NHS, courts, and local authorities. Strong communicator, analytical thinker, and fast learner. Currently in the UK with refugee status application in progress; full Right to Work granted on decision. Targeting entry-to-mid roles across housing, administration, data analysis, translation/interpreting, and trades.
+MBA-qualified professional with a BSc in Civil Engineering and 5+ years of experience in property valuation, financial analysis, and business management. Native Amharic speaker — critically scarce in UK public services, NHS, courts, and local authorities. Strong communicator, analytical thinker, and fast learner. Currently in the UK with refugee status application in progress; full Right to Work granted on decision. Targeting entry-to-mid roles across housing, administration, data analysis, translation/interpreting, and trades.
 
 ---
 
@@ -57,7 +57,6 @@ MBA-qualified professional with a BSc in Civil Engineering and 5+ years of exper
 
 **Communication & Languages**
 - Amharic — Native (critically rare in UK: NHS, courts, Home Office, councils)
-- Tigrinya — Fluent (high demand in UK asylum and refugee services)
 - English — Professional / Fluent (written and spoken)
 
 **Technical & Digital**
