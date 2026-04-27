@@ -50,7 +50,7 @@
     "@typescript-eslint/eslint-plugin": "^8.58.2",
     "@typescript-eslint/parser": "^8.59.0",
     "@vitejs/plugin-react": "^4.7.0",
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "^4.1.4",
     "axe-core": "^4.11.2",
     "eslint": "^10.2.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -68,7 +68,7 @@
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-image-optimizer": "^2.0.3",
     "vite-plugin-pwa": "^0.21.0",
-    "vitest": "^3.2.4",
+    "vitest": "^4.1.4",
     "zod": "^4.3.6"
   },
   "overrides": {
