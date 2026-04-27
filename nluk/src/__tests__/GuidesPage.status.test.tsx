@@ -5,8 +5,9 @@
  * Covers: "For You" section rendering per status,
  *         tip rotation based on status (tipsKeyForStatus behaviour).
  *
- * These tests render the full GuidesPage inside AppProvider + MemoryRouter so
- * the actual STATUS_GUIDES mapping and tipsKeyForStatus logic are exercised.
+ * NOTE: The status picker and Quick Actions grid were removed from GuidesPage
+ * in the onboarding simplification — users set their status in Settings.
+ * These tests exercise only the remaining status-driven UI.
  */
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup, act } from '@testing-library/react'
@@ -43,7 +44,6 @@ afterEach(() => { cleanup(); localStorage.clear() })
 describe('GuidesPage — For You section', () => {
   it('shows the "For You" section when userStatus is "refugee"', () => {
     const { container } = renderWithStatus('refugee')
-    // The "For You" section header renders as a cat-header element containing "⭐ For You"
     const forYouHeaders = container.querySelectorAll('.cat-header')
     const forYouHeader = Array.from(forYouHeaders).find(el => el.textContent?.includes('For You'))
     expect(forYouHeader).not.toBeNull()
