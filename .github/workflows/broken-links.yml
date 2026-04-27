@@ -34,7 +34,7 @@ jobs:
           cat urls.txt
 
       - name: Upload extracted URLs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: extracted-urls
           path: urls.txt
