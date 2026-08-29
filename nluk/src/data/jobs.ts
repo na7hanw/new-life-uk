@@ -472,7 +472,7 @@ export const JOBS: Job[] = [
         name: 'NHS Jobs — Interpreter / Bilingual roles',
         url: 'https://www.jobs.nhs.uk/candidate/search?keywords=interpreter+bilingual',
       },
-      { name: 'Do-it — Language Volunteer Roles', url: 'https://do-it.org' },
+      { name: 'Do-it — Language Volunteer Roles', url: 'https://www.ncvo.org.uk/get-involved/volunteering/' },
       {
         name: 'Refugee Council — volunteer interpreter',
         url: 'https://www.refugeecouncil.org.uk/get-involved/volunteer/',

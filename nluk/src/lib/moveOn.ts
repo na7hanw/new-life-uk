@@ -139,7 +139,7 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     byDay: 2,
     title: 'Get your eVisa working and generate a share code',
     detail:
-      'Do this before the bank, not after — the share code is what opens the account, and it is also how you prove right to work and right to rent. Your expired BRP still works to create the UKVI account until 31 December 2026.',
+      'Do this before the bank, not after — the share code is what opens the account, and it is also how you prove right to work and right to rent. If you came from asylum support you will have had an ARC card, not a BRP: your UKVI account is created when status is granted, and the Home Office decision letter tells you how to access it. Set it up the day it arrives. (If you DO hold an old BRP, it still works to create the account until 31 December 2026.)',
     guideId: 'evisa',
   },
   {
