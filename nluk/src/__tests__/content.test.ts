@@ -4,6 +4,7 @@
  * Critical: this app gives life-changing advice; a broken link matters.
  */
 import { describe, it, expect } from 'vitest'
+import { isFromAnyHost } from '../lib/hostMatch.ts'
 import { GUIDES, GUIDE_MAP, GUIDE_PRIORITY, GUIDE_LAST_UPDATED, GUIDE_TRUST_LEVEL, GUIDE_SOURCE_URL, GUIDE_RELATED } from '../data/guides.ts'
 import { JOBS, CERTS, CAREERS } from '../data/jobs.ts'
 import { SOS_NUMBERS } from '../data/emergency.ts'
@@ -267,9 +268,15 @@ describe('Business & Money guides — content integrity', () => {
       const g = GUIDE_MAP[id]
       if (!g || !g.links) continue
       const hasGovOrOfficial = g.links.some(l =>
-        l.url.includes('gov.uk') || l.url.includes('fca.org.uk') ||
-        l.url.includes('actionfraud') || l.url.includes('moneyhelper') ||
-        l.url.includes('cicassociation') || l.url.includes('nationalcareers')
+        isFromAnyHost(l.url, [
+          'gov.uk',
+          'fca.org.uk',
+          'actionfraud.police.uk',
+          'reportfraud.police.uk',
+          'moneyhelper.org.uk',
+          'cicassociation.org.uk',
+          'nationalcareers.service.gov.uk',
+        ])
       )
       expect(
         hasGovOrOfficial,

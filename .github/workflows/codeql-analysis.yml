@@ -76,6 +76,19 @@ jobs:
                 ]
               | @tsv
             ' "$f" || echo "(could not parse $f)"
+            echo "--- tainted sources the rule is following ---"
+            jq -r '
+              .runs[].results[]?
+              | . as $r
+              | ($r.relatedLocations // [])[]?
+              | [
+                  ($r.ruleId // "?"),
+                  (.physicalLocation.artifactLocation.uri // "?"),
+                  (.physicalLocation.region.startLine // "?"),
+                  (.message.text // "")
+                ]
+              | @tsv
+            ' "$f" || true
           done
 
       - name: Upload SARIF as an artifact
