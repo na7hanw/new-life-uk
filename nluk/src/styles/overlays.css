@@ -208,3 +208,37 @@
   font-weight: 600;
   color: var(--t3);
 }
+
+/* ─── Onboarding status step ──────────────────────────────────────
+   The single most important question the app asks. Full-width rows at 48px so
+   they are unmissable and easy to hit one-handed. */
+.onboarding-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block: 14px 4px;
+}
+
+.onboarding-status-option {
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--bd);
+  border-radius: 12px;
+  background: var(--bg2);
+  color: var(--tx);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: start;
+  cursor: pointer;
+}
+
+.onboarding-status-option:hover {
+  background: var(--bg3);
+  border-color: var(--ac);
+}
+
+.onboarding-status-option:focus-visible {
+  outline: 3px solid var(--ac);
+  outline-offset: 2px;
+}

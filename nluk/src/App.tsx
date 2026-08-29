@@ -33,7 +33,7 @@ const NotFoundPage      = lazy(() => import('./pages/NotFoundPage.tsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
-  const { lang, setLang, dark, showSOS, setSOS, showLang, setShowLang, ui, dir, fontClass } = useApp()
+  const { lang, setLang, dark, showSOS, setSOS, showLang, setShowLang, setUserStatus, ui, dir, fontClass } = useApp()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -372,7 +372,7 @@ export default function App() {
 
       {/* ONBOARDING OVERLAY — shown once after first language selection */}
       {showOnboarding && (
-        <OnboardingOverlay ui={ui} onDone={() => setShowOnboarding(false)} />
+        <OnboardingOverlay ui={ui} setUserStatus={setUserStatus} onDone={() => setShowOnboarding(false)} />
       )}
 
       {/* CONSENT BANNER — shown once on first visit when Sentry is configured */}
