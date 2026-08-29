@@ -197,3 +197,14 @@
   justify-content: center;
 }
 .onboarding-actions .btn-primary { min-width: 120px; }
+
+/* Honest labelling for languages with no translation provider configured.
+   Choosing one of these yields an English app; the picker must not imply
+   otherwise by presenting all twelve options identically. */
+.lang-note {
+  display: block;
+  margin-block-start: 2px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--t3);
+}

@@ -702,3 +702,83 @@
   padding: 3px 10px;
   border-radius: 20px;
 }
+
+/* ─── Machine-translation disclaimer ──────────────────────────────
+   These classes previously existed in no stylesheet at all, so the app's only
+   legal safeguard rendered as unstyled body text with a ~13x20px dismiss
+   control. It warns that machine-translated immigration advice may be wrong;
+   it has to look like a warning. */
+.mt-banner {
+  display: block;
+  margin: 12px var(--gutter);
+  padding: 12px 14px;
+  border: 1.5px solid var(--wnbd);
+  border-inline-start: 4px solid var(--wn);
+  border-radius: 12px;
+  background: var(--wnbg);
+}
+
+.mt-banner--high-risk {
+  border-color: var(--rd);
+  border-inline-start-color: var(--rd);
+}
+
+.mt-banner__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.mt-banner__icon {
+  flex-shrink: 0;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.mt-banner__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.mt-banner__text {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--tx);
+}
+
+.mt-banner__legal {
+  display: block;
+  margin-block-start: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--tx);
+}
+
+.mt-banner__provider {
+  display: block;
+  margin-block-start: 6px;
+  font-size: 0.72rem;
+  color: var(--t3);
+}
+
+/* WCAG 2.2 target size — was an unpadded glyph. */
+.mt-banner__dismiss {
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: var(--t2);
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.mt-banner__dismiss:hover {
+  background: var(--bg3);
+}

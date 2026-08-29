@@ -14,6 +14,15 @@ import StepText from '../components/StepText.tsx'
 import TTSButton from '../components/TTSButton.tsx'
 
 /** Guides excluded from reading history — see the history effect below. */
+/**
+ * Categories where a machine-translation error is unlikely to be consequential.
+ * Everything else — asylum, housing, money, healthcare, work, settlement,
+ * documents — gets the strong, non-dismissible disclaimer. The gate used to be
+ * the other way round, allow-listing only two categories as high risk, so the
+ * eVisa guide's hard deadlines and every asylum guide carried the weak banner.
+ */
+const LOW_RISK_CATEGORIES = new Set(['Community', 'Transport & Travel', 'Training'])
+
 const SENSITIVE_GUIDE_IDS = new Set(['safety', 'women-support', 'mental', 'nrpf', 'legal-help'])
 
 interface GuideContent {
@@ -195,7 +204,7 @@ export default function GuideDetail() {
         <MachineTranslationBanner
           lang={lang}
           ui={ui}
-          highRisk={['Business & Money', 'Identity & Login'].includes(guide.cat)}
+          highRisk={!LOW_RISK_CATEGORIES.has(guide.cat)}
         />
       )}
 

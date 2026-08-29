@@ -12,6 +12,7 @@ import ConsentBanner from './components/ConsentBanner.tsx'
 import SkeletonFallback from './components/SkeletonFallback.tsx'
 import Logo from './components/Logo.tsx'
 import QuickExit from './components/QuickExit.tsx'
+import { isTranslationAvailable } from './lib/translationRouter.ts'
 import SOSModal from './components/SOSModal.tsx'
 import OnboardingOverlay, { shouldShowOnboarding } from './components/OnboardingOverlay.tsx'
 import styles from './App.module.css'
@@ -235,13 +236,23 @@ export default function App() {
             <button className="btn btn-primary" onClick={() => setShowLang(false)}>{ui.close} ✓</button>
           </div>
           <div className="lang-grid">
-            {LANGS.map(l => (
-              <button key={l.code} className={`lang-item ${lang === l.code ? 'active' : ''}`}
-                onClick={() => { setLang(l.code); setShowLang(false) }}>
-                <span className="lang-flag">{l.flag}</span>
-                <span className="lang-name">{l.native}</span>
-              </button>
-            ))}
+            {LANGS.map(l => {
+              // Amharic, Tigrinya, Somali, Oromo and Urdu have no translation
+              // provider configured, so choosing them yields an English app.
+              // Say so rather than presenting all twelve as equal choices.
+              const englishOnly = l.code !== 'en' && !isTranslationAvailable(l.code)
+              return (
+                <button key={l.code} className={`lang-item ${lang === l.code ? 'active' : ''}`}
+                  onClick={() => { setLang(l.code); setShowLang(false) }}
+                  aria-label={englishOnly ? `${l.native} — guides still shown in English` : l.native}>
+                  <span className="lang-flag" aria-hidden="true">{l.flag}</span>
+                  <span className="lang-name">{l.native}</span>
+                  {englishOnly && (
+                    <span className="lang-note">English only for now</span>
+                  )}
+                </button>
+              )
+            })}
           </div>
         </div>
       )}
