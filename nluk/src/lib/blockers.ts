@@ -82,7 +82,7 @@ export const ASSET_ACTIONS: Record<Asset, { action: string; guideId?: string }> 
     action: 'This comes from the Home Office. Everything else starts from it — keep the original safe and photograph every page.',
   },
   'ukvi-account': {
-    action: 'Created when status is granted. The decision letter explains how to get in. If you had an ARC card rather than a BRP, this is the first time you will have an account at all.',
+    action: 'Set this up the day you can: your National Insurance number and every share code live inside it. GOV.UK lists three ways in — a passport plus your application (UAN or GWF) number, a passport plus a BRP number, or an expired BRP on its own. ⚠ If you came off asylum support with an ARC card you may have none of those. GOV.UK says only that you can "confirm your identity another way" and does not say how, so use the UKVI webchat and do it early rather than discovering the gap on day 30.',
     guideId: 'evisa',
   },
   'share-code': {
@@ -90,7 +90,7 @@ export const ASSET_ACTIONS: Record<Asset, { action: string; guideId?: string }> 
     guideId: 'evisa',
   },
   'ni-number': {
-    action: 'Check the decision letter first — the Home Office sometimes issues the number with the grant. If it is not there, apply at gov.uk/apply-national-insurance-number and chase it in your UC journal in writing every week.',
+    action: 'Look in your UKVI account — the National Insurance number appears inside the eVisa profile, alongside your share codes. It is usually NOT on the decision letter, so check the account first. If it genuinely is not there once the eVisa is live, apply at gov.uk/apply-national-insurance-number and chase it in your UC journal in writing every week.',
     guideId: 'ni',
   },
   'bank-account': {

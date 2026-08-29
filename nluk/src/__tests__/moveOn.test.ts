@@ -135,6 +135,25 @@ describe('the action sequence', () => {
     expect(ni.detail).toMatch(/national insurance/i)
   })
 
+  it('warns that the clock starts before the eVisa can be used', () => {
+    // The 42 days run from the decision notification, but nothing can be
+    // proved to a bank, employer or landlord until the UKVI account is live —
+    // and those details arrive with the grant letter or after it. Someone who
+    // waits quietly for the post loses days that are already being counted.
+    const evisa = MOVE_ON_ACTIONS.find(a => a.id === 'evisa')!
+    expect(evisa.detail).toMatch(/42 days start|clock/i)
+    expect(evisa.detail).toMatch(/chase/i)
+  })
+
+  it('sends people to the UKVI account for the NI number, not the decision letter', () => {
+    // Corrected on the owner's report: the number is almost never printed on
+    // the decision letter, it is inside the eVisa profile. The old text sent
+    // people searching paperwork that does not contain it.
+    const ni = MOVE_ON_ACTIONS.find(a => a.id === 'ni')!
+    expect(ni.detail).toMatch(/UKVI account/i)
+    expect(ni.detail).not.toMatch(/Check the decision letter first/i)
+  })
+
   it('is ordered by deadline', () => {
     const days = MOVE_ON_ACTIONS.map(a => a.byDay)
     expect(days).toEqual([...days].sort((a, b) => a - b))

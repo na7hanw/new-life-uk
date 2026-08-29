@@ -30,6 +30,9 @@
  *  - https://homeless.org.uk/news/new-42-day-asylum-move-on-period-confirmed/
  *  - https://righttoremain.org.uk/if-you-get-refugee-status-when-does-asylum-support-end-more-changes-to-move-on-period/
  *  - https://www.legislation.gov.uk/uksi/2024/341/made (Advance requires an allocated NINo)
+ *  - https://www.gov.uk/government/publications/claiming-universal-credit-and-other-benefits-if-you-are-a-refugee/refugee-guide-urgent-things-you-need-to-do
+ *    (the NI number is found in the UKVI account, not on the decision letter)
+ *  - https://www.gov.uk/evisa/set-up-ukvi-account (the three documented ways in)
  */
 import { addDays, differenceInDays, isValid, parseISO } from 'date-fns'
 
@@ -140,7 +143,7 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     byDay: 1,
     title: 'Chase your National Insurance number the same day',
     detail:
-      '⚠ This is not the routine admin it looks like. Since 1 April 2024 a Universal Credit Advance cannot be paid until a National Insurance number has been ALLOCATED to you — it is a condition in the regulations, not a caseworker\'s discretion. The Advance is the thing that is supposed to carry you through the five-week wait, so if the number is missing, the plan that bridges the gap is not available. Check the decision letter first: the Home Office sometimes issues the number with the grant. If it is not there, apply immediately and chase it in your UC journal every week, in writing. Separately, you can legally start work before the number arrives — an employer only has to see proof of right to work.',
+      '⚠ This is not the routine admin it looks like. Since 1 April 2024 a Universal Credit Advance cannot be paid until a National Insurance number has been ALLOCATED to you — it is a condition in the regulations, not a caseworker\'s discretion. The Advance is the thing that is supposed to carry you through the five-week wait, so if the number is missing, the plan that bridges the gap is not available. Look in your UKVI account, not on the decision letter. GOV.UK\'s own refugee guide says it plainly: "You can find your NI number by logging in to your UK Visas and Immigration (UKVI) account and viewing your online immigration status (eVisa)" — and if it is not showing there, contact the Home Office immediately. It is usually NOT printed on the decision letter, so do not lose days searching the paperwork for it. If it genuinely is not in the account once the eVisa is live, apply at gov.uk/apply-national-insurance-number and chase it in your UC journal every week, in writing. Separately, you can legally start work before the number arrives — an employer only has to see proof of right to work.',
     guideId: 'ni',
   },
   {
@@ -158,7 +161,7 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     byDay: 2,
     title: 'Get your eVisa working and generate a share code',
     detail:
-      'Do this before the bank, not after — the share code is what opens the account, and it is also how you prove right to work and right to rent. If you came from asylum support you will have had an ARC card, not a BRP: your UKVI account is created when status is granted, and the Home Office decision letter tells you how to access it. Set it up the day it arrives. (If you DO hold an old BRP, it still works to create the account until 31 December 2026.)',
+      'Do this before the bank, not after — the share code is what opens the account, and it is also how you prove right to work and right to rent. If you came from asylum support you had an ARC card, not a BRP, so this is your first UKVI account. The details to create and activate it — a login and a customer reference number — come with the grant letter or shortly after it. ⚠ Watch the gap: your 42 days start when you are notified of the decision, NOT when the eVisa goes live. Until it is live you cannot prove your status to a bank, an employer or a landlord, so every day of delay is a day of the clock spent on nothing. If the UKVI details have not arrived within a few days of the grant letter, chase them rather than wait. (If you DO hold an old BRP, it still works to create the account until 31 December 2026.)',
     guideId: 'evisa',
   },
   {
