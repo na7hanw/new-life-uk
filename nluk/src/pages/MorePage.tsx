@@ -10,12 +10,11 @@ import { CONSENT_KEY } from '../components/ConsentBanner.tsx'
 import type { BeforeInstallPromptEvent, UserStatus } from '../types'
 import styles from './MorePage.module.css'
 
-const ALL_KEYS = [
-  'nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', 'nluk_status', CONSENT_KEY,
-  // user-progress keys — must also be cleared on "Clear all data"
-  'nluk_onboarded', 'nluk_checklist', 'nluk_bookmarks',
-  'nluk_recent_searches', 'nluk_guide_access', 'nluk_status_date',
-]
+// NOTE: clearing is done by ENUMERATION (every nluk_* key), not by this list.
+// A hand-maintained list silently drifted and left 10 keys behind — including
+// the asylum claim date, documents held, home postcode and reading history —
+// while telling the user their data was gone. Do not reintroduce a fixed list.
+const CLEAR_KEY_PREFIX = 'nluk_'
 
 export default function MorePage() {
   const { ui, L, dark, setDark, setShowLang, userStatus, setUserStatus, ab } = useApp()
@@ -100,16 +99,27 @@ export default function MorePage() {
           <span className={styles.cardRowLabel}>🗑 {ui.clearData || 'Clear all app data'}</span>
           <button
             className="btn btn-outline btn-sm"
-            onClick={() => {
-              clearTranslationCache()
-              ALL_KEYS.forEach(k => {
-                try { localStorage.removeItem(k) } catch (err) {
-                  if (import.meta.env.DEV) {
-                    // eslint-disable-next-line no-console
-                    console.warn(`[nluk] Failed to clear localStorage key "${k}":`, err)
-                  }
+            onClick={async () => {
+              // Enumerate rather than enumerate-from-a-list, so a new key cannot
+              // silently become unclearable. Awaited before reload: the previous
+              // version raced the IndexedDB wipe against window.location.reload()
+              // and frequently tore the transaction down before it committed.
+              try {
+                for (const k of Object.keys(localStorage)) {
+                  if (k.startsWith(CLEAR_KEY_PREFIX) || k === CONSENT_KEY) localStorage.removeItem(k)
                 }
-              })
+                sessionStorage.clear()
+                if (typeof caches !== 'undefined') {
+                  const names = await caches.keys()
+                  await Promise.all(names.map(n => caches.delete(n)))
+                }
+                await clearTranslationCache()
+              } catch (err) {
+                if (import.meta.env.DEV) {
+                  // eslint-disable-next-line no-console
+                  console.warn('[nluk] clear-all-data failed:', err)
+                }
+              }
               window.location.reload()
             }}
           >

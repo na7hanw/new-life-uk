@@ -13,6 +13,9 @@ import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
 import TTSButton from '../components/TTSButton.tsx'
 
+/** Guides excluded from reading history — see the history effect below. */
+const SENSITIVE_GUIDE_IDS = new Set(['safety', 'women-support', 'mental', 'nrpf', 'legal-help'])
+
 interface GuideContent {
   title: string
   summary: string
@@ -35,6 +38,11 @@ export default function GuideDetail() {
   useEffect(() => {
     if (!id || !guide) return
     try {
+      // Never record the guides whose disclosure could put someone in danger.
+      // "Continue Reading" renders these on the front page, so a shared or
+      // borrowed phone would otherwise announce that its owner has been reading
+      // about leaving an abusive partner or about trafficking.
+      if (SENSITIVE_GUIDE_IDS.has(id)) return
       const prev: string[] = JSON.parse(localStorage.getItem('nluk_guide_history') || '[]')
       const next = [id, ...prev.filter(g => g !== id)].slice(0, 5)
       localStorage.setItem('nluk_guide_history', JSON.stringify(next))

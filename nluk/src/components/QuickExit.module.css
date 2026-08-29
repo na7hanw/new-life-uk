@@ -1,0 +1,43 @@
+/* Always reachable, on every route, without covering the SOS control.
+   Sits top-left because SOS and the header actions occupy the top-right. */
+.quickExit {
+  position: fixed;
+  top: calc(8px + env(safe-area-inset-top));
+  inset-inline-start: 8px;
+  z-index: 400; /* above the sticky detail header (100) and overlays (300) */
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  /* WCAG 2.2 target size — this is the last control a user in danger reaches for. */
+  min-height: 44px;
+  padding: 0 14px;
+
+  border: 1.5px solid var(--bd);
+  border-radius: 22px;
+  background: var(--bg2);
+  color: var(--tx);
+
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow2);
+}
+
+.quickExit:hover {
+  background: var(--bg3);
+}
+
+/* Do not remove the focus ring; this must be keyboard reachable. */
+.quickExit:focus-visible {
+  outline: 3px solid var(--ac);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .quickExit {
+    transition: background 0.15s ease;
+  }
+}

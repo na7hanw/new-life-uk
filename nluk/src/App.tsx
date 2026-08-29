@@ -11,6 +11,7 @@ import ErrorBoundary from './components/ErrorBoundary.tsx'
 import ConsentBanner from './components/ConsentBanner.tsx'
 import SkeletonFallback from './components/SkeletonFallback.tsx'
 import Logo from './components/Logo.tsx'
+import QuickExit from './components/QuickExit.tsx'
 import SOSModal from './components/SOSModal.tsx'
 import OnboardingOverlay, { shouldShowOnboarding } from './components/OnboardingOverlay.tsx'
 import styles from './App.module.css'
@@ -243,6 +244,24 @@ export default function App() {
             ))}
           </div>
         </div>
+      )}
+
+      {/* QUICK EXIT — every route, including detail pages and the first-run
+          language overlay. A safety control must never be route-dependent. */}
+      <QuickExit />
+
+      {/* SOS on detail pages, where the header is removed. Previously the
+          emergency control disappeared on exactly the screens a user in crisis
+          spends time on (/guide/*, /cert/*, /career/*, /job/*, /settings). */}
+      {isDetail && !showLang && (
+        <button
+          className="btn-sos"
+          style={{ position: 'fixed', top: 'calc(8px + env(safe-area-inset-top))', insetInlineEnd: 8, zIndex: 400, minHeight: 44 }}
+          onClick={() => { navigator?.vibrate?.(15); setSOS(true) }}
+          aria-label="Emergency SOS"
+        >
+          {ui.sos}
+        </button>
       )}
 
       {/* HEADER — hidden on detail pages and lang overlay */}
