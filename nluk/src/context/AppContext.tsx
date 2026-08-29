@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { postcodeArea } from '../lib/postcode.ts'
 import { LANGS, UI } from '../data/ui-strings.ts'
 import { ls, lsSet } from '../lib/utils.ts'
 import { VALID_STATUSES } from '../types'
@@ -41,7 +42,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [documentsHeld, setDocumentsHeld] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_docs', '[]')) } catch { return [] }
   })
-  const [userPostcode, setUserPostcode] = useState<string>(() => ls('nluk_postcode', ''))
+  // Only the postcode AREA is ever held — see lib/postcode.ts. Normalised on
+  // read as well as write, so anyone who stored a full postcode under an
+  // earlier version has it reduced the next time the app starts.
+  const [userPostcode, setUserPostcodeRaw] = useState<string>(() =>
+    postcodeArea(ls('nluk_postcode', ''))
+  )
+  const setUserPostcode = (v: string) => setUserPostcodeRaw(postcodeArea(v))
   // Separate from documentsHeld, which is identity documents. These are the
   // practical assets that gate each other — see lib/blockers.ts.
   const [assetsHeld, setAssetsHeld] = useState<string[]>(() => {

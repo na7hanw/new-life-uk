@@ -3,7 +3,10 @@ import { areaForPostcode, servicesFor, LOCAL_AREAS } from '../data/local.ts'
 import styles from './LocalServices.module.css'
 
 interface Props {
-  /** User's postcode, e.g. "BL5 3SB". Only the letter prefix is used. */
+  /**
+   * The postcode AREA only, e.g. "BL". The full postcode is never held —
+   * see lib/postcode.ts. Typing a full one is fine; it is reduced on the way in.
+   */
   postcode: string
   setPostcode: (p: string) => void
   status?: string
@@ -30,13 +33,13 @@ export default function LocalServices({ postcode, setPostcode, status }: Props) 
       </h2>
 
       <div className={styles.postcodeRow}>
-        <label htmlFor="local-postcode">Your postcode</label>
+        <label htmlFor="local-postcode">Your postcode area</label>
         <input
           id="local-postcode"
           type="text"
           inputMode="text"
           autoComplete="postal-code"
-          placeholder="e.g. BL5 3SB"
+          placeholder="e.g. BL"
           value={postcode}
           onChange={e => setPostcode(e.target.value)}
         />
@@ -47,7 +50,9 @@ export default function LocalServices({ postcode, setPostcode, status }: Props) 
           {postcode.trim()
             ? `No local services listed for “${postcode.trim()}” yet. Covered so far: ${LOCAL_AREAS.map(a => a.name).join(', ')}.`
             : 'Enter your postcode to see the council, charities and services where you live.'}
-          {' '}Stored on this device only — never sent anywhere.
+          {' '}Only the first letters are kept — enough to find your council,
+          not enough to find your address. Stored on this device only, and never
+          sent anywhere.
         </p>
       )}
 
