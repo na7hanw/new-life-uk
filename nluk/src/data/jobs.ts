@@ -4,6 +4,7 @@ import type { Job, Cert, Career } from '../types'
 // Each job has applyLinks[] with per-employer apply links + docs[] required
 export const JOBS: Job[] = [
   {
+    id: 'delivery-rider',
     icon: '🛵',
     content: {
       en: {
@@ -29,6 +30,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'courier-van',
     icon: '🚐',
     content: {
       en: {
@@ -54,6 +56,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'warehouse',
     icon: '📦',
     content: {
       en: {
@@ -84,6 +87,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'healthcare-assistant',
     icon: '🧡',
     content: {
       en: {
@@ -112,6 +116,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'construction-labourer',
     icon: '🏗',
     content: {
       en: {
@@ -145,6 +150,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'hgv-driver',
     icon: '🚛',
     content: {
       en: {
@@ -171,6 +177,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'kitchen-porter',
     icon: '🍴',
     content: {
       en: {
@@ -197,6 +204,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'cleaning',
     icon: '🧹',
     content: {
       en: {
@@ -223,6 +231,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'security-officer',
     icon: '🛡',
     content: {
       en: {
@@ -250,6 +259,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'teaching-assistant',
     icon: '🏫',
     content: {
       en: {
@@ -274,6 +284,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'barista',
     icon: '☕',
     content: {
       en: {
@@ -297,6 +308,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'hotel-hospitality',
     icon: '🏨',
     content: {
       en: {
@@ -316,6 +328,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'support-worker',
     icon: '🫂',
     content: {
       en: {
@@ -348,6 +361,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'retail-assistant',
     icon: '🛒',
     content: {
       en: {
@@ -377,6 +391,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'private-hire-driver',
     icon: '🚕',
     content: {
       en: {
@@ -407,6 +422,7 @@ export const JOBS: Job[] = [
   },
   // Added March 2026 - refugee-friendly job agencies / agency link
   {
+    id: 'refugee-employment-support',
     icon: '🤝',
     content: {
       en: {
@@ -435,6 +451,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'bilingual-support-worker',
     icon: '🗣️',
     content: {
       en: {
@@ -463,6 +480,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'lettings-assistant',
     icon: '🏠',
     content: {
       en: {
@@ -491,6 +509,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'plant-operative',
     icon: '🚜',
     content: {
       en: {
@@ -523,6 +542,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'forklift-operative',
     icon: '🏭',
     content: {
       en: {
@@ -556,6 +576,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'housing-support-officer',
     icon: '🏠',
     content: {
       en: {
@@ -583,6 +604,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'admin-business-support',
     icon: '💼',
     content: {
       en: {
@@ -616,6 +638,7 @@ export const JOBS: Job[] = [
     ],
   },
   {
+    id: 'customer-service-advisor',
     icon: '📞',
     content: {
       en: {
@@ -675,7 +698,7 @@ export const CERTS = [
   },
   {
     icon: '🍴',
-    id: 'food-hygiene-l2',
+    id: 'food-hygiene',
     founderOrder: 30,
     content: {
       en: { title: 'Food Hygiene Level 2', sector: 'Catering, food retail, hospitality' },
@@ -754,7 +777,7 @@ export const CERTS = [
   },
   {
     icon: '🛡',
-    id: 'sia-security',
+    id: 'sia-licence',
     founderOrder: 40,
     content: {
       en: { title: 'SIA Security Licence', sector: 'Security, door supervision, retail' },
@@ -840,7 +863,7 @@ export const CERTS = [
   },
   {
     icon: '🏭',
-    id: 'forklift-flt',
+    id: 'forklift',
     content: {
       en: { title: 'Forklift Licence (FLT)', sector: 'Warehousing, logistics, manufacturing' },
     },
@@ -873,7 +896,7 @@ export const CERTS = [
   },
   {
     icon: '🚛',
-    id: 'hgv-lgv',
+    id: 'hgv-licence',
     founderOrder: 45,
     content: {
       en: { title: 'HGV / LGV Licence', sector: 'Haulage, logistics, supermarket delivery' },
@@ -992,7 +1015,7 @@ export const CERTS = [
   },
   {
     icon: '🚕',
-    id: 'phv-taxi',
+    id: 'phv-licence',
     content: { en: { title: 'PHV / Taxi Licence', sector: 'Private hire, minicabs, Uber, Bolt' } },
     time: '4–12 weeks',
     cost: '£250–£600 (varies by council)',
@@ -1946,36 +1969,11 @@ export const CERTS = [
   },
 ]
 
-const JOB_IDS = [
-  'delivery-rider',
-  'courier-van',
-  'warehouse',
-  'healthcare-assistant',
-  'construction-labourer',
-  'hgv-driver',
-  'kitchen-porter',
-  'cleaning',
-  'security-officer',
-  'teaching-assistant',
-  'barista',
-  'hotel-hospitality',
-  'support-worker',
-  'retail-assistant',
-  'private-hire-driver',
-  'refugee-employment-support',
-  'bilingual-support-worker',
-  'lettings-assistant',
-  'plant-operative',
-  'forklift-operative',
-]
-JOB_IDS.forEach((id, i) => {
-  if (JOBS[i]) (JOBS[i] as unknown as Record<string, unknown>).id = id
-})
 export const JOB_MAP: Record<string, Job> = Object.fromEntries(
   (JOBS as (Job & { id: string })[]).filter((j) => j.id).map((j) => [j.id, j])
 )
 
-// ─── Official source URLs per job (keyed by JOB_IDS values) ─────
+// ─── Official source URLs per job (keyed by Job.id) ─────────────
 export const JOB_SOURCE_URL: Record<string, string> = {
   'delivery-rider': 'https://riders.deliveroo.co.uk',
   'courier-van': 'https://flex.amazon.co.uk/',
@@ -2001,38 +1999,6 @@ export const JOB_SOURCE_URL: Record<string, string> = {
 }
 
 // ─── Stable string IDs for Certs (order matches array above) ────
-const CERT_IDS = [
-  'dbs-check',
-  'food-hygiene',
-  'cscs-card',
-  'sia-licence',
-  'first-aid',
-  'forklift',
-  'hgv-licence',
-  'care-cert',
-  'personal-licence',
-  'phv-licence',
-  'driving-theory',
-  'wea-community-interpreting-l2',
-  'propertymark-l3',
-  'cih-l3-lettings',
-  'cih-l3-housing',
-  'cpcs-red-card',
-  'npors-plant',
-  'forklift-training-hse',
-  'hgv-bootcamp',
-  'driver-cpc',
-  'adr-driver',
-  'rtitb-instructor',
-  'eastcoast-community-interpreting-l2',
-  'junior-estate-agent-l2-apprenticeship',
-  'cpcs-forward-tipping-dumper-a09',
-  'citb-hse-test',
-  'rtitb-driver-cpc-instructor',
-]
-CERT_IDS.forEach((id, i) => {
-  ;(CERTS[i] as Record<string, unknown>).id = id
-})
 export const CERT_MAP: Record<string, Cert> = Object.fromEntries(
   (CERTS as unknown as Cert[]).map((c) => [c.id, c])
 )
@@ -2079,7 +2045,7 @@ export const CAREERS = [
     ],
   },
   {
-    id: 'technology-digital',
+    id: 'tech-digital',
     founderOrder: 20,
     icon: '💻',
     content: { en: { title: 'Technology & Digital', salary: '£28K–£90K+' } },
@@ -2115,7 +2081,7 @@ export const CAREERS = [
     ],
   },
   {
-    id: 'finance-accountancy',
+    id: 'finance',
     founderOrder: 50,
     icon: '💷',
     content: { en: { title: 'Finance & Accountancy', salary: '£25K–£70K+' } },
@@ -2174,7 +2140,7 @@ export const CAREERS = [
     ],
   },
   {
-    id: 'healthcare-nursing',
+    id: 'healthcare',
     founderOrder: 30,
     icon: '🏥',
     content: { en: { title: 'Healthcare & Nursing', salary: '£22K–£50K+' } },
@@ -2216,7 +2182,7 @@ export const CAREERS = [
     ],
   },
   {
-    id: 'translation-interpreting',
+    id: 'translation',
     founderOrder: 10,
     icon: '🗣',
     content: { en: { title: 'Translation & Interpreting', salary: '£25K–£60K+' } },
@@ -2859,36 +2825,6 @@ export const CAREERS = [
 ]
 
 // ─── Stable string IDs for Careers (order matches array above) ──
-const CAREER_IDS = [
-  'civil-engineering',
-  'tech-digital',
-  'finance',
-  'project-management',
-  'healthcare',
-  'green-energy',
-  'translation',
-  'property-valuation',
-  'social-work',
-  'data-analyst',
-  'quantity-surveying',
-  'community-interpreter',
-  'letting-agent',
-  'plant-operator',
-  'forklift-operator',
-  'hgv-driver-career',
-  'forklift-instructor',
-  'driver-cpc-instructor',
-  'gas-engineer',
-  'electrician',
-  'train-driver',
-  'taxi-phv',
-  'housing-officer',
-  'admin-support',
-  'customer-service',
-]
-CAREER_IDS.forEach((id, i) => {
-  ;(CAREERS[i] as Record<string, unknown>).id = id
-})
 export const CAREER_MAP: Record<string, Career> = Object.fromEntries(
   (CAREERS as unknown as Career[]).map((c) => [c.id, c])
 )
@@ -2896,7 +2832,7 @@ export const CAREER_MAP: Record<string, Career> = Object.fromEntries(
 // ─── Data verification date ──────────────────────────────────────
 export const JOBS_DATA_DATE = 'March 2026'
 
-// ─── Official source URLs per cert (keyed by CERT_IDS values) ───
+// ─── Official source URLs per cert (keyed by Cert.id) ───────────
 export const CERT_SOURCE_URL: Record<string, string> = {
   'dbs-check': 'https://www.gov.uk/request-copy-criminal-record',
   'food-hygiene': 'https://www.food.gov.uk/business-guidance/food-hygiene',
@@ -2940,7 +2876,7 @@ export const CERT_SOURCE_URL: Record<string, string> = {
     'https://www.cscs.uk.com/types-of-cscs-cards/academically-and-professionally-qualified/',
 }
 
-// ─── Official source URLs per career (keyed by CAREER_IDS values) ─
+// ─── Official source URLs per career (keyed by Career.id) ───────
 export const CAREER_SOURCE_URL: Record<string, string> = {
   'civil-engineering':
     'https://www.ice.org.uk/about-ice/what-we-do/social-mobility/refugee-support/',
