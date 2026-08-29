@@ -43,15 +43,27 @@ function normalizeBareUrls(text: string): string {
   })
 }
 
-// ── Post-process: convert [URGENCY TAG] → styled span elements ──
-// Runs after DOMPurify so we can safely inject known-safe HTML.
-const URGENCY_RE = /\[([A-Z0-9][A-Z0-9 ]*)\]/g
+// ── Convert [URGENCY TAG] → styled span elements ──
+// This runs BEFORE DOMPurify, not after. Running it afterwards meant a string
+// replace was building HTML on top of already-sanitized output, which is both
+// a broken sanitizer barrier and a real bug: the pattern matched inside
+// attribute values too, so a link whose href legitimately contained an
+// upper-case bracket segment came out as
+//   <a href="https://example.com/docs/<span class="urgency-tag">ABC</span>/x">
+// — markup injected into an attribute. Sanitizing last fixes both, and costs
+// nothing, because 'span' and 'class' are already in the allowlist below.
+//
+// The pattern is also anchored to a standalone token — preceded by start or
+// whitespace, followed by whitespace or end — because these tags are authored
+// as their own word ("[DAY 1] Claim UC"), never mid-string. That alone keeps it
+// out of URLs, where the character before '[' is a '/'.
+const URGENCY_RE = /(^|\s)\[([A-Z0-9][A-Z0-9 ]*)\](?=\s|$)/g
 
-function applyUrgencyTags(html: string): string {
-  return html.replace(URGENCY_RE, (_, tag: string) => {
+function applyUrgencyTags(text: string): string {
+  return text.replace(URGENCY_RE, (_, lead: string, tag: string) => {
     const isUrgent = tag.includes('DAY 1') || tag === 'URGENT'
     const cls = isUrgent ? 'urgency-tag urgency-urgent' : 'urgency-tag'
-    return `<span class="${cls}">${tag}</span>`
+    return `${lead}<span class="${cls}">${tag}</span>`
   })
 }
 
@@ -59,10 +71,11 @@ function applyUrgencyTags(html: string): string {
 function renderSegment(text: string): string {
   if (!text) return ''
   const plain = DOMPurify.sanitize(text, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] })
-  const normalized = normalizeBareUrls(plain)
+  const tagged = applyUrgencyTags(plain)
+  const normalized = normalizeBareUrls(tagged)
   const markdownHtml = marked.parseInline(normalized) as string
-  const safe = DOMPurify.sanitize(markdownHtml, PURIFY_CONFIG)
-  return applyUrgencyTags(safe)
+  // DOMPurify is deliberately the LAST step — nothing builds HTML after it.
+  return DOMPurify.sanitize(markdownHtml, PURIFY_CONFIG)
 }
 
 // ── Build a sorted regex of all glossary term keys (longest first) ───────────
