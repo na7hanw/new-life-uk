@@ -233,7 +233,7 @@ function CohortPanel({ claimDate, setClaimDate }: { claimDate: string; setClaimD
 }
 
 export default function ProfilePage() {
-  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userPostcode, setUserPostcode, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userArea, setUserArea, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [showStatusPicker, setShowStatusPicker] = useState(false)
 
@@ -392,7 +392,7 @@ export default function ProfilePage() {
       )}
 
 {/* ── Move-on countdown (refugees only) ─────────────── */}
-      <LocalServices postcode={userPostcode} setPostcode={setUserPostcode} status={userStatus} />
+      <LocalServices postcode={userArea} setPostcode={setUserArea} status={userStatus} />
 
       {userStatus === 'refugee' && (
         <CohortPanel claimDate={claimDate} setClaimDate={setClaimDate} />

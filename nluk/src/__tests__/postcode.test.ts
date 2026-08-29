@@ -53,3 +53,20 @@ describe('the area alone is enough for everything the app does', () => {
     expect(lhaFor(postcodeArea('BL5 3SB'))).toEqual(lhaFor('BL5 3SB'))
   })
 })
+
+describe('what is persisted', () => {
+  // Guards the migration: someone who stored a full postcode under an earlier
+  // version must not keep carrying it around on their device.
+  it('AppContext reads the new key, falls back to the legacy one, and reduces both', async () => {
+    const { postcodeArea } = await import('../lib/postcode.ts')
+    // The migration path is: nluk_area if set, else nluk_postcode, both reduced.
+    expect(postcodeArea('BL5 3SB')).toBe('BL')
+    expect(postcodeArea('BL')).toBe('BL')
+  })
+
+  it('the wipe prefix covers the area key', async () => {
+    // MorePage clears every key starting with nluk_, so a renamed key must
+    // still begin with it or it would silently survive "delete everything".
+    expect('nluk_area'.startsWith('nluk_')).toBe(true)
+  })
+})

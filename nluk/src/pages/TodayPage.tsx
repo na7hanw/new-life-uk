@@ -41,7 +41,7 @@ export default function TodayPage() {
   const {
     assetsHeld,
     toggleAsset,
-    userPostcode,
+    userArea,
     statusDate,
     setStatusDate,
     discontinuationDate,
@@ -159,7 +159,7 @@ export default function TodayPage() {
 
       {/* ── Can I afford this room? ────────────────────────────── */}
       <h2 className={styles.heading}>Can you afford this room?</h2>
-      <RentCheck postcode={userPostcode} />
+      <RentCheck postcode={userArea} />
 
       {/* ── The clock ──────────────────────────────────────────── */}
       <h2 className={styles.heading}>Your deadline</h2>

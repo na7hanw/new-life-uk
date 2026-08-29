@@ -197,6 +197,12 @@ export default function MorePage() {
               ['nluk_bookmarks',       'Your saved guides and resources'],
               ['nluk_recent_searches', 'Your recent search history (last 10 searches)'],
               ['nluk_guide_access',    'Which guides you have opened (for recommendations)'],
+              ['nluk_area',            'Your postcode AREA only, e.g. “BL” — never your full postcode'],
+              ['nluk_assets',          'Which documents and numbers you have ticked off (share code, bank account, NI number)'],
+              ['nluk_status_date',     'The date on your decision letter'],
+              ['nluk_disc_date',       'The date on your support discontinuation letter'],
+              ['nluk_claim_date',      'The date you claimed asylum'],
+              ['nluk_docs',            'Which identity documents you hold'],
             ] as [string, string][]).map(([k, v]) => (
               <li key={k} className={styles.privacyKeyItem}>
                 <code className={styles.privacyKeyCode}>{k}</code>{v}

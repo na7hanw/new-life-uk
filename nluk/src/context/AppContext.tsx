@@ -42,13 +42,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [documentsHeld, setDocumentsHeld] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_docs', '[]')) } catch { return [] }
   })
-  // Only the postcode AREA is ever held — see lib/postcode.ts. Normalised on
-  // read as well as write, so anyone who stored a full postcode under an
-  // earlier version has it reduced the next time the app starts.
-  const [userPostcode, setUserPostcodeRaw] = useState<string>(() =>
-    postcodeArea(ls('nluk_postcode', ''))
-  )
-  const setUserPostcode = (v: string) => setUserPostcodeRaw(postcodeArea(v))
+  // Only the postcode AREA is ever held — see lib/postcode.ts. Named userArea
+  // rather than userPostcode because that is what it is: "BL", not "BL5 3SB".
+  // Reduced on read as well as write, and migrated from the old nluk_postcode
+  // key, so anyone who stored a full postcode under an earlier version has it
+  // cut down the next time the app starts without having to know it was there.
+  const [userArea, setUserAreaRaw] = useState<string>(() => {
+    const current = ls('nluk_area', '')
+    if (current) return postcodeArea(current)
+    const legacy = ls('nluk_postcode', '')
+    return postcodeArea(legacy)
+  })
+  const setUserArea = (v: string) => setUserAreaRaw(postcodeArea(v))
   // Separate from documentsHeld, which is identity documents. These are the
   // practical assets that gate each other — see lib/blockers.ts.
   const [assetsHeld, setAssetsHeld] = useState<string[]>(() => {
@@ -79,7 +84,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => { lsSet('nluk_sector', userSector) }, [userSector])
   useEffect(() => { lsSet('nluk_docs', JSON.stringify(documentsHeld)) }, [documentsHeld])
   useEffect(() => { lsSet('nluk_assets', JSON.stringify(assetsHeld)) }, [assetsHeld])
-  useEffect(() => { lsSet('nluk_postcode', userPostcode) }, [userPostcode])
+  useEffect(() => {
+    lsSet('nluk_area', userArea)
+    // Drop the legacy key once its value has been carried over, so a full
+    // postcode written by an earlier version does not linger on the device.
+    try { localStorage.removeItem('nluk_postcode') } catch { /* private mode */ }
+  }, [userArea])
   useEffect(() => { lsSet('nluk_bookmarks', JSON.stringify(bookmarks)) }, [bookmarks])
   useEffect(() => { lsSet('nluk_target_lane', targetLane) }, [targetLane])
   useEffect(() => { lsSet('nluk_credentials', JSON.stringify(credentialsHeld)) }, [credentialsHeld])
@@ -125,7 +135,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const af = L.rtl ? '‹' : '›'
 
   return (
-    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, assetsHeld, toggleAsset, userPostcode, setUserPostcode, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
+    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, assetsHeld, toggleAsset, userArea, setUserArea, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
       {children}
     </AppContext.Provider>
   )

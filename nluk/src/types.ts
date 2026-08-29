@@ -335,9 +335,12 @@ export interface AppContextValue {
   assetsHeld: string[]
   toggleAsset: (assetId: string) => void
   toggleDocument: (docId: string) => void
-  /** User's saved UK postcode for local service discovery */
-  userPostcode: string
-  setUserPostcode: (p: string) => void
+  /**
+   * The user's postcode AREA only, e.g. "BL" — never the full postcode.
+   * See lib/postcode.ts for why.
+   */
+  userArea: string
+  setUserArea: (p: string) => void
   bookmarks: string[]
   toggleBookmark: (id: string) => void
   /** Which qualification lane the user is personally working towards */
