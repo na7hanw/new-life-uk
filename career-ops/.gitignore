@@ -32,3 +32,7 @@ node_modules/
 .claude/settings.local.json
 .claude/memory/
 career-dashboard
+
+# Personal CV and interview material (added Aug 2026 — keep out of the public repo)
+cv.md
+interview-prep/story-bank.md

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { LANGS, UI } from '../data/ui-strings.ts'
 import { ls, lsSet } from '../lib/utils.ts'
+import { VALID_STATUSES } from '../types'
 import type { AppContextValue, UserStatus, UserAmbition, UserSector, TargetLane, EcctisStatus } from '../types'
 
 const AppContext = createContext<AppContextValue | null>(null)
@@ -26,7 +27,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState<boolean>(() => ls('nluk_dark', '') === 'true')
   const [showSOS, setSOS] = useState<boolean>(false)
   const [showLang, setShowLang] = useState<boolean>(() => !ls('nluk_lang', ''))
-  const [userStatus, setUserStatus] = useState<UserStatus>(() => ls('nluk_status', '') as UserStatus)
+  // Validate against the known set: a stale or corrupted key would otherwise be
+  // truthy, match no status map, and silently render empty personalised sections.
+  const [userStatus, setUserStatus] = useState<UserStatus>(() => {
+    const stored = ls('nluk_status', '')
+    return (VALID_STATUSES as readonly string[]).includes(stored) ? (stored as UserStatus) : ''
+  })
   const [statusDate, setStatusDate] = useState<string>(() => ls('nluk_status_date', ''))
   const [claimDate, setClaimDate] = useState<string>(() => ls('nluk_claim_date', ''))
   const [userAmbition, setUserAmbition] = useState<UserAmbition>(() => ls('nluk_ambition', '') as UserAmbition)

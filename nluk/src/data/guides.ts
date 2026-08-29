@@ -83,7 +83,9 @@ export const GUIDES: Guide[] = [
 // ─── Precomputed guide map ──────────────────────────────────────
 export const GUIDE_MAP: Record<string, Guide> = Object.fromEntries(GUIDES.map(g => [g.id, g]));
 
-// ─── Priority order for Guides tab (refugee-first) ─────────────
+// ─── Base priority order for Guides tab (status-neutral fallback) ───
+// Applied when no status is set. When a status IS set, GUIDE_STATUS_ORDER
+// lifts what matters now and sinks what no longer applies — see orderGuides().
 export const GUIDE_PRIORITY = [
   'asylum-waiting', 'aspen-card', 'move-on', 'refugee-integration', 'bank', 'credit-score', 'uc', 'ni', 'evisa', 'sharecode', 'life-admin', 'gp', 'housing-help', 'social-housing', 'where-to-live',
   'work-rights', 'permission-to-work', 'ctd', 'citizen-card', 'employment-rights', 're-qualify', 'ilr',
@@ -96,6 +98,52 @@ export const GUIDE_PRIORITY = [
   // Business & Money
   'sole-trader', 'limited-company', 'home-business', 'business-records', 'companies-house-id', 'cic', 'before-you-invest', 'scam-warnings',
 ];
+
+// ─── Status-aware ordering ─────────────────────────────────────
+// `boost` rises to the top in the order listed. `bury` sinks below everything
+// else, because it is obsolete or actively misleading for that status — e.g. a
+// refugee should never open the Guides tab onto "Waiting for Your Asylum
+// Decision" or the ASPEN/Section 95 guide, and must not be told (via `nrpf`)
+// that they cannot claim Universal Credit, which is false for them.
+export const GUIDE_STATUS_ORDER: Record<string, { boost: string[]; bury: string[] }> = {
+  'asylum-seeker': {
+    boost: ['asylum-waiting', 'aspen-card', 'permission-to-work', 'legal-help', 'volunteering', 'esol-education', 'gp'],
+    bury: ['move-on', 'refugee-integration', 'ilr', 'family-reunion', 'social-housing'],
+  },
+  refugee: {
+    boost: ['move-on', 'uc', 'housing-help', 'social-housing', 'refugee-integration', 'evisa', 'ni', 'bank', 'ctd', 'ilr'],
+    bury: ['asylum-waiting', 'aspen-card', 'permission-to-work', 'nrpf'],
+  },
+  'other-visa': {
+    boost: ['work-rights', 'evisa', 'sharecode', 'employment-rights', 'bank'],
+    bury: ['asylum-waiting', 'aspen-card', 'move-on', 'permission-to-work', 'refugee-integration'],
+  },
+  settled: {
+    boost: ['ilr', 'evisa', 'sharecode', 'credit-score', 'investing', 'tax'],
+    bury: ['asylum-waiting', 'aspen-card', 'move-on', 'permission-to-work', 'nrpf', 'refugee-integration'],
+  },
+};
+
+const BASE_RANK = 1_000;
+const BURY_RANK = 10_000;
+
+/** Rank a guide id for a status: boosted first, then base order, buried last. */
+export function guideRank(id: string, status?: string): number {
+  const rules = status ? GUIDE_STATUS_ORDER[status] : undefined;
+  if (rules) {
+    const boosted = rules.boost.indexOf(id);
+    if (boosted !== -1) return boosted;
+    const buried = rules.bury.indexOf(id);
+    if (buried !== -1) return BURY_RANK + buried;
+  }
+  const base = GUIDE_PRIORITY.indexOf(id);
+  return BASE_RANK + (base === -1 ? GUIDE_PRIORITY.length : base);
+}
+
+/** Sort guides for a status without mutating the input array. */
+export function orderGuides<T extends { id: string }>(guides: T[], status?: string): T[] {
+  return [...guides].sort((a, b) => guideRank(a.id, status) - guideRank(b.id, status));
+}
 
 // ─── Global data-verified date ─────────────────────────────────
 export const GUIDE_DATA_DATE = 'March 2026'

@@ -201,11 +201,13 @@ const GLOSSARY_RAW: Record<string, GlossaryEntry> = {
   },
   'move-on period': {
     term: 'Move-On Period',
-    definition: 'The 56-day period after being granted refugee status, during which you must leave asylum accommodation and claim Universal Credit.',
+    definition:
+      'The 42-day period after you are notified of a positive asylum decision, during which you must leave asylum accommodation and claim Universal Credit. Set at 42 days for decisions issued on or after 9 March 2026 (previously 56, then 28).',
   },
-  '56 days': {
-    term: '56-Day Move-On',
-    definition: 'After being granted refugee status, you have 56 days to leave asylum support and accommodation, and set up independent living.',
+  '42 days': {
+    term: '42-Day Move-On',
+    definition:
+      'After being notified of refugee status, you have 42 days to leave asylum support and accommodation and set up independent living. The clock starts at the decision notification, not the discontinuation letter. Extensions are possible but must be requested — they are not automatic.',
   },
   'credit score': {
     term: 'Credit Score',

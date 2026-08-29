@@ -156,17 +156,17 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
     sourceUrl: 'https://www.gov.uk/asylum-support/what-youll-get',
     sourceType: 'official',
     publishedAt: '2026-03-01',
-    lastChecked: '2026-03-22',
+    lastChecked: '2026-08-29',
     summary:
-      'The period newly recognised refugees have to leave asylum accommodation has been reduced from 56 days to 42 days. Your exact deadline is on your asylum support discontinuation letter — check it immediately. The countdown begins from the date on that letter, not from when you receive it.',
+      'For positive decisions issued on or after 9 March 2026, you get 42 days to leave asylum accommodation, counted from the date you are NOTIFIED of the decision — not from the discontinuation letter. Separately, you always get a minimum of 28 days from the discontinuation letter itself. Whichever date falls later is your real deadline, so check both letters.',
     affectedGroups: [
       'Newly recognised refugees leaving asylum accommodation',
-      'People who received refugee status from March 2026',
+      'People notified of a positive decision on or after 9 March 2026',
     ],
     whatChanged:
-      'The move-on grace period has been reduced from 56 to 42 days. Check your discontinuation letter for your exact deadline date.',
+      'The move-on notice period was set at 42 days from decision notification (it was 56 days, then 28 for many people). The separate 28-day minimum from the discontinuation letter still applies.',
     whatToDo:
-      'Apply for Universal Credit immediately, contact your council housing team, and open a bank account — do not wait. Check the exact date on your discontinuation letter.',
+      'Apply for Universal Credit immediately — the 5-week wait is the binding constraint. Contact your council housing team the same week and open a bank account. If you cannot secure housing in time, request an extension in writing with evidence of your efforts: extensions are possible but never automatic.',
     urgency: 'action-needed',
     relatedGuideIds: ['move-on', 'uc', 'housing-help', 'social-housing'],
   },

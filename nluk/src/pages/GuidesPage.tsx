@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import Fuse from 'fuse.js'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useApp } from '../context/AppContext.tsx'
-import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
+import { GUIDES, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS, orderGuides } from '../data/guides.ts'
 import { getTrendingGuideIds } from '../lib/search.ts'
 import { useRouteTranslation, type RouteString } from '../lib/useRouteTranslation.ts'
 import EmptyState from '../components/EmptyState.tsx'
@@ -75,15 +75,11 @@ export default function GuidesPage() {
     if (search.trim()) {
       list = fuseIndex.search(search).map(r => r.item)
     } else {
-      list = [...GUIDES].sort((a, b) => {
-        const ia = GUIDE_PRIORITY.indexOf(a.id)
-        const ib = GUIDE_PRIORITY.indexOf(b.id)
-        return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
-      })
+      list = orderGuides(GUIDES, userStatus)
     }
     if (catFilter !== 'All') list = list.filter(g => g.cat === catFilter)
     return list
-  }, [search, catFilter, fuseIndex])
+  }, [search, catFilter, fuseIndex, userStatus])
 
   // Animate category sections as filter changes
   const [catListRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })

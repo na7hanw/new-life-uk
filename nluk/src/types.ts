@@ -26,7 +26,10 @@ export type SourceLabel = z.infer<typeof SourceLabelSchema>
 
 // ─── Additional types not covered by Zod schemas ────────────────────────────
 
-export type UserStatus = 'asylum-seeker' | 'refugee' | 'other-visa' | 'settled' | ''
+/** Single source of truth for status values — used to validate persisted state. */
+export const VALID_STATUSES = ['asylum-seeker', 'refugee', 'other-visa', 'settled', ''] as const
+
+export type UserStatus = (typeof VALID_STATUSES)[number]
 
 /** Which qualification lane the user is personally working towards */
 export type TargetLane = 'lifting' | ''
