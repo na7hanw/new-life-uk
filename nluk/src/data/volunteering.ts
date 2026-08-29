@@ -45,7 +45,7 @@ export const VOLUNTEERING: VolunteerOrg[] = [
   },
   {
     icon: '📋',
-    url: 'https://mrsn.org.uk/volunteering/',
+    url: 'https://mrsn.org.uk/',
     location: 'Greater Manchester',
     roles: ['Admin', 'Interpreter', 'Advice'],
     why: 'Admin volunteer role builds direct UK office experience; they welcome refugees as volunteers.',

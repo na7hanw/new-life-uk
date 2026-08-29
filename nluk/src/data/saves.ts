@@ -57,7 +57,7 @@ export const SAVES: SaveItem[] = [
         desc: 'Your Work Coach can pay for bus/train fares to job interviews and contribute to driving lessons. Ask about the Flexible Support Fund — up to £300 for job-related transport.',
       },
     },
-    url: 'https://www.gov.uk/guidance/flexible-support-fund',
+    url: 'https://www.gov.uk/jobseekers-allowance/moving-into-work',
   },
   {
     icon: '🔥',

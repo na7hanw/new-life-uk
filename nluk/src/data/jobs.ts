@@ -77,7 +77,7 @@ export const JOBS: Job[] = [
       { name: 'Royal Mail Jobs', url: 'https://careers.royalmailgroup.com/gb/en' },
       {
         name: 'Ocado Warehouse Jobs',
-        url: 'https://careers.ocadogroup.com/teams/drivers-and-warehouse/warehouse',
+        url: 'https://careers.ocadogroup.com/teams/',
       },
       { name: 'Lidl Warehouse Jobs', url: 'https://www.careers.lidl.co.uk' },
       {
@@ -301,7 +301,7 @@ export const JOBS: Job[] = [
     ],
     applyLinks: [
       { name: 'Starbucks UK Jobs', url: 'https://www.starbucksemeacareers.com/en' },
-      { name: 'Costa Coffee Jobs', url: 'https://www.costacoffee.com/jobs' },
+      { name: 'Costa Coffee Jobs', url: 'https://www.costacoffee.com/' },
       { name: 'Caffè Nero Jobs', url: 'https://www.caffenero.com/uk/careers' },
       { name: 'Pret a Manger Jobs', url: 'https://jobs.pret.com/jobs/gb' },
       { name: 'Indeed Barista Jobs', url: 'https://uk.indeed.com/jobs?q=barista' },
@@ -377,7 +377,7 @@ export const JOBS: Job[] = [
       'Bank account details',
     ],
     applyLinks: [
-      { name: 'Tesco Jobs', url: 'https://www.tesco-careers.com/en/search/' },
+      { name: 'Tesco Jobs', url: 'https://www.tesco-careers.com/' },
       { name: "Sainsbury's Jobs", url: 'https://jobs.sainsburys.co.uk' },
       { name: 'Asda Jobs', url: 'https://www.asda.jobs' },
       { name: 'Aldi UK Jobs', url: 'https://www.aldirecruitment.co.uk/' },
@@ -727,7 +727,7 @@ export const CERTS = [
     studyLinks: [
       {
         name: 'Food safety basics — Food Standards Agency',
-        url: 'https://www.food.gov.uk/business-guidance/food-hygiene',
+        url: 'https://www.food.gov.uk/business-guidance',
       },
       {
         name: 'Free practice test (Virtual College)',
@@ -850,7 +850,7 @@ export const CERTS = [
       },
       {
         name: 'St John Ambulance Courses',
-        url: 'https://www.sja.org.uk/courses/first-aid-courses/',
+        url: 'https://www.sja.org.uk/courses/',
       },
     ],
     studyLinks: [
@@ -1176,7 +1176,7 @@ export const CERTS = [
     studyLinks: [
       {
         name: 'Scottish Letting Agent Register',
-        url: 'https://www.gov.scot/policies/private-renting/letting-agent-register/',
+        url: 'https://www.gov.scot/policies/private-renting/',
       },
     ],
   },
@@ -1206,7 +1206,7 @@ export const CERTS = [
     links: [
       {
         name: 'CIH Online Learning',
-        url: 'https://www.cih.org/learning-and-development/qualifications/',
+        url: 'https://www.cih.org/qualifications/',
       },
       { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/guidance/free-courses-for-jobs' },
     ],
@@ -1237,7 +1237,7 @@ export const CERTS = [
     links: [
       {
         name: 'CIH Online Learning',
-        url: 'https://www.cih.org/learning-and-development/qualifications/',
+        url: 'https://www.cih.org/qualifications/',
       },
       { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/guidance/free-courses-for-jobs' },
     ],
@@ -1312,7 +1312,7 @@ export const CERTS = [
       ],
     },
     links: [
-      { name: 'NPORS — find a training provider', url: 'https://npors.com/training-providers/' },
+      { name: 'NPORS — find a training provider', url: 'https://npors.com/' },
       {
         name: 'CITB Grant (for NPORS training)',
         url: 'https://www.citb.co.uk/levy-grants-and-funding/grants/',
@@ -1357,7 +1357,7 @@ export const CERTS = [
     studyLinks: [
       {
         name: 'HSE — lift trucks guidance',
-        url: 'https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm',
+        url: 'https://www.hse.gov.uk/workplacetransport/',
       },
     ],
   },
@@ -1462,11 +1462,11 @@ export const CERTS = [
     links: [
       {
         name: 'ADR training explained (GOV.UK)',
-        url: 'https://www.gov.uk/government/collections/transporting-dangerous-goods/adr-the-european-agreement',
+        url: 'https://www.gov.uk/government/collections/transporting-dangerous-goods',
       },
       {
         name: 'Find ADR training providers (DVSA)',
-        url: 'https://www.gov.uk/find-dvsa-adr-examiner',
+        url: 'https://www.gov.uk/guidance/dangerous-goods-vehicles-get-an-mot-and-adr-test',
       },
     ],
     studyLinks: [],
@@ -1497,7 +1497,7 @@ export const CERTS = [
     links: [
       {
         name: 'RTITB — Instructor qualification',
-        url: 'https://www.rtitb.com/training/instructor-training/',
+        url: 'https://www.rtitb.com/training/',
       },
     ],
     studyLinks: [],
@@ -1813,7 +1813,7 @@ export const CERTS = [
     studyLinks: [
       {
         name: 'BS 7121 Crane safety — HSE overview',
-        url: 'https://www.hse.gov.uk/work-equipment-machinery/cranes.htm',
+        url: 'https://www.hse.gov.uk/workplacetransport/',
       },
       { name: 'CPCS testing overview', url: 'https://www.cpcs.uk.com/cpcs-testing/' },
     ],
@@ -1984,7 +1984,7 @@ export const JOB_SOURCE_URL: Record<string, string> = {
   'kitchen-porter': 'https://www.caterer.com/jobs/kitchen-porter',
   cleaning: 'https://uk.indeed.com/jobs?q=cleaning+operative',
   'security-officer': 'https://www.sia.homeoffice.gov.uk/Pages/licensing.aspx',
-  'teaching-assistant': 'https://www.gov.uk/guidance/become-a-teaching-assistant',
+  'teaching-assistant': 'https://nationalcareers.service.gov.uk/job-profiles/teaching-assistant',
   barista: 'https://people.mcdonalds.co.uk',
   'hotel-hospitality': 'https://uk.indeed.com/jobs?q=housekeeping',
   'support-worker': 'https://www.jobs.nhs.uk/',
@@ -2077,7 +2077,7 @@ export const CAREERS = [
         name: 'Find a Degree Apprenticeship',
         url: 'https://www.findapprenticeship.service.gov.uk/',
       },
-      { name: 'Generation UK (free coding bootcamps)', url: 'https://www.generation.org/uk/' },
+      { name: 'Generation UK (free coding bootcamps)', url: 'https://www.generation.org/' },
     ],
   },
   {
@@ -2413,7 +2413,7 @@ export const CAREERS = [
       },
       {
         name: 'CIH — Letting & Managing Residential Property',
-        url: 'https://www.cih.org/learning-and-development/qualifications/',
+        url: 'https://www.cih.org/qualifications/',
       },
       {
         name: 'National Careers Service — Letting Agents',
@@ -2450,7 +2450,7 @@ export const CAREERS = [
     },
     links: [
       { name: 'CPCS — categories and testing', url: 'https://www.cpcs.uk.com/cpcs-testing/' },
-      { name: 'NPORS — training providers', url: 'https://npors.com/training-providers/' },
+      { name: 'NPORS — training providers', url: 'https://npors.com/' },
       { name: 'CITB Grants', url: 'https://www.citb.co.uk/levy-grants-and-funding/grants/' },
     ],
   },
@@ -2480,7 +2480,7 @@ export const CAREERS = [
       { name: 'RTITB — find training centre', url: 'https://www.rtitb.com/course-locator/' },
       {
         name: 'HSE — forklift guidance (ACOP L117)',
-        url: 'https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm',
+        url: 'https://www.hse.gov.uk/workplacetransport/',
       },
     ],
   },
@@ -2541,7 +2541,7 @@ export const CAREERS = [
     links: [
       {
         name: 'RTITB — Instructor Training',
-        url: 'https://www.rtitb.com/training/instructor-training/',
+        url: 'https://www.rtitb.com/training/',
       },
     ],
   },
@@ -2602,7 +2602,7 @@ export const CAREERS = [
       { name: 'Inside Housing Jobs (UK-wide)', url: 'https://jobs.insidehousing.co.uk/' },
       {
         name: 'CIH — housing qualifications',
-        url: 'https://www.cih.org/learning-and-development/qualifications/',
+        url: 'https://www.cih.org/qualifications/',
       },
       {
         name: 'Riverside Housing — work for us',
@@ -2717,7 +2717,7 @@ export const CAREERS = [
       { name: 'JIB (Joint Industry Board)', url: 'https://www.jib.org.uk/' },
       {
         name: 'City & Guilds Electrical Installations',
-        url: 'https://www.cityandguilds.com/qualifications-and-apprenticeships/building-and-construction/building-services-engineering/2365-diploma-in-electrical-installations',
+        url: 'https://www.cityandguilds.com/qualifications-and-apprenticeships',
       },
       { name: 'ECS Card — Electrotechnical Certification', url: 'https://www.ecscard.org.uk/' },
       {
@@ -2755,7 +2755,7 @@ export const CAREERS = [
         url: 'https://nationalcareers.service.gov.uk/job-profiles/train-driver',
       },
       { name: 'Northern Trains — careers', url: 'https://www.northernrailway.co.uk/careers' },
-      { name: 'Avanti West Coast — careers', url: 'https://www.avantiwestcoast.co.uk/careers' },
+      { name: 'Avanti West Coast — careers', url: 'https://www.avantiwestcoast.co.uk/' },
       { name: "ASLEF — train drivers' union", url: 'https://www.aslef.org.uk/' },
     ],
   },
@@ -2835,7 +2835,7 @@ export const JOBS_DATA_DATE = 'March 2026'
 // ─── Official source URLs per cert (keyed by Cert.id) ───────────
 export const CERT_SOURCE_URL: Record<string, string> = {
   'dbs-check': 'https://www.gov.uk/request-copy-criminal-record',
-  'food-hygiene': 'https://www.food.gov.uk/business-guidance/food-hygiene',
+  'food-hygiene': 'https://www.food.gov.uk/business-guidance',
   'cscs-card': 'https://www.cscs.uk.com/applying-for-cards/',
   'sia-licence': 'https://www.sia.homeoffice.gov.uk/Pages/licensing.aspx',
   'first-aid': 'https://www.redcross.org.uk/first-aid',
@@ -2848,15 +2848,15 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   'driving-theory': 'https://www.gov.uk/book-theory-test',
   'wea-community-interpreting-l2': 'https://www.wea.org.uk/courses',
   'propertymark-l3': 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
-  'cih-l3-lettings': 'https://www.cih.org/learning-and-development/qualifications/',
-  'cih-l3-housing': 'https://www.cih.org/learning-and-development/qualifications/',
+  'cih-l3-lettings': 'https://www.cih.org/qualifications/',
+  'cih-l3-housing': 'https://www.cih.org/qualifications/',
   'cpcs-red-card': 'https://www.cpcs.uk.com/cpcs-testing/',
-  'npors-plant': 'https://npors.com/training-providers/',
-  'forklift-training-hse': 'https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm',
+  'npors-plant': 'https://npors.com/',
+  'forklift-training-hse': 'https://www.hse.gov.uk/workplacetransport/',
   'hgv-bootcamp': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
   'driver-cpc': 'https://www.gov.uk/driver-cpc-training',
   'adr-driver': 'https://www.gov.uk/government/collections/transporting-dangerous-goods',
-  'rtitb-instructor': 'https://www.rtitb.com/training/instructor-training/',
+  'rtitb-instructor': 'https://www.rtitb.com/training/',
   'eastcoast-community-interpreting-l2': 'https://www.eastcoast.ac.uk',
   'junior-estate-agent-l2-apprenticeship':
     'https://skillsengland.education.gov.uk/apprenticeship-standards/st0329-v1-0',
@@ -2894,15 +2894,15 @@ export const CAREER_SOURCE_URL: Record<string, string> = {
   'community-interpreter': 'https://www.nrpsi.org.uk',
   'letting-agent': 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
   'plant-operator': 'https://www.cpcs.uk.com/cpcs-testing/',
-  'forklift-operator': 'https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm',
+  'forklift-operator': 'https://www.hse.gov.uk/workplacetransport/',
   'hgv-driver-career': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
-  'forklift-instructor': 'https://www.rtitb.com/training/instructor-training/',
+  'forklift-instructor': 'https://www.rtitb.com/training/',
   'driver-cpc-instructor': 'https://www.gov.uk/driver-cpc-training',
   'gas-engineer': 'https://www.gassaferegister.co.uk/gas-safety/become-gas-safe-registered/',
   electrician: 'https://www.jib.org.uk/',
   'train-driver': 'https://nationalcareers.service.gov.uk/job-profiles/train-driver',
   'taxi-phv': 'https://www.gov.uk/taxi-driver-licence',
-  'housing-officer': 'https://www.cih.org/learning-and-development/qualifications/',
+  'housing-officer': 'https://www.cih.org/qualifications/',
   'admin-support': 'https://www.civilservicejobs.service.gov.uk/',
   'customer-service': 'https://www.jobs.nhs.uk/',
 }

@@ -32,7 +32,8 @@ exclude = [
 # headless checks from CI runners with a 403 even though the link is live.
 # 406 is included because Uber answers "Not Acceptable" to non-browser user
 # agents; the pages resolve normally in a real browser.
-accept = [200, 206, 301, 302, 307, 308, 403, 406, 429]
+# 202 is a success response — Refuge Action and Maternity Action return it.
+accept = [200, 202, 206, 301, 302, 307, 308, 403, 406, 429]
 
 # Timeout per request in seconds
 timeout = 25
