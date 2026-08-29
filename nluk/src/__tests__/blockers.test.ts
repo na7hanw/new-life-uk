@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { isFromHost, isFromAnyHost } from '../lib/hostMatch.ts'
 import {
   GOALS,
   ASSET_LABELS,
@@ -111,7 +112,7 @@ describe('every dependency shows its working', () => {
   // nothing in the code distinguished the sourced claim from the invented
   // ones. The header of blockers.ts always CLAIMED each edge was "a real rule
   // with a source" — now that is checked rather than asserted.
-  const OFFICIAL = /^https:\/\/(www\.)?(gov\.uk|legislation\.gov\.uk|nhs\.uk)\//
+  const OFFICIAL_HOSTS = ['gov.uk', 'legislation.gov.uk', 'nhs.uk']
 
   it('gives every goal at least one source', () => {
     for (const g of GOALS) {
@@ -123,7 +124,7 @@ describe('every dependency shows its working', () => {
   it('sources everything to an official domain', () => {
     for (const g of GOALS) {
       for (const url of g.sources) {
-        expect(OFFICIAL.test(url), `goal "${g.id}" cites a non-official source: ${url}`).toBe(true)
+        expect(isFromAnyHost(url, OFFICIAL_HOSTS), `goal "${g.id}" cites a non-official source: ${url}`).toBe(true)
       }
     }
   })
@@ -131,8 +132,11 @@ describe('every dependency shows its working', () => {
   it('cites the regulation for the Advance, not a summary of it', () => {
     // This is the single claim in the app most likely to cost someone five
     // weeks of income, so it must point at the instrument itself.
+    // Uses isFromHost, not url.includes(): the substring form is the exact bug
+    // fixed elsewhere in this branch, and writing it here re-introduced a
+    // CodeQL alert within hours of removing the others.
     const advance = GOALS.find(g => g.id === 'uc-advance')!
-    expect(advance.sources.some(u => u.includes('legislation.gov.uk'))).toBe(true)
+    expect(advance.sources.some(u => isFromHost(u, 'legislation.gov.uk'))).toBe(true)
   })
 })
 

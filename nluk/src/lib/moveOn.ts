@@ -278,7 +278,7 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     script:
       'I am making a homelessness application. I am threatened with homelessness within 56 days and I am asking for the prevention duty. Please give me my Personalised Housing Plan in writing.',
     sources: [
-      'https://www.gov.uk/government/publications/homelessness-code-of-guidance-for-local-authorities',
+      'https://www.gov.uk/guidance/homelessness-code-of-guidance-for-local-authorities',
       'https://www.legislation.gov.uk/ukpga/1996/52/part/VII',
     ],
   },
@@ -327,7 +327,7 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     guideId: 'refugee-integration',
     sources: [
       'https://www.gov.uk/refugee-integration-loan',
-      'https://www.gov.uk/government/publications/flexible-support-fund',
+      'https://www.gov.uk/guidance/dwp-flexible-support-fund-dynamic-purchasing-system-2',
     ],
   },
   {

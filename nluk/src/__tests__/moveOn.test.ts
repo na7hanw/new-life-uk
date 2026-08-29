@@ -1,4 +1,5 @@
 import { differenceInDays } from 'date-fns'
+import { isFromAnyHost } from '../lib/hostMatch.ts'
 /**
  * Move-on date arithmetic.
  *
@@ -208,7 +209,7 @@ describe('every claim shows its working', () => {
   // Insurance numbers was extrapolated into three claims, two of which were
   // wrong and shipped. Unsourced assertions looked identical to sourced ones.
   // These tests make that impossible to repeat silently.
-  const OFFICIAL = /^https:\/\/(www\.)?(gov\.uk|legislation\.gov\.uk|nhs\.uk)\//
+  const OFFICIAL_HOSTS = ['gov.uk', 'legislation.gov.uk', 'nhs.uk']
 
   it('gives every step at least one source', () => {
     for (const a of MOVE_ON_ACTIONS) {
@@ -223,7 +224,7 @@ describe('every claim shows its working', () => {
     // what produced the wrong 42-day start date.
     for (const a of MOVE_ON_ACTIONS) {
       for (const url of a.sources) {
-        expect(OFFICIAL.test(url), `step "${a.id}" cites a non-official source: ${url}`).toBe(true)
+        expect(isFromAnyHost(url, OFFICIAL_HOSTS), `step "${a.id}" cites a non-official source: ${url}`).toBe(true)
       }
     }
   })
