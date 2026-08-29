@@ -35,6 +35,21 @@ jobs:
         uses: github/codeql-action/autobuild@v4
 
       - name: Perform CodeQL Analysis
+        id: analyze
         uses: github/codeql-action/analyze@v4
         with:
           category: '/language:${{ matrix.language }}'
+          # Also write the SARIF to disk so the findings can be read from the
+          # run itself. The check run summary reports only a severity count, and
+          # the alert detail lives behind the Security tab, which needs
+          # authenticated access — so a failure was not diagnosable from the run
+          # alone. Uploading to the code-scanning API still happens as before.
+          output: sarif-results
+
+      - name: Upload SARIF as an artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif-${{ matrix.language }}
+          path: sarif-results
+          retention-days: 7
