@@ -377,7 +377,7 @@ export const APPS: SaveItem[] = [
   {
     icon: "🚨",
     cat: "Business & Money",
-    content: { en: { title: "Action Fraud — Report Scams", desc: "The UK's national reporting centre for fraud and cybercrime. Report if you have been scammed or are suspicious of a firm. Call 0300 123 2040 (24/7) or report online. Also check the FCA ScamSmart site for investment fraud." } },
+    content: { en: { title: "Action Fraud — Report Scams", desc: "The UK's national reporting centre for fraud and cybercrime. Report if you have been scammed or are suspicious of a firm. Call 0300 123 2040 (Mon–Fri 8am–8pm) or report online any time at reportfraud.police.uk. Also check the FCA ScamSmart site for investment fraud." } },
     url: "https://www.actionfraud.police.uk",
     guideId: "scam-warnings",
     trustLevel: "official",

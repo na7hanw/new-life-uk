@@ -60,7 +60,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
     whatToDo:
       'Check your UKVI account to verify the link. Continue carrying your physical travel document when you travel — digital status does not replace the physical document.',
     urgency: 'important',
-    relatedGuideIds: ['evisa', 'sharecode', 'travel-docs'],
+    relatedGuideIds: ['evisa', 'sharecode', 'ctd'],
     relatedAppIds: ['UKVI (UK Visas and Immigration)'],
   },
   {
@@ -104,7 +104,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
     whatToDo:
       'If you need an ETA soon, apply before 8 April 2026 to pay £16. Apply via the official UK ETA app or GOV.UK — avoid unofficial sites that charge more.',
     urgency: 'action-needed',
-    relatedGuideIds: ['travel-docs', 'evisa'],
+    relatedGuideIds: ['ctd', 'evisa'],
     relatedAppIds: ['UK ETA (Electronic Travel Authorisation)'],
   },
   {
@@ -192,22 +192,22 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   },
   {
     id: 'refugee-30-month-protection-march-2026',
-    title: '30-month refugee leave for claims decided on or after 2 March 2026',
+    title: '30-month refugee leave for asylum claims MADE on or after 2 March 2026',
     sourceUrl: 'https://www.gov.uk/guidance/immigration-rules',
     sourceType: 'rules-change',
     publishedAt: '2026-03-02',
     lastChecked: '2026-03-22',
     summary:
-      'Refugee protection duration has changed depending on when your claim was decided. Claims decided BEFORE 1 March 2026: 5-year leave (existing framework). Claims decided ON OR AFTER 2 March 2026: 30 months (2.5 years) initial leave, which must be renewed before applying for ILR. Check your decision letter for your exact leave dates.',
+      'The cutoff is the date you CLAIMED asylum, not the date you were decided. Claimed on or before 1 March 2026: 5 years leave, settlement after 5 years, fee-free — even if your decision arrives much later. Claimed on or after 2 March 2026: the new \"core protection\" system, 30 months leave at a time, reviewed each period, with settlement announced at 20 years. Because decisions take 6-18+ months, most people being decided now claimed under the old rules. Check the length of leave on your decision letter and eVisa.',
     affectedGroups: [
-      'Refugees whose claims were decided on or after 2 March 2026',
+      'People who CLAIMED asylum on or after 2 March 2026 (not those merely decided after it)',
       'People planning their path to Indefinite Leave to Remain (ILR)',
     ],
     whatChanged:
-      'New refugees (decisions from 2 March 2026) receive 30 months of leave instead of 5 years. Leave must be renewed before applying for ILR.',
+      'Asylum claims made from 2 March 2026 lead to 30 months leave instead of 5 years, repeated 30-month reviews, and a 20-year route to settlement instead of 5. Unaccompanied children keep 5 years. Claims made before that date are unaffected.',
     whatToDo:
-      'Check your refugee decision letter for your exact leave expiry date. If you received a decision on or after 2 March 2026, you will need to renew your leave before it expires — set a reminder well in advance.',
-    urgency: 'important',
+      'Work out your CLAIM date, not your decision date. If you claimed on or before 1 March 2026 the old rules apply and your decision letter should show 5 years. If it shows 30 months and you claimed before 2 March 2026, that may be an error worth raising with an OISC-registered adviser. Either way, note your leave expiry and set a reminder well in advance.',
+    urgency: 'action-needed',
     relatedGuideIds: ['ilr', 'evisa', 'move-on'],
   },
 ]

@@ -31,7 +31,7 @@ export const SAVES: SaveItem[] = [
     content: {
       en: {
         title: 'Free Prescriptions',
-        desc: 'If you receive UC, Income Support, ESA, or Pension Credit — all NHS prescriptions are FREE. Pregnant women and new mothers also qualify. Get an HC2 certificate if on low income.',
+        desc: 'On UC, NHS prescriptions are free only if your earnings in your last assessment period were £435 or less (£935 with a child or LCW element) — wrongly claiming is a penalty of up to £100. Income Support, income-related ESA and Pension Credit Guarantee Credit qualify unconditionally. Asylum seekers on Section 95 support get an HC2 certificate automatically and do not need to apply. Pregnant women and new mothers also qualify. Get an HC2 certificate if on low income.',
       },
     },
     url: 'https://www.nhs.uk/nhs-services/help-with-health-costs/',

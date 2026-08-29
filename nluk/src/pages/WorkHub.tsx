@@ -123,7 +123,7 @@ export default function WorkHub() {
           <span className="tip-icon">⏳</span>
           <p className="tip-text">
             <strong>Permission to Work:</strong> Waited 12+ months for your decision? You may be eligible to apply.
-            Rules expand significantly from 26 March 2026 — this week.{' '}
+            Rules changed on 26 March 2026: wider for graduate-level roles, but care work and construction trades were removed.{' '}
             <button className={styles.inlineLink}
               onClick={() => navigate('/guide/permission-to-work')}>
               See the guide →
