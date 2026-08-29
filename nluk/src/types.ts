@@ -320,6 +320,9 @@ export interface AppContextValue {
   setStatusDate: (d: string) => void
   /** ISO date string of when the user first claimed asylum (for milestone tracking) */
   claimDate: string
+  /** ISO date on the asylum support discontinuation letter (second move-on clock) */
+  discontinuationDate: string
+  setDiscontinuationDate: (d: string) => void
   setClaimDate: (d: string) => void
   /** What the user most wants to do next in the UK */
   userAmbition: UserAmbition

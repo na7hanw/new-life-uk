@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Settings, ChevronRight, Bookmark } from 'lucide-react'
 import { differenceInDays, addDays, format, parseISO, isValid } from 'date-fns'
-import clsx from 'clsx'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP } from '../data/guides.ts'
 import { getSortedUpdates } from '../data/immigration-updates.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
+import MoveOnPlan from '../components/MoveOnPlan.tsx'
 import type { UserStatus } from '../types'
 import styles from './ProfilePage.module.css'
 
@@ -47,74 +47,6 @@ const STATUS_NEXT_STEPS: Partial<Record<UserStatus, { icon: string; text: string
     { icon: '💰', text: 'Start investing tax-free with a Stocks & Shares ISA', path: '/guide/investing' },
     { icon: '📜', text: 'UK rules every settled resident must know', path: '/guide/uk-rules' },
   ],
-}
-
-function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; setStatusDate: (d: string) => void }) {
-  const grantedDate = statusDate ? parseISO(statusDate) : null
-  const isDateValid = grantedDate !== null && isValid(grantedDate)
-
-  let daysLeft = 0
-  let deadline: Date | null = null
-  if (isDateValid && grantedDate) {
-    deadline = addDays(grantedDate, 42)
-    daysLeft = differenceInDays(deadline, new Date())
-  }
-
-  const isPast   = isDateValid && daysLeft < 0
-  const isUrgent = isDateValid && !isPast && daysLeft <= 14
-
-  return (
-    <div className={clsx(styles.deadlineBanner, isUrgent && styles.deadlineBannerUrgent, isPast && styles.deadlineBannerPast)}>
-      <div className={styles.deadlineTop}>
-        <span className={styles.deadlineEmoji}>{isPast ? '⚠️' : '⏰'}</span>
-        <div>
-          {isDateValid ? (
-            <>
-              <div className={styles.deadlineDays}>
-                {isPast
-                  ? `${Math.abs(daysLeft)} days past deadline`
-                  : `${daysLeft} days left`}
-              </div>
-              <div className={styles.deadlineSub}>
-                {isPast
-                  ? 'Your move-on deadline has passed — contact your council immediately'
-                  : daysLeft === 0
-                    ? 'Your move-on deadline is today — act now'
-                    : 'to claim Universal Credit and secure housing'}
-              </div>
-            </>
-          ) : (
-            <>
-              <div className={styles.deadlineDays}>42-day move-on</div>
-              <div className={styles.deadlineSub}>Enter your status grant date to see your deadline</div>
-            </>
-          )}
-        </div>
-      </div>
-
-      {isDateValid && deadline && (
-        <div className={styles.deadlineDate}>
-          Deadline: <strong>{format(deadline, 'd MMMM yyyy')}</strong>
-          {' · '}Status granted: {format(grantedDate!, 'd MMMM yyyy')}
-        </div>
-      )}
-
-      <div className={styles.deadlineDateInput}>
-        <label htmlFor="status-date-input">Status granted:</label>
-        <input
-          id="status-date-input"
-          type="date"
-          value={statusDate}
-          max={new Date().toISOString().slice(0, 10)}
-          onChange={e => setStatusDate(e.target.value)}
-          aria-label="Date refugee status was granted"
-        />
-        {statusDate && (
-          <button className={styles.deadlineClearBtn} onClick={() => setStatusDate('')} aria-label="Clear date">✕</button>
-        )}
-      </div>
-    </div>
-  )
 }
 
 // ── Asylum Milestones: FE college (6 months) + PTW (12 months) ─────────────────
@@ -297,7 +229,7 @@ const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
 ]
 
 export default function ProfilePage() {
-  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [showStatusPicker, setShowStatusPicker] = useState(false)
 
@@ -457,7 +389,12 @@ export default function ProfilePage() {
 
 {/* ── Move-on countdown (refugees only) ─────────────── */}
       {userStatus === 'refugee' && (
-        <MoveOnCountdown statusDate={statusDate} setStatusDate={setStatusDate} />
+        <MoveOnPlan
+          statusDate={statusDate}
+          setStatusDate={setStatusDate}
+          discontinuationDate={discontinuationDate}
+          setDiscontinuationDate={setDiscontinuationDate}
+        />
       )}
 
       {/* ── Progress Checklist ────────────────────────────── */}

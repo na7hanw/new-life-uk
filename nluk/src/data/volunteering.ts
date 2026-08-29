@@ -1,6 +1,7 @@
 /**
- * Volunteering organisations — personalised for a native Amharic speaker
- * in the Bolton/Greater Manchester area who is an asylum seeker.
+ * Volunteering organisations — for a native Amharic speaker
+ * in the Bolton/Greater Manchester area. Useful on either status: reference-
+ * building with right to work, and permitted from day one without it.
  *
  * Source: career-ops/portals.yml volunteering_orgs
  * Last verified: April 2026
