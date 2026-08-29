@@ -44,7 +44,7 @@
   z-index: 120;
   width: min(300px, 90vw);
   background: var(--bg);
-  border: 1px solid var(--sep);
+  border: 1px solid var(--bd);
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
   padding: 10px 12px 10px;
@@ -71,7 +71,7 @@
 .popoverTitle {
   font-weight: 700;
   font-size: 0.88rem;
-  color: var(--t1);
+  color: var(--tx);
 }
 
 .closeBtn {
@@ -87,7 +87,7 @@
 
 .closeBtn:hover {
   background: var(--bg2);
-  color: var(--t1);
+  color: var(--tx);
 }
 
 /* ── Popover body ──────────────────────────────────────────────────── */

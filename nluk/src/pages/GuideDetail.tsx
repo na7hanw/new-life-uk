@@ -146,7 +146,7 @@ export default function GuideDetail() {
                 <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#dc2626', marginBottom: 3 }}>
                   ⚠️ Rule change — action may be needed
                 </div>
-                <div style={{ fontSize: '0.82rem', color: 'var(--t1)', marginBottom: 4 }}>
+                <div style={{ fontSize: '0.82rem', color: 'var(--tx)', marginBottom: 4 }}>
                   {u.whatChanged}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--t2)' }}>

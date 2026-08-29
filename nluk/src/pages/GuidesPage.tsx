@@ -6,7 +6,7 @@ import Fuse from 'fuse.js'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS, orderGuides } from '../data/guides.ts'
-import { getTrendingGuideIds } from '../lib/search.ts'
+import { getTrendingGuideIds } from '../lib/searchHistory.ts'
 import { useRouteTranslation, type RouteString } from '../lib/useRouteTranslation.ts'
 import EmptyState from '../components/EmptyState.tsx'
 import ImmigrationUpdatesSection from '../components/ImmigrationUpdatesSection.tsx'
@@ -138,8 +138,8 @@ export default function GuidesPage() {
                   style={{
                     flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6,
                     padding: '6px 10px', borderRadius: 20,
-                    background: 'var(--bg2)', border: '1px solid var(--sep)',
-                    fontSize: '0.8rem', color: 'var(--t1)', cursor: 'pointer', whiteSpace: 'nowrap',
+                    background: 'var(--bg2)', border: '1px solid var(--bd)',
+                    fontSize: '0.8rem', color: 'var(--tx)', cursor: 'pointer', whiteSpace: 'nowrap',
                   }}
                 >
                   <span>{g.icon}</span>

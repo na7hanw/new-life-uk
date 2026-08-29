@@ -126,18 +126,18 @@ function MilestonePill({ label, icon, reached, daysLeft, date, guideId, desc }: 
     <div style={{
       padding: '10px 14px', borderRadius: 10,
       background: reached ? 'color-mix(in srgb, #16a34a 8%, var(--bg2))' : 'var(--bg2)',
-      border: `1.5px solid ${reached ? '#16a34a' : 'var(--sep)'}`,
+      border: `1.5px solid ${reached ? '#16a34a' : 'var(--bd)'}`,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
         <span style={{ fontSize: '1.2rem' }}>{icon}</span>
-        <span style={{ fontWeight: 700, fontSize: '0.82rem', color: reached ? '#16a34a' : 'var(--t1)' }}>
+        <span style={{ fontWeight: 700, fontSize: '0.82rem', color: reached ? '#16a34a' : 'var(--tx)' }}>
           {reached ? '✅ Available now' : `${daysLeft} days away`}
         </span>
         <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--t3)' }}>
           {date ? format(date, 'd MMM yyyy') : ''}
         </span>
       </div>
-      <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--t1)', marginBottom: 2 }}>{label}</div>
+      <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--tx)', marginBottom: 2 }}>{label}</div>
       <div style={{ fontSize: '0.78rem', color: 'var(--t2)', marginBottom: reached ? 6 : 0 }}>{desc}</div>
       {reached && (
         <button
@@ -182,7 +182,7 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
           <span style={{ fontSize: '1.2rem' }}>🗣️</span>
           <span style={{ fontWeight: 700, fontSize: '0.82rem', color: '#16a34a' }}>✅ Available now</span>
         </div>
-        <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--t1)', marginBottom: 2 }}>Free ESOL English Classes</div>
+        <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--tx)', marginBottom: 2 }}>Free ESOL English Classes</div>
         <div style={{ fontSize: '0.78rem', color: 'var(--t2)', marginBottom: 6 }}>
           ESOL classes are free for all asylum seekers from day one — no waiting period, no conditions.
         </div>
@@ -207,7 +207,7 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
       ) : (
         <div style={{
           padding: '10px 14px', borderRadius: 10,
-          background: 'var(--bg2)', border: '1.5px solid var(--sep)',
+          background: 'var(--bg2)', border: '1.5px solid var(--bd)',
           fontSize: '0.82rem', color: 'var(--t2)',
         }}>
           <span style={{ fontSize: '1.2rem' }}>🎓</span>{' '}
@@ -228,7 +228,7 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
       ) : (
         <div style={{
           padding: '10px 14px', borderRadius: 10,
-          background: 'var(--bg2)', border: '1.5px solid var(--sep)',
+          background: 'var(--bg2)', border: '1.5px solid var(--bd)',
           fontSize: '0.82rem', color: 'var(--t2)',
         }}>
           <span style={{ fontSize: '1.2rem' }}>🔓</span>{' '}
@@ -247,7 +247,7 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
           max={new Date().toISOString().slice(0, 10)}
           onChange={e => setClaimDate(e.target.value)}
           aria-label="Date you first claimed asylum"
-          style={{ flex: 1, fontSize: '0.85rem', padding: '4px 8px', borderRadius: 8, border: '1px solid var(--sep)', background: 'var(--bg2)', color: 'var(--t1)' }}
+          style={{ flex: 1, fontSize: '0.85rem', padding: '4px 8px', borderRadius: 8, border: '1px solid var(--bd)', background: 'var(--bg2)', color: 'var(--tx)' }}
         />
         {claimDate && (
           <button
@@ -357,7 +357,7 @@ export default function ProfilePage() {
                 <div style={{ fontWeight: 700, fontSize: '0.8rem', color: '#dc2626', marginBottom: 3 }}>
                   ⚠️ Action needed
                 </div>
-                <div style={{ fontSize: '0.82rem', color: 'var(--t1)', fontWeight: 600, marginBottom: 2 }}>
+                <div style={{ fontSize: '0.82rem', color: 'var(--tx)', fontWeight: 600, marginBottom: 2 }}>
                   {u.title}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--t2)' }}>{u.whatToDo}</div>

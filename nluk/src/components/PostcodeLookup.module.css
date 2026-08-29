@@ -13,9 +13,9 @@
   flex: 1;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1.5px solid var(--sep);
+  border: 1.5px solid var(--bd);
   background: var(--bg);
-  color: var(--t1);
+  color: var(--tx);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -81,7 +81,7 @@
 .resultPostcode {
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--t1);
+  color: var(--tx);
   letter-spacing: 0.1em;
   margin-bottom: 8px;
 }
@@ -106,7 +106,7 @@
 }
 
 .resultValue {
-  color: var(--t1);
+  color: var(--tx);
 }
 
 .confirmBtn {

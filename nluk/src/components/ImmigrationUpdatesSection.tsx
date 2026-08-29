@@ -30,7 +30,7 @@ const URGENCY_BORDER: Record<string, string> = {
 const URGENCY_BG: Record<string, string> = {
   'action-needed': 'rgba(220,38,38,.06)',
   'important':     'rgba(245,158,11,.06)',
-  'info':          'rgba(var(--ac-rgb, 59,130,246),.04)',
+  'info':          'color-mix(in srgb, var(--ac) 4%, transparent)',
 }
 
 // ── Compact update row (used on GuidesPage) ───────────────────────────────────

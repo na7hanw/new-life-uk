@@ -62,7 +62,7 @@ function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }: SOSModalProps) {
                 border: '1.5px solid color-mix(in srgb, #dc2626 30%, transparent)',
               }}>
                 <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#dc2626', marginBottom: 2 }}>⚠️ Action needed</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--t1)', marginBottom: 2 }}>{u.title}</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--tx)', marginBottom: 2 }}>{u.title}</div>
                 <div style={{ fontSize: '0.76rem', color: 'var(--t2)' }}>{u.whatToDo}</div>
                 <a href={u.sourceUrl} target="_blank" rel="noopener noreferrer"
                   style={{ fontSize: '0.72rem', color: '#dc2626', display: 'inline-block', marginTop: 2 }}>

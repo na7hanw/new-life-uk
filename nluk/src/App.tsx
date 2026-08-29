@@ -294,7 +294,7 @@ export default function App() {
         theme={dark ? 'dark' : 'light'}
         toastOptions={{
           duration: 2200,
-          style: { borderRadius: 'var(--r, 12px)', fontSize: '0.9rem' },
+          style: { borderRadius: 'var(--radius)', fontSize: '0.9rem' },
         }}
       />
 
@@ -379,9 +379,16 @@ export default function App() {
       <ConsentBanner ui={ui} />
 
       {/* COMMAND PALETTE — Cmd+K / search button in header */}
-      <Suspense fallback={null}>
-        <CommandPalette open={showPalette} onClose={() => setShowPalette(false)} />
-      </Suspense>
+      {/* Mounted only when open. React invokes a lazy() factory when the element
+          is RENDERED, not when it becomes visible — so rendering it
+          unconditionally fetched and evaluated the chunk (plus its module-scope
+          Fuse index build) on every first paint, for a Cmd+K palette that a user
+          on a phone has no keyboard to open. */}
+      {showPalette && (
+        <Suspense fallback={null}>
+          <CommandPalette open onClose={() => setShowPalette(false)} />
+        </Suspense>
+      )}
     </div>
   )
 }
