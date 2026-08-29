@@ -130,5 +130,5 @@ const UI_OVERRIDES = {
 export const UI: Record<string, UiStrings> = {};
 LANGS.forEach(({ code }) => {
   const ov = (UI_OVERRIDES as Record<string, Partial<UiStrings>>)[code] || {};
-  UI[code] = { ...BASE_UI, ...ov, status: { ...BASE_UI.status, ...(ov.status || {}) } };
+  UI[code] = { ...BASE_UI, ...ov };
 });

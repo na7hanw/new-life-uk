@@ -253,7 +253,9 @@ describe('Lifting lane — P5 ecctisStatus validation', () => {
   it('cscs-aqp-ecctis cert eligibilityNotes mention ISS requirement', () => {
     const cert = CERTS.find(c => c.id === 'cscs-aqp-ecctis')
     const notes: string[] = cert?.eligibilityNotes ?? []
-    const steps: string[] = cert?.content?.en?.steps ?? []
+    // `steps` is top-level on Cert, not under content.en — reading the wrong
+    // path made this assertion vacuous (it always saw an empty array).
+    const steps: string[] = cert?.steps?.en ?? []
     const allText = [...notes, ...steps].join(' ')
     expect(allText).toMatch(/ISS|International Statement of Subjects|aqp/i)
   })

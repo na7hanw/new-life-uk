@@ -17,7 +17,6 @@
   .modal-content { max-width: 620px; }
   .lang-overlay { max-width: 620px; }
   .hero-title { font-size: 1.7rem; }
-  .qa-grid { grid-template-columns: repeat(4, 1fr); }
 }
 @media (min-width: 900px) {
   :root { --gutter: 24px; }

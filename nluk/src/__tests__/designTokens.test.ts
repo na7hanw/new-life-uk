@@ -13,6 +13,10 @@
  *
  * None of it was detectable at build time, because CSS does not error. This
  * test is the detection.
+ *
+ * Reads from disk with node:fs rather than import.meta.glob: Vitest stubs CSS
+ * imports by default (css: false), so a `?raw` glob returns empty strings and
+ * every assertion here would pass vacuously.
  */
 import { describe, it, expect } from 'vitest'
 import { readFileSync, readdirSync, statSync } from 'node:fs'
@@ -23,35 +27,40 @@ import { fileURLToPath } from 'node:url'
 const SRC = dirname(dirname(fileURLToPath(import.meta.url)))
 
 function walk(dir: string, out: string[] = []): string[] {
-  for (const e of readdirSync(dir)) {
-    const p = join(dir, e)
+  for (const entry of readdirSync(dir)) {
+    const p = join(dir, entry)
     if (statSync(p).isDirectory()) walk(p, out)
-    else if (/\.(css|tsx)$/.test(e)) out.push(p)
+    else if (/\.(css|tsx)$/.test(entry)) out.push(p)
   }
   return out
 }
 
-const TOKENS_FILE = join(SRC, 'styles', 'tokens.css')
-const defined = new Set(
-  [...readFileSync(TOKENS_FILE, 'utf8').matchAll(/^\s*(--[a-z0-9-]+)\s*:/gm)].map(m => m[1])
-)
+const ALL_FILES = walk(SRC)
+const TOKENS_PATH = ALL_FILES.find(p => p.endsWith(join('styles', 'tokens.css')))!
+const TOKENS_CSS = readFileSync(TOKENS_PATH, 'utf8')
+
+const defined = new Set([...TOKENS_CSS.matchAll(/^\s*(--[a-z0-9-]+)\s*:/gm)].map(m => m[1]))
 
 describe('CSS custom properties', () => {
+  it('finds the token file and some tokens', () => {
+    expect(TOKENS_PATH, 'styles/tokens.css must be discoverable').toBeTruthy()
+    expect(defined.size).toBeGreaterThan(10)
+  })
+
   it('every var() reference resolves to a token defined in tokens.css', () => {
     const missing = new Map<string, string[]>()
 
-    for (const file of walk(SRC)) {
-      const src = readFileSync(file, 'utf8')
+    for (const path of ALL_FILES) {
+      const src = readFileSync(path, 'utf8')
       for (const m of src.matchAll(/var\(\s*(--[a-z0-9-]+)/g)) {
         const name = m[1]
         if (defined.has(name)) continue
-        // A var() with its own fallback still degrades gracefully, but an
-        // undefined token with no fallback silently deletes its declaration.
-        const rest = src.slice(m.index! + m[0].length)
-        const hasFallback = /^\s*,/.test(rest)
+        // A var() with its own fallback still degrades gracefully; an undefined
+        // token with no fallback silently deletes its whole declaration.
+        const hasFallback = /^\s*,/.test(src.slice(m.index! + m[0].length))
         if (hasFallback) continue
         if (!missing.has(name)) missing.set(name, [])
-        missing.get(name)!.push(file.replace(SRC, 'src'))
+        missing.get(name)!.push(path.replace(SRC, 'src'))
       }
     }
 
@@ -63,8 +72,7 @@ describe('CSS custom properties', () => {
   })
 
   it('defines the tokens the theme depends on, in both themes', () => {
-    const css = readFileSync(TOKENS_FILE, 'utf8')
-    const darkBlock = css.slice(css.indexOf('.dark'))
+    const darkBlock = TOKENS_CSS.slice(TOKENS_CSS.indexOf('.dark'))
     // Anything colour-bearing must be overridden for dark, or dark mode reuses
     // a light value against a near-black background.
     for (const t of ['--bg', '--bg2', '--bd', '--tx', '--t2', '--t3', '--ac']) {
@@ -76,7 +84,8 @@ describe('CSS custom properties', () => {
 
 describe('motion', () => {
   it('respects prefers-reduced-motion', () => {
-    const css = readFileSync(join(SRC, 'styles', 'transitions.css'), 'utf8')
-    expect(css).toContain('prefers-reduced-motion: reduce')
+    const p = ALL_FILES.find(f => f.endsWith(join('styles', 'transitions.css')))
+    expect(p, 'transitions.css must exist').toBeTruthy()
+    expect(readFileSync(p!, 'utf8')).toContain('prefers-reduced-motion: reduce')
   })
 })
