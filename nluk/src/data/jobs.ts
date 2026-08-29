@@ -22,7 +22,7 @@ export const JOBS: Job[] = [
       'Smartphone',
     ],
     applyLinks: [
-      { name: 'Deliveroo Riders', url: 'https://riders.deliveroo.co.uk' }, // kept — verified working March 2026
+      { name: 'Deliveroo Riders', url: 'https://rider.deliveroo.co.uk' }, // kept — verified working March 2026
       { name: 'Uber Eats — Deliver with Uber', url: 'https://www.uber.com/gb/en/deliver/' }, // kept — verified working March 2026
       { name: 'Just Eat — Become a courier', url: 'https://couriers.just-eat.co.uk/' }, // re-added March 2026 - verified current signup flow
       { name: 'Stuart Couriers', url: 'https://couriers.stuart.com/apply' }, // Updated March 2026 - verified current app-based flow
@@ -804,7 +804,7 @@ export const CERTS = [
       },
       {
         name: 'SWAPs programme (GOV.UK)',
-        url: 'https://www.gov.uk/government/publications/sector-based-work-academies-employer-guide',
+        url: 'https://www.gov.uk/government/publications/sector-based-work-academy-programme-employer-guide',
       },
       {
         name: 'Find SIA-approved trainers',
@@ -931,7 +931,7 @@ export const CERTS = [
         url: 'https://www.gov.uk/take-practice-theory-test',
       },
       { name: 'Driver CPC explained (GOV.UK)', url: 'https://www.gov.uk/driver-cpc-training' },
-      { name: 'Official Highway Code (GOV.UK)', url: 'https://www.gov.uk/highway-code' },
+      { name: 'Official Highway Code (GOV.UK)', url: 'https://www.gov.uk/guidance/the-highway-code' },
     ],
   },
   {
@@ -964,7 +964,7 @@ export const CERTS = [
     studyLinks: [
       {
         name: 'Care Certificate standards (Skills for Care)',
-        url: 'https://www.skillsforcare.org.uk/Developing-your-workforce/Care-Certificate/Care-Certificate.aspx',
+        url: 'https://www.skillsforcare.org.uk/Developing-your-workforce/Care-Certificate/Care-Certificate-standards.aspx',
       },
       {
         name: 'Free care training resources (Skills for Care)',
@@ -1089,11 +1089,11 @@ export const CERTS = [
       },
       {
         name: 'Exchange overseas driving licence (GOV.UK)',
-        url: 'https://www.gov.uk/exchange-foreign-driving-licence',
+        url: 'https://www.gov.uk/exchange-nongb-driving-licence',
       },
     ],
     studyLinks: [
-      { name: 'Official Highway Code — FREE (GOV.UK)', url: 'https://www.gov.uk/highway-code' },
+      { name: 'Official Highway Code — FREE (GOV.UK)', url: 'https://www.gov.uk/guidance/the-highway-code' },
       {
         name: 'Free theory test practice (GOV.UK)',
         url: 'https://www.gov.uk/take-practice-theory-test',
@@ -1133,7 +1133,7 @@ export const CERTS = [
         name: 'WEA — Find a Community Interpreting Course',
         url: 'https://www.wea.org.uk/courses',
       },
-      { name: 'CIOL — DPSI (next progression step)', url: 'https://www.ciol.org.uk/dpsi' },
+      { name: 'CIOL — DPSI (next progression step)', url: 'https://www.ciol.org.uk/take-the-dpsi' },
     ],
     studyLinks: [
       {
@@ -1171,7 +1171,7 @@ export const CERTS = [
         name: 'Propertymark — qualifications',
         url: 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
       },
-      { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/free-courses-for-jobs' },
+      { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/guidance/free-courses-for-jobs' },
     ],
     studyLinks: [
       {
@@ -1208,7 +1208,7 @@ export const CERTS = [
         name: 'CIH Online Learning',
         url: 'https://www.cih.org/learning-and-development/qualifications/',
       },
-      { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/free-courses-for-jobs' },
+      { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/guidance/free-courses-for-jobs' },
     ],
     studyLinks: [],
   },
@@ -1239,7 +1239,7 @@ export const CERTS = [
         name: 'CIH Online Learning',
         url: 'https://www.cih.org/learning-and-development/qualifications/',
       },
-      { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/free-courses-for-jobs' },
+      { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/guidance/free-courses-for-jobs' },
     ],
     studyLinks: [],
   },
@@ -1529,7 +1529,7 @@ export const CERTS = [
     },
     links: [
       { name: 'East Coast College — find a course', url: 'https://www.eastcoast.ac.uk' },
-      { name: 'CIOL — DPSI (next progression step)', url: 'https://www.ciol.org.uk/dpsi' },
+      { name: 'CIOL — DPSI (next progression step)', url: 'https://www.ciol.org.uk/take-the-dpsi' },
     ],
     studyLinks: [
       {
@@ -1570,7 +1570,7 @@ export const CERTS = [
       },
       {
         name: 'Junior Estate Agent Standard (IfATE)',
-        url: 'https://www.instituteforapprenticeships.org/apprenticeship-standards/junior-estate-agent-v1-0',
+        url: 'https://skillsengland.education.gov.uk/apprenticeship-standards/st0329-v1-0',
       },
       {
         name: 'Apprenticeship funding guide (GOV.UK)',
@@ -1975,7 +1975,7 @@ export const JOB_MAP: Record<string, Job> = Object.fromEntries(
 
 // ─── Official source URLs per job (keyed by Job.id) ─────────────
 export const JOB_SOURCE_URL: Record<string, string> = {
-  'delivery-rider': 'https://riders.deliveroo.co.uk',
+  'delivery-rider': 'https://rider.deliveroo.co.uk',
   'courier-van': 'https://flex.amazon.co.uk/',
   warehouse: 'https://www.amazon.jobs/en/search?country=GBR',
   'healthcare-assistant': 'https://www.jobs.nhs.uk/',
@@ -2034,7 +2034,7 @@ export const CAREERS = [
       },
       {
         name: 'UK ENIC (degree recognition)',
-        url: 'https://www.enic.org.uk/Qualifications/SOC/Default.aspx',
+        url: 'https://www.enic.org.uk/individuals/statement-of-comparability',
       },
       { name: 'Engineering Council (UK)', url: 'https://www.engc.org.uk' },
       {
@@ -2102,7 +2102,7 @@ export const CAREERS = [
     },
     links: [
       { name: 'ACCA — refugee bursary', url: 'https://www.accaglobal.com/' },
-      { name: 'CIMA', url: 'https://www.cimaglobal.com/' },
+      { name: 'CIMA', url: 'https://www.aicpa-cima.com/' },
       { name: 'AAT — qualifications', url: 'https://www.aat.org.uk/' },
       { name: 'CFA Institute', url: 'https://www.cfainstitute.org/' },
       { name: 'RefuAid — professional loans', url: 'https://www.refuaid.org' },
@@ -2131,7 +2131,7 @@ export const CAREERS = [
       { name: 'CMI (management institute)', url: 'https://www.managers.org.uk/' },
       {
         name: 'UK ENIC (degree recognition)',
-        url: 'https://www.enic.org.uk/Qualifications/SOC/Default.aspx',
+        url: 'https://www.enic.org.uk/individuals/statement-of-comparability',
       },
       {
         name: 'Find a degree apprenticeship',
@@ -2243,7 +2243,7 @@ export const CAREERS = [
       },
       {
         name: 'UK ENIC (degree recognition)',
-        url: 'https://www.enic.org.uk/Qualifications/SOC/Default.aspx',
+        url: 'https://www.enic.org.uk/individuals/statement-of-comparability',
       },
     ],
   },
@@ -2343,7 +2343,7 @@ export const CAREERS = [
       },
       {
         name: 'UK ENIC (degree recognition)',
-        url: 'https://www.enic.org.uk/Qualifications/SOC/Default.aspx',
+        url: 'https://www.enic.org.uk/individuals/statement-of-comparability',
       },
       { name: 'NEC Contracts (free resources)', url: 'https://www.neccontract.com/' },
       {
@@ -2379,7 +2379,7 @@ export const CAREERS = [
     links: [
       { name: 'WEA — Level 2 Community Interpreting', url: 'https://www.wea.org.uk/courses' },
       { name: 'NRPSI — National Register', url: 'https://www.nrpsi.org.uk' },
-      { name: 'DPSI — Chartered Institute of Linguists', url: 'https://www.ciol.org.uk/dpsi' },
+      { name: 'DPSI — Chartered Institute of Linguists', url: 'https://www.ciol.org.uk/take-the-dpsi' },
     ],
   },
   {
@@ -2842,7 +2842,7 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   forklift: 'https://www.rtitb.com/course-locator/',
   'hgv-licence': 'https://www.gov.uk/become-lorry-bus-driver',
   'care-cert':
-    'https://www.skillsforcare.org.uk/Developing-your-workforce/Care-Certificate/Care-Certificate.aspx',
+    'https://www.skillsforcare.org.uk/Developing-your-workforce/Care-Certificate/Care-Certificate-standards.aspx',
   'personal-licence': 'https://www.gov.uk/find-licences/premises-licence',
   'phv-licence': 'https://www.gov.uk/taxi-driver-licence',
   'driving-theory': 'https://www.gov.uk/book-theory-test',
@@ -2859,7 +2859,7 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   'rtitb-instructor': 'https://www.rtitb.com/training/instructor-training/',
   'eastcoast-community-interpreting-l2': 'https://www.eastcoast.ac.uk',
   'junior-estate-agent-l2-apprenticeship':
-    'https://www.instituteforapprenticeships.org/apprenticeship-standards/junior-estate-agent-v1-0',
+    'https://skillsengland.education.gov.uk/apprenticeship-standards/st0329-v1-0',
   'cpcs-forward-tipping-dumper-a09': 'https://www.cpcs.uk.com/cpcs-testing/',
   'citb-hse-test':
     'https://www.citb.co.uk/courses-and-qualifications/health-safety-and-environment-hse-test-and-cards/book-a-test/',

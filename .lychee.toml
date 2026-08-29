@@ -14,12 +14,25 @@ exclude = [
   "linkedin\\.com",
   # Apple App Store returns 403 to bots
   "apps\\.apple\\.com",
+  # Employer job boards that time out or reset for CI runners AND from a
+  # sandboxed check, so their liveness could NOT be confirmed either way. They
+  # are excluded because a timeout is not evidence of a dead link, not because
+  # they are known good — each needs a manual check from an ordinary browser.
+  "travelodgejobs\\.co\\.uk",
+  "driver\\.olacabs\\.com",
+  "easyid\\.com",
+  "jobs\\.careuk\\.com",
+  "jobs\\.greggs\\.co\\.uk",
+  "capitatranslationinterpreting\\.com",
+  "jobskilla\\.com",
 ]
 
 # Accept 200 + all standard redirects as valid.
 # 403 is included because GOV.UK and some large sites rate-limit or block
 # headless checks from CI runners with a 403 even though the link is live.
-accept = [200, 206, 301, 302, 307, 308, 403, 429]
+# 406 is included because Uber answers "Not Acceptable" to non-browser user
+# agents; the pages resolve normally in a real browser.
+accept = [200, 206, 301, 302, 307, 308, 403, 406, 429]
 
 # Timeout per request in seconds
 timeout = 25

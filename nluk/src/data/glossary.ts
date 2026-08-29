@@ -37,7 +37,7 @@ const GLOSSARY_RAW: Record<string, GlossaryEntry> = {
   evisa: {
     term: 'eVisa',
     definition: 'A digital record of your UK immigration status, accessed through a UKVI online account. Replaces the physical BRP card from 2025.',
-    sourceUrl: 'https://www.gov.uk/guidance/online-immigration-status-evisa',
+    sourceUrl: 'https://www.gov.uk/evisa',
   },
   nrpf: {
     term: 'NRPF',
@@ -155,7 +155,7 @@ const GLOSSARY_RAW: Record<string, GlossaryEntry> = {
   'share code': {
     term: 'Share Code',
     definition: 'A 9-character code generated on gov.uk that proves your immigration status to employers or landlords without giving them your documents.',
-    sourceUrl: 'https://www.gov.uk/view-prove-immigration-status',
+    sourceUrl: 'https://www.gov.uk/evisa/view-evisa-get-share-code-prove-immigration-status',
   },
   bno: {
     term: 'BN(O)',

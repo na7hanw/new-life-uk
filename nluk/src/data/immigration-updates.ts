@@ -44,7 +44,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   {
     id: 'evisa-travel-doc-march-2026',
     title: 'Home Office travel documents now automatically linked to UKVI accounts',
-    sourceUrl: 'https://www.gov.uk/guidance/online-immigration-status-evisa',
+    sourceUrl: 'https://www.gov.uk/evisa',
     sourceType: 'official',
     publishedAt: '2026-03-11',
     lastChecked: '2026-03-22',

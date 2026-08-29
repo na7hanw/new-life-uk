@@ -81,7 +81,7 @@ export const SAVES: SaveItem[] = [
         desc: 'On UC or low income? Apply to your local council for Council Tax Reduction. Many refugees get 100% — meaning zero council tax.',
       },
     },
-    url: 'https://www.gov.uk/council-tax-reduction',
+    url: 'https://www.gov.uk/apply-council-tax-reduction',
   },
   {
     icon: '🍼',
@@ -117,7 +117,7 @@ export const SAVES: SaveItem[] = [
         desc: 'Trussell Trust runs 1,400+ food banks. Usually need a referral from GP, Jobcentre, or Citizens Advice — but many accept walk-ins. Free emergency food for 3 days.',
       },
     },
-    url: 'https://www.trusselltrust.org/get-help/find-a-foodbank/',
+    url: 'https://www.trussell.org.uk/emergency-food/find-a-foodbank',
   },
   {
     icon: '👕',
@@ -129,7 +129,7 @@ export const SAVES: SaveItem[] = [
         desc: "Most councils and many schools have free uniform schemes. Some councils give £100+ grants. Check with your child's school or local council.",
       },
     },
-    url: 'https://www.gov.uk/help-school-clothing-costs',
+    url: 'https://www.gov.uk/school-uniform',
   },
   {
     icon: '🏛',
@@ -239,7 +239,7 @@ export const GEMS: SaveItem[] = [
         desc: 'UK ENIC: £49 Statement of Comparability. Refugees with missing docs: refugee@ecctis.com.',
       },
     },
-    url: 'https://www.enic.org.uk/Qualifications/SOC/Default.aspx',
+    url: 'https://www.enic.org.uk/individuals/statement-of-comparability',
   },
   {
     icon: '💎',
@@ -299,7 +299,7 @@ export const GEMS: SaveItem[] = [
         desc: 'Ask Work Coach: Flexible Support Fund (up to £300), SWAPs (free training + interview), Restart Scheme.',
       },
     },
-    url: 'https://www.gov.uk/government/publications/sector-based-work-academies-employer-guide',
+    url: 'https://www.gov.uk/government/publications/sector-based-work-academy-programme-employer-guide',
   },
   {
     icon: '🏦',
