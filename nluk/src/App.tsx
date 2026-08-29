@@ -267,7 +267,7 @@ export default function App() {
       {isDetail && !showLang && (
         <button
           className="btn-sos"
-          style={{ position: 'fixed', top: 'calc(8px + env(safe-area-inset-top))', insetInlineEnd: 8, zIndex: 400, minHeight: 44 }}
+          style={{ position: 'fixed', bottom: 'calc(76px + env(safe-area-inset-bottom))', insetInlineEnd: 76, zIndex: 400, minHeight: 44 }}
           onClick={() => { navigator?.vibrate?.(15); setSOS(true) }}
           aria-label="Emergency SOS"
         >
