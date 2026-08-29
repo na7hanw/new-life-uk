@@ -672,16 +672,16 @@ export const CERTS = [
     founderOrder: 16,
     content: { en: { title: 'DBS Check', sector: 'Care, education, childcare, security' } },
     time: '24–72 hrs',
-    cost: '£21.50 basic / Free enhanced',
+    cost: '£21.50 basic or standard · £49.50 enhanced · free for volunteers',
     freeRoute: 'FREE Enhanced DBS for volunteers — your organisation applies on your behalf.',
     steps: {
       en: [
-        'Decide which level you need: Basic (£18, any job), Standard (criminal record checks), Enhanced (care, education, NHS).',
+        'Decide which level you need: Basic (£21.50, any job), Standard (£21.50, criminal record checks), Enhanced (£49.50, care, education, NHS).',
         'Basic DBS: apply yourself on GOV.UK — result in 24–72 hours.',
         'Standard/Enhanced DBS: your employer applies via an umbrella body — you cannot apply yourself.',
         'Volunteers: your organisation applies for FREE Enhanced DBS — just ask them.',
-        'DBS Update Service (£13/yr): keep your certificate live and shareable with multiple employers.',
-        '⚠ Most employers only need Basic DBS. Never pay more than £18 unless your role specifically requires Enhanced.',
+        'DBS Update Service (£16/yr): keep one certificate live and reuse it with every employer or agency, instead of waiting weeks for a new check each time. Free for volunteers. If you are going to need more than one DBS, this is the cheapest thing you will do.',
+        '⚠ Most employers only need Basic DBS. Never pay more than £21.50 unless the role genuinely requires Enhanced — and if you are self-employed you cannot buy an Enhanced check at all, so anyone selling you one is not selling what they say they are.',
       ],
     },
     links: [
