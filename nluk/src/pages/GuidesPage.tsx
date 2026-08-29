@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Search, Bookmark } from 'lucide-react'
 import { toast } from 'sonner'
 import Fuse from 'fuse.js'
@@ -150,27 +150,6 @@ export default function GuidesPage() {
           </div>
         </div>
       )}
-
-      {/* Document Scanner quick-action */}
-      {!search && (
-        <Link
-          to="/scan"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 12,
-            margin: '0 var(--gutter) 12px', padding: '10px 14px',
-            borderRadius: 12, background: 'var(--bg2)', border: '1px solid var(--sep)',
-            textDecoration: 'none', color: 'var(--t1)',
-          }}
-        >
-          <span style={{ fontSize: '1.5rem' }}>📷</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Scan a Document</div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--t3)' }}>Photograph a letter or form to read and translate it — nothing uploaded</div>
-          </div>
-          <span style={{ color: 'var(--ac3)', fontWeight: 600 }}>›</span>
-        </Link>
-      )}
-
       <div className="search-bar">
         <Search size={18} strokeWidth={2} className={styles.searchIcon} />
         <input className="search-input" placeholder={ui.search} value={search}

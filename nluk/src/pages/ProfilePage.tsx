@@ -463,18 +463,6 @@ export default function ProfilePage() {
       {/* ── Progress Checklist ────────────────────────────── */}
       <ChecklistWidget ui={ui} />
 
-      {/* ── Document Scanner quick-access ────────────────── */}
-      <div className="section-label">🔧 Tools</div>
-      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
-        <button className="list-row" onClick={() => navigate('/scan')}>
-          <span className="list-row-icon">📷</span>
-          <div className="list-row-content">
-            <div className="list-row-title">Scan a Document</div>
-            <div className="list-row-sub">Photograph a letter or form to read and translate it</div>
-          </div>
-          <ChevronRight size={18} strokeWidth={2.5} style={{ color: 'var(--ac3)', flexShrink: 0 }} />
-        </button>
-      </div>
 
       {/* ── Saved Guides ─────────────────────────────────── */}
       {bookmarks.length > 0 ? (
