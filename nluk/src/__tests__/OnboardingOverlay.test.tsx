@@ -59,7 +59,7 @@ describe('OnboardingOverlay — initial step', () => {
 
   it('shows the title of the first step on mount', () => {
     render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    expect(screen.getByText('Your guides are ready')).not.toBeNull()
+    expect(screen.getByText('Start with what is blocking you')).not.toBeNull()
   })
 
 

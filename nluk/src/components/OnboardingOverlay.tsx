@@ -8,8 +8,8 @@ const STEPS = [
   {
     id: 'welcome',
     icon: '🇬🇧',
-    title: 'Your guides are ready',
-    body: 'Step-by-step guides for everything you need in the UK — from NHS registration to bank accounts and benefits. Free, private, and available in 12 languages. Tap 🆘 anytime for emergency numbers. Tap the bookmark icon on any guide to save it for later.',
+    title: 'Start with what is blocking you',
+    body: 'Tick off what you already have — your decision letter, share code, National Insurance number, bank account — and the Today tab works out what that unblocks and what to do next. The Guides tab has the full step-by-step detail for everything, in 12 languages. Tap 🆘 anytime for emergency numbers. Nothing you enter leaves this device.',
   },
   {
     id: 'status',

@@ -447,7 +447,7 @@ export default function ProfilePage() {
         <div className={styles.emptyBookmarks}>
           <Bookmark size={28} strokeWidth={1.5} style={{ color: 'var(--t3)' }} />
           <p>{ui.bookmarksSub || 'Your saved guides appear here.'}</p>
-          <button className="btn btn-secondary" onClick={() => navigate('/')}>
+          <button className="btn btn-secondary" onClick={() => navigate('/guides')}>
             Browse Guides {af}
           </button>
         </div>

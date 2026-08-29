@@ -42,6 +42,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     try { return JSON.parse(ls('nluk_docs', '[]')) } catch { return [] }
   })
   const [userPostcode, setUserPostcode] = useState<string>(() => ls('nluk_postcode', ''))
+  // Separate from documentsHeld, which is identity documents. These are the
+  // practical assets that gate each other — see lib/blockers.ts.
+  const [assetsHeld, setAssetsHeld] = useState<string[]>(() => {
+    try { return JSON.parse(ls('nluk_assets', '[]')) } catch { return [] }
+  })
   const [bookmarks, setBookmarks] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_bookmarks', '[]')) } catch { return [] }
   })
@@ -66,6 +71,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => { lsSet('nluk_ambition', userAmbition) }, [userAmbition])
   useEffect(() => { lsSet('nluk_sector', userSector) }, [userSector])
   useEffect(() => { lsSet('nluk_docs', JSON.stringify(documentsHeld)) }, [documentsHeld])
+  useEffect(() => { lsSet('nluk_assets', JSON.stringify(assetsHeld)) }, [assetsHeld])
   useEffect(() => { lsSet('nluk_postcode', userPostcode) }, [userPostcode])
   useEffect(() => { lsSet('nluk_bookmarks', JSON.stringify(bookmarks)) }, [bookmarks])
   useEffect(() => { lsSet('nluk_target_lane', targetLane) }, [targetLane])
@@ -75,6 +81,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const toggleDocument = (docId: string) => {
     setDocumentsHeld(prev =>
       prev.includes(docId) ? prev.filter(d => d !== docId) : [...prev, docId]
+    )
+  }
+
+  const toggleAsset = (assetId: string) => {
+    setAssetsHeld(prev =>
+      prev.includes(assetId) ? prev.filter(a => a !== assetId) : [...prev, assetId]
     )
   }
 
@@ -106,7 +118,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const af = L.rtl ? '‹' : '›'
 
   return (
-    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
+    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, assetsHeld, toggleAsset, userPostcode, setUserPostcode, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
       {children}
     </AppContext.Provider>
   )

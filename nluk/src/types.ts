@@ -127,6 +127,7 @@ export interface UiStrings {
   back: string
   change: string
   home: string
+  today: string
   guides: string
   work: string
   saves: string
@@ -330,6 +331,9 @@ export interface AppContextValue {
   setUserSector: (s: UserSector) => void
   /** Document IDs the user confirms they hold */
   documentsHeld: string[]
+  /** Practical assets that gate each other — see lib/blockers.ts. */
+  assetsHeld: string[]
+  toggleAsset: (assetId: string) => void
   toggleDocument: (docId: string) => void
   /** User's saved UK postcode for local service discovery */
   userPostcode: string

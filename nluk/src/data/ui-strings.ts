@@ -19,7 +19,7 @@ export const LANGS: Lang[] = [
 const BASE_UI = {
   app: "New Life UK", tag: "Your free guide to life in the UK",
   sos: "SOS", close: "Close", back: "Back", change: "Change",
-  home: "Home", guides: "Guides", work: "Work", saves: "Resources", more: "More", culture: "UK Life", profile: "Me",
+  home: "Home", today: "Today", guides: "Guides", work: "Work", saves: "Resources", more: "More", culture: "UK Life", profile: "Me",
   search: "Search guides…", noResults: "No results found.", searchWork: "Search jobs, certs, careers…",
   cost: "Cost", time: "Time", bring: "What to bring", steps: "Steps", keyInfo: "Key Info", forYou: "For You", quickActions: "Quick Actions", helplines: "Helplines",
   jobsTab: "Jobs", certsTab: "Certs", careerTab: "Careers", volunteerTab: "Volunteer",

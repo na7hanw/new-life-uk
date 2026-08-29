@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense, type TouchEvent as ReactTouchEvent } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { BookOpen, Briefcase, Compass, Settings, ChevronUp, User, Search } from 'lucide-react'
+import { BookOpen, Briefcase, Compass, Settings, ChevronUp, User, Search, ListChecks } from 'lucide-react'
 import { Toaster, toast } from 'sonner'
 import { useSwipeable } from 'react-swipeable'
 import { useRegisterSW } from 'virtual:pwa-register/react'
@@ -21,6 +21,7 @@ const CommandPalette = lazy(() => import('./components/CommandPalette.tsx'))
 
 
 const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
+const TodayPage    = lazy(() => import('./pages/TodayPage.tsx'))
 const GuideDetail  = lazy(() => import('./pages/GuideDetail.tsx'))
 const WorkHub      = lazy(() => import('./pages/WorkHub.tsx'))
 const CertDetail   = lazy(() => import('./pages/CertDetail.tsx'))
@@ -59,7 +60,8 @@ export default function App() {
   useEffect(() => {
     const p = location.pathname
     const ann =
-      p === '/'            ? 'Guides' :
+      p === '/'            ? 'Today — what to do next' :
+      p === '/guides'      ? 'Guides' :
       p.startsWith('/guide/') ? 'Guide detail' :
       p.startsWith('/work')   ? 'Work and jobs' :
       p.startsWith('/cert/')  ? 'Certificate detail' :
@@ -70,7 +72,8 @@ export default function App() {
   }, [location.pathname])
 
   const TABS = [
-    { id: 'guides', path: '/', icon: <BookOpen size={22} strokeWidth={2} />, label: ui.guides },
+    { id: 'today', path: '/', icon: <ListChecks size={22} strokeWidth={2} />, label: ui.today || 'Today' },
+    { id: 'guides', path: '/guides', icon: <BookOpen size={22} strokeWidth={2} />, label: ui.guides },
     { id: 'work', path: '/work/jobs', icon: <Briefcase size={22} strokeWidth={2} />, label: ui.work },
     { id: 'saves', path: '/saves', icon: <Compass size={22} strokeWidth={2} />, label: ui.saves },
     { id: 'profile', path: '/profile', icon: <User size={22} strokeWidth={2} />, label: ui.profile || 'Me' },
@@ -318,7 +321,8 @@ export default function App() {
           <Suspense fallback={<SkeletonFallback />}>
             <div {...(!isDetail ? swipeHandlers : {})}>
               <Routes>
-                <Route path="/" element={<GuidesPage />} />
+                <Route path="/" element={<TodayPage />} />
+                <Route path="/guides" element={<GuidesPage />} />
                 <Route path="/guide/:id" element={<GuideDetail />} />
                 <Route path="/work" element={<Navigate to="/work/jobs" replace />} />
                 <Route path="/work/:subtab" element={<WorkHub />} />

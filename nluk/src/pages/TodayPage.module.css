@@ -1,0 +1,167 @@
+/* Small secondary text, used by the intro, hints and per-goal lines. */
+.note {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--t2);
+  margin: 7px 0 0;
+}
+
+.intro {
+  composes: note;
+  margin: 12px var(--gutter) 18px;
+}
+
+.heading {
+  margin: 22px var(--gutter) 10px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--tx);
+}
+
+/* ── The one thing to do next ───────────────────────────────────── */
+.focus {
+  margin: 0 var(--gutter) 20px;
+  padding: 16px;
+  border: 1.5px solid var(--bd);
+  border-inline-start: 4px solid var(--ac);
+  border-radius: 14px;
+  background: var(--bg2);
+}
+
+.done {
+  border-inline-start-color: var(--gn);
+}
+
+.focusLabel {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--t2);
+}
+
+.focusTitle {
+  margin: 6px 0 8px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--tx);
+}
+
+.body {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--tx);
+}
+
+/* ── Asset checklist ────────────────────────────────────────────── */
+.assets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 var(--gutter) 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.assetBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 13px;
+  border: 1.5px solid var(--bd);
+  border-radius: 999px;
+  background: var(--bg2);
+  color: var(--tx);
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  text-align: start;
+  cursor: pointer;
+}
+
+.assetOn {
+  border-color: var(--ac);
+  background: var(--bg3);
+  font-weight: 700;
+}
+
+.hint {
+  composes: note;
+  margin: 0 var(--gutter) 18px;
+}
+
+/* ── Goal list ──────────────────────────────────────────────────── */
+.goals {
+  margin: 0 var(--gutter);
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.goal {
+  padding: 13px 15px;
+  border: 1.5px solid var(--bd);
+  border-radius: 12px;
+  background: var(--bg2);
+}
+
+.goalReady {
+  border-inline-start: 4px solid var(--ac);
+}
+
+.goalRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.goalName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--tx);
+}
+
+.badge {
+  flex: none;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--t2);
+}
+
+.badgeReady {
+  color: var(--ac);
+}
+
+.why {
+  composes: body;
+  margin: 7px 0 0;
+  font-size: 0.85rem;
+}
+
+.notRequired {
+  composes: why;
+  padding: 9px 11px;
+  border-radius: 9px;
+  border-inline-start: 3px solid var(--wn);
+  background: var(--wnbg);
+}
+
+.link {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ac);
+  text-align: start;
+  cursor: pointer;
+}
