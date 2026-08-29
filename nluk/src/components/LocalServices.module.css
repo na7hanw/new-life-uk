@@ -1,0 +1,69 @@
+.wrap { margin: 0 var(--gutter) 20px; }
+
+.heading {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--tx);
+}
+
+.postcodeRow { display: flex; flex-direction: column; gap: 4px; margin-block-end: 12px; }
+
+.postcodeRow label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--t2);
+}
+
+.postcodeRow input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--bd);
+  border-radius: 10px;
+  background: var(--bg2);
+  color: var(--tx);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.postcodeRow input:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+
+.none {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--t3);
+}
+
+.card {
+  padding: 14px;
+  margin-block-end: 10px;
+  border: 1.5px solid var(--bd);
+  border-radius: 12px;
+  background: var(--bg2);
+}
+
+.name { margin: 0; font-size: 0.92rem; font-weight: 700; color: var(--tx); line-height: 1.4; }
+.what { margin: 4px 0 0; font-size: 0.82rem; color: var(--t2); }
+.why  { margin: 8px 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--t2); }
+
+.contacts { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 10px; }
+
+/* 44px targets — these are phone numbers someone taps in a hurry. */
+.contact {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--bd);
+  border-radius: 10px;
+  background: var(--bg3);
+  color: var(--ac3);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.contact:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+
+.meta { margin: 8px 0 0; font-size: 0.76rem; color: var(--t3); line-height: 1.5; }

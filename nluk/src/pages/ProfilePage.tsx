@@ -8,6 +8,7 @@ import { getSortedUpdates } from '../data/immigration-updates.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
 import MoveOnPlan from '../components/MoveOnPlan.tsx'
+import LocalServices from '../components/LocalServices.tsx'
 import { deriveCohort, cohortFacts } from '../lib/cohort.ts'
 import { STATUS_PROFILES } from '../data/status-profiles.ts'
 import type { UserStatus } from '../types'
@@ -232,7 +233,7 @@ function CohortPanel({ claimDate, setClaimDate }: { claimDate: string; setClaimD
 }
 
 export default function ProfilePage() {
-  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userPostcode, setUserPostcode, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [showStatusPicker, setShowStatusPicker] = useState(false)
 
@@ -391,6 +392,8 @@ export default function ProfilePage() {
       )}
 
 {/* ── Move-on countdown (refugees only) ─────────────── */}
+      <LocalServices postcode={userPostcode} setPostcode={setUserPostcode} status={userStatus} />
+
       {userStatus === 'refugee' && (
         <CohortPanel claimDate={claimDate} setClaimDate={setClaimDate} />
       )}
