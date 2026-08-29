@@ -8,6 +8,7 @@ import { getSortedUpdates } from '../data/immigration-updates.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
 import MoveOnPlan from '../components/MoveOnPlan.tsx'
+import { deriveCohort, cohortFacts } from '../lib/cohort.ts'
 import type { UserStatus } from '../types'
 import styles from './ProfilePage.module.css'
 
@@ -228,6 +229,44 @@ const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
   { id: 'ho-letter', emoji: '📬', label: 'Home Office Letter / ARC' },
 ]
 
+
+/**
+ * Which refugee rules apply — derived from the CLAIM date, not the decision
+ * date. The app previously used the decision date, which misclassifies almost
+ * every 2026 grant because decisions take 6-18+ months.
+ *
+ * claimDate used to be collected only from asylum seekers and thrown away the
+ * moment status changed, which is exactly when the question becomes live and
+ * permanent. It is asked here too.
+ */
+function CohortPanel({ claimDate, setClaimDate }: { claimDate: string; setClaimDate: (d: string) => void }) {
+  const facts = cohortFacts(deriveCohort(claimDate))
+  return (
+    <section className="card" style={{ margin: '0 var(--gutter) 16px', padding: 16 }} aria-labelledby="cohort-heading">
+      <h2 id="cohort-heading" style={{ margin: '0 0 6px', fontSize: '1rem', fontWeight: 800 }}>
+        Which rules apply to you
+      </h2>
+      <p style={{ margin: '0 0 10px', fontSize: '0.9rem', fontWeight: 700, color: 'var(--ac3)' }}>
+        Leave: {facts.leave}
+        {facts.settlementYears !== null && ` · Settlement after ${facts.settlementYears} years`}
+      </p>
+      <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.55, color: 'var(--t2)' }}>{facts.summary}</p>
+      <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <label htmlFor="claim-date-cohort" style={{ fontSize: '0.76rem', fontWeight: 600, color: 'var(--t2)' }}>
+          Date you first claimed asylum
+        </label>
+        <input
+          id="claim-date-cohort"
+          type="date"
+          value={claimDate}
+          onChange={e => setClaimDate(e.target.value)}
+          style={{ minHeight: 44, padding: '0 12px', border: '1.5px solid var(--bd)', borderRadius: 10, background: 'var(--bg2)', color: 'var(--tx)', fontSize: '0.9rem' }}
+        />
+      </div>
+    </section>
+  )
+}
+
 export default function ProfilePage() {
   const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
@@ -388,6 +427,10 @@ export default function ProfilePage() {
       )}
 
 {/* ── Move-on countdown (refugees only) ─────────────── */}
+      {userStatus === 'refugee' && (
+        <CohortPanel claimDate={claimDate} setClaimDate={setClaimDate} />
+      )}
+
       {userStatus === 'refugee' && (
         <MoveOnPlan
           statusDate={statusDate}
