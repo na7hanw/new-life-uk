@@ -18,9 +18,18 @@
  * roughly day 35, so the gap between "money arrives" and "must leave" is the
  * number that actually decides whether someone becomes homeless.
  *
+ * The standard answer to that gap is a UC Advance. It has a precondition that
+ * is easy to miss and that bites hardest on exactly this group: since 1 April
+ * 2024 an Advance cannot be paid unless a National Insurance number has been
+ * allocated (Social Security (Payments on Account of Benefit) Regulations 2013
+ * reg 5(1)(d), inserted by SI 2024/341 reg 6). Someone moving on from asylum
+ * support may not have one yet, so the National Insurance step is sequenced at
+ * day 1 alongside the claim rather than treated as later paperwork.
+ *
  * Sources:
  *  - https://homeless.org.uk/news/new-42-day-asylum-move-on-period-confirmed/
  *  - https://righttoremain.org.uk/if-you-get-refugee-status-when-does-asylum-support-end-more-changes-to-move-on-period/
+ *  - https://www.legislation.gov.uk/uksi/2024/341/made (Advance requires an allocated NINo)
  */
 import { addDays, differenceInDays, isValid, parseISO } from 'date-fns'
 
@@ -109,11 +118,13 @@ export interface MoveOnAction {
 /**
  * The sequence, ordered by when it has to happen rather than by topic.
  *
- * Universal Credit and the council application are both day 1 and are
- * co-equal: UC because the five-week wait starts on the claim date, and the
- * council because the day the decision letter arrives is the day you become
- * legally "threatened with homelessness" (42 falls inside the statutory 56-day
- * threshold), which triggers the prevention duty regardless of priority need.
+ * Universal Credit, the National Insurance number and the council application
+ * are all day 1. UC because the five-week wait starts on the claim date; the
+ * National Insurance number because the Advance that bridges that wait cannot
+ * be paid without one; and the council because the day the decision letter
+ * arrives is the day you become legally "threatened with homelessness" (42
+ * falls inside the statutory 56-day threshold), which triggers the prevention
+ * duty regardless of priority need.
  */
 export const MOVE_ON_ACTIONS: MoveOnAction[] = [
   {
@@ -121,8 +132,16 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     byDay: 1,
     title: 'Apply for Universal Credit',
     detail:
-      'The five-week wait starts the day you claim, not the day you are ready. Every day of delay is money you do not get. Ask for an Advance in the same session — it arrives in days and is repaid gradually.',
+      'The five-week wait starts the day you claim, not the day you are ready. Every day of delay is money you do not get. Ask for an Advance in the same session — but see the next step, because the Advance is the one part of this that can be refused.',
     guideId: 'uc',
+  },
+  {
+    id: 'ni',
+    byDay: 1,
+    title: 'Chase your National Insurance number the same day',
+    detail:
+      '⚠ This is not the routine admin it looks like. Since 1 April 2024 a Universal Credit Advance cannot be paid until a National Insurance number has been ALLOCATED to you — it is a condition in the regulations, not a caseworker\'s discretion. The Advance is the thing that is supposed to carry you through the five-week wait, so if the number is missing, the plan that bridges the gap is not available. Check the decision letter first: the Home Office sometimes issues the number with the grant. If it is not there, apply immediately and chase it in your UC journal every week, in writing. Separately, you can legally start work before the number arrives — an employer only has to see proof of right to work.',
+    guideId: 'ni',
   },
   {
     id: 'council',
@@ -149,13 +168,6 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'Monzo, Starling, Revolut and Monese open on a share code and a selfie, with no fixed address and no credit check. ⚠ This is the hard blocker: you can CLAIM Universal Credit without an account, but it cannot PAY you until you have one. If you do not have an account yet, this is the most urgent thing on the list after the claim itself.',
     guideId: 'bank',
-  },
-  {
-    id: 'ni',
-    byDay: 7,
-    title: 'Apply for your National Insurance number',
-    detail: 'You can legally start work while waiting for it to arrive.',
-    guideId: 'ni',
   },
   {
     id: 'gp',

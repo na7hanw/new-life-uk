@@ -113,6 +113,28 @@ describe('the action sequence', () => {
     expect(dayOne).toEqual(expect.arrayContaining(['uc', 'council']))
   })
 
+  it('puts the National Insurance number on day 1, because the UC Advance depends on it', () => {
+    // SI 2024/341 reg 6: an Advance cannot be paid until a NINo is allocated.
+    // The Advance is what bridges the five-week wait, so the number cannot sit
+    // in the "later paperwork" bucket without breaking the plan that depends
+    // on it. Same class of bug as bank-before-eVisa: a real dependency
+    // inverted by topic-ordering.
+    const ni = MOVE_ON_ACTIONS.find(a => a.id === 'ni')!
+    const uc = MOVE_ON_ACTIONS.find(a => a.id === 'uc')!
+    expect(ni.byDay).toBeLessThanOrEqual(uc.byDay)
+  })
+
+  it('does not promise the Advance unconditionally', () => {
+    // It previously read "it arrives in days", which is only true once a NINo
+    // exists. Someone with 42 days and no number would have planned around
+    // money that cannot legally be paid to them yet.
+    const uc = MOVE_ON_ACTIONS.find(a => a.id === 'uc')!
+    expect(uc.detail).not.toMatch(/arrives in days/i)
+    const ni = MOVE_ON_ACTIONS.find(a => a.id === 'ni')!
+    expect(ni.detail).toMatch(/advance/i)
+    expect(ni.detail).toMatch(/national insurance/i)
+  })
+
   it('is ordered by deadline', () => {
     const days = MOVE_ON_ACTIONS.map(a => a.byDay)
     expect(days).toEqual([...days].sort((a, b) => a - b))

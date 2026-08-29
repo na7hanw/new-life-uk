@@ -40,6 +40,7 @@ exclude = [
   "g4s\\.com",
   "caterer\\.com",
   "gamcare\\.org\\.uk",
+  "ubereats\\.com",
   # Incomplete TLS chains: both serve a certificate without the intermediate, so
   # strict clients (lychee's rustls, and curl on a separate network) reject them
   # while browsers usually recover via AIA fetching. A server misconfiguration on
