@@ -65,6 +65,13 @@ export interface GoalSpec {
   /** Stated only where people commonly believe a requirement that is not real. */
   notRequired?: string
   guideId?: string
+  /**
+   * Where the dependency and the claims in `why` come from. REQUIRED, and
+   * enforced by a test — see the same note in lib/moveOn.ts. Each edge here is
+   * supposed to be a rule with a source rather than a plausible ordering, and
+   * until now nothing checked that.
+   */
+  sources: string[]
 }
 
 export const ASSET_LABELS: Record<Asset, string> = {
@@ -110,6 +117,10 @@ export const GOALS: GoalSpec[] = [
     requires: ['decision-letter', 'ukvi-account'],
     why: 'The share code is the key to almost everything else — the bank, the job, the tenancy.',
     guideId: 'evisa',
+    sources: [
+      'https://www.gov.uk/evisa',
+      'https://www.gov.uk/prove-right-to-work',
+    ],
   },
   {
     id: 'bank-account',
@@ -117,6 +128,10 @@ export const GOALS: GoalSpec[] = [
     requires: ['decision-letter', 'ukvi-account', 'share-code'],
     why: 'Universal Credit can be claimed without an account but cannot be paid into one that does not exist. Until this is done, the five-week wait has no end date.',
     guideId: 'bank',
+    sources: [
+      'https://www.gov.uk/universal-credit/how-to-claim',
+      'https://www.gov.uk/guidance/documents-to-verify-your-identity-for-universal-credit',
+    ],
   },
   {
     id: 'uc-payment',
@@ -124,6 +139,10 @@ export const GOALS: GoalSpec[] = [
     requires: ['uc-claim', 'bank-account'],
     why: 'The claim starts the five-week clock. The account is what lets the money land.',
     guideId: 'uc',
+    sources: [
+      'https://www.gov.uk/universal-credit/how-to-claim',
+      'https://www.gov.uk/universal-credit/what-youll-get',
+    ],
   },
   {
     id: 'uc-advance',
@@ -131,6 +150,10 @@ export const GOALS: GoalSpec[] = [
     requires: ['uc-claim', 'ni-number', 'bank-account'],
     why: 'This is what is meant to carry you through the five-week wait. Since 1 April 2024 it cannot be paid until a National Insurance number has been allocated — that is in the regulations, not up to the caseworker. If you do not have the number, this money is not available and you need a different plan for those five weeks.',
     guideId: 'ni',
+    sources: [
+      'https://www.legislation.gov.uk/uksi/2024/341/made',
+      'https://www.gov.uk/universal-credit-advance-hardship-payment',
+    ],
   },
   {
     id: 'start-work',
@@ -140,6 +163,10 @@ export const GOALS: GoalSpec[] = [
       'You do NOT need a National Insurance number to start work. An employer has to check your right to work, not your NI number. Waiting for the number before applying costs weeks you are allowed to be working.',
     why: 'Refugee status carries an unrestricted right to work, with no sponsorship needed.',
     guideId: 'work-rights',
+    sources: [
+      'https://www.gov.uk/prove-right-to-work',
+      'https://www.gov.uk/apply-national-insurance-number',
+    ],
   },
   {
     id: 'integration-loan',
@@ -147,6 +174,9 @@ export const GOALS: GoalSpec[] = [
     requires: ['ni-number', 'bank-account'],
     why: 'Interest-free, £100–£500 for a single person. A decision takes about six weeks, so treat it as money for after the move rather than a deposit for the move itself.',
     guideId: 'refugee-integration',
+    sources: [
+      'https://www.gov.uk/refugee-integration-loan',
+    ],
   },
   {
     id: 'rent-a-room',
@@ -154,6 +184,10 @@ export const GOALS: GoalSpec[] = [
     requires: ['decision-letter', 'ukvi-account', 'share-code'],
     why: 'A landlord needs a share code for the right to rent check. The deposit is usually the real obstacle, not the rent — ask your council about a bond guarantee scheme instead of cash.',
     guideId: 'housing-help',
+    sources: [
+      'https://www.gov.uk/government/publications/right-to-rent-document-checks-a-user-guide',
+      'https://www.gov.uk/prove-right-to-rent',
+    ],
   },
 ]
 

@@ -105,6 +105,37 @@ describe('next steps are always reachable', () => {
   })
 })
 
+describe('every dependency shows its working', () => {
+  // Added after a real failure in the sibling module: one verified GOV.UK
+  // sentence was extrapolated into three claims, two of them wrong, and
+  // nothing in the code distinguished the sourced claim from the invented
+  // ones. The header of blockers.ts always CLAIMED each edge was "a real rule
+  // with a source" — now that is checked rather than asserted.
+  const OFFICIAL = /^https:\/\/(www\.)?(gov\.uk|legislation\.gov\.uk|nhs\.uk)\//
+
+  it('gives every goal at least one source', () => {
+    for (const g of GOALS) {
+      expect(g.sources, `goal "${g.id}" has no sources`).toBeDefined()
+      expect(g.sources.length, `goal "${g.id}" has an empty sources list`).toBeGreaterThan(0)
+    }
+  })
+
+  it('sources everything to an official domain', () => {
+    for (const g of GOALS) {
+      for (const url of g.sources) {
+        expect(OFFICIAL.test(url), `goal "${g.id}" cites a non-official source: ${url}`).toBe(true)
+      }
+    }
+  })
+
+  it('cites the regulation for the Advance, not a summary of it', () => {
+    // This is the single claim in the app most likely to cost someone five
+    // weeks of income, so it must point at the instrument itself.
+    const advance = GOALS.find(g => g.id === 'uc-advance')!
+    expect(advance.sources.some(u => u.includes('legislation.gov.uk'))).toBe(true)
+  })
+})
+
 describe('data integrity', () => {
   it('gives every asset a label and an action', () => {
     const assets = new Set<Asset>()

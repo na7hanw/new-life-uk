@@ -203,6 +203,47 @@ describe('missing or malformed input', () => {
   })
 })
 
+describe('every claim shows its working', () => {
+  // Added after a real failure: one verified GOV.UK sentence about National
+  // Insurance numbers was extrapolated into three claims, two of which were
+  // wrong and shipped. Unsourced assertions looked identical to sourced ones.
+  // These tests make that impossible to repeat silently.
+  const OFFICIAL = /^https:\/\/(www\.)?(gov\.uk|legislation\.gov\.uk|nhs\.uk)\//
+
+  it('gives every step at least one source', () => {
+    for (const a of MOVE_ON_ACTIONS) {
+      expect(a.sources, `step "${a.id}" has no sources`).toBeDefined()
+      expect(a.sources.length, `step "${a.id}" has an empty sources list`).toBeGreaterThan(0)
+    }
+  })
+
+  it('sources everything to an official domain', () => {
+    // These steps make legal and benefits claims. A blog is not good enough:
+    // the secondary sources this module was originally built on are exactly
+    // what produced the wrong 42-day start date.
+    for (const a of MOVE_ON_ACTIONS) {
+      for (const url of a.sources) {
+        expect(OFFICIAL.test(url), `step "${a.id}" cites a non-official source: ${url}`).toBe(true)
+      }
+    }
+  })
+
+  it('sources the two steps that carry money claims most heavily', () => {
+    // The UC and NI steps are where a wrong claim costs someone five weeks of
+    // income, so they must rest on more than a single page.
+    for (const id of ['uc', 'ni']) {
+      const a = MOVE_ON_ACTIONS.find(x => x.id === id)!
+      expect(a.sources.length, `step "${id}" needs more than one source`).toBeGreaterThan(1)
+    }
+  })
+
+  it('has no duplicate sources within a step', () => {
+    for (const a of MOVE_ON_ACTIONS) {
+      expect(new Set(a.sources).size).toBe(a.sources.length)
+    }
+  })
+})
+
 describe('the action sequence', () => {
   it('puts Universal Credit and the council application both on day 1', () => {
     const dayOne = MOVE_ON_ACTIONS.filter(a => a.byDay === 1).map(a => a.id)

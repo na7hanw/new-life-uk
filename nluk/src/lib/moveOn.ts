@@ -211,6 +211,23 @@ export interface MoveOnAction {
   guideId?: string
   /** Exact words to use, where saying the right thing changes the outcome. */
   script?: string
+  /**
+   * Where every factual claim in `detail` came from. REQUIRED, and enforced by
+   * a test.
+   *
+   * This exists because of a specific mistake. I verified one sentence on
+   * GOV.UK — "You do not need a NI number for your benefits claim to be made" —
+   * and then wrote into this file that a claimant needs neither the NI number,
+   * nor an eVisa, nor a bank account. Two of those three were never checked;
+   * both were wrong. GOV.UK's "How to claim" requires bank account details for
+   * the online claim, and the eVisa is the accepted identity document.
+   *
+   * Nothing in the code made me show my working, so the unsourced claims looked
+   * exactly like the sourced one. Now they cannot: every action carries the
+   * pages its claims rest on, and the test refuses an empty list. Being careful
+   * is not a mechanism; this is.
+   */
+  sources: string[]
 }
 
 /**
@@ -232,6 +249,11 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'The five-week wait starts the day you claim, so claim as early as you can — but two things genuinely gate it, and only one thing does not. ⚠ BANK ACCOUNT: to apply online GOV.UK requires \'your bank, building society or credit union account details\'. The account is a real prerequisite, not paperwork to catch up on later. If you do not have one yet you can still claim by phoning the Universal Credit helpline or going to the jobcentre — but open the account first if you possibly can. ⚠ ID: your eVisa is the accepted proof of identity, which means the UKVI account. If the Home Office has not created that account yet, your ARC card AND the Home Office decision letter are accepted together instead — that alternative applies only while the UKVI account does not exist. ✅ NOT a blocker: the National Insurance number. GOV.UK says \'You do not need a NI number for your benefits claim to be made\' — tell DWP at the start that you do not have one and they will tell you how to apply. Ask for an Advance in the same session, but see the next step: the Advance is the part that can be refused.',
     guideId: 'uc',
+    sources: [
+      'https://www.gov.uk/universal-credit/how-to-claim',
+      'https://www.gov.uk/guidance/documents-to-verify-your-identity-for-universal-credit',
+      'https://www.gov.uk/government/publications/claiming-universal-credit-and-other-benefits-if-you-are-a-refugee/refugee-guide-urgent-things-you-need-to-do',
+    ],
   },
   {
     id: 'ni',
@@ -240,6 +262,11 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       '⚠ This is not the routine admin it looks like. Since 1 April 2024 a Universal Credit Advance cannot be paid until a National Insurance number has been ALLOCATED to you — it is a condition in the regulations, not a caseworker\'s discretion. The Advance is the thing that is supposed to carry you through the five-week wait, so if the number is missing, the plan that bridges the gap is not available. Look in your UKVI account, not on the decision letter. GOV.UK\'s own refugee guide says it plainly: "You can find your NI number by logging in to your UK Visas and Immigration (UKVI) account and viewing your online immigration status (eVisa)" — and if it is not showing there, contact the Home Office immediately. It is usually NOT printed on the decision letter, so do not lose days searching the paperwork for it. Usually is the right word: the Home Office says MOST people granted refugee status are issued one automatically, and gov.uk/apply-national-insurance-number says only that you MIGHT already have one. So check, and if it is not there, apply — do not assume it is coming. If it genuinely is not in the account once the eVisa is live, apply at gov.uk/apply-national-insurance-number and chase it in your UC journal every week, in writing. Separately, you can legally start work before the number arrives — an employer only has to see proof of right to work.',
     guideId: 'ni',
+    sources: [
+      'https://www.gov.uk/government/publications/claiming-universal-credit-and-other-benefits-if-you-are-a-refugee/refugee-guide-urgent-things-you-need-to-do',
+      'https://www.gov.uk/apply-national-insurance-number',
+      'https://www.legislation.gov.uk/uksi/2024/341/made',
+    ],
   },
   {
     id: 'council',
@@ -250,6 +277,10 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     guideId: 'housing-help',
     script:
       'I am making a homelessness application. I am threatened with homelessness within 56 days and I am asking for the prevention duty. Please give me my Personalised Housing Plan in writing.',
+    sources: [
+      'https://www.gov.uk/government/publications/homelessness-code-of-guidance-for-local-authorities',
+      'https://www.legislation.gov.uk/ukpga/1996/52/part/VII',
+    ],
   },
   {
     id: 'evisa',
@@ -258,6 +289,11 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'Do this before the bank, not after — the share code is what opens the account, and it is also how you prove right to work and right to rent. If you came from asylum support you had an ARC card, not a BRP, so this is your first UKVI account. The details to create and activate it — a login and a customer reference number — come with the grant letter or shortly after it. ⚠ Watch the gap: your 42 days start when you are notified of the decision, NOT when the eVisa goes live. Until it is live you cannot prove your status to a bank, an employer or a landlord, so every day of delay is a day of the clock spent on nothing. If the UKVI details have not arrived within a few days of the grant letter, chase them rather than wait. (If you DO hold an old BRP, it still works to create the account until 31 December 2026.)',
     guideId: 'evisa',
+    sources: [
+      'https://www.gov.uk/evisa',
+      'https://www.gov.uk/evisa/set-up-ukvi-account',
+      'https://www.gov.uk/government/publications/ceasing-asylum-support-instruction/ceasing-section-95-support-instruction-accessible',
+    ],
   },
   {
     id: 'bank',
@@ -266,6 +302,10 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'Monzo, Starling, Revolut and Monese open on a share code and a selfie, with no fixed address and no credit check. ⚠ This is the hard blocker: you can CLAIM Universal Credit without an account, but it cannot PAY you until you have one. If you do not have an account yet, this is the most urgent thing on the list after the claim itself.',
     guideId: 'bank',
+    sources: [
+      'https://www.gov.uk/universal-credit/how-to-claim',
+      'https://www.gov.uk/prove-right-to-work',
+    ],
   },
   {
     id: 'gp',
@@ -274,6 +314,9 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'No ID, address or immigration status needed — a practice cannot refuse you on those grounds, and must give any refusal in writing.',
     guideId: 'gp',
+    sources: [
+      'https://www.nhs.uk/nhs-services/gps/how-to-register-with-a-gp-surgery/',
+    ],
   },
   {
     id: 'money',
@@ -282,6 +325,10 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'The loan is £100–£500 alone or up to £780 as a couple, interest-free, applied for online. The Flexible Support Fund is discretionary help from your Work Coach with the costs of starting work.',
     guideId: 'refugee-integration',
+    sources: [
+      'https://www.gov.uk/refugee-integration-loan',
+      'https://www.gov.uk/government/publications/flexible-support-fund',
+    ],
   },
   {
     id: 'housing-register',
@@ -290,6 +337,9 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'Ask for your band or points in writing, and ask whether being owed a homelessness duty gives you extra priority. Most refugees end up privately renting on UC, so run both in parallel.',
     guideId: 'social-housing',
+    sources: [
+      'https://www.gov.uk/apply-for-council-housing',
+    ],
   },
   {
     id: 'extension',
@@ -298,5 +348,8 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'Contact Migrant Help on 0808 801 0503. Extensions are discretionary and never automatic, so send evidence: your UC claim reference, your council application reference and Personalised Housing Plan, and dated records of properties you have enquired about.',
     guideId: 'move-on',
+    sources: [
+      'https://www.gov.uk/government/publications/ceasing-asylum-support-instruction/ceasing-section-95-support-instruction-accessible',
+    ],
   },
 ]
