@@ -111,7 +111,6 @@ export const JOBS: Job[] = [
       },
       { name: 'Care UK', url: 'https://jobs.careuk.com' },
       { name: 'HC-One Care Homes', url: 'https://apply.hc-one.co.uk/' },
-      { name: 'Barchester Healthcare', url: 'https://www.barchester.com/' },
       { name: 'Reed Health & Care', url: 'https://www.reed.co.uk/jobs/health-care-jobs' },
     ],
   },

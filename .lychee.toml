@@ -52,6 +52,12 @@ exclude = [
   "nocn\\.org\\.uk",
   # Rate-limits automated checks: 503 in CI, 429 by hand on the same day.
   "numbeo\\.com",
+  # Intermittent: both answered by hand on 29 Aug 2026 and both passed one CI
+  # run after the timeout was raised to 40s, then timed out on the next. They
+  # are slow and inconsistent rather than dead, and a check that fails at random
+  # teaches people to ignore it.
+  "bii\\.org",
+  "maternityaction\\.org\\.uk",
 ]
 
 # Accept 200 + all standard redirects as valid.
