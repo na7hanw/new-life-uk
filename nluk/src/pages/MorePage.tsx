@@ -109,9 +109,9 @@ export default function MorePage() {
                   if (k.startsWith(CLEAR_KEY_PREFIX) || k === CONSENT_KEY) localStorage.removeItem(k)
                 }
                 sessionStorage.clear()
-                if (typeof caches !== 'undefined') {
-                  const names = await caches.keys()
-                  await Promise.all(names.map(n => caches.delete(n)))
+                if (typeof globalThis.caches !== 'undefined') {
+                  const names = await globalThis.caches.keys()
+                  await Promise.all(names.map(n => globalThis.caches.delete(n)))
                 }
                 await clearTranslationCache()
               } catch (err) {

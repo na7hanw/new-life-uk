@@ -1,4 +1,5 @@
 import type { Guide } from '../types'
+import { STATUS_PROFILES } from './status-profiles.ts'
 
 export const CATEGORIES: Record<string, { emoji: string; color: string }> = {
   "Asylum Process": { emoji: "⏳", color: "#7C3AED" },
@@ -105,24 +106,12 @@ export const GUIDE_PRIORITY = [
 // refugee should never open the Guides tab onto "Waiting for Your Asylum
 // Decision" or the ASPEN/Section 95 guide, and must not be told (via `nrpf`)
 // that they cannot claim Universal Credit, which is false for them.
-export const GUIDE_STATUS_ORDER: Record<string, { boost: string[]; bury: string[] }> = {
-  'asylum-seeker': {
-    boost: ['asylum-waiting', 'aspen-card', 'permission-to-work', 'legal-help', 'volunteering', 'esol-education', 'gp'],
-    bury: ['move-on', 'refugee-integration', 'ilr', 'family-reunion', 'social-housing'],
-  },
-  refugee: {
-    boost: ['move-on', 'uc', 'housing-help', 'social-housing', 'refugee-integration', 'evisa', 'ni', 'bank', 'ctd', 'ilr'],
-    bury: ['asylum-waiting', 'aspen-card', 'permission-to-work', 'nrpf'],
-  },
-  'other-visa': {
-    boost: ['work-rights', 'evisa', 'sharecode', 'employment-rights', 'bank'],
-    bury: ['asylum-waiting', 'aspen-card', 'move-on', 'permission-to-work', 'refugee-integration'],
-  },
-  settled: {
-    boost: ['ilr', 'evisa', 'sharecode', 'credit-score', 'investing', 'tax'],
-    bury: ['asylum-waiting', 'aspen-card', 'move-on', 'permission-to-work', 'nrpf', 'refugee-integration'],
-  },
-};
+// Derived from the one registry in status-profiles.ts. Was a fourth
+// independently-maintained copy of "what matters to this cohort".
+export const GUIDE_STATUS_ORDER: Record<string, { boost: string[]; bury: string[] }> =
+  Object.fromEntries(
+    Object.entries(STATUS_PROFILES).map(([k, v]) => [k, { boost: v.boost, bury: v.bury }])
+  );
 
 const BASE_RANK = 1_000;
 const BURY_RANK = 10_000;

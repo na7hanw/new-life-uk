@@ -9,6 +9,7 @@ import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
 import MoveOnPlan from '../components/MoveOnPlan.tsx'
 import { deriveCohort, cohortFacts } from '../lib/cohort.ts'
+import { STATUS_PROFILES } from '../data/status-profiles.ts'
 import type { UserStatus } from '../types'
 import styles from './ProfilePage.module.css'
 
@@ -19,36 +20,6 @@ const STATUS_OPTIONS: { value: UserStatus; label: string }[] = [
   { value: 'settled',       label: '🇬🇧 Settled / Pre-Settled Status' },
 ]
 
-const STATUS_NEXT_STEPS: Partial<Record<UserStatus, { icon: string; text: string; path: string }[]>> = {
-  'asylum-seeker': [
-    { icon: '📋', text: 'Understand your rights while waiting', path: '/guide/asylum-waiting' },
-    { icon: '💳', text: 'Maximise your ASPEN card support', path: '/guide/aspen-card' },
-    { icon: '🗣️', text: 'Community interpreting — train while waiting (no PTW needed)', path: '/guide/community-interpreting' },
-    { icon: '📖', text: 'Strong English? Your real learning path', path: '/guide/advanced-learner' },
-    { icon: '🏥', text: 'Register with a GP — you have the right immediately', path: '/guide/gp' },
-    { icon: '🧠', text: 'Access free mental health support', path: '/guide/mental' },
-  ],
-  'refugee': [
-    { icon: '⏰', text: 'Start the move-on process now — 42-day deadline', path: '/guide/move-on' },
-    { icon: '🌱', text: 'Your full integration roadmap — year 1 to year 5', path: '/guide/refugee-integration' },
-    { icon: '🏦', text: 'Open a bank account (Monzo — no credit check)', path: '/guide/bank' },
-    { icon: '💷', text: 'Claim Universal Credit today', path: '/guide/uc' },
-    { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
-    { icon: '🏘', text: 'Understand the real council housing process', path: '/guide/social-housing' },
-  ],
-  'other-visa': [
-    { icon: '📱', text: 'Set up your eVisa digital status', path: '/guide/evisa' },
-    { icon: '🔗', text: 'Generate a share code for work or renting', path: '/guide/sharecode' },
-    { icon: '💼', text: 'Know your employment rights', path: '/guide/employment-rights' },
-    { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
-  ],
-  'settled': [
-    { icon: '🏅', text: 'Check your path to Indefinite Leave to Remain', path: '/guide/ilr' },
-    { icon: '📊', text: 'Build your UK credit score for mortgages', path: '/guide/credit-score' },
-    { icon: '💰', text: 'Start investing tax-free with a Stocks & Shares ISA', path: '/guide/investing' },
-    { icon: '📜', text: 'UK rules every settled resident must know', path: '/guide/uk-rules' },
-  ],
-}
 
 // ── Asylum Milestones: FE college (6 months) + PTW (12 months) ─────────────────
 function MilestonePill({ label, icon, reached, daysLeft, date, guideId, desc }: {
@@ -212,13 +183,6 @@ const SECTOR_OPTIONS: { value: NonNullable<import('../types').UserSector>; emoji
   { value: 'admin',        emoji: '📋', label: 'Admin & Office' },
 ]
 
-/** Guide IDs most relevant to each immigration status — used for update alerts */
-const STATUS_GUIDE_IDS: Record<string, string[]> = {
-  'asylum-seeker': ['asylum-waiting', 'permission-to-work', 'nrpf', 'evisa', 'community-interpreting', 'advanced-learner'],
-  'refugee':       ['move-on', 'refugee-integration', 'uc', 'housing-help', 'family-reunion', 'ilr'],
-  'other-visa':    ['evisa', 'sharecode', 'work-rights', 'ilr'],
-  'settled':       ['ilr', 'evisa', 'sharecode'],
-}
 
 const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
   { id: 'brp',       emoji: '💳', label: 'BRP (Biometric Residence Permit)' },
@@ -310,8 +274,8 @@ export default function ProfilePage() {
       </div>
 
       {/* ── Action-needed update alerts for user's status ─── */}
-      {userStatus && STATUS_GUIDE_IDS[userStatus] && (() => {
-        const relevantGuides = STATUS_GUIDE_IDS[userStatus]
+      {userStatus && STATUS_PROFILES[userStatus] && (() => {
+        const relevantGuides = STATUS_PROFILES[userStatus].alertGuides
         const alerts = getSortedUpdates().filter(u =>
           u.urgency === 'action-needed' &&
           u.relatedGuideIds.some(g => relevantGuides.includes(g))
@@ -409,12 +373,12 @@ export default function ProfilePage() {
       )}
 
       {/* ── Next Steps ───────────────────────────────────── */}
-      {userStatus && STATUS_NEXT_STEPS[userStatus] && (
+      {userStatus && STATUS_PROFILES[userStatus] && (
         <>
           <div className="section-label">{ui.nextSteps || '⚡ Next Steps'}</div>
           <div className="card card-flush" style={{ margin: '0 var(--gutter) 16px' }}>
-            {STATUS_NEXT_STEPS[userStatus]!.map(step => (
-              <button key={step.path} className="list-row" onClick={() => navigate(step.path)}>
+            {STATUS_PROFILES[userStatus].nextSteps.map(step => (
+              <button key={step.guideId} className="list-row" onClick={() => navigate(`/guide/${step.guideId}`)}>
                 <span className="list-row-icon" style={{ fontSize: '1.1rem' }}>{step.icon}</span>
                 <div className="list-row-content">
                   <div className="list-row-title" style={{ fontSize: '0.9rem' }}>{step.text}</div>

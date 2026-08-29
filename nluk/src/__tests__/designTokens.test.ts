@@ -16,9 +16,11 @@
  */
 import { describe, it, expect } from 'vitest'
 import { readFileSync, readdirSync, statSync } from 'node:fs'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const SRC = join(process.cwd(), 'src')
+// __tests__ -> src
+const SRC = dirname(dirname(fileURLToPath(import.meta.url)))
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const e of readdirSync(dir)) {

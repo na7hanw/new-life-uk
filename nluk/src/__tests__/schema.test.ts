@@ -242,9 +242,10 @@ const OFFICIAL_DOMAINS = [
 ]
 
 describe('Source label governance', () => {
-  it('SOURCE_LABEL_META covers all SourceLabel (resourceType) enum values', () => {
-    // Import at test time to avoid circular issues
-    const { SOURCE_LABEL_META } = require('../lib/schema.ts')
+  it('SOURCE_LABEL_META covers all SourceLabel (resourceType) enum values', async () => {
+    // Deferred to test time to avoid a circular import. Was require(), which
+    // works under Vitest's interop today but is latent breakage in an ESM file.
+    const { SOURCE_LABEL_META } = await import('../lib/schema.ts')
     for (const label of VALID_SOURCE_LABELS) {
       expect(SOURCE_LABEL_META[label], `Missing SOURCE_LABEL_META entry for "${label}"`).toBeTruthy()
       expect(SOURCE_LABEL_META[label].display).toBeTruthy()

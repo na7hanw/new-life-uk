@@ -6,11 +6,10 @@
  * Also provides helpers for recent-search and guide-access-count persistence.
  */
 import Fuse, { type FuseResult } from 'fuse.js'
-import { GUIDES, GUIDE_MAP, GUIDE_KEYWORDS } from '../data/guides.ts'
+import { GUIDES, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { JOBS, CERT_MAP, CAREER_MAP } from '../data/jobs.ts'
 import { CULTURE } from '../data/culture.ts'
 import type { Cert, Career } from '../types'
-import { ls, lsSet } from './utils.ts'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

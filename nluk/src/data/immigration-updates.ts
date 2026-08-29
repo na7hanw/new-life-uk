@@ -198,7 +198,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
     publishedAt: '2026-03-02',
     lastChecked: '2026-03-22',
     summary:
-      'The cutoff is the date you CLAIMED asylum, not the date you were decided. Claimed on or before 1 March 2026: 5 years leave, settlement after 5 years, fee-free — even if your decision arrives much later. Claimed on or after 2 March 2026: the new \"core protection\" system, 30 months leave at a time, reviewed each period, with settlement announced at 20 years. Because decisions take 6-18+ months, most people being decided now claimed under the old rules. Check the length of leave on your decision letter and eVisa.',
+      'The cutoff is the date you CLAIMED asylum, not the date you were decided. Claimed on or before 1 March 2026: 5 years leave, settlement after 5 years, fee-free — even if your decision arrives much later. Claimed on or after 2 March 2026: the new "core protection" system, 30 months leave at a time, reviewed each period, with settlement announced at 20 years. Because decisions take 6-18+ months, most people being decided now claimed under the old rules. Check the length of leave on your decision letter and eVisa.',
     affectedGroups: [
       'People who CLAIMED asylum on or after 2 March 2026 (not those merely decided after it)',
       'People planning their path to Indefinite Leave to Remain (ILR)',

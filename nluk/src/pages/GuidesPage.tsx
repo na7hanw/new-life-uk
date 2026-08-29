@@ -7,18 +7,12 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDES, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS, orderGuides } from '../data/guides.ts'
 import { getTrendingGuideIds } from '../lib/searchHistory.ts'
+import { forYouGuideIds } from '../data/status-profiles.ts'
 import { useRouteTranslation, type RouteString } from '../lib/useRouteTranslation.ts'
 import EmptyState from '../components/EmptyState.tsx'
 import ImmigrationUpdatesSection from '../components/ImmigrationUpdatesSection.tsx'
 import styles from './GuidesPage.module.css'
 
-// Guides to pin in the "For You" section per status
-const STATUS_GUIDES: Record<string, string[]> = {
-  'asylum-seeker': ['community-interpreting', 'advanced-learner', 're-qualify', 'permission-to-work', 'volunteering', 'asylum-waiting'],
-  'refugee':       ['move-on', 'refugee-integration', 'uc', 'housing-help'],
-  'other-visa':    ['work-rights', 'evisa', 'sharecode'],
-  'settled':       ['ilr', 'evisa', 'sharecode'],
-}
 
 // Enrich guides with keyword aliases once at module load (not on every component mount).
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
@@ -70,16 +64,26 @@ export default function GuidesPage() {
     }
   ), [])
 
+  // Pinned into "For You". Derived from the same boost list that drives
+  // ordering, so the two cannot drift apart.
+  const forYou = useMemo(() => forYouGuideIds(userStatus), [userStatus])
+
   const filtered = useMemo(() => {
     let list
     if (search.trim()) {
       list = fuseIndex.search(search).map(r => r.item)
     } else {
       list = orderGuides(GUIDES, userStatus)
+      // Rendering the pinned guides again at the top of the list below would
+      // show the same cards twice on one screen.
+      if (catFilter === 'All' && forYou.length > 0) {
+        const pinned = new Set(forYou)
+        list = list.filter(g => !pinned.has(g.id))
+      }
     }
     if (catFilter !== 'All') list = list.filter(g => g.cat === catFilter)
     return list
-  }, [search, catFilter, fuseIndex, userStatus])
+  }, [search, catFilter, fuseIndex, userStatus, forYou])
 
   // Animate category sections as filter changes
   const [catListRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })
@@ -215,12 +219,12 @@ export default function GuidesPage() {
       )}
 
       {/* For You — pinned guides for this status, shown when not searching and viewing all categories */}
-      {!search && catFilter === 'All' && userStatus && STATUS_GUIDES[userStatus] && (
+      {!search && catFilter === 'All' && forYou.length > 0 && (
         <div>
           <div className={`cat-header ${styles.forYouHeader}`}>⭐ {ui.forYou}</div>
           <div className={`card card-flush ${styles.cardGutter}`}
                style={{ border: '2px solid var(--ac)', backgroundColor: 'var(--ac2)' }}>
-            {STATUS_GUIDES[userStatus]
+            {forYou
               .map(id => GUIDE_MAP[id])
               .filter(Boolean)
               .map(g => {

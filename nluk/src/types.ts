@@ -141,7 +141,6 @@ export interface UiStrings {
   bring: string
   steps: string
   keyInfo: string
-  visaQ: string
   forYou: string
   quickActions: string
   helplines: string
@@ -174,7 +173,6 @@ export interface UiStrings {
   qaID: string
   qaTravel: string
   qaSafety: string
-  status: Record<string, string>
   openLink: string
   studyLinks: string
   applyLinks: string
