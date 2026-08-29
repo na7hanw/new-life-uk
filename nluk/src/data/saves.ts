@@ -43,7 +43,7 @@ export const SAVES: SaveItem[] = [
     content: {
       en: {
         title: 'Transport Discounts & Railcards',
-        desc: '16-25 Railcard: £30/year saves 1/3 on all trains. Works on London Oyster too. 26-30 Railcard also available. National Express Coachcard: £15/year for 1/3 off coaches.',
+        desc: '16-25 Railcard: £35/year saves 1/3 on all trains. Works on London Oyster too. 26-30 Railcard also available. National Express Coachcard: £30/year for 1/3 off coaches.',
       },
     },
     url: 'https://www.16-25railcard.co.uk',
@@ -90,7 +90,7 @@ export const SAVES: SaveItem[] = [
     content: {
       en: {
         title: 'Healthy Start Vouchers',
-        desc: 'Pregnant or have children under 4? On UC, you get free vouchers: £4.25/week per child under 1, £8.50/week if pregnant. Spend on milk, fruit, vegetables.',
+        desc: 'Pregnant or have children under 4? On UC, you get free vouchers: £4.65/week from week 10 of pregnancy, £9.30/week for a baby under 1, £4.65/week per child aged 1–4 (you must be on UC with earned income of £408/month or less). Spend on milk, fruit, vegetables.',
       },
     },
     url: 'https://www.healthystart.nhs.uk',
@@ -140,7 +140,7 @@ export const SAVES: SaveItem[] = [
         desc: 'British Museum, Natural History Museum, Science Museum, National Gallery, Tate Modern, V&A — all FREE. Great free days out for families.',
       },
     },
-    url: 'https://www.museumsassociation.org/campaigns/free-museums/',
+    url: 'https://www.museumsassociation.org/',
   },
   {
     icon: '📚',
@@ -171,11 +171,11 @@ export const SAVES: SaveItem[] = [
     guideId: 'uc',
     content: {
       en: {
-        title: 'Budgeting Advance — Up to £812',
+        title: 'Budgeting Advance — £348 single, £812 with children',
         desc: 'Need money for furniture, clothes, or moving costs? Apply via your UC journal. Interest-free. Repaid slowly from UC payments. Must be on UC for 6+ months.',
       },
     },
-    url: 'https://www.gov.uk/universal-credit/other-help',
+    url: 'https://www.gov.uk/universal-credit-advance-hardship-payment/unexpected-costs',
   },
   {
     icon: '🛒',
@@ -331,7 +331,7 @@ export const GEMS: SaveItem[] = [
     guideId: 'evisa',
     content: {
       en: {
-        title: 'CitizenCard — £15 Photo ID',
+        title: 'CitizenCard — £18 Photo ID',
         desc: 'Government-backed PASS photo ID. Accepted almost everywhere. No passport needed.',
       },
     },
@@ -383,7 +383,7 @@ export const GEMS: SaveItem[] = [
         desc: 'Free, confidential advice for asylum seekers on accommodation, asylum support, and the asylum process. Government-contracted first point of contact — available 24/7. Free to call from any UK phone.',
       },
     },
-    url: 'https://www.migranthelpuk.org/pages/asylum-helpline',
+    url: 'https://www.migranthelpuk.org/Pages/Category/asylum',
   },
   {
     icon: '🌐',

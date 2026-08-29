@@ -88,7 +88,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   {
     id: 'eta-fee-april-2026',
     title: 'Electronic Travel Authorisation (ETA) fee rising to £20 from 8 April 2026',
-    sourceUrl: 'https://www.gov.uk/government/publications/visa-and-immigration-operational-guidance/immigration-and-nationality-fees-april-2025-to-march-2026',
+    sourceUrl: 'https://www.gov.uk/government/publications/visa-regulations-revised-table',
     sourceType: 'fee-update',
     publishedAt: '2026-03-18',
     lastChecked: '2026-03-22',
@@ -110,7 +110,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   {
     id: 'evisa-rollout-update-2026',
     title: 'eVisa: all BRPs have expired — your immigration status is now fully digital',
-    sourceUrl: 'https://www.gov.uk/guidance/evisa',
+    sourceUrl: 'https://www.gov.uk/evisa',
     sourceType: 'official',
     publishedAt: '2025-12-31',
     lastChecked: '2026-03-22',
@@ -133,7 +133,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   {
     id: 'asylum-ptw-expansion-march-2026',
     title: 'Permission to Work rules changing from 26 March 2026 — verify eligibility carefully',
-    sourceUrl: 'https://www.gov.uk/government/publications/workers-and-temporary-workers-permission-to-work-if-waiting-for-an-asylum-decision',
+    sourceUrl: 'https://www.gov.uk/government/publications/handling-applications-for-permission-to-take-employment-instruction/permission-to-work-and-volunteering-for-asylum-seekers-accessible',
     sourceType: 'official',
     publishedAt: '2026-03-26',
     lastChecked: '2026-03-22',

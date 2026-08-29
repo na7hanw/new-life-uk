@@ -120,7 +120,7 @@ const GLOSSARY_RAW: Record<string, GlossaryEntry> = {
   dbs: {
     term: 'DBS check',
     definition: 'Disclosure and Barring Service check — a criminal records check required for many jobs working with children or vulnerable adults.',
-    sourceUrl: 'https://www.gov.uk/dbs-check-applicant-guidance',
+    sourceUrl: 'https://www.gov.uk/guidance/basic-dbs-check-guidance-for-applicants',
   },
   ukvi: {
     term: 'UKVI',

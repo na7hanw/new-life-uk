@@ -495,7 +495,7 @@ export const JOBS: Job[] = [
     applyLinks: [
       {
         name: 'Propertymark — lettings jobs board',
-        url: 'https://www.propertymark.co.uk/professional-development/qualifications.html',
+        url: 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
       },
       {
         name: 'Indeed — trainee letting negotiator',
@@ -673,7 +673,7 @@ export const CERTS = [
     founderOrder: 16,
     content: { en: { title: 'DBS Check', sector: 'Care, education, childcare, security' } },
     time: '24–72 hrs',
-    cost: '£18 basic / Free enhanced',
+    cost: '£21.50 basic / Free enhanced',
     freeRoute: 'FREE Enhanced DBS for volunteers — your organisation applies on your behalf.',
     steps: {
       en: [
@@ -783,7 +783,7 @@ export const CERTS = [
       en: { title: 'SIA Security Licence', sector: 'Security, door supervision, retail' },
     },
     time: '6–10 weeks',
-    cost: '£1,400+ training + £190 SIA fee / Free via SWAPs',
+    cost: '£1,400+ training + £204 SIA fee / Free via SWAPs',
     freeRoute:
       'Jobcentre SWAPs: fully funded Door Supervisor training + guaranteed employer interview.',
     steps: {
@@ -1131,7 +1131,7 @@ export const CERTS = [
     links: [
       {
         name: 'WEA — Find a Community Interpreting Course',
-        url: 'https://www.wea.org.uk/find-a-course',
+        url: 'https://www.wea.org.uk/courses',
       },
       { name: 'CIOL — DPSI (next progression step)', url: 'https://www.ciol.org.uk/dpsi' },
     ],
@@ -1169,7 +1169,7 @@ export const CERTS = [
     links: [
       {
         name: 'Propertymark — qualifications',
-        url: 'https://www.propertymark.co.uk/professional-development/qualifications.html',
+        url: 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
       },
       { name: 'Free Courses for Jobs (GOV.UK)', url: 'https://www.gov.uk/free-courses-for-jobs' },
     ],
@@ -1382,7 +1382,7 @@ export const CERTS = [
         'Training breakdown: theory training → multiple choice test (£26) → hazard perception test → car-and-trailer test → Category C theory and practical → Driver CPC Initial Qualification (4 tests).',
         'Driver CPC (Certificate of Professional Competence): required for all professional HGV drivers. The Bootcamp includes the full CPC Initial Qualification — Case Study + Practical Demonstration.',
         'Guaranteed employer interview: on Bootcamp completion, providers connect you with logistics companies (Tesco, Royal Mail, Eddie Stobart, etc.) with a guaranteed interview.',
-        '⚠ You need full Right to Work before starting — this is an employment-linked programme. Asylum seekers with permission to work (after 12 months) may apply.',
+        '⚠ You need full Right to Work before starting — this is an employment-linked programme. Asylum seekers with permission to work CANNOT take HGV driving work: it is not on the Immigration Salary List and is not an RQF level 6 occupation, so it falls outside what permission to work allows. Wait until you have refugee status or another status with unrestricted right to work.',
         'ADR upgrade: after getting your Category C or C+E licence, you can add ADR (dangerous goods) certification — opens chemical, fuel, and gas transport roles at higher rates.',
       ],
     },
@@ -1430,7 +1430,7 @@ export const CERTS = [
       { name: 'Driver CPC explained (GOV.UK)', url: 'https://www.gov.uk/driver-cpc-training' },
       {
         name: 'Find approved Driver CPC training (GOV.UK)',
-        url: 'https://www.gov.uk/find-driver-cpc-course',
+        url: 'https://www.gov.uk/driver-cpc-training',
       },
     ],
     studyLinks: [],
@@ -1462,7 +1462,7 @@ export const CERTS = [
     links: [
       {
         name: 'ADR training explained (GOV.UK)',
-        url: 'https://www.gov.uk/transport-dangerous-goods/adr-the-european-agreement',
+        url: 'https://www.gov.uk/government/collections/transporting-dangerous-goods/adr-the-european-agreement',
       },
       {
         name: 'Find ADR training providers (DVSA)',
@@ -1574,13 +1574,13 @@ export const CERTS = [
       },
       {
         name: 'Apprenticeship funding guide (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/apprenticeship-funding',
+        url: 'https://www.gov.uk/become-apprentice',
       },
     ],
     studyLinks: [
       {
         name: 'Propertymark — career pathways',
-        url: 'https://www.propertymark.co.uk/professional-development/qualifications.html',
+        url: 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
       },
     ],
   },
@@ -1993,7 +1993,7 @@ export const JOB_SOURCE_URL: Record<string, string> = {
   'refugee-employment-support': 'https://refugeeemploymentnetwork.org/',
   'bilingual-support-worker': 'https://www.nrpsi.org.uk',
   'lettings-assistant':
-    'https://www.propertymark.co.uk/professional-development/qualifications.html',
+    'https://www.propertymark.co.uk/careers-learning/qualifications.html',
   'plant-operative': 'https://www.cpcs.uk.com/cpcs-testing/',
   'forklift-operative': 'https://www.rtitb.com/course-locator/',
 }
@@ -2231,15 +2231,15 @@ export const CAREERS = [
     links: [
       {
         name: 'RICS — routes to membership',
-        url: 'https://www.rics.org/surveying-profession/join-rics/',
+        url: 'https://www.rics.org/join-rics',
       },
       {
         name: 'RICS Senior Professional APC',
-        url: 'https://www.rics.org/surveying-profession/join-rics/assessment-of-professional-competence-apc/',
+        url: 'https://www.rics.org/join-rics',
       },
       {
         name: 'RICS International routes',
-        url: 'https://www.rics.org/surveying-profession/join-rics/international-routes-to-membership/',
+        url: 'https://www.rics.org/join-rics',
       },
       {
         name: 'UK ENIC (degree recognition)',
@@ -2288,7 +2288,7 @@ export const CAREERS = [
         '**Step 3 — Power BI or Tableau (weeks 3–8):** These are the most in-demand visualisation tools in UK businesses. Microsoft Power BI has a free desktop version and free learning path at learn.microsoft.com. Add a Power BI certification (PL-300, ~£130) to your CV.',
         '**Step 4 — Python basics (optional but high value, weeks 6–12):** Pandas + Matplotlib libraries are used in most data roles above junior. Learn free at Kaggle.com/learn/python. You do NOT need to be a programmer — you need to be able to load, clean, and visualise data.',
         '**Step 5 — Build a portfolio (weeks 4–12, run throughout):** Create 3–5 projects on GitHub using real datasets. Ideal topics for your background: property price analysis, construction cost trends, bank loan default modelling. These directly signal transferable expertise to UK hiring managers.',
-        "**UK ENIC for your degree:** Get your BSc and MBA assessed by UK ENIC (£49 per qualification at enic.org.uk). This adds a line to your CV stating 'UK Level 6 equivalent / UK Level 7 equivalent' — essential for employers who filter by UK academic level.",
+        "**UK ENIC for your degree:** Get your BSc and MBA assessed by UK ENIC (£69.60 per qualification at enic.org.uk). This adds a line to your CV stating 'UK Level 6 equivalent / UK Level 7 equivalent' — essential for employers who filter by UK academic level.",
         '**Entry-level roles to target:** Data Analyst, Reporting Analyst, Business Analyst, MI Analyst, Finance Analyst. Starting salary: £28K–£38K. Many councils, NHS trusts, housing associations, and banks specifically recruit internationally experienced analysts.',
         '**Apprenticeships:** A Level 4 Data Analyst Apprenticeship lets you earn £22K–£28K while getting certified on the job — search findapprenticeship.service.gov.uk. Employers include Barclays, NHS, and the Cabinet Office.',
         '**Progression:** Junior → Mid → Senior Data Analyst (£45K–£65K) → Data Science (£55K–£90K). The MBA positions you to transition into BI Manager, Analytics Manager, or Head of Data within 3–5 years.',
@@ -2322,7 +2322,7 @@ export const CAREERS = [
         '**What a Quantity Surveyor (QS) does:** QSs manage all costs on a construction project from initial estimates through to final accounts — preventing projects going over budget. The UK construction sector spends £150B+ a year and there is a severe shortage of experienced QSs. This is one of the most transferable careers for professionals with any combination of engineering, finance, or property backgrounds.',
         '**Why this is an ideal pivot for engineers with finance experience:** Civil engineers understand construction methods and materials. Finance professionals understand cost control, contracts, and risk. If you have both, you are already thinking like a QS. UK RICS explicitly values international experience in both disciplines.',
         "**Two routes to MRICS (Quantity Surveying pathway):**\n• **Route 1 — APC (Assessment of Professional Competence):** If you have a relevant degree (engineering OR finance) and 2+ years relevant experience, you can enter the RICS APC directly. Email join@rics.org to confirm eligibility.\n• **Route 2 — Senior Professional APC (SPA):** If you hold a postgraduate degree (e.g. MBA) AND 5+ years' relevant experience, the SPA route may let you skip the standard training period entirely. Ask RICS specifically about this.",
-        '**Step 1:** Get your degree(s) assessed by UK ENIC (£49 each at enic.org.uk). This establishes UK academic equivalence — essential for RICS assessment.',
+        '**Step 1:** Get your degree(s) assessed by UK ENIC (£69.60 each at enic.org.uk). This establishes UK academic equivalence — essential for RICS assessment.',
         "**Step 2:** Register with RICS as AssocRICS (Associate) first — achievable in months, lets you work as a professional QS while completing MRICS. RICS covers the cost of the first year's membership for refugees via their diversity programme — ask when you contact them.",
         '**Step 3 — Entry roles:** Assistant QS, Junior Cost Consultant, Estimator, Commercial Manager (graduate). Many roles require only a relevant degree and some experience — your engineering + finance combination is a genuine competitive advantage.',
         '**Core skills to evidence:** cost planning, bill of quantities preparation, tender analysis, contract administration (NEC and JCT are the UK standards), valuation of works done (directly maps to bank property valuation experience). Learn NEC3/NEC4 contracts with free resources from the NEC website.',
@@ -2335,11 +2335,11 @@ export const CAREERS = [
     links: [
       {
         name: 'RICS — Quantity Surveying routes',
-        url: 'https://www.rics.org/surveying-profession/join-rics/assessment-of-professional-competence-apc/quantity-surveying-and-construction/',
+        url: 'https://www.rics.org/join-rics',
       },
       {
         name: 'RICS Senior Professional APC',
-        url: 'https://www.rics.org/surveying-profession/join-rics/assessment-of-professional-competence-apc/',
+        url: 'https://www.rics.org/join-rics',
       },
       {
         name: 'UK ENIC (degree recognition)',
@@ -2377,7 +2377,7 @@ export const CAREERS = [
       ],
     },
     links: [
-      { name: 'WEA — Level 2 Community Interpreting', url: 'https://www.wea.org.uk/find-a-course' },
+      { name: 'WEA — Level 2 Community Interpreting', url: 'https://www.wea.org.uk/courses' },
       { name: 'NRPSI — National Register', url: 'https://www.nrpsi.org.uk' },
       { name: 'DPSI — Chartered Institute of Linguists', url: 'https://www.ciol.org.uk/dpsi' },
     ],
@@ -2409,7 +2409,7 @@ export const CAREERS = [
     links: [
       {
         name: 'Propertymark — qualifications',
-        url: 'https://www.propertymark.co.uk/professional-development/qualifications.html',
+        url: 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
       },
       {
         name: 'CIH — Letting & Managing Residential Property',
@@ -2513,7 +2513,7 @@ export const CAREERS = [
       { name: 'Driver CPC (GOV.UK)', url: 'https://www.gov.uk/driver-cpc-training' },
       {
         name: 'ADR — dangerous goods (GOV.UK)',
-        url: 'https://www.gov.uk/transport-dangerous-goods',
+        url: 'https://www.gov.uk/government/collections/transporting-dangerous-goods',
       },
     ],
   },
@@ -2846,8 +2846,8 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   'personal-licence': 'https://www.gov.uk/find-licences/premises-licence',
   'phv-licence': 'https://www.gov.uk/taxi-driver-licence',
   'driving-theory': 'https://www.gov.uk/book-theory-test',
-  'wea-community-interpreting-l2': 'https://www.wea.org.uk/find-a-course',
-  'propertymark-l3': 'https://www.propertymark.co.uk/professional-development/qualifications.html',
+  'wea-community-interpreting-l2': 'https://www.wea.org.uk/courses',
+  'propertymark-l3': 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
   'cih-l3-lettings': 'https://www.cih.org/learning-and-development/qualifications/',
   'cih-l3-housing': 'https://www.cih.org/learning-and-development/qualifications/',
   'cpcs-red-card': 'https://www.cpcs.uk.com/cpcs-testing/',
@@ -2855,7 +2855,7 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   'forklift-training-hse': 'https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm',
   'hgv-bootcamp': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
   'driver-cpc': 'https://www.gov.uk/driver-cpc-training',
-  'adr-driver': 'https://www.gov.uk/transport-dangerous-goods',
+  'adr-driver': 'https://www.gov.uk/government/collections/transporting-dangerous-goods',
   'rtitb-instructor': 'https://www.rtitb.com/training/instructor-training/',
   'eastcoast-community-interpreting-l2': 'https://www.eastcoast.ac.uk',
   'junior-estate-agent-l2-apprenticeship':
@@ -2886,13 +2886,13 @@ export const CAREER_SOURCE_URL: Record<string, string> = {
   healthcare: 'https://www.jobs.nhs.uk/',
   'green-energy': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
   translation: 'https://www.nrpsi.org.uk',
-  'property-valuation': 'https://www.rics.org/surveying-profession/join-rics/',
+  'property-valuation': 'https://www.rics.org/join-rics',
   'social-work': 'https://www.socialworkengland.org.uk/',
   'data-analyst': 'https://www.coursera.org/professional-certificates/google-data-analytics',
   'quantity-surveying':
-    'https://www.rics.org/surveying-profession/join-rics/assessment-of-professional-competence-apc/quantity-surveying-and-construction/',
+    'https://www.rics.org/join-rics',
   'community-interpreter': 'https://www.nrpsi.org.uk',
-  'letting-agent': 'https://www.propertymark.co.uk/professional-development/qualifications.html',
+  'letting-agent': 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
   'plant-operator': 'https://www.cpcs.uk.com/cpcs-testing/',
   'forklift-operator': 'https://www.hse.gov.uk/work-equipment-machinery/forklifts.htm',
   'hgv-driver-career': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
