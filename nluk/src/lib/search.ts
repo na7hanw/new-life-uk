@@ -114,3 +114,18 @@ export {
   incrementGuideAccess,
   getTrendingGuideIds,
 } from './searchHistory.ts'
+
+/**
+ * Search the global corpus, returning nothing for a blank query.
+ *
+ * Prefer this over calling `globalFuse.search()` directly. fuse.js changed
+ * behaviour here between 7.0 and 7.5: an empty pattern used to return no
+ * matches and now returns the ENTIRE corpus (181 items). Every current caller
+ * happens to guard with `query.trim()` first, so nothing broke — but the guard
+ * was incidental, spread across call sites, and one unguarded caller would
+ * silently render everything. Holding the invariant in one place makes it real.
+ */
+export function searchGlobal(query: string, limit?: number): GlobalFuseResult[] {
+  if (!query.trim()) return []
+  return limit === undefined ? globalFuse.search(query) : globalFuse.search(query, { limit })
+}
