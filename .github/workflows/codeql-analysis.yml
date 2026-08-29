@@ -46,6 +46,38 @@ jobs:
           # alone. Uploading to the code-scanning API still happens as before.
           output: sarif-results
 
+      # Print the findings into the job log. The artifact above is only
+      # readable by someone who can download it; the log is readable by anyone
+      # looking at the failed run, which is the point — a check that can only
+      # say "1 high" to the person trying to fix it gets ignored.
+      - name: Print CodeQL findings
+        if: always()
+        run: |
+          shopt -s nullglob
+          files=(sarif-results/*.sarif)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No SARIF produced."
+            exit 0
+          fi
+          for f in "${files[@]}"; do
+            echo "=== $f ==="
+            jq -r '
+              .runs[]
+              | (.tool.driver.rules // []) as $rules
+              | .results[]?
+              | . as $r
+              | ($rules[($r.rule.index // -1)] // {}) as $rule
+              | [
+                  ($r.ruleId // "?"),
+                  ($rule.properties["security-severity"] // $r.level // "?"),
+                  ($r.locations[0].physicalLocation.artifactLocation.uri // "?"),
+                  ($r.locations[0].physicalLocation.region.startLine // "?"),
+                  ($r.message.text // "" | gsub("\n"; " "))
+                ]
+              | @tsv
+            ' "$f" || echo "(could not parse $f)"
+          done
+
       - name: Upload SARIF as an artifact
         if: always()
         uses: actions/upload-artifact@v4
