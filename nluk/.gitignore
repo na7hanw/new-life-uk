@@ -14,3 +14,6 @@ coverage/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# transient scratch files from audit/analysis runs (never commit)
+zz-tmp-*
