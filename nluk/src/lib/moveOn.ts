@@ -135,11 +135,19 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
       'I am making a homelessness application. I am threatened with homelessness within 56 days and I am asking for the prevention duty. Please give me my Personalised Housing Plan in writing.',
   },
   {
+    id: 'evisa',
+    byDay: 2,
+    title: 'Get your eVisa working and generate a share code',
+    detail:
+      'Do this before the bank, not after — the share code is what opens the account, and it is also how you prove right to work and right to rent. Your expired BRP still works to create the UKVI account until 31 December 2026.',
+    guideId: 'evisa',
+  },
+  {
     id: 'bank',
     byDay: 3,
     title: 'Open a bank account',
     detail:
-      'Monzo, Starling and Revolut open on a share code and a selfie, with no fixed address. You need one before UC can pay you.',
+      'Monzo, Starling, Revolut and Monese open on a share code and a selfie, with no fixed address and no credit check. ⚠ This is the hard blocker: you can CLAIM Universal Credit without an account, but it cannot PAY you until you have one. If you do not have an account yet, this is the most urgent thing on the list after the claim itself.',
     guideId: 'bank',
   },
   {
@@ -156,14 +164,6 @@ export const MOVE_ON_ACTIONS: MoveOnAction[] = [
     detail:
       'No ID, address or immigration status needed — a practice cannot refuse you on those grounds, and must give any refusal in writing.',
     guideId: 'gp',
-  },
-  {
-    id: 'evisa',
-    byDay: 7,
-    title: 'Check your eVisa and generate a share code',
-    detail:
-      'This is how you prove right to work and right to rent. Employers and landlords will ask for it.',
-    guideId: 'evisa',
   },
   {
     id: 'money',
