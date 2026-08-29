@@ -98,7 +98,7 @@ export const ASSET_ACTIONS: Record<Asset, { action: string; guideId?: string }> 
     guideId: 'bank',
   },
   'uc-claim': {
-    action: 'Claim at gov.uk/universal-credit. The five-week wait starts on the day you claim, not the day you are ready.',
+    action: 'Claim at gov.uk/universal-credit on the day the grant letter arrives. You do NOT need a National Insurance number, an eVisa or a bank account to MAKE the claim — tell DWP at the start that you have no NI number and they will tell you how to apply. Your ARC card plus the Home Office decision letter is an accepted way to prove who you are; they must be shown together, with two supporting documents. The five-week wait starts on the day you claim, so waiting for paperwork costs money and buys nothing.',
     guideId: 'uc',
   },
 }

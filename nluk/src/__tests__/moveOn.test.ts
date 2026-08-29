@@ -250,6 +250,22 @@ describe('the action sequence', () => {
     expect(ni.detail).not.toMatch(/Check the decision letter first/i)
   })
 
+  it('tells people to claim UC without waiting for documents', () => {
+    // GOV.UK: "You do not need a NI number for your benefits claim to be made."
+    // The five-week wait runs from the claim date, so waiting for the eVisa or
+    // the NI number is the single most expensive delay available.
+    const uc = MOVE_ON_ACTIONS.find(a => a.id === 'uc')!
+    expect(uc.detail).toMatch(/do NOT need/i)
+    expect(uc.detail).toMatch(/ARC/)
+  })
+
+  it('does not promise the NI number will be in the eVisa', () => {
+    // The Home Office says MOST are issued automatically, and gov.uk says you
+    // MIGHT already have one. "Most" is not "will".
+    const ni = MOVE_ON_ACTIONS.find(a => a.id === 'ni')!
+    expect(ni.detail).toMatch(/MOST|might/i)
+  })
+
   it('is ordered by deadline', () => {
     const days = MOVE_ON_ACTIONS.map(a => a.byDay)
     expect(days).toEqual([...days].sort((a, b) => a - b))
