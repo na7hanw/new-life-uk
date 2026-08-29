@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
 import { useApp } from '../context/AppContext.tsx'
 import MoveOnPlan from '../components/MoveOnPlan.tsx'
+import RentCheck from '../components/RentCheck.tsx'
 import {
   ASSET_ACTIONS,
   ASSET_LABELS,
@@ -40,6 +41,7 @@ export default function TodayPage() {
   const {
     assetsHeld,
     toggleAsset,
+    userPostcode,
     statusDate,
     setStatusDate,
     discontinuationDate,
@@ -154,6 +156,10 @@ export default function TodayPage() {
           </li>
         ))}
       </ul>
+
+      {/* ── Can I afford this room? ────────────────────────────── */}
+      <h2 className={styles.heading}>Can you afford this room?</h2>
+      <RentCheck postcode={userPostcode} />
 
       {/* ── The clock ──────────────────────────────────────────── */}
       <h2 className={styles.heading}>Your deadline</h2>

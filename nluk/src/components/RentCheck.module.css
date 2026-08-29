@@ -1,0 +1,59 @@
+.wrap { margin: 0 var(--gutter) 8px; }
+
+.none, .cap, .note {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--t2);
+  margin: 0 0 12px;
+}
+
+.none { margin: 0 var(--gutter) 12px; }
+
+.fields { display: flex; gap: 10px; }
+.field { flex: 1; display: block; }
+
+.label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--t2);
+  margin-bottom: 4px;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1.5px solid var(--bd);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--tx);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.result {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1.5px solid var(--bd);
+  border-inline-start: 4px solid var(--ac);
+  border-radius: 12px;
+  background: var(--bg2);
+}
+
+.big { font-size: 1.35rem; font-weight: 800; color: var(--tx); line-height: 1.2; }
+.per { font-size: 0.85rem; font-weight: 600; color: var(--t2); }
+.perDay { margin-top: 4px; font-size: 0.85rem; color: var(--t2); }
+
+.warn {
+  margin: 10px 0 0;
+  padding: 9px 11px;
+  border-radius: 9px;
+  border-inline-start: 3px solid var(--wn);
+  background: var(--wnbg);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--tx);
+}
+
+.note { margin: 10px 0 0; }
