@@ -201,6 +201,7 @@ export default function MorePage() {
               ['nluk_assets',          'Which documents and numbers you have ticked off (share code, bank account, NI number)'],
               ['nluk_status_date',     'The date on your decision letter'],
               ['nluk_disc_date',       'The date on your support discontinuation letter'],
+              ['nluk_ntq_date',        'The date your Notice to Quit says to leave'],
               ['nluk_claim_date',      'The date you claimed asylum'],
               ['nluk_docs',            'Which identity documents you hold'],
             ] as [string, string][]).map(([k, v]) => (

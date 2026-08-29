@@ -1,3 +1,4 @@
+import { differenceInDays } from 'date-fns'
 /**
  * Move-on date arithmetic.
  *
@@ -56,6 +57,97 @@ describe('the two clocks', () => {
   })
 })
 
+describe('the Home Office calculation, quoted', () => {
+  // "counting 42 days from the date the grant letter was issued, (ensuring the
+  //  individual gets at least 28 days from the point of discontinuation),
+  //  adding on 2 calendar days only if the notice is being sent by post"
+  // https://www.gov.uk/government/publications/ceasing-asylum-support-instruction/ceasing-section-95-support-instruction-accessible
+  it('counts from the ISSUE date of the grant letter', () => {
+    // Wednesday 1 April 2026 + 42 = Wednesday 13 May 2026.
+    const p = computeMoveOnPlan({ grantDate: '2026-04-01', today: new Date('2026-04-01') })
+    expect(p.deadline?.toISOString().slice(0, 10)).toBe('2026-05-13')
+  })
+
+  it('adds 2 calendar days when the notice was posted', () => {
+    const byHand = computeMoveOnPlan({ grantDate: '2026-04-01', today: new Date('2026-04-01') })
+    const byPost = computeMoveOnPlan({ grantDate: '2026-04-01', noticeByPost: true, today: new Date('2026-04-01') })
+    expect(differenceInDays(byPost.deadline!, byHand.deadline!)).toBe(2)
+  })
+
+  it('does not add the postal days when the notice was not posted', () => {
+    const p = computeMoveOnPlan({ grantDate: '2026-04-01', noticeByPost: false, today: new Date('2026-04-01') })
+    expect(p.deadline?.toISOString().slice(0, 10)).toBe('2026-05-13')
+  })
+
+  it('rolls a weekend deadline forward to the Monday', () => {
+    // 4 April 2026 + 42 = Saturday 16 May 2026 -> Monday 18 May.
+    const p = computeMoveOnPlan({ grantDate: '2026-04-04', today: new Date('2026-04-04') })
+    expect(p.deadline?.getDay()).not.toBe(6)
+    expect(p.deadline?.getDay()).not.toBe(0)
+    expect(p.deadline?.toISOString().slice(0, 10)).toBe('2026-05-18')
+  })
+
+  it('never rolls a deadline backwards', () => {
+    for (const d of ['2026-04-01', '2026-04-02', '2026-04-03', '2026-04-04', '2026-04-05']) {
+      const p = computeMoveOnPlan({ grantDate: d, today: new Date(d) })
+      const naive = new Date(new Date(d).getTime() + 42 * 86400000)
+      expect(p.deadline!.getTime()).toBeGreaterThanOrEqual(naive.getTime())
+    }
+  })
+})
+
+describe('the Notice to Quit', () => {
+  // The provider serves this after the grant letter, on the Home Office's
+  // behalf. It is the date that actually gets acted on.
+  it('becomes the operative deadline once known', () => {
+    const p = computeMoveOnPlan({
+      grantDate: '2026-04-01',
+      noticeToQuitDate: '2026-05-20',
+      today: new Date('2026-04-01'),
+    })
+    expect(p.deadline?.toISOString().slice(0, 10)).toBe('2026-05-20')
+    expect(p.entitlementFloor?.toISOString().slice(0, 10)).toBe('2026-05-13')
+  })
+
+  it('flags a notice that expires BEFORE the entitlement floor', () => {
+    // 42 days from 1 April is 13 May. A notice demanding the room back on
+    // 1 May is short — that is worth challenging, not obeying quietly.
+    const p = computeMoveOnPlan({
+      grantDate: '2026-04-01',
+      noticeToQuitDate: '2026-05-01',
+      today: new Date('2026-04-01'),
+    })
+    expect(p.noticeLooksShort).toBe(true)
+  })
+
+  it('does not flag a notice that gives at least the entitlement', () => {
+    const p = computeMoveOnPlan({
+      grantDate: '2026-04-01',
+      noticeToQuitDate: '2026-05-20',
+      today: new Date('2026-04-01'),
+    })
+    expect(p.noticeLooksShort).toBe(false)
+  })
+
+  it('cannot look short when no notice has been served', () => {
+    const p = computeMoveOnPlan({ grantDate: '2026-04-01', today: new Date('2026-04-01') })
+    expect(p.noticeToQuit).toBeNull()
+    expect(p.noticeLooksShort).toBe(false)
+    // With no NTQ, the entitlement floor is what you plan against.
+    expect(p.deadline).toEqual(p.entitlementFloor)
+  })
+
+  it('respects the 28-day discontinuation floor when setting the entitlement', () => {
+    // Discontinuation long after the grant pushes the floor past grant + 42.
+    const p = computeMoveOnPlan({
+      grantDate: '2026-04-01',
+      discontinuationDate: '2026-05-10',
+      today: new Date('2026-04-01'),
+    })
+    expect(p.entitlementFloor?.toISOString().slice(0, 10)).toBe('2026-06-08')
+  })
+})
+
 describe('the Universal Credit gap', () => {
   it('shows a positive buffer when UC is claimed on day 1', () => {
     const p = computeMoveOnPlan({
@@ -103,7 +195,11 @@ describe('missing or malformed input', () => {
     // Someone whose refusal has been withdrawn knows the grant is days away and
     // should be able to lay the plan out before the clock starts.
     const p = computeMoveOnPlan({ grantDate: '2026-09-05', today: new Date('2026-09-01') })
-    expect(p.daysLeft).toBe(ACCOMMODATION_DAYS + 4)
+    // 5 Sep + 42 = Sat 17 Oct, which the Home Office rule rolls to Mon 19 Oct
+    // ("if the end of support date falls on a bank holiday or weekend, the next
+    // working day should be used"), so the grant being 4 days out gives 4 + 2.
+    expect(p.deadline?.toISOString().slice(0, 10)).toBe('2026-10-19')
+    expect(p.daysLeft).toBe(ACCOMMODATION_DAYS + 6)
   })
 })
 

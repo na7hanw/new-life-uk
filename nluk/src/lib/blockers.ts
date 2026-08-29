@@ -82,7 +82,7 @@ export const ASSET_ACTIONS: Record<Asset, { action: string; guideId?: string }> 
     action: 'This comes from the Home Office. Everything else starts from it — keep the original safe and photograph every page.',
   },
   'ukvi-account': {
-    action: 'Set this up the day you can: your National Insurance number and every share code live inside it. GOV.UK lists three ways in — a passport plus your application (UAN or GWF) number, a passport plus a BRP number, or an expired BRP on its own. ⚠ If you came off asylum support with an ARC card you may have none of those. GOV.UK says only that you can "confirm your identity another way" and does not say how, so use the UKVI webchat and do it early rather than discovering the gap on day 30.',
+    action: 'You do not have to create this yourself. The Home Office sets it up and sends you a UKVI customer number with instructions for logging in — in the decision letter, or in the letter about your asylum accommodation ending. It is free, and if you already have an account do NOT create a second one. Get in the day the letter arrives: your National Insurance number and every share code live inside it, and nothing else can start until it is live.',
     guideId: 'evisa',
   },
   'share-code': {

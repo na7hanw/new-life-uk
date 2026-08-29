@@ -6,12 +6,18 @@ import { computeMoveOnPlan, MOVE_ON_ACTIONS, UC_WAIT_DAYS } from '../lib/moveOn.
 import styles from './MoveOnPlan.module.css'
 
 interface Props {
-  /** ISO date the user was notified of their positive decision. */
+  /**
+   * ISO date PRINTED ON the grant letter — its issue date, not the day it
+   * arrived. The Home Office counts the 42 days from issue.
+   */
   statusDate: string
   setStatusDate: (d: string) => void
   /** ISO date on the asylum support discontinuation letter. */
   discontinuationDate: string
   setDiscontinuationDate: (d: string) => void
+  /** ISO date the provider's Notice to Quit requires the property vacated. */
+  noticeToQuitDate: string
+  setNoticeToQuitDate: (d: string) => void
 }
 
 /**
@@ -26,15 +32,17 @@ export default function MoveOnPlan({
   setStatusDate,
   discontinuationDate,
   setDiscontinuationDate,
+  noticeToQuitDate,
+  setNoticeToQuitDate,
 }: Props) {
   const navigate = useNavigate()
 
   const plan = useMemo(
-    () => computeMoveOnPlan({ grantDate: statusDate, discontinuationDate }),
-    [statusDate, discontinuationDate]
+    () => computeMoveOnPlan({ grantDate: statusDate, discontinuationDate, noticeToQuitDate }),
+    [statusDate, discontinuationDate, noticeToQuitDate]
   )
 
-  const { deadline, daysLeft, accommodationDeadline, supportFloor, ucBufferDays } = plan
+  const { deadline, daysLeft, accommodationDeadline, supportFloor, ucBufferDays, noticeLooksShort, entitlementFloor } = plan
   const hasDate = deadline !== null && daysLeft !== null
   const isPast = hasDate && daysLeft! < 0
   const isUrgent = hasDate && !isPast && daysLeft! <= 14
@@ -57,12 +65,24 @@ export default function MoveOnPlan({
               <strong>{format(deadline!, 'EEEE d MMMM yyyy')}</strong>
             </div>
 
-            {/* Show the working. Two clocks run and people are routinely told
+            {noticeLooksShort && entitlementFloor && (
+              <p className={styles.shortNotice}>
+                ⚠ Your Notice to Quit expires <strong>before</strong> the date the
+                rules give you. Counting from your grant letter you should have
+                until <strong>{format(entitlementFloor, 'd MMMM yyyy')}</strong>.
+                A short notice is not automatically a valid one. Take both
+                letters to the council&apos;s housing team and to a free adviser
+                before you pack — and do not leave voluntarily first, because
+                that can count against you.
+              </p>
+            )}
+
+            {/* Show the working. Three dates run and people are routinely told
                 only about the one on whichever letter they happened to read. */}
             <ul className={styles.clocks}>
               {accommodationDeadline && (
                 <li>
-                  42 days from your decision → {format(accommodationDeadline, 'd MMM yyyy')}
+                  42 days from your grant letter → {format(accommodationDeadline, 'd MMM yyyy')}
                 </li>
               )}
               {supportFloor ? (
@@ -109,13 +129,17 @@ export default function MoveOnPlan({
 
       <div className={styles.dates}>
         <div className={styles.dateField}>
-          <label htmlFor="grant-date">Date you were told your decision</label>
+          <label htmlFor="grant-date">Date printed on your grant letter</label>
           <input
             id="grant-date"
             type="date"
             value={statusDate}
             onChange={e => setStatusDate(e.target.value)}
           />
+          <p className={styles.fieldHint}>
+            Use the date on the letter, not the day it reached you — the Home
+            Office counts 42 days from when it was issued.
+          </p>
         </div>
         <div className={styles.dateField}>
           <label htmlFor="disc-date">Date on your discontinuation letter (optional)</label>
@@ -125,6 +149,19 @@ export default function MoveOnPlan({
             value={discontinuationDate}
             onChange={e => setDiscontinuationDate(e.target.value)}
           />
+        </div>
+        <div className={styles.dateField}>
+          <label htmlFor="ntq-date">Date your Notice to Quit says to leave (optional)</label>
+          <input
+            id="ntq-date"
+            type="date"
+            value={noticeToQuitDate}
+            onChange={e => setNoticeToQuitDate(e.target.value)}
+          />
+          <p className={styles.fieldHint}>
+            Your accommodation provider sends this after the grant letter. Keep
+            it — the council will ask for it.
+          </p>
         </div>
         {(statusDate || discontinuationDate) && (
           <button

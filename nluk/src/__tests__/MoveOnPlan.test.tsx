@@ -26,6 +26,8 @@ function renderPlan(props: Partial<ComponentProps<typeof MoveOnPlan>> = {}) {
         setStatusDate={vi.fn()}
         discontinuationDate=""
         setDiscontinuationDate={vi.fn()}
+        noticeToQuitDate=""
+        setNoticeToQuitDate={vi.fn()}
         {...props}
       />
     </MemoryRouter>
@@ -57,7 +59,7 @@ describe('with a decision date', () => {
   it('shows both clocks and says the later one wins', () => {
     const grant = addDays(new Date(), -10)
     renderPlan({ statusDate: iso(grant), discontinuationDate: iso(addDays(grant, 21)) })
-    expect(screen.getByText(/42 days from your decision/i)).toBeTruthy()
+    expect(screen.getByText(/42 days from your grant letter/i)).toBeTruthy()
     expect(screen.getByText(/28 days from your discontinuation letter/i)).toBeTruthy()
     expect(screen.getByText(/whichever is later/i)).toBeTruthy()
   })
@@ -126,7 +128,7 @@ describe('accessibility', () => {
 
   it('labels both date inputs', () => {
     renderPlan()
-    expect(screen.getByLabelText(/date you were told your decision/i)).toBeTruthy()
+    expect(screen.getByLabelText(/date printed on your grant letter/i)).toBeTruthy()
     expect(screen.getByLabelText(/discontinuation letter/i)).toBeTruthy()
   })
 })

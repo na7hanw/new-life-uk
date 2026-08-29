@@ -233,7 +233,7 @@ function CohortPanel({ claimDate, setClaimDate }: { claimDate: string; setClaimD
 }
 
 export default function ProfilePage() {
-  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userArea, setUserArea, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, noticeToQuitDate, setNoticeToQuitDate, userArea, setUserArea, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [showStatusPicker, setShowStatusPicker] = useState(false)
 
@@ -404,6 +404,8 @@ export default function ProfilePage() {
           setStatusDate={setStatusDate}
           discontinuationDate={discontinuationDate}
           setDiscontinuationDate={setDiscontinuationDate}
+        noticeToQuitDate={noticeToQuitDate}
+        setNoticeToQuitDate={setNoticeToQuitDate}
         />
       )}
 

@@ -339,6 +339,9 @@ export interface AppContextValue {
    * The user's postcode AREA only, e.g. "BL" — never the full postcode.
    * See lib/postcode.ts for why.
    */
+  /** ISO date the provider's Notice to Quit requires the property vacated. */
+  noticeToQuitDate: string
+  setNoticeToQuitDate: (d: string) => void
   userArea: string
   setUserArea: (p: string) => void
   bookmarks: string[]

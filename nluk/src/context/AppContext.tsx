@@ -37,6 +37,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [statusDate, setStatusDate] = useState<string>(() => ls('nluk_status_date', ''))
   const [claimDate, setClaimDate] = useState<string>(() => ls('nluk_claim_date', ''))
   const [discontinuationDate, setDiscontinuationDate] = useState<string>(() => ls('nluk_disc_date', ''))
+  // The provider's Notice to Quit date — the operative "leave by" date.
+  const [noticeToQuitDate, setNoticeToQuitDate] = useState<string>(() => ls('nluk_ntq_date', ''))
   const [userAmbition, setUserAmbition] = useState<UserAmbition>(() => ls('nluk_ambition', '') as UserAmbition)
   const [userSector, setUserSector] = useState<UserSector>(() => ls('nluk_sector', '') as UserSector)
   const [documentsHeld, setDocumentsHeld] = useState<string[]>(() => {
@@ -80,6 +82,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => { lsSet('nluk_status_date', statusDate) }, [statusDate])
   useEffect(() => { lsSet('nluk_claim_date', claimDate) }, [claimDate])
   useEffect(() => { lsSet('nluk_disc_date', discontinuationDate) }, [discontinuationDate])
+  useEffect(() => { lsSet('nluk_ntq_date', noticeToQuitDate) }, [noticeToQuitDate])
   useEffect(() => { lsSet('nluk_ambition', userAmbition) }, [userAmbition])
   useEffect(() => { lsSet('nluk_sector', userSector) }, [userSector])
   useEffect(() => { lsSet('nluk_docs', JSON.stringify(documentsHeld)) }, [documentsHeld])
@@ -135,7 +138,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const af = L.rtl ? '‹' : '›'
 
   return (
-    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, assetsHeld, toggleAsset, userArea, setUserArea, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
+    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, noticeToQuitDate, setNoticeToQuitDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, assetsHeld, toggleAsset, userArea, setUserArea, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
       {children}
     </AppContext.Provider>
   )

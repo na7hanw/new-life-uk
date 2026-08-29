@@ -46,6 +46,8 @@ export default function TodayPage() {
     setStatusDate,
     discontinuationDate,
     setDiscontinuationDate,
+    noticeToQuitDate,
+    setNoticeToQuitDate,
   } = useApp()
 
   const goals = useMemo(() => assessAll(assetsHeld), [assetsHeld])
@@ -168,6 +170,8 @@ export default function TodayPage() {
         setStatusDate={setStatusDate}
         discontinuationDate={discontinuationDate}
         setDiscontinuationDate={setDiscontinuationDate}
+        noticeToQuitDate={noticeToQuitDate}
+        setNoticeToQuitDate={setNoticeToQuitDate}
       />
     </div>
   )

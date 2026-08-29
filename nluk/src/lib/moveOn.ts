@@ -33,17 +33,75 @@
  *  - https://www.gov.uk/government/publications/claiming-universal-credit-and-other-benefits-if-you-are-a-refugee/refugee-guide-urgent-things-you-need-to-do
  *    (the NI number is found in the UKVI account, not on the decision letter)
  *  - https://www.gov.uk/evisa/set-up-ukvi-account (the three documented ways in)
+ *  - https://www.gov.uk/government/publications/ceasing-asylum-support-instruction/ceasing-section-95-support-instruction-accessible
+ *    — the authoritative calculation, quoted below.
+ *
+ * The Home Office instruction states the rule exactly:
+ *
+ *   "The end of support date should be calculated by counting 42 days from the
+ *    date the grant letter was issued, (ensuring the individual gets at least
+ *    28 days from the point of discontinuation), adding on 2 calendar days only
+ *    if the notice is being sent by post."
+ *
+ *   "If the end of support date is calculated to fall on a bank holiday or
+ *    weekend, the next working day should be used."
+ *
+ * Note ISSUED, not received. This module previously counted from the date the
+ * person was notified, which is later than the issue date whenever the letter
+ * takes time to arrive — so it produced a deadline LATER than the real one and
+ * would have told someone they had days they did not have. The postal +2 exists
+ * precisely to cover that delivery gap, and is applied explicitly instead.
+ *
+ * A third date matters and is modelled too: the Notice to Quit. After the grant
+ * letter the accommodation provider (SERCO and others) serves an NTQ on the
+ * Home Office's behalf naming the date to vacate — "Accommodation providers
+ * should issue the NTQ to the individual on behalf of the Home Office with a
+ * minimum of 7 days' notice". That date is the operative one, because it is
+ * what the provider acts on. The 42/28 calculation is what the person was
+ * OWED. When the NTQ falls earlier than the entitlement, noticeLooksShort goes
+ * true — a short notice is not automatically a valid one, and it is worth
+ * challenging rather than packing.
+ *
+ * Weekend roll-forward is modelled; bank holidays are not, because that needs a
+ * maintained calendar. Not rolling forward over a bank holiday makes the
+ * computed deadline EARLIER than the true one, which is the safe direction to
+ * be wrong in — the app may tell someone to be ready a day early, never a day
+ * late.
  */
 import { addDays, differenceInDays, isValid, parseISO } from 'date-fns'
 
 export const ACCOMMODATION_DAYS = 42
 export const SUPPORT_MIN_DAYS = 28
+/**
+ * Added only when the notice is served by post, per the Home Office
+ * calculation: "adding on 2 calendar days only if the notice is being sent by
+ * post".
+ */
+export const POSTAL_NOTICE_DAYS = 2
 /** UC standard wait: 5 weeks from claim to first regular payment. */
 export const UC_WAIT_DAYS = 35
 
 export interface MoveOnPlan {
   /** grant + 42 days */
   accommodationDeadline: Date | null
+  /**
+   * The date the accommodation provider's Notice to Quit says to leave by.
+   * When known this IS the operative date — the other two are the entitlement
+   * calculation, this is the eviction.
+   */
+  noticeToQuit: Date | null
+  /**
+   * The earliest date the rules allow: latest(grant + 42 (+2 if posted),
+   * discontinuation + 28), rolled to a working day.
+   */
+  entitlementFloor: Date | null
+  /**
+   * True when the Notice to Quit demands the property back BEFORE the
+   * entitlement floor. A short notice is not automatically valid, and this is
+   * the single most checkable thing that goes wrong — so it is surfaced rather
+   * than quietly accepted.
+   */
+  noticeLooksShort: boolean
   /** discontinuation + 28 days, when that letter's date is known */
   supportFloor: Date | null
   /** The later of the two — the date that actually matters. */
@@ -67,6 +125,17 @@ function toDate(iso: string | undefined | null): Date | null {
   return isValid(d) ? d : null
 }
 
+/**
+ * Roll a date off Saturday/Sunday to the following Monday.
+ * Bank holidays are deliberately not modelled — see the header note.
+ */
+function toWorkingDay(d: Date): Date {
+  const day = d.getDay()
+  if (day === 6) return addDays(d, 2) // Saturday -> Monday
+  if (day === 0) return addDays(d, 1) // Sunday -> Monday
+  return d
+}
+
 /** Latest of the supplied dates, ignoring nulls. */
 function latest(...dates: (Date | null)[]): Date | null {
   const real = dates.filter((d): d is Date => d !== null)
@@ -75,10 +144,21 @@ function latest(...dates: (Date | null)[]): Date | null {
 }
 
 export function computeMoveOnPlan(input: {
-  /** ISO date you were notified of the positive decision. */
+  /**
+   * ISO date the grant letter was ISSUED — the date printed on the letter, not
+   * the day it arrived. The Home Office counts the 42 days from issue.
+   */
   grantDate?: string | null
+  /** True when the notice was served by post, which adds 2 calendar days. */
+  noticeByPost?: boolean
   /** ISO date on the asylum support discontinuation letter, if received. */
   discontinuationDate?: string | null
+  /**
+   * ISO date the accommodation provider's Notice to Quit requires the property
+   * to be vacated. SERCO or another provider issues this after the grant
+   * letter, on the Home Office's behalf.
+   */
+  noticeToQuitDate?: string | null
   /** ISO date the UC claim was submitted. Defaults to today when omitted. */
   ucClaimDate?: string | null
   /** Injected for testability. */
@@ -88,9 +168,21 @@ export function computeMoveOnPlan(input: {
   const grant = toDate(input.grantDate)
   const disc = toDate(input.discontinuationDate)
 
-  const accommodationDeadline = grant ? addDays(grant, ACCOMMODATION_DAYS) : null
+  const postalDays = input.noticeByPost ? POSTAL_NOTICE_DAYS : 0
+  const accommodationDeadline = grant
+    ? addDays(grant, ACCOMMODATION_DAYS + postalDays)
+    : null
   const supportFloor = disc ? addDays(disc, SUPPORT_MIN_DAYS) : null
-  const deadline = latest(accommodationDeadline, supportFloor)
+  const rawFloor = latest(accommodationDeadline, supportFloor)
+  const entitlementFloor = rawFloor ? toWorkingDay(rawFloor) : null
+
+  // The Notice to Quit is the operative date once it exists: it is what the
+  // provider will act on. The entitlement floor is what you were owed. Where
+  // they disagree, the disagreement is the point.
+  const ntq = toDate(input.noticeToQuitDate)
+  const deadline = ntq ?? entitlementFloor
+  const noticeLooksShort =
+    ntq !== null && entitlementFloor !== null && ntq < entitlementFloor
 
   const ucClaim = toDate(input.ucClaimDate) ?? (grant ? today : null)
   const ucFirstPayment = ucClaim ? addDays(ucClaim, UC_WAIT_DAYS) : null
@@ -98,6 +190,9 @@ export function computeMoveOnPlan(input: {
   return {
     accommodationDeadline,
     supportFloor,
+    noticeToQuit: ntq,
+    entitlementFloor,
+    noticeLooksShort,
     deadline,
     daysLeft: deadline ? differenceInDays(deadline, today) : null,
     ucFirstPayment,
