@@ -98,7 +98,7 @@ export const ASSET_ACTIONS: Record<Asset, { action: string; guideId?: string }> 
     guideId: 'bank',
   },
   'uc-claim': {
-    action: 'Claim at gov.uk/universal-credit on the day the grant letter arrives. You do NOT need a National Insurance number, an eVisa or a bank account to MAKE the claim — tell DWP at the start that you have no NI number and they will tell you how to apply. Your ARC card plus the Home Office decision letter is an accepted way to prove who you are; they must be shown together, with two supporting documents. The five-week wait starts on the day you claim, so waiting for paperwork costs money and buys nothing.',
+    action: 'Claim at gov.uk/universal-credit — the five-week wait starts on the day you claim. To apply ONLINE you need bank account details, so get the account open first; without one you can still claim by phoning the Universal Credit helpline or going to the jobcentre. For identity, your eVisa is the accepted document — or, only while the Home Office has not yet created your UKVI account, your ARC card and the decision letter together. You do NOT need a National Insurance number to claim: tell DWP at the start that you do not have one.',
     guideId: 'uc',
   },
 }

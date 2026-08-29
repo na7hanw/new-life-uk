@@ -250,13 +250,19 @@ describe('the action sequence', () => {
     expect(ni.detail).not.toMatch(/Check the decision letter first/i)
   })
 
-  it('tells people to claim UC without waiting for documents', () => {
-    // GOV.UK: "You do not need a NI number for your benefits claim to be made."
-    // The five-week wait runs from the claim date, so waiting for the eVisa or
-    // the NI number is the single most expensive delay available.
+  it('separates what actually gates the UC claim from what does not', () => {
+    // Corrected after the owner pushed back. GOV.UK's "How to claim" lists
+    // "your bank, building society or credit union account details" among what
+    // you need to apply online, and the identity guidance makes the eVisa the
+    // accepted ID with ARC + decision letter as the fallback only while no UKVI
+    // account exists. Only the NI number is genuinely not required. An earlier
+    // version of this text said none of the three were needed, which would have
+    // sent someone to an online claim they could not finish.
     const uc = MOVE_ON_ACTIONS.find(a => a.id === 'uc')!
-    expect(uc.detail).toMatch(/do NOT need/i)
+    expect(uc.detail).toMatch(/bank/i)
+    expect(uc.detail).toMatch(/helpline|jobcentre/i)
     expect(uc.detail).toMatch(/ARC/)
+    expect(uc.detail).toMatch(/do not need a NI number|not.*National Insurance/i)
   })
 
   it('does not promise the NI number will be in the eVisa', () => {
