@@ -111,7 +111,7 @@ export const JOBS: Job[] = [
       },
       { name: 'Care UK', url: 'https://jobs.careuk.com' },
       { name: 'HC-One Care Homes', url: 'https://apply.hc-one.co.uk/' },
-      { name: 'Barchester Healthcare', url: 'https://www.barchester.com/jobs' },
+      { name: 'Barchester Healthcare', url: 'https://www.barchester.com/' },
       { name: 'Reed Health & Care', url: 'https://www.reed.co.uk/jobs/health-care-jobs' },
     ],
   },
@@ -139,7 +139,7 @@ export const JOBS: Job[] = [
       },
       {
         name: 'Find a free Skills Bootcamp (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
       { name: 'Hays Construction Jobs', url: 'https://www.hays.co.uk/construction-jobs' },
       { name: 'Manpower Construction Jobs', url: 'https://www.manpower.co.uk' },
@@ -169,7 +169,7 @@ export const JOBS: Job[] = [
     applyLinks: [
       {
         name: 'Free HGV Training — Skills Bootcamp (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
       { name: 'Driver Hire Jobs', url: 'https://www.driverhire.co.uk' },
       { name: 'Eddie Stobart Careers', url: 'https://www.eddiestobart.com/careers' },
@@ -475,7 +475,7 @@ export const JOBS: Job[] = [
       { name: 'Do-it — Language Volunteer Roles', url: 'https://www.ncvo.org.uk/get-involved/volunteering/' },
       {
         name: 'Refugee Council — volunteer interpreter',
-        url: 'https://www.refugeecouncil.org.uk/get-involved/volunteer/',
+        url: 'https://www.refugeecouncil.org.uk/support-us/volunteering/',
       },
     ],
   },
@@ -529,7 +529,7 @@ export const JOBS: Job[] = [
       { name: 'CPCS — book tests (CITB)', url: 'https://www.cpcs.uk.com/cpcs-testing/' },
       {
         name: 'Find Skills Bootcamp — Construction (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
       {
         name: 'Hays Construction Plant Operative Jobs',
@@ -746,7 +746,7 @@ export const CERTS = [
       'Skills Bootcamp: fully funded training + guaranteed employer interview on completion.',
     steps: {
       en: [
-        "FREE route: Search 'Construction Skills Bootcamp' at gov.uk/guidance/find-a-skills-bootcamp.",
+        "FREE route: Search 'Construction Skills Bootcamp' at skillsforcareers.education.gov.uk.",
         '**Green Labourer Card:** For general entry-level site work. Pass the Level 1 Health & Safety in a Construction Environment course and the CITB Health, Safety & Environment test (£22.50). Apply for the card (£36). Total: £58.50.',
         '**White AQP Card (Academically Qualified Person):** 💎 If you have an overseas civil engineering, construction, or architecture degree, do NOT get a Green Card. Get your degree verified by UK ENIC (£49), pass the CITB Managers and Professionals (MAP) test (£22.50), and apply for the White Card (£36). This lets you enter sites as a qualified professional, not a labourer.',
         'Card valid 5 years. Required by law to enter most UK construction sites.',
@@ -756,7 +756,7 @@ export const CERTS = [
     links: [
       {
         name: 'Find Skills Bootcamp (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
       { name: 'Apply for CSCS card', url: 'https://www.cscs.uk.com/applying-for-cards/' },
       {
@@ -800,7 +800,7 @@ export const CERTS = [
     links: [
       {
         name: 'Apply for SIA Licence',
-        url: 'https://www.sia.homeoffice.gov.uk/Pages/licensing-apply.aspx',
+        url: 'https://www.gov.uk/guidance/apply-for-an-sia-licence',
       },
       {
         name: 'SWAPs programme (GOV.UK)',
@@ -808,17 +808,17 @@ export const CERTS = [
       },
       {
         name: 'Find SIA-approved trainers',
-        url: 'https://www.sia.homeoffice.gov.uk/Pages/training-providers.aspx',
+        url: 'https://www.gov.uk/find-a-regulated-qualification',
       },
     ],
     studyLinks: [
       {
         name: 'SIA licence courses guide',
-        url: 'https://www.sia.homeoffice.gov.uk/Pages/licensing-courses.aspx',
+        url: 'https://www.gov.uk/guidance/check-what-training-you-need-to-get-an-sia-licence',
       },
       {
         name: 'Check a licence (SIA)',
-        url: 'https://www.sia.homeoffice.gov.uk/Pages/licence-checker.aspx',
+        url: 'https://rolh.services.sia.homeoffice.gov.uk/',
       },
     ],
   },
@@ -874,7 +874,7 @@ export const CERTS = [
     steps: {
       en: [
         'FREE via agency: Register with Manpower, Staffline, or Pertemps — tell them you want FLT training.',
-        "FREE via government: Search 'Logistics Skills Bootcamp' at gov.uk/guidance/find-a-skills-bootcamp.",
+        "FREE via government: Search 'Logistics Skills Bootcamp' at skillsforcareers.education.gov.uk.",
         'Training covers: counterbalance forklift (most common), reach truck, or both — start with counterbalance.',
         'Pass theory test and practical assessment at end of the course.',
         'Get RTITB or ITSSAR certificate — both nationally recognised by all employers.',
@@ -886,7 +886,7 @@ export const CERTS = [
       { name: 'Find FLT training centres (RTITB)', url: 'https://www.rtitb.com/course-locator/' },
       {
         name: 'Skills Bootcamps — Logistics (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
     ],
     studyLinks: [
@@ -907,7 +907,7 @@ export const CERTS = [
       'Skills Bootcamp covers every cost: D4 medical, theory tests, CPC modules, and practical test.',
     steps: {
       en: [
-        "FULLY FUNDED: Search 'HGV Skills Bootcamp' at gov.uk/guidance/find-a-skills-bootcamp.",
+        "FULLY FUNDED: Search 'HGV Skills Bootcamp' at skillsforcareers.education.gov.uk.",
         'Step 1: D4 medical exam (GP or private, ~£100 — often covered by the bootcamp).',
         'Step 2: Apply to DVLA for provisional HGV licence entitlement.',
         'Step 3: Pass Category C theory test + hazard perception test (book at GOV.UK).',
@@ -920,7 +920,7 @@ export const CERTS = [
     links: [
       {
         name: 'Find HGV Bootcamp (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
       { name: 'Become a lorry driver (GOV.UK)', url: 'https://www.gov.uk/become-lorry-bus-driver' },
       { name: 'Book your theory test (GOV.UK)', url: 'https://www.gov.uk/book-theory-test' },
@@ -1255,7 +1255,7 @@ export const CERTS = [
     time: '2–5 days initial training + theory and practical tests',
     cost: '£300–£900 depending on plant category / CITB grant available',
     freeRoute:
-      'CITB Grant: if your employer is CITB-registered, they can claim a grant toward plant training costs. Ask your employer. Also check Construction Skills Bootcamps at gov.uk/guidance/find-a-skills-bootcamp.',
+      'CITB Grant: if your employer is CITB-registered, they can claim a grant toward plant training costs. Ask your employer. Also check Construction Skills Bootcamps at skillsforcareers.education.gov.uk.',
     steps: {
       en: [
         'CPCS (Construction Plant Competence Scheme) is the main plant operator certification scheme in the UK, run by CITB. The Red Card is the entry-level trained operator card — valid for 2 years.',
@@ -1278,7 +1278,7 @@ export const CERTS = [
       },
       {
         name: 'Find Skills Bootcamp (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
     ],
     studyLinks: [
@@ -1300,7 +1300,7 @@ export const CERTS = [
     time: '1–3 days per category',
     cost: '£200–£600 per category / CITB grant may apply',
     freeRoute:
-      'NPORS training courses are sometimes available through Construction Skills Bootcamps (gov.uk/guidance/find-a-skills-bootcamp) and CITB grant-funded employers.',
+      'NPORS training courses are sometimes available through Construction Skills Bootcamps (skillsforcareers.education.gov.uk) and CITB grant-funded employers.',
     steps: {
       en: [
         'NPORS (National Plant Operators Registration Scheme) is an alternative to CPCS — accepted on many UK construction and infrastructure sites. Some sites accept either CPCS or NPORS; always check with the main contractor first.',
@@ -1376,7 +1376,7 @@ export const CERTS = [
       'The HGV Driver Skills Bootcamp is fully funded by the government. You must be 19+, have a full category B (car) licence, pass a medical (D4), and not have an existing HGV licence. Includes a guaranteed employer interview on completion.',
     steps: {
       en: [
-        "Find the Bootcamp: go to gov.uk/guidance/find-a-skills-bootcamp and search 'HGV' or 'LGV'. You need to be 19+, employed, self-employed, or recently unemployed. Must have a full cat B (car) licence.",
+        "Find the Bootcamp: go to skillsforcareers.education.gov.uk and search 'HGV' or 'LGV'. You need to be 19+, employed, self-employed, or recently unemployed. Must have a full cat B (car) licence.",
         'Medical (D4): you must pass a DVLA medical standard D4 before applying for your provisional LGV entitlement. Cost: approx £50–£100 at a registered GP. Some providers arrange this for you.',
         'Provisional entitlement: apply for provisional LGV Category C1 (up to 7.5 tonnes) or C (over 7.5 tonnes) or C+E (articulated). Apply online at DVLA.',
         'Training breakdown: theory training → multiple choice test (£26) → hazard perception test → car-and-trailer test → Category C theory and practical → Driver CPC Initial Qualification (4 tests).',
@@ -1389,7 +1389,7 @@ export const CERTS = [
     links: [
       {
         name: 'Find an HGV Skills Bootcamp (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
       {
         name: 'Apply for provisional LGV licence (DVLA)',
@@ -1596,7 +1596,7 @@ export const CERTS = [
     time: '2–3 days training + theory test + practical test',
     cost: '£300–£600 total (H&SE test £22.50 + training + card £38) / CITB grant available',
     freeRoute:
-      'CITB Grant: if you work for a CITB-registered employer, they can claim a grant toward training costs. Also check Construction Skills Bootcamps at gov.uk/guidance/find-a-skills-bootcamp.',
+      'CITB Grant: if you work for a CITB-registered employer, they can claim a grant toward training costs. Also check Construction Skills Bootcamps at skillsforcareers.education.gov.uk.',
     steps: {
       en: [
         'The CPCS A09 Forward Tipping Dumper is one of the most beginner-friendly and widely available first plant tickets in the UK. A dumper moves loose material — soil, aggregate, concrete — on site and is used on most housing, road, and civil engineering projects.',
@@ -1877,7 +1877,7 @@ export const CERTS = [
     cost: '£58.50 total (£22.50 HS&E test + £36 card) — or FREE via Skills Bootcamp',
     time: '1–2 weeks',
     freeRoute:
-      'FREE via a Construction Skills Bootcamp at gov.uk/guidance/find-a-skills-bootcamp — includes the HS&E test fee and card application.',
+      'FREE via a Construction Skills Bootcamp at skillsforcareers.education.gov.uk — includes the HS&E test fee and card application.',
     trustLevel: 'official',
     resourceType: 'official-scheme',
     lastVerified: 'March 2026',
@@ -1890,7 +1890,7 @@ export const CERTS = [
     steps: {
       en: [
         '⚠ FALLBACK ROUTE: use this only if you need immediate site access for labouring while preparing for the A40 CPCS route. The Green Card does not qualify you for crane or plant-related work.',
-        'FREE route: find a Construction Skills Bootcamp at gov.uk/guidance/find-a-skills-bootcamp — covers the full cost including the HS&E test.',
+        'FREE route: find a Construction Skills Bootcamp at skillsforcareers.education.gov.uk — covers the full cost including the HS&E test.',
         'Paid route: pass the CITB Operatives Health, Safety & Environment test (£22.50) at a Pearson VUE test centre, then complete the Level 1 Award in Health & Safety in a Construction Environment (or accepted CSCS alternative), then apply for the Green Card (£36) at cscs.uk.com.',
         'Note: the Operatives HS&E test result is also valid for CPCS A40, A73, and other operative-level CPCS cards — it is not wasted if you plan to progress to CPCS.',
         'The Green Card gives you site access for labouring roles only. It is NOT valid for slinging, signalling, plant operation, or supervision.',
@@ -1907,7 +1907,7 @@ export const CERTS = [
       },
       {
         name: 'Find a free Skills Bootcamp (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
     ],
     studyLinks: [
@@ -1979,11 +1979,11 @@ export const JOB_SOURCE_URL: Record<string, string> = {
   'courier-van': 'https://flex.amazon.co.uk/',
   warehouse: 'https://www.amazon.jobs/en/search?country=GBR',
   'healthcare-assistant': 'https://www.jobs.nhs.uk/',
-  'construction-labourer': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
-  'hgv-driver': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+  'construction-labourer': 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
+  'hgv-driver': 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
   'kitchen-porter': 'https://www.caterer.com/jobs/kitchen-porter',
   cleaning: 'https://uk.indeed.com/jobs?q=cleaning+operative',
-  'security-officer': 'https://www.sia.homeoffice.gov.uk/Pages/licensing.aspx',
+  'security-officer': 'https://www.gov.uk/government/collections/how-to-get-an-sia-licence',
   'teaching-assistant': 'https://nationalcareers.service.gov.uk/job-profiles/teaching-assistant',
   barista: 'https://people.mcdonalds.co.uk',
   'hotel-hospitality': 'https://uk.indeed.com/jobs?q=housekeeping',
@@ -2056,7 +2056,7 @@ export const CAREERS = [
         '**No degree conversion needed for most entry paths.** The most efficient route into UK tech is through industry certifications, not academic re-qualification. Employers like Google, Amazon, Microsoft, and the NHS accept these certifications as equivalent to or better than degrees for entry-level roles.',
         '**Free entry routes — pick ONE and complete it fully:**\n• **Google IT Support Certificate** (Coursera, free with financial aid — apply at coursera.org): 3–6 months. Covers networking, operating systems, troubleshooting, and security. Recognised by BT, Capgemini, Wipro, and 150+ UK companies.\n• **Google Data Analytics Certificate** (Coursera): 3–6 months. Covers SQL, R, Tableau. See the Data Analyst career path for full details.\n• **Google Cybersecurity Certificate** (Coursera): 6 months. Covers threat detection, SIEM tools, Python scripting. The fastest-growing sector in UK tech.\n• **AWS Cloud Practitioner** (free digital training at aws.amazon.com/training): 1–2 months. The most in-demand cloud certification in the UK. Exam fee: ~£90.',
         '**Code Your Future — free full-stack coding programme for refugees.** Code Your Future (codeyourfuture.io) is one of the most valuable resources in this app for refugee tech entrants. It provides free intensive coding training in JavaScript, React, Node.js, and SQL over 9 months — evenings and weekends so you can work alongside it. Graduates from over 50 nationalities. Hiring partners include BBC, HSBC, Deloitte, and the NHS.',
-        "**Skills Bootcamps (government-funded, free):** Search 'Digital Skills Bootcamp' at gov.uk/guidance/find-a-skills-bootcamp. Bootcamps in software development, cloud, cybersecurity, and data science are fully funded for adults over 19. Most run 12–16 weeks full-time and include a guaranteed employer interview on completion.",
+        "**Skills Bootcamps (government-funded, free):** Search 'Digital Skills Bootcamp' at skillsforcareers.education.gov.uk. Bootcamps in software development, cloud, cybersecurity, and data science are fully funded for adults over 19. Most run 12–16 weeks full-time and include a guaranteed employer interview on completion.",
         "**Degree Apprenticeships — earn while you qualify:** A Digital and Technology Solutions Degree Apprenticeship pays £20K–£28K while you study for a BSc in computer science or digital technology — fully funded by the employer. You graduate debt-free with 4 years' UK work experience. Search at findapprenticeship.service.gov.uk. Major employers: Accenture, Amazon, BT, GCHQ, and hundreds of councils.",
         '**IT Support Technician — the most accessible entry point.** IT support requires no programming. You help users fix computer problems, manage accounts, and troubleshoot networks. CompTIA A+ certification (£120–£200, study free on YouTube via Professor Messer) is the standard entry credential. Starting salary: £22K–£30K. Common at NHS trusts, councils, universities, and SMEs.',
         '**Progression tracks in UK tech:**\n• IT Support → Systems Administrator → Cloud Engineer (£40K–£65K)\n• Junior Developer → Mid-level Developer → Senior Developer (£60K–£90K+)\n• Data Analyst → Senior Analyst → Data Science / ML Engineer (£55K–£90K+)\n• Security Analyst → SOC Analyst → Cybersecurity Engineer (£45K–£80K)',
@@ -2071,7 +2071,7 @@ export const CAREERS = [
       { name: 'AWS Free Training', url: 'https://aws.amazon.com/training/digital/' },
       {
         name: 'Skills Bootcamps (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
       {
         name: 'Find a Degree Apprenticeship',
@@ -2177,7 +2177,7 @@ export const CAREERS = [
       { name: 'CITB', url: 'https://www.citb.co.uk/' },
       {
         name: 'Skills Bootcamps (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
     ],
   },
@@ -2443,7 +2443,7 @@ export const CAREERS = [
         'Other accessible beginner tickets: Roller (CPCS A26 / NPORS A11), Plant Marshal (CPCS A73 / NPORS A44), Slinger/Signaller (CPCS A40) — the last two are sometimes offered as 1-day courses.',
         'Card progression: CPCS Red Card (Trained Operator) → complete NVQ Level 2 Plant Operations → CPCS Blue Card (Competent Operator). The Blue Card is the full professional card, valid 5 years.',
         'Stacking tickets: each additional plant category (excavator, telehandler, MEWP) adds to your rate. Operators with 3+ CPCS categories earn £36K–£50K+. Excavator operators on major civils projects can earn £45K–£55K.',
-        'CITB grants: if you are employed by a CITB-registered employer, your training costs may be grant-funded. Ask before paying. Skills Bootcamps may also fund initial plant training — search at gov.uk/guidance/find-a-skills-bootcamp.',
+        'CITB grants: if you are employed by a CITB-registered employer, your training costs may be grant-funded. Ask before paying. Skills Bootcamps may also fund initial plant training — search at skillsforcareers.education.gov.uk.',
         'Civil engineering background: for those with a civil engineering degree, plant operation experience combined with your qualification can fast-track you into site foreman, site agent, or project engineer roles much faster than non-graduate plant operators.',
         '⚠ Right to Work required for all employed plant operator roles. CPCS testing itself does not require RTW.',
       ],
@@ -2507,7 +2507,7 @@ export const CAREERS = [
     links: [
       {
         name: 'Find HGV Skills Bootcamp (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
       { name: 'Become a lorry driver (GOV.UK)', url: 'https://www.gov.uk/become-lorry-bus-driver' },
       { name: 'Driver CPC (GOV.UK)', url: 'https://www.gov.uk/driver-cpc-training' },
@@ -2662,7 +2662,7 @@ export const CAREERS = [
     steps: {
       en: [
         '**One of the highest-earning trades in the UK with a structural shortage.** The UK has a target to install 600,000 heat pumps per year by 2028 and replace gas boilers across millions of homes. Gas and heating engineers are among the most in-demand tradespeople nationally — not a sector in decline.',
-        '**Two routes in:** (1) Level 3 Gas Engineering Apprenticeship — earn while you learn (£18K–£23K during training, ~24 months); (2) Short-course career-change route — Level 3 Diploma (~£8,000–£15,000 privately, Skills Bootcamp funding may reduce costs). Search gov.uk/find-a-skills-bootcamp for funded options.',
+        '**Two routes in:** (1) Level 3 Gas Engineering Apprenticeship — earn while you learn (£18K–£23K during training, ~24 months); (2) Short-course career-change route — Level 3 Diploma (~£8,000–£15,000 privately, Skills Bootcamp funding may reduce costs). Search skillsforcareers.education.gov.uk for funded options.',
         '**Qualifications required:** Level 3 Diploma in Plumbing and Domestic Heating + ACS (Approved Certification Scheme) assessments + Gas Safe registration. You cannot legally work on gas appliances in the UK without Gas Safe registration — it is the legal gateway.',
         '**Apprenticeship funding:** The government pays 100% of training costs for apprentices under 21 at employers with fewer than 50 staff. Apply via findapprenticeship.service.gov.uk. Major employers: British Gas (Centrica), Baxi, Vaillant, E.ON, and thousands of independent heating firms.',
         "**British Gas 'Skills for Life' programme** actively recruits career changers and provides an accelerated pathway into heating engineering — they sponsor training and guarantee employment on completion.",
@@ -2682,11 +2682,11 @@ export const CAREERS = [
       },
       {
         name: 'British Gas — Skills for Life',
-        url: 'https://www.centrica.com/careers/early-careers/apprenticeships/',
+        url: 'https://www.lifeatcentrica.com/',
       },
       {
         name: 'Skills Bootcamps (GOV.UK)',
-        url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+        url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
       },
     ],
   },
@@ -2837,7 +2837,7 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   'dbs-check': 'https://www.gov.uk/request-copy-criminal-record',
   'food-hygiene': 'https://www.food.gov.uk/business-guidance',
   'cscs-card': 'https://www.cscs.uk.com/applying-for-cards/',
-  'sia-licence': 'https://www.sia.homeoffice.gov.uk/Pages/licensing.aspx',
+  'sia-licence': 'https://www.gov.uk/government/collections/how-to-get-an-sia-licence',
   'first-aid': 'https://www.redcross.org.uk/first-aid',
   forklift: 'https://www.rtitb.com/course-locator/',
   'hgv-licence': 'https://www.gov.uk/become-lorry-bus-driver',
@@ -2853,7 +2853,7 @@ export const CERT_SOURCE_URL: Record<string, string> = {
   'cpcs-red-card': 'https://www.cpcs.uk.com/cpcs-testing/',
   'npors-plant': 'https://npors.com/',
   'forklift-training-hse': 'https://www.hse.gov.uk/workplacetransport/',
-  'hgv-bootcamp': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+  'hgv-bootcamp': 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
   'driver-cpc': 'https://www.gov.uk/driver-cpc-training',
   'adr-driver': 'https://www.gov.uk/government/collections/transporting-dangerous-goods',
   'rtitb-instructor': 'https://www.rtitb.com/training/',
@@ -2884,7 +2884,7 @@ export const CAREER_SOURCE_URL: Record<string, string> = {
   finance: 'https://www.accaglobal.com/',
   'project-management': 'https://www.apm.org.uk/',
   healthcare: 'https://www.jobs.nhs.uk/',
-  'green-energy': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+  'green-energy': 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
   translation: 'https://www.nrpsi.org.uk',
   'property-valuation': 'https://www.rics.org/join-rics',
   'social-work': 'https://www.socialworkengland.org.uk/',
@@ -2895,7 +2895,7 @@ export const CAREER_SOURCE_URL: Record<string, string> = {
   'letting-agent': 'https://www.propertymark.co.uk/careers-learning/qualifications.html',
   'plant-operator': 'https://www.cpcs.uk.com/cpcs-testing/',
   'forklift-operator': 'https://www.hse.gov.uk/workplacetransport/',
-  'hgv-driver-career': 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+  'hgv-driver-career': 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
   'forklift-instructor': 'https://www.rtitb.com/training/',
   'driver-cpc-instructor': 'https://www.gov.uk/driver-cpc-training',
   'gas-engineer': 'https://www.gassaferegister.co.uk/gas-safety/become-gas-safe-registered/',

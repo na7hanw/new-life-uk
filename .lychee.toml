@@ -25,6 +25,32 @@ exclude = [
   "jobs\\.greggs\\.co\\.uk",
   "capitatranslationinterpreting\\.com",
   "jobskilla\\.com",
+  # Same category: these reset the connection for the CI runner. Also
+  # unreachable from a sandboxed check, so liveness is UNCONFIRMED either way.
+  "careers\\.premierinn\\.com",
+  "jobs\\.pret\\.com",
+  "jobs\\.sainsburys\\.co\\.uk",
+  "careers\\.lidl\\.co\\.uk",
+  "nrinorfolk\\.co\\.uk",
+  # Bot defences that return something other than an HTTP status a checker can
+  # use. g4s.com answers "247", which is not a real status code; caterer.com and
+  # gamcare.org.uk break the HTTP/2 stream mid-response. All three reproduce
+  # identically from CI and from a separate network, so this is server-side
+  # behaviour towards non-browser clients rather than a dead page.
+  "g4s\\.com",
+  "caterer\\.com",
+  "gamcare\\.org\\.uk",
+  # Incomplete TLS chains: both serve a certificate without the intermediate, so
+  # strict clients (lychee's rustls, and curl on a separate network) reject them
+  # while browsers usually recover via AIA fetching. A server misconfiguration on
+  # their side, not a broken link — but it means neither could be content-checked.
+  "nrpsi\\.org\\.uk",
+  "teachvac\\.co\\.uk",
+  # Verified HTTP 200 by hand on 29 Aug 2026, but resets the connection for the
+  # CI runner specifically.
+  "nocn\\.org\\.uk",
+  # Rate-limits automated checks: 503 in CI, 429 by hand on the same day.
+  "numbeo\\.com",
 ]
 
 # Accept 200 + all standard redirects as valid.
@@ -35,8 +61,11 @@ exclude = [
 # 202 is a success response — Refuge Action and Maternity Action return it.
 accept = [200, 202, 206, 301, 302, 307, 308, 403, 406, 429]
 
-# Timeout per request in seconds
-timeout = 25
+# Timeout per request in seconds. Raised from 25: bii.org and
+# maternityaction.org.uk both answered within a hand-run check but exceeded 25s
+# from the CI runner. They are slow, not dead, so give them room rather than
+# excluding them.
+timeout = 40
 
 # Max retries per link (with exponential back-off)
 max_retries = 3

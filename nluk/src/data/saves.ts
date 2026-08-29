@@ -263,7 +263,7 @@ export const GEMS: SaveItem[] = [
         desc: 'Government training in shortage sectors. Guaranteed employer interview. 19+ with right to work.',
       },
     },
-    url: 'https://www.gov.uk/guidance/find-a-skills-bootcamp',
+    url: 'https://www.skillsforcareers.education.gov.uk/pages/training-choice/skills-bootcamp',
   },
   {
     icon: '🎓',
@@ -443,7 +443,7 @@ export const GEMS: SaveItem[] = [
         desc: 'Free specialist support if you have children or are under 25 — including unaccompanied children. Includes legal advice, social care referrals, and age-dispute support.',
       },
     },
-    url: 'https://www.refugeecouncil.org.uk/our-work/children-young-people/',
+    url: 'https://www.refugeecouncil.org.uk/get-help/',
   },
   {
     icon: '🎁',
