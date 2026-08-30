@@ -107,3 +107,48 @@ describe('SOSModal — close button', () => {
     expect(setSOS).toHaveBeenCalledWith(false)
   })
 })
+
+// ─── Focus restoration on close ───────────────────────────────────────────────
+//
+// The modal trapped focus while open but never gave it back. Closing left
+// document.activeElement at <body>, so a keyboard or screen-reader user was
+// returned to the top of the page with no announcement and had to tab all the
+// way back to the SOS button they had just pressed. On the one dialog someone
+// opens while frightened, that is the worst place to lose your position.
+
+describe('SOSModal — focus restoration', () => {
+  it('returns focus to whatever opened it', () => {
+    const opener = document.createElement('button')
+    opener.textContent = 'SOS'
+    document.body.appendChild(opener)
+    opener.focus()
+    expect(document.activeElement).toBe(opener)
+
+    const { rerender } = render(
+      <SOSModal showSOS={true} setSOS={() => {}} ui={UI} SOS_NUMBERS={SOS_NUMBERS} />,
+    )
+    // Focus moved into the dialog while it was open.
+    expect(document.activeElement).not.toBe(opener)
+
+    rerender(<SOSModal showSOS={false} setSOS={() => {}} ui={UI} SOS_NUMBERS={SOS_NUMBERS} />)
+    expect(document.activeElement).toBe(opener)
+
+    opener.remove()
+  })
+
+  it('does not throw when the opener has left the page', () => {
+    const opener = document.createElement('button')
+    document.body.appendChild(opener)
+    opener.focus()
+
+    const { rerender } = render(
+      <SOSModal showSOS={true} setSOS={() => {}} ui={UI} SOS_NUMBERS={SOS_NUMBERS} />,
+    )
+    // Something re-rendered the page underneath while the dialog was open.
+    opener.remove()
+
+    expect(() =>
+      rerender(<SOSModal showSOS={false} setSOS={() => {}} ui={UI} SOS_NUMBERS={SOS_NUMBERS} />),
+    ).not.toThrow()
+  })
+})

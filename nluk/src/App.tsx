@@ -127,6 +127,13 @@ export default function App() {
     if (!showLang) return
     const el = langOverlayRef.current
     if (!el) return
+    // Captured before focus moves into the dialog, and restored in cleanup
+    // below. Without it, closing drops keyboard and screen-reader users at
+    // <body> with no announcement, so they have to tab back through the whole
+    // page to reach where they were. Doing both in one effect avoids the
+    // ordering hazard of a separate capture effect, which would run after this
+    // one had already moved focus.
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null
     const focusable = el.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
     const first = focusable[0]
     const last = focusable[focusable.length - 1]
@@ -141,7 +148,12 @@ export default function App() {
       }
     }
     el.addEventListener('keydown', trap)
-    return () => el.removeEventListener('keydown', trap)
+    return () => {
+      el.removeEventListener('keydown', trap)
+      // Only if it is still in the document — a node removed while the dialog
+      // was open cannot take focus, and asking it to is a silent no-op.
+      if (previouslyFocused && document.contains(previouslyFocused)) previouslyFocused.focus()
+    }
   }, [showLang, setShowLang])
 
   // ── Back-to-top button ──
