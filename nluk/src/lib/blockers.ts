@@ -87,7 +87,7 @@ export const ASSET_LABELS: Record<Asset, string> = {
 /** What to do to get each asset, when it is the thing standing in the way. */
 export const ASSET_ACTIONS: Record<Asset, { action: string; guideId?: string }> = {
   'decision-letter': {
-    action: 'This comes from the Home Office. Everything else starts from it — keep the original safe and photograph every page.',
+    action: 'This comes from the Home Office. Everything else starts from it — keep the original safe and photograph every page. ⚠ AND DO NOT GIVE UP YOUR ARC CARD. DWP guidance says that where you have not received a BRP or eVisa, your ARC card AND this decision letter can be used TOGETHER to verify your identity for a Universal Credit claim — \'both documents must be provided and not one without the other\'. So if the eVisa is late, those two pieces of paper are what let you claim on time. Keep them together and keep them safe.',
   },
   'ukvi-account': {
     action: 'You do not have to create this yourself. The Home Office sets it up and sends you a UKVI customer number with instructions for logging in — in the decision letter, or in the letter about your asylum accommodation ending. It is free, and if you already have an account do NOT create a second one. Get in the day the letter arrives: your National Insurance number and every share code live inside it, and nothing else can start until it is live.',

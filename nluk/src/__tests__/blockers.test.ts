@@ -106,6 +106,20 @@ describe('next steps are always reachable', () => {
   })
 })
 
+describe('the ARC card is not disposable', () => {
+  // DWP staff guidance: where no BRP or eVisa has been received, ARC +
+  // decision letter together verify identity for a UC claim — "both documents
+  // must be provided and not one without the other". Someone who treats the
+  // ARC as finished business the moment status is granted can lose the ability
+  // to claim on time if the eVisa is late, which Refugee Council evidence says
+  // is common.
+  it('tells people to keep the ARC card after the grant', () => {
+    const a = ASSET_ACTIONS['decision-letter']
+    expect(a.action).toMatch(/ARC/)
+    expect(a.action).toMatch(/together|both/i)
+  })
+})
+
 describe('the study trap', () => {
   // Reg 12(2) UC Regs 2013 + s.4(1)(d) Welfare Reform Act 2012: a person
   // "receiving education" is not entitled to UC at all. The app promotes free
