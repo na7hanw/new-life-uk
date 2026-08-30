@@ -93,7 +93,7 @@ export const ASSET_ACTIONS: Record<Asset, { action: string; guideId?: string }> 
     guideId: 'evisa',
   },
   'share-code': {
-    action: 'Generate it from your UKVI account at gov.uk/prove-right-to-work. It proves your status without handing over documents.',
+    action: '⚠ There is no such thing as one share code. Each code is LOCKED to the purpose you picked when you generated it, and the first letter tells you which: W for work (employers), R for rent (landlords, England), S for general status (banks, DWP). GOV.UK is blunt about it — \'Share codes can only be used for their originally selected purpose\' and \'Employers cannot accept or use share codes beginning with the letter R or S\'. Hand the same code to an employer, a landlord and a bank and two of them will reject it. Generate a separate one for each, from your UKVI account. Each lasts 90 days and can be reused as often as you like inside that window, so generate them when you need them, not in advance.',
     guideId: 'evisa',
   },
   'ni-number': {
@@ -115,11 +115,12 @@ export const GOALS: GoalSpec[] = [
     id: 'share-code',
     label: 'Prove your status',
     requires: ['decision-letter', 'ukvi-account'],
-    why: 'The share code is the key to almost everything else — the bank, the job, the tenancy.',
+    why: 'The share code is the key to almost everything else — the bank, the job, the tenancy. But it is not ONE key: codes are purpose-locked, so you need a separate one for work, for rent and for proving status generally.',
     guideId: 'evisa',
     sources: [
       'https://www.gov.uk/evisa',
       'https://www.gov.uk/prove-right-to-work',
+      'https://www.gov.uk/government/publications/information-booklet-for-asylum-applications/information-booklet-about-your-asylum-application',
     ],
   },
   {

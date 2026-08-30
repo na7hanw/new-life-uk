@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { isFromHost, isFromAnyHost } from '../lib/hostMatch.ts'
 import {
   GOALS,
-  ASSET_LABELS,
   ASSET_ACTIONS,
+  ASSET_LABELS,
   assessGoal,
   assessAll,
   biggestUnlock,
@@ -103,6 +103,20 @@ describe('next steps are always reachable', () => {
     // and the bank; the NI number gates fewer. The answer must be the share
     // code.
     expect(biggestUnlock(['decision-letter', 'ukvi-account'])).toBe('share-code')
+  })
+})
+
+describe('share codes are purpose-locked', () => {
+  // GOV.UK: "Share codes can only be used for their originally selected
+  // purpose... Employers cannot accept or use share codes beginning with the
+  // letter 'R' (rent) or 'S' (general immigration status)."
+  // Handing one code to employer, landlord and bank gets two rejections, which
+  // costs days inside a 42-day move-on.
+  it('warns that one code does not serve every purpose', () => {
+    const a = ASSET_ACTIONS['share-code']
+    expect(a.action).toMatch(/W for work|purpose/i)
+    expect(a.action).toMatch(/landlord/i)
+    expect(a.action).toMatch(/90 days/i)
   })
 })
 
