@@ -337,7 +337,7 @@ export interface AppContextValue {
   toggleDocument: (docId: string) => void
   /**
    * The user's postcode AREA only, e.g. "BL" — never the full postcode.
-   * See lib/postcode.ts for why.
+   * See lib/area.ts for why.
    */
   /** ISO date the provider's Notice to Quit requires the property vacated. */
   noticeToQuitDate: string

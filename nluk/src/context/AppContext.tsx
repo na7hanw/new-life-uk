@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
-import { postcodeArea } from '../lib/postcode.ts'
+import { areaOf, SUPERSEDED_AREA_KEY } from '../lib/area.ts'
 import { LANGS, UI } from '../data/ui-strings.ts'
 import { ls, lsSet } from '../lib/utils.ts'
 import { VALID_STATUSES } from '../types'
@@ -44,18 +44,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [documentsHeld, setDocumentsHeld] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_docs', '[]')) } catch { return [] }
   })
-  // Only the postcode AREA is ever held — see lib/postcode.ts. Named userArea
+  // Only the postcode AREA is ever held — see lib/area.ts. Named userArea
   // rather than userPostcode because that is what it is: "BL", not "BL5 3SB".
   // Reduced on read as well as write, and migrated from the old nluk_postcode
   // key, so anyone who stored a full postcode under an earlier version has it
   // cut down the next time the app starts without having to know it was there.
   const [userArea, setUserAreaRaw] = useState<string>(() => {
     const current = ls('nluk_area', '')
-    if (current) return postcodeArea(current)
-    const legacy = ls('nluk_postcode', '')
-    return postcodeArea(legacy)
+    if (current) return areaOf(current)
+    return areaOf(ls(SUPERSEDED_AREA_KEY, ''))
   })
-  const setUserArea = (v: string) => setUserAreaRaw(postcodeArea(v))
+  const setUserArea = (v: string) => setUserAreaRaw(areaOf(v))
   // Separate from documentsHeld, which is identity documents. These are the
   // practical assets that gate each other — see lib/blockers.ts.
   const [assetsHeld, setAssetsHeld] = useState<string[]>(() => {
@@ -91,7 +90,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     lsSet('nluk_area', userArea)
     // Drop the legacy key once its value has been carried over, so a full
     // postcode written by an earlier version does not linger on the device.
-    try { localStorage.removeItem('nluk_postcode') } catch { /* private mode */ }
+    try { localStorage.removeItem(SUPERSEDED_AREA_KEY) } catch { /* private mode */ }
   }, [userArea])
   useEffect(() => { lsSet('nluk_bookmarks', JSON.stringify(bookmarks)) }, [bookmarks])
   useEffect(() => { lsSet('nluk_target_lane', targetLane) }, [targetLane])

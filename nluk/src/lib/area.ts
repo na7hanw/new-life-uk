@@ -23,6 +23,19 @@
  * outward code. Returns '' when there are none, so an unparseable value stores
  * nothing rather than storing itself.
  */
-export function postcodeArea(input: string): string {
+export function areaOf(input: string): string {
   return input.trim().toUpperCase().match(/^[A-Z]{1,2}/)?.[0] ?? ''
 }
+
+/**
+ * The storage key an earlier version of this app used, when it kept the whole
+ * postcode instead of the area. AppContext reads it once to carry the value
+ * over, reduces it through areaOf, and then deletes it — so a device that ran
+ * the old version stops holding a full postcode the next time the app opens.
+ *
+ * Kept as a named constant rather than inline so the only place this app still
+ * refers to whole postcodes is one line of migration code with an expiry date
+ * on it. Once the deployed audience has all opened the app at least once, this
+ * constant and its two uses can go.
+ */
+export const SUPERSEDED_AREA_KEY = 'nluk_postcode'

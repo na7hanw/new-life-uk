@@ -5,7 +5,7 @@ import styles from './LocalServices.module.css'
 interface Props {
   /**
    * The postcode AREA only, e.g. "BL". The full postcode is never held —
-   * see lib/postcode.ts. Typing a full one is fine; it is reduced on the way in.
+   * see lib/area.ts. Typing a full one is fine; it is reduced on the way in.
    */
   postcode: string
   setPostcode: (p: string) => void
