@@ -159,7 +159,14 @@ describe('every dependency shows its working', () => {
   // nothing in the code distinguished the sourced claim from the invented
   // ones. The header of blockers.ts always CLAIMED each edge was "a real rule
   // with a source" — now that is checked rather than asserted.
-  const OFFICIAL_HOSTS = ['gov.uk', 'legislation.gov.uk', 'nhs.uk']
+  // parliament.uk earns its place alongside the other three: DWP's own
+  // internal staff guidance — the Flexible Support Fund guidance, the Skills
+  // Bootcamps guidance, the permitted-hours rules — is not published on
+  // gov.uk at all. It reaches the public only as a deposited paper in the
+  // House of Commons Library. Leaving it off this list would not raise the
+  // standard of evidence; it would force the app to cite somebody's blog
+  // summary of the operative document instead of the document.
+  const OFFICIAL_HOSTS = ['gov.uk', 'legislation.gov.uk', 'nhs.uk', 'parliament.uk']
 
   it('gives every goal at least one source', () => {
     for (const g of GOALS) {

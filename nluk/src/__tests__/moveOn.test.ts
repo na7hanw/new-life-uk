@@ -209,7 +209,14 @@ describe('every claim shows its working', () => {
   // Insurance numbers was extrapolated into three claims, two of which were
   // wrong and shipped. Unsourced assertions looked identical to sourced ones.
   // These tests make that impossible to repeat silently.
-  const OFFICIAL_HOSTS = ['gov.uk', 'legislation.gov.uk', 'nhs.uk']
+  // parliament.uk earns its place alongside the other three: DWP's own
+  // internal staff guidance — the Flexible Support Fund guidance, the Skills
+  // Bootcamps guidance, the permitted-hours rules — is not published on
+  // gov.uk at all. It reaches the public only as a deposited paper in the
+  // House of Commons Library. Leaving it off this list would not raise the
+  // standard of evidence; it would force the app to cite somebody's blog
+  // summary of the operative document instead of the document.
+  const OFFICIAL_HOSTS = ['gov.uk', 'legislation.gov.uk', 'nhs.uk', 'parliament.uk']
 
   it('gives every step at least one source', () => {
     for (const a of MOVE_ON_ACTIONS) {

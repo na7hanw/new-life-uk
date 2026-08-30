@@ -55,6 +55,7 @@ export type Goal =
   | 'integration-loan'
   | 'rent-a-room'
   | 'start-training'
+  | 'flexible-support-fund'
 
 export interface GoalSpec {
   id: Goal
@@ -184,6 +185,19 @@ export const GOALS: GoalSpec[] = [
     ],
   },
   {
+    id: 'flexible-support-fund',
+    label: 'Ask for the Flexible Support Fund',
+    requires: ['uc-claim'],
+    why: 'The only money on this page you never pay back, and the only one available in week one. DWP guidance: claimants are eligible "from and including the first assessment period" once you have verified your identity, attended your first commitments meeting and accepted your Claimant Commitment. It pays for things that are stopping you working — interview clothes, tools, travel to interviews, the first 3 months of travel to a new job, and, where public transport does not work, a bicycle or e-bike. Ministers have twice confirmed in Parliament that it can also pay for driving lessons, and that the decision is taken by the jobcentre Service Leader — so the ask is "please put this to the Service Leader", not "can you approve this".',
+    notRequired:
+      'You do NOT need a National Insurance number for this, and you do NOT need to have been on Universal Credit for six months — both of which are true of other help and stop people asking. But two things will get you refused. It must never be asked to pay for immigration documents; that is expressly prohibited. And the guidance asks whether you have "access to other funding that would cover the cost" — if you do, it must not be used. So ask the jobcentre BEFORE arranging money from family or friends, not after. Travel to a course is only paid if the course was agreed with your Work Coach BEFORE you enrolled.',
+    guideId: 'uc',
+    sources: [
+      'https://data.parliament.uk/DepositedPapers/Files/DEP2025-0364/069._Flexible_Support_Fund-Guidance_V32.0.pdf',
+      'https://www.gov.uk/universal-credit',
+    ],
+  },
+  {
     id: 'integration-loan',
     label: 'Apply for the Refugee Integration Loan',
     requires: ['ni-number', 'bank-account'],
@@ -197,11 +211,16 @@ export const GOALS: GoalSpec[] = [
     id: 'rent-a-room',
     label: 'Rent somewhere',
     requires: ['decision-letter', 'ukvi-account', 'share-code'],
-    why: 'A landlord needs a share code for the right to rent check. The deposit is usually the real obstacle, not the rent — ask your council about a bond guarantee scheme instead of cash.',
+    why: 'A landlord needs a share code for the right to rent check — an R code, not the W one you gave an employer. The money to move in is capped by law: a deposit of no more than 5 weeks\' rent, and since 1 May 2026 no more than one month\'s rent in advance. Ask your council about a bond guarantee scheme rather than finding the cash.',
+    notRequired:
+      '⚠ Two things landlords used to do to people in your position are now unlawful in England and Wales. They may not demand six or twelve months\' rent up front because you have no UK credit history or UK employment. And since 1 May 2026 they may not refuse you for claiming benefits: the law says a landlord or agent must not, on the basis that you are or may be a benefits claimant, stop you enquiring about a property, viewing it, or entering into a tenancy — nor apply any "provision, criterion or practice" that makes benefits claimants less likely to get it. "No DSS", and requiring applicants to be "professionals", are both caught. They CAN still turn you down on affordability or references applied equally to everyone, and they CAN still ask for a guarantor.',
     guideId: 'housing-help',
     sources: [
       'https://www.gov.uk/government/publications/right-to-rent-document-checks-a-user-guide',
       'https://www.gov.uk/prove-right-to-rent',
+      'https://www.legislation.gov.uk/ukpga/2025/26/section/34',
+      'https://www.legislation.gov.uk/uksi/2026/421/contents/made',
+      'https://www.legislation.gov.uk/ukpga/2019/4/contents',
     ],
   },
 ]
