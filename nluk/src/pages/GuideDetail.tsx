@@ -143,7 +143,7 @@ export default function GuideDetail() {
                 padding: '10px 14px',
                 borderBottom: '1px solid color-mix(in srgb, #dc2626 20%, transparent)',
               }}>
-                <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#dc2626', marginBottom: 3 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--rd)', marginBottom: 3 }}>
                   ⚠️ Rule change — action may be needed
                 </div>
                 <div style={{ fontSize: '0.82rem', color: 'var(--tx)', marginBottom: 4 }}>
@@ -156,7 +156,7 @@ export default function GuideDetail() {
                   href={u.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ fontSize: '0.76rem', color: '#dc2626', display: 'block', marginTop: 5 }}
+                  style={{ fontSize: '0.76rem', color: 'var(--rd)', display: 'block', marginTop: 5 }}
                 >
                   Official source →
                 </a>

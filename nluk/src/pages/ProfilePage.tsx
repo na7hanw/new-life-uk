@@ -85,7 +85,7 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <span style={{ fontSize: '1.2rem' }}>🗣️</span>
-          <span style={{ fontWeight: 700, fontSize: '0.82rem', color: '#16a34a' }}>✅ Available now</span>
+          <span style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--gn)' }}>✅ Available now</span>
         </div>
         <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--tx)', marginBottom: 2 }}>Free ESOL English Classes</div>
         <div style={{ fontSize: '0.78rem', color: 'var(--t2)', marginBottom: 6 }}>
@@ -290,7 +290,7 @@ export default function ProfilePage() {
                 background: 'color-mix(in srgb, #dc2626 7%, var(--bg2))',
                 border: '1.5px solid color-mix(in srgb, #dc2626 30%, transparent)',
               }}>
-                <div style={{ fontWeight: 700, fontSize: '0.8rem', color: '#dc2626', marginBottom: 3 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.8rem', color: 'var(--rd)', marginBottom: 3 }}>
                   ⚠️ Action needed
                 </div>
                 <div style={{ fontSize: '0.82rem', color: 'var(--tx)', fontWeight: 600, marginBottom: 2 }}>
@@ -298,7 +298,7 @@ export default function ProfilePage() {
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--t2)' }}>{u.whatToDo}</div>
                 <a href={u.sourceUrl} target="_blank" rel="noopener noreferrer"
-                  style={{ fontSize: '0.76rem', color: '#dc2626', display: 'inline-block', marginTop: 4 }}>
+                  style={{ fontSize: '0.76rem', color: 'var(--rd)', display: 'inline-block', marginTop: 4 }}>
                   Official source →
                 </a>
               </div>
