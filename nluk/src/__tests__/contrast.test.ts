@@ -15,8 +15,9 @@
  * So this file asserts two things: the tokens themselves clear WCAG AA, and no
  * component sets a text colour to a literal hex instead of a token.
  *
- * Thresholds are WCAG 2.1 AA: 4.5:1 for body text, 3:1 for large text and for
- * non-text boundaries like borders.
+ * The threshold is WCAG 2.1 AA for body text: 4.5:1. Large text and non-text
+ * boundaries are allowed 3:1, but nothing here is asserted at that level — see
+ * the note on --bd below for why.
  */
 import { describe, it, expect } from 'vitest'
 import { readFileSync, readdirSync, statSync } from 'node:fs'
@@ -27,7 +28,6 @@ const SRC = dirname(dirname(fileURLToPath(import.meta.url)))
 const TOKENS = readFileSync(join(SRC, 'styles', 'tokens.css'), 'utf8')
 
 const AA_TEXT = 4.5
-const AA_LARGE = 3
 
 function channel(c: number): number {
   const s = c / 255
