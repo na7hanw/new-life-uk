@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import ChecklistWidget from '../components/ChecklistWidget.tsx'
+import ChecklistWidget, { checklistFor, CHECKLIST_ITEMS } from '../components/ChecklistWidget.tsx'
 
 const UI = {
   myChecklist: 'My Progress',
@@ -124,5 +124,61 @@ describe('ChecklistWidget — localStorage persistence', () => {
     const stored = JSON.parse(localStorage.getItem('nluk_checklist') || '[]')
     expect(stored.length).toBe(1)
     expect(stored[0]).toBe('evisa')
+  })
+})
+
+// ─── Status awareness ─────────────────────────────────────────────────────────
+//
+// The list used to be shown to everyone. Four of its eight steps are wrong for
+// someone still waiting on an asylum decision, and one of them — "Apply for
+// Universal Credit" — is the no-recourse-to-public-funds trap: acting on it
+// means claiming a benefit they are barred from.
+
+describe('ChecklistWidget — status awareness', () => {
+  it('never offers Universal Credit to someone still claiming asylum', () => {
+    render(
+      <MemoryRouter>
+        <ChecklistWidget ui={UI} status="asylum-seeker" />
+      </MemoryRouter>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /My Progress/i }))
+    // The warning below deliberately names Universal Credit — explaining the
+    // absence is the point — so assert on the actionable step, not the words.
+    expect(screen.queryByRole('button', { name: /Apply for Universal Credit/i })).toBeNull()
+    expect(screen.queryByText(/💷/)).toBeNull()
+  })
+
+  it('says why it is missing, rather than only hiding it', () => {
+    render(
+      <MemoryRouter>
+        <ChecklistWidget ui={UI} status="asylum-seeker" />
+      </MemoryRouter>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /My Progress/i }))
+    expect(screen.getByText(/no recourse to public funds/i)).not.toBeNull()
+  })
+
+  it('drops the steps an asylum seeker cannot complete, and keeps the ones they can', () => {
+    const forClaiming = checklistFor('asylum-seeker').map(i => i.id)
+    expect(forClaiming).not.toContain('uc')
+    expect(forClaiming).not.toContain('evisa')
+    expect(forClaiming).not.toContain('ni')
+    expect(forClaiming).not.toContain('housing')
+    expect(forClaiming).toEqual(expect.arrayContaining(['gp', 'legal', 'bank', 'degree']))
+  })
+
+  it('still shows every step to a refugee', () => {
+    expect(checklistFor('refugee')).toHaveLength(CHECKLIST_ITEMS.length)
+  })
+
+  it('counts progress against the steps shown, not the full list', () => {
+    localStorage.setItem('nluk_checklist', JSON.stringify(['gp', 'uc']))
+    render(
+      <MemoryRouter>
+        <ChecklistWidget ui={UI} status="asylum-seeker" />
+      </MemoryRouter>,
+    )
+    // 'uc' is not offered to this user, so it must not inflate their progress.
+    expect(screen.getByText(/1\/4 complete/)).not.toBeNull()
   })
 })

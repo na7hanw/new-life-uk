@@ -410,7 +410,7 @@ export default function ProfilePage() {
       )}
 
       {/* ── Progress Checklist ────────────────────────────── */}
-      <ChecklistWidget ui={ui} />
+      <ChecklistWidget ui={ui} status={userStatus} />
 
 
       {/* ── Saved Guides ─────────────────────────────────── */}
