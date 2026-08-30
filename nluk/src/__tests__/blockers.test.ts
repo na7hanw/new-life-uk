@@ -106,6 +106,25 @@ describe('next steps are always reachable', () => {
   })
 })
 
+describe('the study trap', () => {
+  // Reg 12(2) UC Regs 2013 + s.4(1)(d) Welfare Reform Act 2012: a person
+  // "receiving education" is not entitled to UC at all. The app promotes free
+  // training heavily, so it must also carry the warning that enrolling on the
+  // wrong thing ends the claim rather than merely reducing it.
+  it('warns that a course can end the UC claim, not just reduce it', () => {
+    const g = GOALS.find(x => x.id === 'start-training')!
+    expect(g.notRequired).toBeDefined()
+    expect(g.notRequired!).toMatch(/end your Universal Credit|no UC at all/i)
+    expect(g.notRequired!).toMatch(/Work Coach/i)
+    expect(g.notRequired!).toMatch(/journal/i)
+  })
+
+  it('cites the regulation and the Act, not a summary', () => {
+    const g = GOALS.find(x => x.id === 'start-training')!
+    expect(g.sources.some(u => isFromHost(u, 'legislation.gov.uk'))).toBe(true)
+  })
+})
+
 describe('share codes are purpose-locked', () => {
   // GOV.UK: "Share codes can only be used for their originally selected
   // purpose... Employers cannot accept or use share codes beginning with the

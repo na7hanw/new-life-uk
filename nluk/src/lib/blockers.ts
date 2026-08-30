@@ -54,6 +54,7 @@ export type Goal =
   | 'start-work'
   | 'integration-loan'
   | 'rent-a-room'
+  | 'start-training'
 
 export interface GoalSpec {
   id: Goal
@@ -167,6 +168,19 @@ export const GOALS: GoalSpec[] = [
     sources: [
       'https://www.gov.uk/prove-right-to-work',
       'https://www.gov.uk/apply-national-insurance-number',
+    ],
+  },
+  {
+    id: 'start-training',
+    label: 'Start a course or bootcamp',
+    requires: ['decision-letter'],
+    why: 'Free training is one of the fastest ways to raise what you can earn, and refugee status qualifies you immediately with no waiting period. But agree it with your Work Coach and get that agreement written into your Universal Credit journal BEFORE you enrol.',
+    notRequired:
+      '⚠ This is the one step that can end your Universal Credit rather than just delay it. Someone "receiving education" fails a basic condition of entitlement and gets no UC at all — and that covers a full-time course of advanced education, a full-time course with a maintenance grant or loan, AND any course "not compatible with any work-related requirement imposed on the claimant". Whether a particular course counts is not obvious from the outside, so do not guess: ask the Work Coach first and get the answer in the journal. A free course that costs you your entire income is not free.',
+    guideId: 'get-qualified-first',
+    sources: [
+      'https://www.legislation.gov.uk/uksi/2013/376/regulation/12',
+      'https://www.legislation.gov.uk/ukpga/2012/5/section/4',
     ],
   },
   {
