@@ -43,6 +43,38 @@ export const DEDUCTION_CAP_RATE = 0.15
 /** Age at which the shared accommodation rate stops applying to a single adult. */
 export const SHARED_RATE_MAX_AGE = 35
 
+/**
+ * The exemption worth asking about — and the one people wrongly assume they
+ * already have.
+ *
+ * UC Regs 2013 Schedule 4 para 29(4) lifts a renter aged 16–35 off the shared
+ * rate and onto the one-bedroom rate where they have "for a total of at least 3
+ * months (whether or not continuously), lived in one or more hostels for
+ * homeless people" AND were "offered and ... accepted services ... intended to
+ * assist E to be rehabilitated or resettled within the community". Over five
+ * years that is worth thousands.
+ *
+ * Time in Home Office asylum accommodation does NOT count, and this is worth
+ * saying plainly because the assumption is natural and wrong. The same Schedule
+ * defines a hostel as a building managed or owned by a provider of social
+ * housing, OR "operated other than on a commercial basis" with government
+ * funding, OR run by a voluntary organisation or registered charity. Asylum
+ * dispersal accommodation is run by commercial contractors under a Home Office
+ * contract, so it fails that limb whichever way it is read. It also has to be a
+ * hostel "the main purpose of which is to provide accommodation together with
+ * care, support or supervision for homeless people" — asylum support is neither
+ * provided to homeless people in that sense nor accompanied by resettlement
+ * services to accept.
+ *
+ * So: budget on the shared rate. But if a council ever places someone in a real
+ * homeless hostel, three months there changes the cap, and it is worth getting
+ * the manager's status in writing at the time rather than reconstructing it
+ * later.
+ *
+ * https://www.legislation.gov.uk/uksi/2013/376/schedule/4
+ */
+export const SHARED_RATE_HOSTEL_EXEMPTION_MONTHS = 3
+
 export interface LhaRates {
   /** Broad Rental Market Area name, as DWP publishes it. */
   area: string
