@@ -80,6 +80,14 @@ exclude = [
   # liveness was NOT confirmed, so the link in .github/AUTOMATIONS.md is worth
   # re-checking by hand before anyone relies on it.
   "libretranslate\\.com",
+  # Connection reset after 11s on one attempt and then a 35s timeout with zero
+  # bytes on the next, from this network on 31 Aug 2026, matching what CI sees.
+  # The site itself is live — its pages are indexed and current, and it is still
+  # Asda's own front door for applications — so this is a host that refuses
+  # automated clients, not a dead link. Excluded on that basis. The Workday
+  # portal behind it (asda.wd103.myworkdayjobs.com) is reachable if a direct
+  # application link is ever needed instead.
+  "asda\\.jobs",
 ]
 
 # Accept 200 + all standard redirects as valid.
