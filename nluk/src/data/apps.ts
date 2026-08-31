@@ -383,11 +383,95 @@ export const APPS: SaveItem[] = [
     trustLevel: "official",
     lastVerified: "March 2026",
   },
+  // ─── Added 31 Aug 2026 after auditing this list against a real new arrival's
+  //     first year. Nine gaps, each one something the list quietly sent
+  //     someone elsewhere to find. Every URL fetched before being written.
+  {
+    icon: "🛟",
+    cat: "Advice",
+    content: { en: { title: "Migrant Help — Asylum Support Advice", desc: "Holds the Home Office advice contract for people on asylum support. Free 24/7 helpline for problems with accommodation, payments or your ARC card, plus webchat and an online issue form. If something is wrong with your housing or money while you wait for a decision, this is who fixes it — not the accommodation provider." } },
+    url: "https://www.migranthelpuk.org/",
+    guideId: "legal-help",
+    trustLevel: "charity",
+  },
+  {
+    icon: "🧮",
+    cat: "Benefits",
+    content: { en: { title: "Turn2us — Benefits Calculator & Grant Search", desc: "Free and anonymous. Works out everything you are entitled to, and separately searches thousands of charitable grants — money that does not have to be paid back and that most people never find out exists." } },
+    url: "https://www.turn2us.org.uk/",
+    guideId: "uc",
+    trustLevel: "charity",
+  },
+  {
+    icon: "🔢",
+    cat: "Benefits",
+    content: { en: { title: "Benefits Calculators — GOV.UK", desc: "The official list of free, independent benefits calculators. Use one before your first Universal Credit appointment so you already know what the answer should be." } },
+    url: "https://www.gov.uk/benefits-calculators",
+    guideId: "uc",
+    trustLevel: "official",
+  },
+  {
+    icon: "🥫",
+    cat: "Community",
+    content: { en: { title: "Find a Food Bank — Trussell", desc: "Search by postcode for your nearest food bank. Most need a referral first — Citizens Advice, your council, a GP or a support worker can issue one, often the same day." } },
+    url: "https://www.trusselltrust.org/get-help/find-a-foodbank/",
+    guideId: "uc",
+    trustLevel: "charity",
+  },
+  {
+    icon: "🎓",
+    cat: "Learning",
+    content: { en: { title: "UK ENIC — Recognise Your Overseas Qualifications", desc: "Turns a degree from your own country into a UK comparison an employer understands. A Statement of Comparability is the best-value document you can buy — it stops a recruiter setting your CV aside because they cannot price your degree. There is also a route for refugees who cannot obtain their original documents." } },
+    url: "https://www.enic.org.uk/",
+    guideId: "uk-enic",
+    trustLevel: "official",
+  },
+  {
+    icon: "🚗",
+    cat: "Transport",
+    content: { en: { title: "Ready to Pass? — Official DVSA Driving Advice", desc: "DVSA's own free service for learners: what to practise, how to know when you are genuinely ready for the test, and the rules for anyone supervising you. Note one of those rules — it is illegal for a supervisor to accept ANY payment, including petrol money, unless they are an approved driving instructor." } },
+    url: "https://readytopass.campaign.gov.uk/",
+    guideId: "work-rights",
+    trustLevel: "official",
+  },
+  {
+    icon: "🏛️",
+    cat: "Jobs",
+    content: { en: { title: "greater.jobs — Council Jobs", desc: "Every job at ten Greater Manchester councils in one place. Councils are NOT the Civil Service, so the Civil Service nationality rules do not apply — these roles are open to anyone with the right to work. Set an alert rather than checking by hand." } },
+    url: "https://www.greater.jobs/",
+    guideId: "uk-cv",
+    trustLevel: "official",
+  },
+  {
+    icon: "💚",
+    cat: "Jobs",
+    content: { en: { title: "CharityJob — Charity & Refugee Sector Jobs", desc: "Where the refugee and migrant support sector actually advertises. Many roles explicitly welcome applicants with lived experience of the asylum system — an advantage almost nowhere else will treat as one." } },
+    url: "https://www.charityjob.co.uk/",
+    guideId: "uk-cv",
+    trustLevel: "commercial",
+  },
+  {
+    icon: "🏦",
+    cat: "Finance",
+    content: { en: { title: "Starling — Free Bank Account", desc: "UK bank, full app, no monthly fee. Worth knowing alongside Monzo and Revolut: if an app-only bank refuses your documents, the largest high street banks must by law offer a basic bank account with no credit check — ask for a 'basic bank account' by name, in branch." } },
+    url: "https://www.starlingbank.com/",
+    guideId: "bank",
+    trustLevel: "commercial",
+  },
 ]
 
 // ─── Official source URLs for apps/resources ─────────────────────────────────
 // Enforced by tests: every high-risk app must appear here.
 export const APP_SOURCE_URL: Record<string, string> = {
+  'Migrant Help — Asylum Support Advice':    'https://www.migranthelpuk.org/',
+  'Turn2us — Benefits Calculator & Grant Search': 'https://www.turn2us.org.uk/',
+  'Benefits Calculators — GOV.UK':           'https://www.gov.uk/benefits-calculators',
+  'Find a Food Bank — Trussell':             'https://www.trusselltrust.org/get-help/find-a-foodbank/',
+  'UK ENIC — Recognise Your Overseas Qualifications': 'https://www.enic.org.uk/',
+  'Ready to Pass? — Official DVSA Driving Advice': 'https://readytopass.campaign.gov.uk/',
+  'greater.jobs — Council Jobs':             'https://www.greater.jobs/',
+  'CharityJob — Charity & Refugee Sector Jobs': 'https://www.charityjob.co.uk/',
+  'Starling — Free Bank Account':            'https://www.starlingbank.com/',
   'CITB — CPCS A40 Slinger/Signaller Course': 'https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-slingersignaller-a40-5-days/',
   'CITB — CPCS A62 Crane Supervisor Course':  'https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-crane-supervisor-a62/',
   'CITB — CPCS A73 Plant & Vehicle Marshaller': 'https://www.citb.co.uk/national-construction-college/plant-operations-courses/cpcs-plant-and-vehicle-marshaller-a73/',
@@ -411,6 +495,15 @@ export const APP_SOURCE_URL: Record<string, string> = {
 // 'charity'   = specifically Charity Commission registered
 // 'commercial' = private company (may still be reputable)
 export const APP_TRUST_LEVEL: Record<string, 'official' | 'ngo' | 'charity' | 'commercial'> = {
+  'Migrant Help — Asylum Support Advice':    'charity',
+  'Turn2us — Benefits Calculator & Grant Search': 'charity',
+  'Benefits Calculators — GOV.UK':           'official',
+  'Find a Food Bank — Trussell':             'charity',
+  'UK ENIC — Recognise Your Overseas Qualifications': 'official',
+  'Ready to Pass? — Official DVSA Driving Advice': 'official',
+  'greater.jobs — Council Jobs':             'official',
+  'CharityJob — Charity & Refugee Sector Jobs': 'commercial',
+  'Starling — Free Bank Account':            'commercial',
   'CITB — CPCS A40 Slinger/Signaller Course': 'official',
   'CITB — CPCS A62 Crane Supervisor Course':  'official',
   'CITB — CPCS A73 Plant & Vehicle Marshaller': 'official',
