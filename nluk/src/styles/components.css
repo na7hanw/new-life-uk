@@ -72,6 +72,11 @@
 .dark .btn-outline { color: var(--ac); border-color: var(--bd); }
 .btn-ghost { background: var(--bg3); color: var(--t2); }
 .btn-danger { background: var(--rd); color: #fff; }
+/* --rd is a LIGHT red in dark mode (#F87171), so white on it is 2.77:1. This
+   is the SOS modal's emergency numbers, so it is the last text in the app that
+   should be hard to read. Dark ink gives 5.55:1, matching what .btn-primary
+   already does with --ac. */
+.dark .btn-danger { color: #042B1C; }
 .btn-sm { font-size: .8rem; padding: 6px 13px; border-radius: 9px; }
 .btn-block { width: 100%; min-height: 48px; border-radius: 14px; font-size: .95rem; }
 
@@ -740,3 +745,11 @@
 .mt-banner__dismiss:hover {
   background: var(--bg3);
 }
+
+/* --ac and --rd are LIGHT colours in dark mode (#34D399, #F87171), so white
+   text on them lands at 1.92:1 and 2.77:1. Dark ink gives 7.99:1 and 5.55:1,
+   which is what .btn-primary has always done. Caught by contrast.test.ts
+   reading these files — the earlier version only checked tokens against page
+   surfaces and passed the whole time. */
+.dark .chip.active,
+.dark .pill-free { color: #042B1C; }

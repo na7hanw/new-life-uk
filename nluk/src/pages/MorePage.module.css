@@ -114,7 +114,7 @@
   color: var(--ac3);
   text-decoration: underline;
 }
-.dark .crashLink { color: var(--ac); }
+:global(.dark) .crashLink { color: var(--ac); }
 
 /* ─── UK GDPR rights ─── */
 .gdprTitle {
@@ -135,7 +135,7 @@
   text-decoration: underline;
   margin-top: 6px;
 }
-.dark .gdprLink { color: var(--ac); }
+:global(.dark) .gdprLink { color: var(--ac); }
 
 /* ─── Data controller ─── */
 .controllerTitle {
@@ -157,7 +157,7 @@
   color: var(--ac3);
   text-decoration: underline;
 }
-.dark .policyLink { color: var(--ac); }
+:global(.dark) .policyLink { color: var(--ac); }
 
 /* Clear data button top margin */
 .clearBtn { margin-top: 16px; }
@@ -167,7 +167,7 @@
   color: var(--ac3);
   text-decoration: underline;
 }
-.dark .footerEmailLink { color: var(--ac); }
+:global(.dark) .footerEmailLink { color: var(--ac); }
 
 .githubLink {
   display: inline-flex;
