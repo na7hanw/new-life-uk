@@ -73,6 +73,13 @@ exclude = [
   # 301ing /careers/ to /about-us/jobs-at-mitie/ — the link is stale as well as
   # unresponsive to checkers, and is worth repointing by hand in a browser.
   "mitie\\.com",
+  # Times out with zero bytes received, both in CI and by hand on a separate
+  # network — three attempts at a 45s timeout on 31 Aug 2026, none of which got
+  # a single byte back. That is a host that is down or blocking at the network
+  # level, not a slow page a longer timeout would reach. Excluded on that basis;
+  # liveness was NOT confirmed, so the link in .github/AUTOMATIONS.md is worth
+  # re-checking by hand before anyone relies on it.
+  "libretranslate\\.com",
 ]
 
 # Accept 200 + all standard redirects as valid.
