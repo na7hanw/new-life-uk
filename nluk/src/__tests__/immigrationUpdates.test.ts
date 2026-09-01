@@ -11,6 +11,7 @@
  * - No political/opinion drift: sourceType is constrained to allowed values
  */
 import { describe, it, expect } from 'vitest'
+import { isFromHost } from '../lib/hostMatch.ts'
 import {
   IMMIGRATION_UPDATES,
   getSortedUpdates,
@@ -116,7 +117,7 @@ describe('IMMIGRATION_UPDATES — schema validation', () => {
 
 describe('IMMIGRATION_UPDATES — trust labelling', () => {
   it('official GOV.UK / UKVI items have sourceType "official" or "rules-change" or "fee-update"', () => {
-    const govUkItems = IMMIGRATION_UPDATES.filter(u => u.sourceUrl.includes('gov.uk'))
+    const govUkItems = IMMIGRATION_UPDATES.filter(u => isFromHost(u.sourceUrl, 'gov.uk'))
     for (const u of govUkItems) {
       expect(
         ['official', 'rules-change', 'fee-update', 'official-factsheet'].includes(u.sourceType),

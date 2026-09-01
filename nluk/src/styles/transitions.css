@@ -87,3 +87,19 @@
 .page-enter .content-card:nth-child(5)  { animation: fadeUp .22s .16s ease both; opacity: 0; }
 .page-enter .content-card:nth-child(6)  { animation: fadeUp .22s .19s ease both; opacity: 0; }
 .page-enter .content-card:nth-child(n+7){ animation: fadeUp .22s .22s ease both; opacity: 0; }
+
+/* ─── Reduced motion ──────────────────────────────────────────────
+   Previously absent entirely. This audience has high rates of trauma and
+   migraine, and the app ran a staggered fade cascade on every list render plus
+   an infinite 1.6s shimmer over whole cards of legal text. Respect the OS
+   setting rather than overriding it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -74,10 +74,10 @@ const JobCard = memo(function JobCard({ j, lang, ui }: JobCardProps) {
           </div>
 
           {j.id && (
-            <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+            <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--bd)' }}>
               <button
                 className={styles.jobApplyChip}
-                style={{ border: 'none', cursor: 'pointer', background: 'var(--surface2)' }}
+                style={{ border: 'none', cursor: 'pointer', background: 'var(--bg3)' }}
                 onClick={() => navigate(`/job/${j.id}`)}
                 aria-label={`Open full page for ${jc.role}`}
               >

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
 import { useApp } from '../context/AppContext.tsx'
 import { GITHUB_URL } from '../data/emergency.ts'
@@ -10,12 +10,11 @@ import { CONSENT_KEY } from '../components/ConsentBanner.tsx'
 import type { BeforeInstallPromptEvent, UserStatus } from '../types'
 import styles from './MorePage.module.css'
 
-const ALL_KEYS = [
-  'nluk_lang', 'nluk_dark', 'nluk_wtab', 'nluk_tx3', 'nluk_status', CONSENT_KEY,
-  // user-progress keys — must also be cleared on "Clear all data"
-  'nluk_onboarded', 'nluk_checklist', 'nluk_bookmarks',
-  'nluk_recent_searches', 'nluk_guide_access', 'nluk_status_date',
-]
+// NOTE: clearing is done by ENUMERATION (every nluk_* key), not by this list.
+// A hand-maintained list silently drifted and left 10 keys behind — including
+// the asylum claim date, documents held, home postcode and reading history —
+// while telling the user their data was gone. Do not reintroduce a fixed list.
+const CLEAR_KEY_PREFIX = 'nluk_'
 
 export default function MorePage() {
   const { ui, L, dark, setDark, setShowLang, userStatus, setUserStatus, ab } = useApp()
@@ -65,27 +64,6 @@ export default function MorePage() {
         </div>
       </div>
 
-      {/* ── Utility tools ──────────────────────────────────── */}
-      <div className="section-label">🛠 Tools</div>
-      <div className={`card ${styles.cardGutter}`}>
-        <Link
-          to="/scan"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 12,
-            padding: '10px 0', textDecoration: 'none', color: 'var(--t1)',
-          }}
-        >
-          <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>📷</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Document Scanner</div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--t3)' }}>
-              Scan a letter or form — read and translate offline
-            </div>
-          </div>
-          <span style={{ color: 'var(--ac3)', fontWeight: 600 }}>›</span>
-        </Link>
-      </div>
-
       <div className="section-label">{ui.theme}</div>
       <div className={`card ${styles.cardGutter}`}>
         <div className={styles.cardRow}>
@@ -121,16 +99,27 @@ export default function MorePage() {
           <span className={styles.cardRowLabel}>🗑 {ui.clearData || 'Clear all app data'}</span>
           <button
             className="btn btn-outline btn-sm"
-            onClick={() => {
-              clearTranslationCache()
-              ALL_KEYS.forEach(k => {
-                try { localStorage.removeItem(k) } catch (err) {
-                  if (import.meta.env.DEV) {
-                    // eslint-disable-next-line no-console
-                    console.warn(`[nluk] Failed to clear localStorage key "${k}":`, err)
-                  }
+            onClick={async () => {
+              // Enumerate rather than enumerate-from-a-list, so a new key cannot
+              // silently become unclearable. Awaited before reload: the previous
+              // version raced the IndexedDB wipe against window.location.reload()
+              // and frequently tore the transaction down before it committed.
+              try {
+                for (const k of Object.keys(localStorage)) {
+                  if (k.startsWith(CLEAR_KEY_PREFIX) || k === CONSENT_KEY) localStorage.removeItem(k)
                 }
-              })
+                sessionStorage.clear()
+                if (typeof globalThis.caches !== 'undefined') {
+                  const names = await globalThis.caches.keys()
+                  await Promise.all(names.map(n => globalThis.caches.delete(n)))
+                }
+                await clearTranslationCache()
+              } catch (err) {
+                if (import.meta.env.DEV) {
+                  // eslint-disable-next-line no-console
+                  console.warn('[nluk] clear-all-data failed:', err)
+                }
+              }
               window.location.reload()
             }}
           >
@@ -208,6 +197,13 @@ export default function MorePage() {
               ['nluk_bookmarks',       'Your saved guides and resources'],
               ['nluk_recent_searches', 'Your recent search history (last 10 searches)'],
               ['nluk_guide_access',    'Which guides you have opened (for recommendations)'],
+              ['nluk_area',            'Your postcode AREA only, e.g. “BL” — never your full postcode'],
+              ['nluk_assets',          'Which documents and numbers you have ticked off (share code, bank account, NI number)'],
+              ['nluk_status_date',     'The date on your decision letter'],
+              ['nluk_disc_date',       'The date on your support discontinuation letter'],
+              ['nluk_ntq_date',        'The date your Notice to Quit says to leave'],
+              ['nluk_claim_date',      'The date you claimed asylum'],
+              ['nluk_docs',            'Which identity documents you hold'],
             ] as [string, string][]).map(([k, v]) => (
               <li key={k} className={styles.privacyKeyItem}>
                 <code className={styles.privacyKeyCode}>{k}</code>{v}

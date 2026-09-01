@@ -1,0 +1,234 @@
+.wrap {
+  margin: 0 var(--gutter) 20px;
+}
+
+.heading {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--tx);
+}
+
+.subheading {
+  margin: 20px 0 10px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--tx);
+}
+
+/* ── Countdown banner ───────────────────────────────────────────── */
+.banner {
+  padding: 16px;
+  border: 1.5px solid var(--bd);
+  border-inline-start: 4px solid var(--ac);
+  border-radius: 14px;
+  background: var(--bg2);
+}
+
+.urgent {
+  border-inline-start-color: var(--wn);
+  background: var(--wnbg);
+}
+
+.past {
+  border-inline-start-color: var(--rd);
+}
+
+.days {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--tx);
+}
+
+.deadlineLine {
+  margin-block-start: 4px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--t2);
+}
+
+.clocks {
+  margin: 10px 0 0;
+  padding-inline-start: 18px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--t2);
+}
+
+.muted {
+  color: var(--t3);
+}
+
+/* ── Universal Credit gap ───────────────────────────────────────── */
+.ucNote {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--bg3);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--tx);
+}
+
+.ucNoteBad {
+  background: var(--wnbg);
+  border: 1.5px solid var(--wnbd);
+}
+
+/* ── Date inputs ────────────────────────────────────────────────── */
+.dates {
+  margin-block-start: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dateField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dateField label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--t2);
+}
+
+.dateField input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--bd);
+  border-radius: 10px;
+  background: var(--bg2);
+  color: var(--tx);
+  font-size: 0.9rem;
+}
+
+.dateField input:focus-visible {
+  outline: 3px solid var(--ac);
+  outline-offset: 2px;
+}
+
+.clear {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid var(--bd);
+  border-radius: 10px;
+  background: none;
+  color: var(--t2);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── Action list ────────────────────────────────────────────────── */
+.actions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.action {
+  padding: 14px;
+  border: 1.5px solid var(--bd);
+  border-radius: 12px;
+  background: var(--bg2);
+}
+
+.actionHead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.when {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: var(--ac2);
+  color: var(--ac3);
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.whenOverdue {
+  background: var(--wnbg);
+  color: var(--wn);
+}
+
+.actionTitle {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--tx);
+  line-height: 1.4;
+}
+
+.actionDetail {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--t2);
+}
+
+/* The exact wording matters, so it is set apart to be read and reused. */
+.script {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-inline-start: 3px solid var(--ac);
+  border-radius: 0 8px 8px 0;
+  background: var(--bg3);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--tx);
+}
+
+.scriptLabel {
+  display: block;
+  margin-block-end: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--t3);
+}
+
+.guideLink {
+  margin-block-start: 10px;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ac3);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.guideLink:focus-visible {
+  outline: 3px solid var(--ac);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.fieldHint {
+  margin: 5px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--t2);
+}
+
+.shortNotice {
+  margin: 12px 0 0;
+  padding: 11px 13px;
+  border-radius: 10px;
+  border-inline-start: 4px solid var(--rd);
+  background: var(--wnbg);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--tx);
+}

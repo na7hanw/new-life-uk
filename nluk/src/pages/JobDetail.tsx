@@ -83,7 +83,7 @@ export default function JobDetail() {
         <div className="card" style={{ margin: '0 var(--gutter) 12px' }}>
           <div style={{ padding: '8px 16px' }}>
             {job.docs.map(d => (
-              <div key={d} style={{ padding: '6px 0', fontSize: '.9rem', borderBottom: '1px solid var(--border)', color: 'var(--t1)' }}>
+              <div key={d} style={{ padding: '6px 0', fontSize: '.9rem', borderBottom: '1px solid var(--bd)', color: 'var(--tx)' }}>
                 • {d}
               </div>
             ))}
@@ -97,7 +97,7 @@ export default function JobDetail() {
 
       <div className="section-label">ℹ️ About this role</div>
       <div className={`card${translating ? ' translating' : ''}`} style={{ margin: '0 var(--gutter) 12px' }}>
-        <div style={{ padding: '12px 16px', fontSize: '.9rem', lineHeight: 1.7, color: 'var(--t1)' }}>
+        <div style={{ padding: '12px 16px', fontSize: '.9rem', lineHeight: 1.7, color: 'var(--tx)' }}>
           {translating && (
             <div className="translating-row">
               <span className="translating-spinner" />

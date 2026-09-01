@@ -4,7 +4,7 @@
  * result structure, and per-type filtering.
  */
 import { describe, it, expect } from 'vitest'
-import { globalFuse, ALL_SEARCH_ITEMS, type GlobalFuseResult } from '../lib/search.ts'
+import { globalFuse, searchGlobal, ALL_SEARCH_ITEMS, type GlobalFuseResult } from '../lib/search.ts'
 
 // ─── Result-structure helpers ─────────────────────────────────────────────────
 
@@ -19,8 +19,12 @@ function typesOf(results: GlobalFuseResult[]) {
 // ─── Empty / too-short queries ────────────────────────────────────────────────
 
 describe('globalFuse — empty / short queries', () => {
-  it('returns no results for an empty string', () => {
-    expect(globalFuse.search('')).toHaveLength(0)
+  it('returns no results for an empty or whitespace query', () => {
+    // Asserted against searchGlobal(), not globalFuse directly: fuse.js 7.5
+    // returns the whole corpus for an empty pattern where 7.0 returned none,
+    // so this invariant now lives in our code rather than the library's.
+    expect(searchGlobal('')).toHaveLength(0)
+    expect(searchGlobal('   ')).toHaveLength(0)
   })
 
   it('returns fewer results for a single character than for a multi-character query', () => {

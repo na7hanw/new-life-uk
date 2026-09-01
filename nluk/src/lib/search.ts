@@ -6,11 +6,10 @@
  * Also provides helpers for recent-search and guide-access-count persistence.
  */
 import Fuse, { type FuseResult } from 'fuse.js'
-import { GUIDES, GUIDE_MAP, GUIDE_KEYWORDS } from '../data/guides.ts'
+import { GUIDES, GUIDE_KEYWORDS } from '../data/guides.ts'
 import { JOBS, CERT_MAP, CAREER_MAP } from '../data/jobs.ts'
 import { CULTURE } from '../data/culture.ts'
 import type { Cert, Career } from '../types'
-import { ls, lsSet } from './utils.ts'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -104,46 +103,29 @@ export const globalFuse = new Fuse(ALL_SEARCH_ITEMS, {
 
 export type GlobalFuseResult = FuseResult<SearchItem>
 
-// ── Recent searches ────────────────────────────────────────────────────────
+// Re-exported so existing importers keep working. These live in
+// searchHistory.ts, which has no heavy data imports — prefer importing from
+// there directly in any component that does not need the search index.
+export {
+  getRecentSearches,
+  addRecentSearch,
+  removeRecentSearch,
+  getGuideAccessCounts,
+  incrementGuideAccess,
+  getTrendingGuideIds,
+} from './searchHistory.ts'
 
-const RECENT_KEY = 'nluk_recent_searches'
-const MAX_RECENT  = 5
-
-export function getRecentSearches(): string[] {
-  try { return JSON.parse(ls(RECENT_KEY, '[]')) } catch { return [] }
-}
-
-export function addRecentSearch(query: string): void {
-  const q = query.trim()
-  if (!q) return
-  const prev = getRecentSearches().filter(s => s !== q)
-  lsSet(RECENT_KEY, JSON.stringify([q, ...prev].slice(0, MAX_RECENT)))
-}
-
-export function removeRecentSearch(query: string): void {
-  lsSet(RECENT_KEY, JSON.stringify(getRecentSearches().filter(s => s !== query)))
-}
-
-// ── Guide access tracking (trending) ─────────────────────────────────────
-
-const ACCESS_KEY   = 'nluk_guide_access'
-const MAX_TRENDING = 5
-
-export function getGuideAccessCounts(): Record<string, number> {
-  try { return JSON.parse(ls(ACCESS_KEY, '{}')) } catch { return {} }
-}
-
-export function incrementGuideAccess(id: string): void {
-  const counts = getGuideAccessCounts()
-  counts[id] = (counts[id] || 0) + 1
-  lsSet(ACCESS_KEY, JSON.stringify(counts))
-}
-
-export function getTrendingGuideIds(n = MAX_TRENDING): string[] {
-  const counts = getGuideAccessCounts()
-  return Object.entries(counts)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, n)
-    .map(([id]) => id)
-    .filter(id => Boolean(GUIDE_MAP[id]))
+/**
+ * Search the global corpus, returning nothing for a blank query.
+ *
+ * Prefer this over calling `globalFuse.search()` directly. fuse.js changed
+ * behaviour here between 7.0 and 7.5: an empty pattern used to return no
+ * matches and now returns the ENTIRE corpus (181 items). Every current caller
+ * happens to guard with `query.trim()` first, so nothing broke — but the guard
+ * was incidental, spread across call sites, and one unguarded caller would
+ * silently render everything. Holding the invariant in one place makes it real.
+ */
+export function searchGlobal(query: string, limit?: number): GlobalFuseResult[] {
+  if (!query.trim()) return []
+  return limit === undefined ? globalFuse.search(query) : globalFuse.search(query, { limit })
 }

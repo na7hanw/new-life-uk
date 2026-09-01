@@ -1,6 +1,7 @@
 /**
- * Volunteering organisations — personalised for an Amharic/Tigrinya speaker
- * in the Bolton/Greater Manchester area who is an asylum seeker.
+ * Volunteering organisations — for a native Amharic speaker
+ * in the Bolton/Greater Manchester area. Useful on either status: reference-
+ * building with right to work, and permitted from day one without it.
  *
  * Source: career-ops/portals.yml volunteering_orgs
  * Last verified: April 2026
@@ -26,18 +27,25 @@ export const VOLUNTEERING: VolunteerOrg[] = [
     url: 'https://breaking-barriers.co.uk/get-involved/volunteer/volunteer-opportunities/',
     location: 'Greater Manchester',
     roles: ['Interpreter', 'Mentor', 'Admin'],
-    why: 'Supports people in your exact situation — Amharic/Tigrinya interpreters are rare and valued.',
-    tags: ['interpreter', 'Amharic', 'Tigrinya', 'mentor', 'admin', 'employment', 'Greater Manchester'],
+    why: 'Supports people in your exact situation — Amharic interpreters are critically rare and valued.',
+    tags: [
+      'interpreter',
+      'Amharic',
+      'mentor',
+      'admin',
+      'employment',
+      'Greater Manchester',
+    ],
     content: {
       en: {
         title: 'Breaking Barriers — Greater Manchester',
-        desc: 'Employment support for refugees. They need Amharic and Tigrinya interpreters, mentors, and admin volunteers. Apply via their website.',
+        desc: 'Employment support for refugees. They need Amharic interpreters, mentors, and admin volunteers. Apply via their website.',
       },
     },
   },
   {
     icon: '📋',
-    url: 'https://mrsn.org.uk/volunteering/',
+    url: 'https://mrsn.org.uk/',
     location: 'Greater Manchester',
     roles: ['Admin', 'Interpreter', 'Advice'],
     why: 'Admin volunteer role builds direct UK office experience; they welcome refugees as volunteers.',
@@ -54,12 +62,19 @@ export const VOLUNTEERING: VolunteerOrg[] = [
     url: 'https://cheethamadvice.org.uk/volunteer',
     location: 'Cheetham Hill, Manchester',
     roles: ['Casework Support', 'Interpreter'],
-    why: 'Tigrinya specifically listed as a needed language — 9-week free training provided.',
-    tags: ['Tigrinya', 'casework', 'interpreter', 'advice', 'training', 'free training', 'Cheetham Hill'],
+    why: 'Free 9-week training provided — good for casework and advice sector experience.',
+    tags: [
+      'casework',
+      'interpreter',
+      'advice',
+      'training',
+      'free training',
+      'Cheetham Hill',
+    ],
     content: {
       en: {
         title: 'Cheetham Hill Advice Centre',
-        desc: 'Tigrinya interpreter and casework support volunteer. Free 9-week training provided. They specifically listed Tigrinya as a language they need.',
+        desc: 'Casework support volunteer with free 9-week training. Also accept Amharic speakers for advice and casework roles.',
       },
     },
   },
@@ -82,7 +97,7 @@ export const VOLUNTEERING: VolunteerOrg[] = [
     url: 'https://www.redcross.org.uk/get-involved/volunteer/refugee-support-volunteer',
     location: 'Greater Manchester',
     roles: ['Refugee Support', 'Language Assistance', 'Befriending'],
-    why: 'Nationally recognised reference; your Amharic and Tigrinya skills directly useful.',
+    why: 'Nationally recognised reference; your Amharic language skills directly useful.',
     tags: ['Red Cross', 'refugee support', 'language', 'befriending', 'national', 'recognised'],
     content: {
       en: {

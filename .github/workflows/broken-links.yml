@@ -20,8 +20,13 @@ jobs:
 
       - name: Extract URLs from TypeScript data files
         run: |
-          # Pull every https?:// URL out of the data layer TypeScript files
-          grep -oE 'https?://[^"]+' \
+          # Pull every https?:// URL out of the data layer TypeScript files.
+          # Stop at a quote of EITHER kind, plus the punctuation that follows a
+          # URL in source. Matching only [^"]+ swallowed `' },` and trailing
+          # comments into the URL for every single-quoted string, which is most
+          # of jobs.ts and saves.ts — 355 of 565 extracted "URLs" were malformed
+          # and could never resolve, so the checker was failing on its own output.
+          grep -oE "https?://[^\"'\`)}, ]+" \
             nluk/src/data/guides.ts \
             nluk/src/data/saves.ts \
             nluk/src/data/apps.ts \

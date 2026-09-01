@@ -139,3 +139,11 @@
 .jobApplyChip:hover, .jobApplyChip:active { background: var(--ac); color: #fff; border-color: var(--ac); }
 :global(.dark) .jobApplyChip { color: var(--ac); border-color: rgba(61,214,140,.15); }
 :global(.dark) .jobApplyChip:hover { color: #032318; }
+
+/* --ac and --rd are LIGHT colours in dark mode (#34D399, #F87171), so white
+   text on them lands at 1.92:1 and 2.77:1. Dark ink gives 7.99:1 and 5.55:1,
+   which is what .btn-primary has always done. Caught by contrast.test.ts
+   reading these files — the earlier version only checked tokens against page
+   surfaces and passed the whole time. */
+:global(.dark) .jobApplyChip:hover,
+:global(.dark) .jobApplyChip:active { color: #042B1C; }

@@ -113,3 +113,55 @@ describe('StepText — non-https URL safety', () => {
     expect(link.getAttribute('href')).toBe('http://example.com')
   })
 })
+
+describe('sanitisation is the last step', () => {
+  // Regression: applyUrgencyTags used to run AFTER DOMPurify, so a string
+  // replace built HTML on top of sanitized output. That is a broken sanitizer
+  // barrier, and it corrupted attributes in practice.
+  it('does not inject markup into a URL containing an upper-case bracket segment', () => {
+    const { container } = render(
+      <StepText text="See https://example.com/docs/[ABC]/x for details" />
+    )
+    const a = container.querySelector('a')
+    expect(a).not.toBeNull()
+    // marked percent-encodes the brackets (%5B/%5D), which is fine — what
+    // matters is that the href is a single intact URL with no markup in it.
+    const href = a!.getAttribute('href')!
+    expect(decodeURIComponent(href)).toBe('https://example.com/docs/[ABC]/x')
+    expect(href).not.toContain('<')
+    // The bug produced a <span> nested inside the href attribute value.
+    expect(container.innerHTML).not.toContain('href="https://example.com/docs/<span')
+  })
+
+  it('still renders a standalone urgency tag', () => {
+    const { container } = render(<StepText text="[DAY 1] Claim Universal Credit" />)
+    const span = container.querySelector('span.urgency-tag')
+    expect(span).not.toBeNull()
+    expect(span!.textContent).toBe('DAY 1')
+    expect(span!.className).toContain('urgency-urgent')
+  })
+
+  it('marks a non-urgent tag without the urgent class', () => {
+    const { container } = render(<StepText text="[ACTION] Read this" />)
+    const span = container.querySelector('span.urgency-tag')
+    expect(span).not.toBeNull()
+    expect(span!.className).not.toContain('urgency-urgent')
+  })
+
+  it('strips injected markup that sits beside an urgency tag', () => {
+    const { container } = render(
+      <StepText text={'[URGENT] <img src=x onerror=alert(1)> <script>alert(2)</script>'} />
+    )
+    expect(container.querySelector('img')).toBeNull()
+    expect(container.querySelector('script')).toBeNull()
+    expect(container.innerHTML).not.toContain('onerror')
+    // and the legitimate tag survives
+    expect(container.querySelector('span.urgency-tag')).not.toBeNull()
+  })
+
+  it('leaves a bracketed token that is not a standalone word alone', () => {
+    const { container } = render(<StepText text="file[ABC]name" />)
+    expect(container.querySelector('span.urgency-tag')).toBeNull()
+    expect(container.textContent).toContain('file[ABC]name')
+  })
+})

@@ -32,3 +32,25 @@ node_modules/
 .claude/settings.local.json
 .claude/memory/
 career-dashboard
+
+# Personal CV and interview material (added Aug 2026 — keep out of the public repo)
+cv.md
+interview-prep/story-bank.md
+
+# Personal action plan — planning notes, not app content
+NATHAN-ACTION-PLAN.md
+DO-THIS-NOW.md
+YOUR-LIST.md
+nathan-calendar.ics
+CONTACTS-AND-EMAILS.md
+MASTER.md
+JOB-SEARCH-TOOLKIT.md
+MONEY-AND-SECTORS.md
+INTERPRETING-AND-BUSINESS.md
+RESEARCH-ANSWERS.md
+Nathan - Read These/
+JOB-PROFILES.md
+STAY-OR-MOVE.md
+EUROPASS-ENTRIES.md
+CV-STRESS-TEST.md
+FIRST-42-DAYS.md

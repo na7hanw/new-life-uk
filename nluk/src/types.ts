@@ -26,7 +26,10 @@ export type SourceLabel = z.infer<typeof SourceLabelSchema>
 
 // ─── Additional types not covered by Zod schemas ────────────────────────────
 
-export type UserStatus = 'asylum-seeker' | 'refugee' | 'other-visa' | 'settled' | ''
+/** Single source of truth for status values — used to validate persisted state. */
+export const VALID_STATUSES = ['asylum-seeker', 'refugee', 'other-visa', 'settled', ''] as const
+
+export type UserStatus = (typeof VALID_STATUSES)[number]
 
 /** Which qualification lane the user is personally working towards */
 export type TargetLane = 'lifting' | ''
@@ -124,6 +127,7 @@ export interface UiStrings {
   back: string
   change: string
   home: string
+  today: string
   guides: string
   work: string
   saves: string
@@ -138,7 +142,6 @@ export interface UiStrings {
   bring: string
   steps: string
   keyInfo: string
-  visaQ: string
   forYou: string
   quickActions: string
   helplines: string
@@ -171,7 +174,6 @@ export interface UiStrings {
   qaID: string
   qaTravel: string
   qaSafety: string
-  status: Record<string, string>
   openLink: string
   studyLinks: string
   applyLinks: string
@@ -317,6 +319,9 @@ export interface AppContextValue {
   setStatusDate: (d: string) => void
   /** ISO date string of when the user first claimed asylum (for milestone tracking) */
   claimDate: string
+  /** ISO date on the asylum support discontinuation letter (second move-on clock) */
+  discontinuationDate: string
+  setDiscontinuationDate: (d: string) => void
   setClaimDate: (d: string) => void
   /** What the user most wants to do next in the UK */
   userAmbition: UserAmbition
@@ -326,10 +331,19 @@ export interface AppContextValue {
   setUserSector: (s: UserSector) => void
   /** Document IDs the user confirms they hold */
   documentsHeld: string[]
+  /** Practical assets that gate each other — see lib/blockers.ts. */
+  assetsHeld: string[]
+  toggleAsset: (assetId: string) => void
   toggleDocument: (docId: string) => void
-  /** User's saved UK postcode for local service discovery */
-  userPostcode: string
-  setUserPostcode: (p: string) => void
+  /**
+   * The user's postcode AREA only, e.g. "BL" — never the full postcode.
+   * See lib/area.ts for why.
+   */
+  /** ISO date the provider's Notice to Quit requires the property vacated. */
+  noticeToQuitDate: string
+  setNoticeToQuitDate: (d: string) => void
+  userArea: string
+  setUserArea: (p: string) => void
   bookmarks: string[]
   toggleBookmark: (id: string) => void
   /** Which qualification lane the user is personally working towards */

@@ -123,7 +123,7 @@ export default function WorkHub() {
           <span className="tip-icon">⏳</span>
           <p className="tip-text">
             <strong>Permission to Work:</strong> Waited 12+ months for your decision? You may be eligible to apply.
-            Rules expand significantly from 26 March 2026 — this week.{' '}
+            Rules changed on 26 March 2026: wider for graduate-level roles, but care work and construction trades were removed.{' '}
             <button className={styles.inlineLink}
               onClick={() => navigate('/guide/permission-to-work')}>
               See the guide →
@@ -140,7 +140,7 @@ export default function WorkHub() {
         <div className={`tip-banner ${styles.tipBannerGutter}`}>
           <span className="tip-icon">📦</span>
           <p className="tip-text">
-            <strong>56-Day Move-On:</strong> Recently got refugee status? You have 56 days to set up your new life — don&apos;t miss your Universal Credit and housing deadlines.{' '}
+            <strong>42-Day Move-On:</strong> Recently got refugee status? You have 42 days from your decision notification — don&apos;t miss your Universal Credit and housing deadlines.{' '}
             <button className={styles.inlineLink}
               onClick={() => navigate('/guide/move-on')}>
               See the checklist →
@@ -279,8 +279,19 @@ export default function WorkHub() {
       {subtab === 'volunteer' && (
         <>
           <div className="section-sub" style={{ paddingTop: 12, paddingBottom: 4 }}>
-            Volunteering is <strong>always allowed</strong> for asylum seekers — no permission needed.
-            These Bolton/Manchester orgs specifically need Amharic and Tigrinya speakers.
+            {userStatus === 'refugee' ? (
+              <>
+                You have full right to work — treat these as <strong>reference-builders</strong>, not
+                a substitute for paid work. A few weeks with a recognised charity gives you a UK
+                referee and recent UK experience on your CV.
+              </>
+            ) : (
+              <>
+                Volunteering is <strong>always allowed</strong> — no permission from the Home Office
+                needed, whatever your status. These Bolton and Manchester organisations need Amharic
+                speakers.
+              </>
+            )}
           </div>
           {VOLUNTEERING.filter(org =>
             !search.trim() ||

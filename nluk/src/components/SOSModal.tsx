@@ -16,6 +16,13 @@ function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }: SOSModalProps) {
     if (!showSOS) return
     const el = sosModalRef.current
     if (!el) return
+    // Captured before focus moves into the dialog, and restored in cleanup
+    // below. Without it, closing drops keyboard and screen-reader users at
+    // <body> with no announcement, so they have to tab back through the whole
+    // page to reach where they were. Doing both in one effect avoids the
+    // ordering hazard of a separate capture effect, which would run after this
+    // one had already moved focus.
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null
     const focusable = el.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
     const first = focusable[0]
     const last = focusable[focusable.length - 1]
@@ -30,7 +37,12 @@ function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }: SOSModalProps) {
       }
     }
     el.addEventListener('keydown', trap)
-    return () => el.removeEventListener('keydown', trap)
+    return () => {
+      el.removeEventListener('keydown', trap)
+      // Only if it is still in the document — a node removed while the dialog
+      // was open cannot take focus, and asking it to is a silent no-op.
+      if (previouslyFocused && document.contains(previouslyFocused)) previouslyFocused.focus()
+    }
   }, [showSOS, setSOS])
 
   if (!showSOS) return null
@@ -61,11 +73,11 @@ function SOSModal({ showSOS, setSOS, ui, SOS_NUMBERS }: SOSModalProps) {
                 background: 'color-mix(in srgb, #dc2626 8%, var(--bg2))',
                 border: '1.5px solid color-mix(in srgb, #dc2626 30%, transparent)',
               }}>
-                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#dc2626', marginBottom: 2 }}>⚠️ Action needed</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--t1)', marginBottom: 2 }}>{u.title}</div>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--rd)', marginBottom: 2 }}>⚠️ Action needed</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--tx)', marginBottom: 2 }}>{u.title}</div>
                 <div style={{ fontSize: '0.76rem', color: 'var(--t2)' }}>{u.whatToDo}</div>
                 <a href={u.sourceUrl} target="_blank" rel="noopener noreferrer"
-                  style={{ fontSize: '0.72rem', color: '#dc2626', display: 'inline-block', marginTop: 2 }}>
+                  style={{ fontSize: '0.72rem', color: 'var(--rd)', display: 'inline-block', marginTop: 2 }}>
                   Official source →
                 </a>
               </div>

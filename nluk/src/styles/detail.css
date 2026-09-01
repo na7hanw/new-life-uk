@@ -1,6 +1,5 @@
 /* ─── Detail Pages ────────────────────────────────────────────────────────────
-   Detail header, back button, quick links, key info strip, steps,
-   info rows, step links, source links, start-here numbers.
+   Detail header, back button, quick links, key info strip, steps, info rows, step links, source links, start-here numbers.
    ─────────────────────────────────────────────────────────────────────────── */
 
 /* Official source link */
@@ -15,16 +14,6 @@
   text-underline-offset: 3px;
 }
 .source-link:hover { color: var(--ac3); }
-
-/* Guide "last verified" footer */
-.guide-updated {
-  text-align: center;
-  font-size: .78rem;
-  font-weight: 700;
-  color: var(--gn);
-  padding: 4px 20px 24px;
-  opacity: .8;
-}
 
 /* Combined verified + source footer bar */
 .guide-footer {
@@ -251,30 +240,6 @@
   margin-bottom: 8px;
 }
 
-/* ─── Info Rows ─── */
-.info-row {
-  display: flex;
-  gap: 10px;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--bd);
-  align-items: flex-start;
-}
-.info-row:last-child { border-bottom: none; }
-.info-label {
-  font-size: .825rem;
-  color: var(--t3);
-  font-weight: 700;
-  width: 90px;
-  flex-shrink: 0;
-}
-.info-value {
-  font-size: .9rem;
-  color: var(--tx);
-  font-weight: 600;
-  flex: 1;
-  line-height: 1.5;
-}
-
 /* ─── Step Links ─── */
 .step-link {
   color: var(--ac3);
@@ -300,18 +265,10 @@
 }
 .urgency-urgent { background: var(--rd); }
 
-/* ─── Start Here Numbers ─── */
-.start-num {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--ac);
-  color: #fff;
-  font-size: .7rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.dark .start-num { color: #042B1C; }
+/* --ac and --rd are LIGHT colours in dark mode (#34D399, #F87171), so white
+   text on them lands at 1.92:1 and 2.77:1. Dark ink gives 7.99:1 and 5.55:1,
+   which is what .btn-primary has always done. Caught by contrast.test.ts
+   reading these files — the earlier version only checked tokens against page
+   surfaces and passed the whole time. */
+.dark .quick-link-pill:active,
+.dark .urgency-tag { color: #042B1C; }

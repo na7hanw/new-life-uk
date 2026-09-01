@@ -2,12 +2,15 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Settings, ChevronRight, Bookmark } from 'lucide-react'
 import { differenceInDays, addDays, format, parseISO, isValid } from 'date-fns'
-import clsx from 'clsx'
 import { useApp } from '../context/AppContext.tsx'
 import { GUIDE_MAP } from '../data/guides.ts'
 import { getSortedUpdates } from '../data/immigration-updates.ts'
 import { t18 } from '../lib/utils.ts'
 import ChecklistWidget from '../components/ChecklistWidget.tsx'
+import MoveOnPlan from '../components/MoveOnPlan.tsx'
+import LocalServices from '../components/LocalServices.tsx'
+import { deriveCohort, cohortFacts } from '../lib/cohort.ts'
+import { STATUS_PROFILES } from '../data/status-profiles.ts'
 import type { UserStatus } from '../types'
 import styles from './ProfilePage.module.css'
 
@@ -18,104 +21,6 @@ const STATUS_OPTIONS: { value: UserStatus; label: string }[] = [
   { value: 'settled',       label: '🇬🇧 Settled / Pre-Settled Status' },
 ]
 
-const STATUS_NEXT_STEPS: Partial<Record<UserStatus, { icon: string; text: string; path: string }[]>> = {
-  'asylum-seeker': [
-    { icon: '📋', text: 'Understand your rights while waiting', path: '/guide/asylum-waiting' },
-    { icon: '💳', text: 'Maximise your ASPEN card support', path: '/guide/aspen-card' },
-    { icon: '🗣️', text: 'Community interpreting — train while waiting (no PTW needed)', path: '/guide/community-interpreting' },
-    { icon: '📖', text: 'Strong English? Your real learning path', path: '/guide/advanced-learner' },
-    { icon: '🏥', text: 'Register with a GP — you have the right immediately', path: '/guide/gp' },
-    { icon: '🧠', text: 'Access free mental health support', path: '/guide/mental' },
-  ],
-  'refugee': [
-    { icon: '⏰', text: 'Start the move-on process now — 42-day deadline', path: '/guide/move-on' },
-    { icon: '🌱', text: 'Your full integration roadmap — year 1 to year 5', path: '/guide/refugee-integration' },
-    { icon: '🏦', text: 'Open a bank account (Monzo — no credit check)', path: '/guide/bank' },
-    { icon: '💷', text: 'Claim Universal Credit today', path: '/guide/uc' },
-    { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
-    { icon: '🏘', text: 'Understand the real council housing process', path: '/guide/social-housing' },
-  ],
-  'other-visa': [
-    { icon: '📱', text: 'Set up your eVisa digital status', path: '/guide/evisa' },
-    { icon: '🔗', text: 'Generate a share code for work or renting', path: '/guide/sharecode' },
-    { icon: '💼', text: 'Know your employment rights', path: '/guide/employment-rights' },
-    { icon: '📊', text: 'Start building your UK credit score', path: '/guide/credit-score' },
-  ],
-  'settled': [
-    { icon: '🏅', text: 'Check your path to Indefinite Leave to Remain', path: '/guide/ilr' },
-    { icon: '📊', text: 'Build your UK credit score for mortgages', path: '/guide/credit-score' },
-    { icon: '💰', text: 'Start investing tax-free with a Stocks & Shares ISA', path: '/guide/investing' },
-    { icon: '📜', text: 'UK rules every settled resident must know', path: '/guide/uk-rules' },
-  ],
-}
-
-function MoveOnCountdown({ statusDate, setStatusDate }: { statusDate: string; setStatusDate: (d: string) => void }) {
-  const grantedDate = statusDate ? parseISO(statusDate) : null
-  const isDateValid = grantedDate !== null && isValid(grantedDate)
-
-  let daysLeft = 0
-  let deadline: Date | null = null
-  if (isDateValid && grantedDate) {
-    deadline = addDays(grantedDate, 42)
-    daysLeft = differenceInDays(deadline, new Date())
-  }
-
-  const isPast   = isDateValid && daysLeft < 0
-  const isUrgent = isDateValid && !isPast && daysLeft <= 14
-
-  return (
-    <div className={clsx(styles.deadlineBanner, isUrgent && styles.deadlineBannerUrgent, isPast && styles.deadlineBannerPast)}>
-      <div className={styles.deadlineTop}>
-        <span className={styles.deadlineEmoji}>{isPast ? '⚠️' : '⏰'}</span>
-        <div>
-          {isDateValid ? (
-            <>
-              <div className={styles.deadlineDays}>
-                {isPast
-                  ? `${Math.abs(daysLeft)} days past deadline`
-                  : `${daysLeft} days left`}
-              </div>
-              <div className={styles.deadlineSub}>
-                {isPast
-                  ? 'Your move-on deadline has passed — contact your council immediately'
-                  : daysLeft === 0
-                    ? 'Your move-on deadline is today — act now'
-                    : 'to claim Universal Credit and secure housing'}
-              </div>
-            </>
-          ) : (
-            <>
-              <div className={styles.deadlineDays}>42-day move-on</div>
-              <div className={styles.deadlineSub}>Enter your status grant date to see your deadline</div>
-            </>
-          )}
-        </div>
-      </div>
-
-      {isDateValid && deadline && (
-        <div className={styles.deadlineDate}>
-          Deadline: <strong>{format(deadline, 'd MMMM yyyy')}</strong>
-          {' · '}Status granted: {format(grantedDate!, 'd MMMM yyyy')}
-        </div>
-      )}
-
-      <div className={styles.deadlineDateInput}>
-        <label htmlFor="status-date-input">Status granted:</label>
-        <input
-          id="status-date-input"
-          type="date"
-          value={statusDate}
-          max={new Date().toISOString().slice(0, 10)}
-          onChange={e => setStatusDate(e.target.value)}
-          aria-label="Date refugee status was granted"
-        />
-        {statusDate && (
-          <button className={styles.deadlineClearBtn} onClick={() => setStatusDate('')} aria-label="Clear date">✕</button>
-        )}
-      </div>
-    </div>
-  )
-}
 
 // ── Asylum Milestones: FE college (6 months) + PTW (12 months) ─────────────────
 function MilestonePill({ label, icon, reached, daysLeft, date, guideId, desc }: {
@@ -126,18 +31,18 @@ function MilestonePill({ label, icon, reached, daysLeft, date, guideId, desc }: 
     <div style={{
       padding: '10px 14px', borderRadius: 10,
       background: reached ? 'color-mix(in srgb, #16a34a 8%, var(--bg2))' : 'var(--bg2)',
-      border: `1.5px solid ${reached ? '#16a34a' : 'var(--sep)'}`,
+      border: `1.5px solid ${reached ? '#16a34a' : 'var(--bd)'}`,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
         <span style={{ fontSize: '1.2rem' }}>{icon}</span>
-        <span style={{ fontWeight: 700, fontSize: '0.82rem', color: reached ? '#16a34a' : 'var(--t1)' }}>
+        <span style={{ fontWeight: 700, fontSize: '0.82rem', color: reached ? '#16a34a' : 'var(--tx)' }}>
           {reached ? '✅ Available now' : `${daysLeft} days away`}
         </span>
         <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--t3)' }}>
           {date ? format(date, 'd MMM yyyy') : ''}
         </span>
       </div>
-      <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--t1)', marginBottom: 2 }}>{label}</div>
+      <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--tx)', marginBottom: 2 }}>{label}</div>
       <div style={{ fontSize: '0.78rem', color: 'var(--t2)', marginBottom: reached ? 6 : 0 }}>{desc}</div>
       {reached && (
         <button
@@ -180,9 +85,9 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <span style={{ fontSize: '1.2rem' }}>🗣️</span>
-          <span style={{ fontWeight: 700, fontSize: '0.82rem', color: '#16a34a' }}>✅ Available now</span>
+          <span style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--gn)' }}>✅ Available now</span>
         </div>
-        <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--t1)', marginBottom: 2 }}>Free ESOL English Classes</div>
+        <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--tx)', marginBottom: 2 }}>Free ESOL English Classes</div>
         <div style={{ fontSize: '0.78rem', color: 'var(--t2)', marginBottom: 6 }}>
           ESOL classes are free for all asylum seekers from day one — no waiting period, no conditions.
         </div>
@@ -207,7 +112,7 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
       ) : (
         <div style={{
           padding: '10px 14px', borderRadius: 10,
-          background: 'var(--bg2)', border: '1.5px solid var(--sep)',
+          background: 'var(--bg2)', border: '1.5px solid var(--bd)',
           fontSize: '0.82rem', color: 'var(--t2)',
         }}>
           <span style={{ fontSize: '1.2rem' }}>🎓</span>{' '}
@@ -228,7 +133,7 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
       ) : (
         <div style={{
           padding: '10px 14px', borderRadius: 10,
-          background: 'var(--bg2)', border: '1.5px solid var(--sep)',
+          background: 'var(--bg2)', border: '1.5px solid var(--bd)',
           fontSize: '0.82rem', color: 'var(--t2)',
         }}>
           <span style={{ fontSize: '1.2rem' }}>🔓</span>{' '}
@@ -247,7 +152,7 @@ function AsylumMilestones({ claimDate, setClaimDate }: { claimDate: string; setC
           max={new Date().toISOString().slice(0, 10)}
           onChange={e => setClaimDate(e.target.value)}
           aria-label="Date you first claimed asylum"
-          style={{ flex: 1, fontSize: '0.85rem', padding: '4px 8px', borderRadius: 8, border: '1px solid var(--sep)', background: 'var(--bg2)', color: 'var(--t1)' }}
+          style={{ flex: 1, fontSize: '0.85rem', padding: '4px 8px', borderRadius: 8, border: '1px solid var(--bd)', background: 'var(--bg2)', color: 'var(--tx)' }}
         />
         {claimDate && (
           <button
@@ -279,13 +184,6 @@ const SECTOR_OPTIONS: { value: NonNullable<import('../types').UserSector>; emoji
   { value: 'admin',        emoji: '📋', label: 'Admin & Office' },
 ]
 
-/** Guide IDs most relevant to each immigration status — used for update alerts */
-const STATUS_GUIDE_IDS: Record<string, string[]> = {
-  'asylum-seeker': ['asylum-waiting', 'permission-to-work', 'nrpf', 'evisa', 'community-interpreting', 'advanced-learner'],
-  'refugee':       ['move-on', 'refugee-integration', 'uc', 'housing-help', 'family-reunion', 'ilr'],
-  'other-visa':    ['evisa', 'sharecode', 'work-rights', 'ilr'],
-  'settled':       ['ilr', 'evisa', 'sharecode'],
-}
 
 const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
   { id: 'brp',       emoji: '💳', label: 'BRP (Biometric Residence Permit)' },
@@ -296,8 +194,46 @@ const DOCUMENT_OPTIONS: { id: string; emoji: string; label: string }[] = [
   { id: 'ho-letter', emoji: '📬', label: 'Home Office Letter / ARC' },
 ]
 
+
+/**
+ * Which refugee rules apply — derived from the CLAIM date, not the decision
+ * date. The app previously used the decision date, which misclassifies almost
+ * every 2026 grant because decisions take 6-18+ months.
+ *
+ * claimDate used to be collected only from asylum seekers and thrown away the
+ * moment status changed, which is exactly when the question becomes live and
+ * permanent. It is asked here too.
+ */
+function CohortPanel({ claimDate, setClaimDate }: { claimDate: string; setClaimDate: (d: string) => void }) {
+  const facts = cohortFacts(deriveCohort(claimDate))
+  return (
+    <section className="card" style={{ margin: '0 var(--gutter) 16px', padding: 16 }} aria-labelledby="cohort-heading">
+      <h2 id="cohort-heading" style={{ margin: '0 0 6px', fontSize: '1rem', fontWeight: 800 }}>
+        Which rules apply to you
+      </h2>
+      <p style={{ margin: '0 0 10px', fontSize: '0.9rem', fontWeight: 700, color: 'var(--ac3)' }}>
+        Leave: {facts.leave}
+        {facts.settlementYears !== null && ` · Settlement after ${facts.settlementYears} years`}
+      </p>
+      <p style={{ margin: 0, fontSize: '0.82rem', lineHeight: 1.55, color: 'var(--t2)' }}>{facts.summary}</p>
+      <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <label htmlFor="claim-date-cohort" style={{ fontSize: '0.76rem', fontWeight: 600, color: 'var(--t2)' }}>
+          Date you first claimed asylum
+        </label>
+        <input
+          id="claim-date-cohort"
+          type="date"
+          value={claimDate}
+          onChange={e => setClaimDate(e.target.value)}
+          style={{ minHeight: 44, padding: '0 12px', border: '1.5px solid var(--bd)', borderRadius: 10, background: 'var(--bg2)', color: 'var(--tx)', fontSize: '0.9rem' }}
+        />
+      </div>
+    </section>
+  )
+}
+
 export default function ProfilePage() {
-  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
+  const { lang, ui, af, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, noticeToQuitDate, setNoticeToQuitDate, userArea, setUserArea, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, bookmarks, toggleBookmark } = useApp()
   const navigate = useNavigate()
   const [showStatusPicker, setShowStatusPicker] = useState(false)
 
@@ -339,8 +275,8 @@ export default function ProfilePage() {
       </div>
 
       {/* ── Action-needed update alerts for user's status ─── */}
-      {userStatus && STATUS_GUIDE_IDS[userStatus] && (() => {
-        const relevantGuides = STATUS_GUIDE_IDS[userStatus]
+      {userStatus && STATUS_PROFILES[userStatus] && (() => {
+        const relevantGuides = STATUS_PROFILES[userStatus].alertGuides
         const alerts = getSortedUpdates().filter(u =>
           u.urgency === 'action-needed' &&
           u.relatedGuideIds.some(g => relevantGuides.includes(g))
@@ -354,15 +290,15 @@ export default function ProfilePage() {
                 background: 'color-mix(in srgb, #dc2626 7%, var(--bg2))',
                 border: '1.5px solid color-mix(in srgb, #dc2626 30%, transparent)',
               }}>
-                <div style={{ fontWeight: 700, fontSize: '0.8rem', color: '#dc2626', marginBottom: 3 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.8rem', color: 'var(--rd)', marginBottom: 3 }}>
                   ⚠️ Action needed
                 </div>
-                <div style={{ fontSize: '0.82rem', color: 'var(--t1)', fontWeight: 600, marginBottom: 2 }}>
+                <div style={{ fontSize: '0.82rem', color: 'var(--tx)', fontWeight: 600, marginBottom: 2 }}>
                   {u.title}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--t2)' }}>{u.whatToDo}</div>
                 <a href={u.sourceUrl} target="_blank" rel="noopener noreferrer"
-                  style={{ fontSize: '0.76rem', color: '#dc2626', display: 'inline-block', marginTop: 4 }}>
+                  style={{ fontSize: '0.76rem', color: 'var(--rd)', display: 'inline-block', marginTop: 4 }}>
                   Official source →
                 </a>
               </div>
@@ -438,12 +374,12 @@ export default function ProfilePage() {
       )}
 
       {/* ── Next Steps ───────────────────────────────────── */}
-      {userStatus && STATUS_NEXT_STEPS[userStatus] && (
+      {userStatus && STATUS_PROFILES[userStatus] && (
         <>
           <div className="section-label">{ui.nextSteps || '⚡ Next Steps'}</div>
           <div className="card card-flush" style={{ margin: '0 var(--gutter) 16px' }}>
-            {STATUS_NEXT_STEPS[userStatus]!.map(step => (
-              <button key={step.path} className="list-row" onClick={() => navigate(step.path)}>
+            {STATUS_PROFILES[userStatus].nextSteps.map(step => (
+              <button key={step.guideId} className="list-row" onClick={() => navigate(`/guide/${step.guideId}`)}>
                 <span className="list-row-icon" style={{ fontSize: '1.1rem' }}>{step.icon}</span>
                 <div className="list-row-content">
                   <div className="list-row-title" style={{ fontSize: '0.9rem' }}>{step.text}</div>
@@ -456,25 +392,26 @@ export default function ProfilePage() {
       )}
 
 {/* ── Move-on countdown (refugees only) ─────────────── */}
+      <LocalServices postcode={userArea} setPostcode={setUserArea} status={userStatus} />
+
       {userStatus === 'refugee' && (
-        <MoveOnCountdown statusDate={statusDate} setStatusDate={setStatusDate} />
+        <CohortPanel claimDate={claimDate} setClaimDate={setClaimDate} />
+      )}
+
+      {userStatus === 'refugee' && (
+        <MoveOnPlan
+          statusDate={statusDate}
+          setStatusDate={setStatusDate}
+          discontinuationDate={discontinuationDate}
+          setDiscontinuationDate={setDiscontinuationDate}
+        noticeToQuitDate={noticeToQuitDate}
+        setNoticeToQuitDate={setNoticeToQuitDate}
+        />
       )}
 
       {/* ── Progress Checklist ────────────────────────────── */}
-      <ChecklistWidget ui={ui} />
+      <ChecklistWidget ui={ui} status={userStatus} />
 
-      {/* ── Document Scanner quick-access ────────────────── */}
-      <div className="section-label">🔧 Tools</div>
-      <div className="card" style={{ margin: '0 var(--gutter) 16px' }}>
-        <button className="list-row" onClick={() => navigate('/scan')}>
-          <span className="list-row-icon">📷</span>
-          <div className="list-row-content">
-            <div className="list-row-title">Scan a Document</div>
-            <div className="list-row-sub">Photograph a letter or form to read and translate it</div>
-          </div>
-          <ChevronRight size={18} strokeWidth={2.5} style={{ color: 'var(--ac3)', flexShrink: 0 }} />
-        </button>
-      </div>
 
       {/* ── Saved Guides ─────────────────────────────────── */}
       {bookmarks.length > 0 ? (
@@ -512,7 +449,7 @@ export default function ProfilePage() {
         <div className={styles.emptyBookmarks}>
           <Bookmark size={28} strokeWidth={1.5} style={{ color: 'var(--t3)' }} />
           <p>{ui.bookmarksSub || 'Your saved guides appear here.'}</p>
-          <button className="btn btn-secondary" onClick={() => navigate('/')}>
+          <button className="btn btn-secondary" onClick={() => navigate('/guides')}>
             Browse Guides {af}
           </button>
         </div>

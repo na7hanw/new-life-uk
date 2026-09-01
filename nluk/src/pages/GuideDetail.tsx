@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useEffect, useState } from 'react'
 import { Bookmark } from 'lucide-react'
@@ -12,6 +12,18 @@ import MachineTranslationBanner from '../components/MachineTranslationBanner.tsx
 import ShareBar from '../components/ShareBar.tsx'
 import StepText from '../components/StepText.tsx'
 import TTSButton from '../components/TTSButton.tsx'
+
+/** Guides excluded from reading history — see the history effect below. */
+/**
+ * Categories where a machine-translation error is unlikely to be consequential.
+ * Everything else — asylum, housing, money, healthcare, work, settlement,
+ * documents — gets the strong, non-dismissible disclaimer. The gate used to be
+ * the other way round, allow-listing only two categories as high risk, so the
+ * eVisa guide's hard deadlines and every asylum guide carried the weak banner.
+ */
+const LOW_RISK_CATEGORIES = new Set(['Community', 'Transport & Travel', 'Training'])
+
+const SENSITIVE_GUIDE_IDS = new Set(['safety', 'women-support', 'mental', 'nrpf', 'legal-help'])
 
 interface GuideContent {
   title: string
@@ -35,6 +47,11 @@ export default function GuideDetail() {
   useEffect(() => {
     if (!id || !guide) return
     try {
+      // Never record the guides whose disclosure could put someone in danger.
+      // "Continue Reading" renders these on the front page, so a shared or
+      // borrowed phone would otherwise announce that its owner has been reading
+      // about leaving an abusive partner or about trafficking.
+      if (SENSITIVE_GUIDE_IDS.has(id)) return
       const prev: string[] = JSON.parse(localStorage.getItem('nluk_guide_history') || '[]')
       const next = [id, ...prev.filter(g => g !== id)].slice(0, 5)
       localStorage.setItem('nluk_guide_history', JSON.stringify(next))
@@ -126,10 +143,10 @@ export default function GuideDetail() {
                 padding: '10px 14px',
                 borderBottom: '1px solid color-mix(in srgb, #dc2626 20%, transparent)',
               }}>
-                <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#dc2626', marginBottom: 3 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--rd)', marginBottom: 3 }}>
                   ⚠️ Rule change — action may be needed
                 </div>
-                <div style={{ fontSize: '0.82rem', color: 'var(--t1)', marginBottom: 4 }}>
+                <div style={{ fontSize: '0.82rem', color: 'var(--tx)', marginBottom: 4 }}>
                   {u.whatChanged}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--t2)' }}>
@@ -139,7 +156,7 @@ export default function GuideDetail() {
                   href={u.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ fontSize: '0.76rem', color: '#dc2626', display: 'block', marginTop: 5 }}
+                  style={{ fontSize: '0.76rem', color: 'var(--rd)', display: 'block', marginTop: 5 }}
                 >
                   Official source →
                 </a>
@@ -187,7 +204,7 @@ export default function GuideDetail() {
         <MachineTranslationBanner
           lang={lang}
           ui={ui}
-          highRisk={['Business & Money', 'Identity & Login'].includes(guide.cat)}
+          highRisk={!LOW_RISK_CATEGORIES.has(guide.cat)}
         />
       )}
 
@@ -212,26 +229,6 @@ export default function GuideDetail() {
             })}
           </div>
         </div>
-      )}
-
-      {/* Scanner callout on document-heavy guides */}
-      {id && ['move-on', 'uc', 'housing-help', 'social-housing', 'family-reunion', 'ilr', 'asylum-waiting', 'evisa', 'sharecode', 'life-admin'].includes(id) && (
-        <Link
-          to="/scan"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 12,
-            margin: '0 var(--gutter) 12px', padding: '10px 14px',
-            borderRadius: 12, background: 'var(--bg2)', border: '1px solid var(--sep)',
-            textDecoration: 'none', color: 'var(--t1)',
-          }}
-        >
-          <span style={{ fontSize: '1.5rem' }}>📷</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 600, fontSize: '0.88rem' }}>Have a letter or document? Scan it</div>
-            <div style={{ fontSize: '0.76rem', color: 'var(--t3)' }}>Photograph it to read and translate — nothing uploaded</div>
-          </div>
-          <span style={{ color: 'var(--ac3)', fontWeight: 600 }}>›</span>
-        </Link>
       )}
 
       <div className="guide-footer">

@@ -44,7 +44,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   {
     id: 'evisa-travel-doc-march-2026',
     title: 'Home Office travel documents now automatically linked to UKVI accounts',
-    sourceUrl: 'https://www.gov.uk/guidance/online-immigration-status-evisa',
+    sourceUrl: 'https://www.gov.uk/evisa',
     sourceType: 'official',
     publishedAt: '2026-03-11',
     lastChecked: '2026-03-22',
@@ -60,7 +60,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
     whatToDo:
       'Check your UKVI account to verify the link. Continue carrying your physical travel document when you travel — digital status does not replace the physical document.',
     urgency: 'important',
-    relatedGuideIds: ['evisa', 'sharecode', 'travel-docs'],
+    relatedGuideIds: ['evisa', 'sharecode', 'ctd'],
     relatedAppIds: ['UKVI (UK Visas and Immigration)'],
   },
   {
@@ -88,7 +88,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   {
     id: 'eta-fee-april-2026',
     title: 'Electronic Travel Authorisation (ETA) fee rising to £20 from 8 April 2026',
-    sourceUrl: 'https://www.gov.uk/government/publications/visa-and-immigration-operational-guidance/immigration-and-nationality-fees-april-2025-to-march-2026',
+    sourceUrl: 'https://www.gov.uk/government/publications/visa-regulations-revised-table',
     sourceType: 'fee-update',
     publishedAt: '2026-03-18',
     lastChecked: '2026-03-22',
@@ -104,13 +104,13 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
     whatToDo:
       'If you need an ETA soon, apply before 8 April 2026 to pay £16. Apply via the official UK ETA app or GOV.UK — avoid unofficial sites that charge more.',
     urgency: 'action-needed',
-    relatedGuideIds: ['travel-docs', 'evisa'],
+    relatedGuideIds: ['ctd', 'evisa'],
     relatedAppIds: ['UK ETA (Electronic Travel Authorisation)'],
   },
   {
     id: 'evisa-rollout-update-2026',
     title: 'eVisa: all BRPs have expired — your immigration status is now fully digital',
-    sourceUrl: 'https://www.gov.uk/guidance/evisa',
+    sourceUrl: 'https://www.gov.uk/evisa',
     sourceType: 'official',
     publishedAt: '2025-12-31',
     lastChecked: '2026-03-22',
@@ -133,7 +133,7 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   {
     id: 'asylum-ptw-expansion-march-2026',
     title: 'Permission to Work rules changing from 26 March 2026 — verify eligibility carefully',
-    sourceUrl: 'https://www.gov.uk/government/publications/workers-and-temporary-workers-permission-to-work-if-waiting-for-an-asylum-decision',
+    sourceUrl: 'https://www.gov.uk/government/publications/handling-applications-for-permission-to-take-employment-instruction/permission-to-work-and-volunteering-for-asylum-seekers-accessible',
     sourceType: 'official',
     publishedAt: '2026-03-26',
     lastChecked: '2026-03-22',
@@ -156,17 +156,17 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
     sourceUrl: 'https://www.gov.uk/asylum-support/what-youll-get',
     sourceType: 'official',
     publishedAt: '2026-03-01',
-    lastChecked: '2026-03-22',
+    lastChecked: '2026-08-29',
     summary:
-      'The period newly recognised refugees have to leave asylum accommodation has been reduced from 56 days to 42 days. Your exact deadline is on your asylum support discontinuation letter — check it immediately. The countdown begins from the date on that letter, not from when you receive it.',
+      'For positive decisions issued on or after 9 March 2026, you get 42 days to leave asylum accommodation, counted from the date you are NOTIFIED of the decision — not from the discontinuation letter. Separately, you always get a minimum of 28 days from the discontinuation letter itself. Whichever date falls later is your real deadline, so check both letters.',
     affectedGroups: [
       'Newly recognised refugees leaving asylum accommodation',
-      'People who received refugee status from March 2026',
+      'People notified of a positive decision on or after 9 March 2026',
     ],
     whatChanged:
-      'The move-on grace period has been reduced from 56 to 42 days. Check your discontinuation letter for your exact deadline date.',
+      'The move-on notice period was set at 42 days from decision notification (it was 56 days, then 28 for many people). The separate 28-day minimum from the discontinuation letter still applies.',
     whatToDo:
-      'Apply for Universal Credit immediately, contact your council housing team, and open a bank account — do not wait. Check the exact date on your discontinuation letter.',
+      'Apply for Universal Credit immediately — the 5-week wait is the binding constraint. Contact your council housing team the same week and open a bank account. If you cannot secure housing in time, request an extension in writing with evidence of your efforts: extensions are possible but never automatic.',
     urgency: 'action-needed',
     relatedGuideIds: ['move-on', 'uc', 'housing-help', 'social-housing'],
   },
@@ -192,22 +192,22 @@ export const IMMIGRATION_UPDATES: ImmigrationUpdate[] = [
   },
   {
     id: 'refugee-30-month-protection-march-2026',
-    title: '30-month refugee leave for claims decided on or after 2 March 2026',
+    title: '30-month refugee leave for asylum claims MADE on or after 2 March 2026',
     sourceUrl: 'https://www.gov.uk/guidance/immigration-rules',
     sourceType: 'rules-change',
     publishedAt: '2026-03-02',
     lastChecked: '2026-03-22',
     summary:
-      'Refugee protection duration has changed depending on when your claim was decided. Claims decided BEFORE 1 March 2026: 5-year leave (existing framework). Claims decided ON OR AFTER 2 March 2026: 30 months (2.5 years) initial leave, which must be renewed before applying for ILR. Check your decision letter for your exact leave dates.',
+      'The cutoff is the date you CLAIMED asylum, not the date you were decided. Claimed on or before 1 March 2026: 5 years leave, settlement after 5 years, fee-free — even if your decision arrives much later. Claimed on or after 2 March 2026: the new "core protection" system, 30 months leave at a time, reviewed each period, with settlement announced at 20 years. Because decisions take 6-18+ months, most people being decided now claimed under the old rules. Check the length of leave on your decision letter and eVisa.',
     affectedGroups: [
-      'Refugees whose claims were decided on or after 2 March 2026',
+      'People who CLAIMED asylum on or after 2 March 2026 (not those merely decided after it)',
       'People planning their path to Indefinite Leave to Remain (ILR)',
     ],
     whatChanged:
-      'New refugees (decisions from 2 March 2026) receive 30 months of leave instead of 5 years. Leave must be renewed before applying for ILR.',
+      'Asylum claims made from 2 March 2026 lead to 30 months leave instead of 5 years, repeated 30-month reviews, and a 20-year route to settlement instead of 5. Unaccompanied children keep 5 years. Claims made before that date are unaffected.',
     whatToDo:
-      'Check your refugee decision letter for your exact leave expiry date. If you received a decision on or after 2 March 2026, you will need to renew your leave before it expires — set a reminder well in advance.',
-    urgency: 'important',
+      'Work out your CLAIM date, not your decision date. If you claimed on or before 1 March 2026 the old rules apply and your decision letter should show 5 years. If it shows 30 months and you claimed before 2 March 2026, that may be an error worth raising with an OISC-registered adviser. Either way, note your leave expiry and set a reminder well in advance.',
+    urgency: 'action-needed',
     relatedGuideIds: ['ilr', 'evisa', 'move-on'],
   },
 ]

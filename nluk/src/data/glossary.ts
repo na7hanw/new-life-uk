@@ -37,7 +37,7 @@ const GLOSSARY_RAW: Record<string, GlossaryEntry> = {
   evisa: {
     term: 'eVisa',
     definition: 'A digital record of your UK immigration status, accessed through a UKVI online account. Replaces the physical BRP card from 2025.',
-    sourceUrl: 'https://www.gov.uk/guidance/online-immigration-status-evisa',
+    sourceUrl: 'https://www.gov.uk/evisa',
   },
   nrpf: {
     term: 'NRPF',
@@ -120,7 +120,7 @@ const GLOSSARY_RAW: Record<string, GlossaryEntry> = {
   dbs: {
     term: 'DBS check',
     definition: 'Disclosure and Barring Service check — a criminal records check required for many jobs working with children or vulnerable adults.',
-    sourceUrl: 'https://www.gov.uk/dbs-check-applicant-guidance',
+    sourceUrl: 'https://www.gov.uk/guidance/basic-dbs-check-guidance-for-applicants',
   },
   ukvi: {
     term: 'UKVI',
@@ -155,7 +155,7 @@ const GLOSSARY_RAW: Record<string, GlossaryEntry> = {
   'share code': {
     term: 'Share Code',
     definition: 'A 9-character code generated on gov.uk that proves your immigration status to employers or landlords without giving them your documents.',
-    sourceUrl: 'https://www.gov.uk/view-prove-immigration-status',
+    sourceUrl: 'https://www.gov.uk/evisa/view-evisa-get-share-code-prove-immigration-status',
   },
   bno: {
     term: 'BN(O)',
@@ -201,11 +201,13 @@ const GLOSSARY_RAW: Record<string, GlossaryEntry> = {
   },
   'move-on period': {
     term: 'Move-On Period',
-    definition: 'The 56-day period after being granted refugee status, during which you must leave asylum accommodation and claim Universal Credit.',
+    definition:
+      'The 42-day period after you are notified of a positive asylum decision, during which you must leave asylum accommodation and claim Universal Credit. Set at 42 days for decisions issued on or after 9 March 2026 (previously 56, then 28).',
   },
-  '56 days': {
-    term: '56-Day Move-On',
-    definition: 'After being granted refugee status, you have 56 days to leave asylum support and accommodation, and set up independent living.',
+  '42 days': {
+    term: '42-Day Move-On',
+    definition:
+      'After being notified of refugee status, you have 42 days to leave asylum support and accommodation and set up independent living. The clock starts at the decision notification, not the discontinuation letter. Extensions are possible but must be requested — they are not automatic.',
   },
   'credit score': {
     term: 'Credit Score',

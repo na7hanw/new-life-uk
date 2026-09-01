@@ -1,6 +1,5 @@
 /* ─── Base Reset & Global Utilities ──────────────────────────────────────────
-   Box-sizing reset, body defaults, RTL / Ethiopic font overrides,
-   accessibility utilities and misc global helpers.
+   Box-sizing reset, body defaults, RTL / Ethiopic font overrides, accessibility utilities and misc global helpers.
    ─────────────────────────────────────────────────────────────────────────── */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -70,16 +69,6 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
 }
 .skip-link:focus { top: 0; }
 
-/* Lazy-load suspense fallback */
-.page-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 50vh;
-  font-size: .95rem;
-  color: var(--t3);
-}
-
 /* Offline available badge */
 .offline-badge {
   display: inline-flex;
@@ -105,21 +94,9 @@ button { border: none; cursor: pointer; font-family: inherit; background: none; 
   animation: skeleton-pulse 1.4s ease-in-out infinite;
 }
 
-/* TTS "Listen" button */
-.tts-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0 var(--gutter) 12px;
-  padding: 9px 18px;
-  border-radius: 24px;
-  border: 1.5px solid var(--ac3);
-  background: transparent;
-  color: var(--ac3);
-  font-size: .875rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background .15s, color .15s;
-}
-.tts-btn:hover { background: var(--ac3); color: #fff; }
-.tts-btn.tts-speaking { background: var(--rd); border-color: var(--rd); color: #fff; }
+/* --ac and --rd are LIGHT colours in dark mode (#34D399, #F87171), so white
+   text on them lands at 1.92:1 and 2.77:1. Dark ink gives 7.99:1 and 5.55:1,
+   which is what .btn-primary has always done. Caught by contrast.test.ts
+   reading these files — the earlier version only checked tokens against page
+   surfaces and passed the whole time. */
+.dark .skip-link { color: #042B1C; }

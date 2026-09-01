@@ -10,13 +10,13 @@
   --bd:  #E8EAED;
   --tx:  #111827;
   --t2:  #4B5563;
-  --t3:  #6B7280;
+  --t3:  #656D79;
 
   /* Vibrant forest teal — safety, hope, trust */
   --ac:  #0D6E4B;
   --ac2: #E6F5EE;
   --ac3: #0D6E4B;
-  --gn:  #059669;
+  --gn:  #047857;
 
   /* Amber warning */
   --wn:    #B45309;
@@ -24,7 +24,7 @@
   --wnbd:  #FCD34D;
 
   /* Red — SOS only */
-  --rd: #DC2626;
+  --rd: #CE2020;
 
   --shadow:  0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
   --shadow2: 0 4px 20px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.06);

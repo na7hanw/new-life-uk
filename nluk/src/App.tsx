@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense, type TouchEvent as ReactTouchEvent } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { BookOpen, Briefcase, Compass, Settings, ChevronUp, User, Search } from 'lucide-react'
+import { BookOpen, Briefcase, Compass, Settings, ChevronUp, User, Search, ListChecks } from 'lucide-react'
 import { Toaster, toast } from 'sonner'
 import { useSwipeable } from 'react-swipeable'
 import { useRegisterSW } from 'virtual:pwa-register/react'
@@ -11,6 +11,8 @@ import ErrorBoundary from './components/ErrorBoundary.tsx'
 import ConsentBanner from './components/ConsentBanner.tsx'
 import SkeletonFallback from './components/SkeletonFallback.tsx'
 import Logo from './components/Logo.tsx'
+import QuickExit from './components/QuickExit.tsx'
+import { isTranslationAvailable } from './lib/translationRouter.ts'
 import SOSModal from './components/SOSModal.tsx'
 import OnboardingOverlay, { shouldShowOnboarding } from './components/OnboardingOverlay.tsx'
 import styles from './App.module.css'
@@ -19,6 +21,7 @@ const CommandPalette = lazy(() => import('./components/CommandPalette.tsx'))
 
 
 const GuidesPage   = lazy(() => import('./pages/GuidesPage.tsx'))
+const TodayPage    = lazy(() => import('./pages/TodayPage.tsx'))
 const GuideDetail  = lazy(() => import('./pages/GuideDetail.tsx'))
 const WorkHub      = lazy(() => import('./pages/WorkHub.tsx'))
 const CertDetail   = lazy(() => import('./pages/CertDetail.tsx'))
@@ -27,12 +30,11 @@ const JobDetail    = lazy(() => import('./pages/JobDetail.tsx'))
 const SavesPage    = lazy(() => import('./pages/SavesPage.tsx'))
 const MorePage     = lazy(() => import('./pages/MorePage.tsx'))
 const ProfilePage       = lazy(() => import('./pages/ProfilePage.tsx'))
-const DocumentScanner   = lazy(() => import('./pages/DocumentScanner.tsx'))
 const NotFoundPage      = lazy(() => import('./pages/NotFoundPage.tsx'))
 
 // ─── AppShell ────────────────────────────────────────────────────
 export default function App() {
-  const { lang, setLang, dark, showSOS, setSOS, showLang, setShowLang, ui, dir, fontClass } = useApp()
+  const { lang, setLang, dark, showSOS, setSOS, showLang, setShowLang, setUserStatus, ui, dir, fontClass } = useApp()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -58,7 +60,8 @@ export default function App() {
   useEffect(() => {
     const p = location.pathname
     const ann =
-      p === '/'            ? 'Guides' :
+      p === '/'            ? 'Today — what to do next' :
+      p === '/guides'      ? 'Guides' :
       p.startsWith('/guide/') ? 'Guide detail' :
       p.startsWith('/work')   ? 'Work and jobs' :
       p.startsWith('/cert/')  ? 'Certificate detail' :
@@ -69,7 +72,8 @@ export default function App() {
   }, [location.pathname])
 
   const TABS = [
-    { id: 'guides', path: '/', icon: <BookOpen size={22} strokeWidth={2} />, label: ui.guides },
+    { id: 'today', path: '/', icon: <ListChecks size={22} strokeWidth={2} />, label: ui.today || 'Today' },
+    { id: 'guides', path: '/guides', icon: <BookOpen size={22} strokeWidth={2} />, label: ui.guides },
     { id: 'work', path: '/work/jobs', icon: <Briefcase size={22} strokeWidth={2} />, label: ui.work },
     { id: 'saves', path: '/saves', icon: <Compass size={22} strokeWidth={2} />, label: ui.saves },
     { id: 'profile', path: '/profile', icon: <User size={22} strokeWidth={2} />, label: ui.profile || 'Me' },
@@ -123,6 +127,13 @@ export default function App() {
     if (!showLang) return
     const el = langOverlayRef.current
     if (!el) return
+    // Captured before focus moves into the dialog, and restored in cleanup
+    // below. Without it, closing drops keyboard and screen-reader users at
+    // <body> with no announcement, so they have to tab back through the whole
+    // page to reach where they were. Doing both in one effect avoids the
+    // ordering hazard of a separate capture effect, which would run after this
+    // one had already moved focus.
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null
     const focusable = el.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
     const first = focusable[0]
     const last = focusable[focusable.length - 1]
@@ -137,7 +148,12 @@ export default function App() {
       }
     }
     el.addEventListener('keydown', trap)
-    return () => el.removeEventListener('keydown', trap)
+    return () => {
+      el.removeEventListener('keydown', trap)
+      // Only if it is still in the document — a node removed while the dialog
+      // was open cannot take focus, and asking it to is a silent no-op.
+      if (previouslyFocused && document.contains(previouslyFocused)) previouslyFocused.focus()
+    }
   }, [showLang, setShowLang])
 
   // ── Back-to-top button ──
@@ -235,15 +251,43 @@ export default function App() {
             <button className="btn btn-primary" onClick={() => setShowLang(false)}>{ui.close} ✓</button>
           </div>
           <div className="lang-grid">
-            {LANGS.map(l => (
-              <button key={l.code} className={`lang-item ${lang === l.code ? 'active' : ''}`}
-                onClick={() => { setLang(l.code); setShowLang(false) }}>
-                <span className="lang-flag">{l.flag}</span>
-                <span className="lang-name">{l.native}</span>
-              </button>
-            ))}
+            {LANGS.map(l => {
+              // Amharic, Tigrinya, Somali, Oromo and Urdu have no translation
+              // provider configured, so choosing them yields an English app.
+              // Say so rather than presenting all twelve as equal choices.
+              const englishOnly = l.code !== 'en' && !isTranslationAvailable(l.code)
+              return (
+                <button key={l.code} className={`lang-item ${lang === l.code ? 'active' : ''}`}
+                  onClick={() => { setLang(l.code); setShowLang(false) }}
+                  aria-label={englishOnly ? `${l.native} — guides still shown in English` : l.native}>
+                  <span className="lang-flag" aria-hidden="true">{l.flag}</span>
+                  <span className="lang-name">{l.native}</span>
+                  {englishOnly && (
+                    <span className="lang-note">English only for now</span>
+                  )}
+                </button>
+              )
+            })}
           </div>
         </div>
+      )}
+
+      {/* QUICK EXIT — every route, including detail pages and the first-run
+          language overlay. A safety control must never be route-dependent. */}
+      <QuickExit />
+
+      {/* SOS on detail pages, where the header is removed. Previously the
+          emergency control disappeared on exactly the screens a user in crisis
+          spends time on (/guide/*, /cert/*, /career/*, /job/*, /settings). */}
+      {isDetail && !showLang && (
+        <button
+          className="btn-sos"
+          style={{ position: 'fixed', bottom: 'calc(76px + env(safe-area-inset-bottom))', insetInlineEnd: 76, zIndex: 400, minHeight: 44 }}
+          onClick={() => { navigator?.vibrate?.(15); setSOS(true) }}
+          aria-label="Emergency SOS"
+        >
+          {ui.sos}
+        </button>
       )}
 
       {/* HEADER — hidden on detail pages and lang overlay */}
@@ -265,7 +309,7 @@ export default function App() {
         theme={dark ? 'dark' : 'light'}
         toastOptions={{
           duration: 2200,
-          style: { borderRadius: 'var(--r, 12px)', fontSize: '0.9rem' },
+          style: { borderRadius: 'var(--radius)', fontSize: '0.9rem' },
         }}
       />
 
@@ -289,7 +333,8 @@ export default function App() {
           <Suspense fallback={<SkeletonFallback />}>
             <div {...(!isDetail ? swipeHandlers : {})}>
               <Routes>
-                <Route path="/" element={<GuidesPage />} />
+                <Route path="/" element={<TodayPage />} />
+                <Route path="/guides" element={<GuidesPage />} />
                 <Route path="/guide/:id" element={<GuideDetail />} />
                 <Route path="/work" element={<Navigate to="/work/jobs" replace />} />
                 <Route path="/work/:subtab" element={<WorkHub />} />
@@ -302,7 +347,6 @@ export default function App() {
                 <Route path="/settings" element={<MorePage />} />
                 <Route path="/more" element={<Navigate to="/settings" replace />} />
                 <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/scan" element={<DocumentScanner />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </div>
@@ -344,16 +388,23 @@ export default function App() {
 
       {/* ONBOARDING OVERLAY — shown once after first language selection */}
       {showOnboarding && (
-        <OnboardingOverlay ui={ui} onDone={() => setShowOnboarding(false)} />
+        <OnboardingOverlay ui={ui} setUserStatus={setUserStatus} onDone={() => setShowOnboarding(false)} />
       )}
 
       {/* CONSENT BANNER — shown once on first visit when Sentry is configured */}
       <ConsentBanner ui={ui} />
 
       {/* COMMAND PALETTE — Cmd+K / search button in header */}
-      <Suspense fallback={null}>
-        <CommandPalette open={showPalette} onClose={() => setShowPalette(false)} />
-      </Suspense>
+      {/* Mounted only when open. React invokes a lazy() factory when the element
+          is RENDERED, not when it becomes visible — so rendering it
+          unconditionally fetched and evaluated the chunk (plus its module-scope
+          Fuse index build) on every first paint, for a Cmd+K palette that a user
+          on a phone has no keyboard to open. */}
+      {showPalette && (
+        <Suspense fallback={null}>
+          <CommandPalette open onClose={() => setShowPalette(false)} />
+        </Suspense>
+      )}
     </div>
   )
 }

@@ -4,7 +4,7 @@
 .hero {
   margin: 12px var(--gutter) 4px;
   padding: 14px 16px;
-  border-radius: var(--r);
+  border-radius: var(--radius);
   background: linear-gradient(135deg, var(--ac2) 0%, color-mix(in srgb, var(--ac2) 60%, transparent) 100%);
   border: 1px solid color-mix(in srgb, var(--ac) 25%, transparent);
 }

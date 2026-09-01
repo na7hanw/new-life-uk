@@ -1,24 +1,18 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Search, Bookmark } from 'lucide-react'
 import { toast } from 'sonner'
 import Fuse from 'fuse.js'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useApp } from '../context/AppContext.tsx'
-import { GUIDES, GUIDE_PRIORITY, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS } from '../data/guides.ts'
-import { getTrendingGuideIds } from '../lib/search.ts'
+import { GUIDES, GUIDE_MAP, CATEGORIES, GUIDE_KEYWORDS, orderGuides } from '../data/guides.ts'
+import { getTrendingGuideIds } from '../lib/searchHistory.ts'
+import { forYouGuideIds } from '../data/status-profiles.ts'
 import { useRouteTranslation, type RouteString } from '../lib/useRouteTranslation.ts'
 import EmptyState from '../components/EmptyState.tsx'
 import ImmigrationUpdatesSection from '../components/ImmigrationUpdatesSection.tsx'
 import styles from './GuidesPage.module.css'
 
-// Guides to pin in the "For You" section per status
-const STATUS_GUIDES: Record<string, string[]> = {
-  'asylum-seeker': ['community-interpreting', 'advanced-learner', 're-qualify', 'permission-to-work', 'volunteering', 'asylum-waiting'],
-  'refugee':       ['move-on', 'refugee-integration', 'uc', 'housing-help'],
-  'other-visa':    ['work-rights', 'evisa', 'sharecode'],
-  'settled':       ['ilr', 'evisa', 'sharecode'],
-}
 
 // Enrich guides with keyword aliases once at module load (not on every component mount).
 const GUIDES_WITH_KW = GUIDES.map(g => ({ ...g, _kw: GUIDE_KEYWORDS[g.id] || [] }))
@@ -70,20 +64,26 @@ export default function GuidesPage() {
     }
   ), [])
 
+  // Pinned into "For You". Derived from the same boost list that drives
+  // ordering, so the two cannot drift apart.
+  const forYou = useMemo(() => forYouGuideIds(userStatus), [userStatus])
+
   const filtered = useMemo(() => {
     let list
     if (search.trim()) {
       list = fuseIndex.search(search).map(r => r.item)
     } else {
-      list = [...GUIDES].sort((a, b) => {
-        const ia = GUIDE_PRIORITY.indexOf(a.id)
-        const ib = GUIDE_PRIORITY.indexOf(b.id)
-        return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
-      })
+      list = orderGuides(GUIDES, userStatus)
+      // Rendering the pinned guides again at the top of the list below would
+      // show the same cards twice on one screen.
+      if (catFilter === 'All' && forYou.length > 0) {
+        const pinned = new Set(forYou)
+        list = list.filter(g => !pinned.has(g.id))
+      }
     }
     if (catFilter !== 'All') list = list.filter(g => g.cat === catFilter)
     return list
-  }, [search, catFilter, fuseIndex])
+  }, [search, catFilter, fuseIndex, userStatus, forYou])
 
   // Animate category sections as filter changes
   const [catListRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })
@@ -142,8 +142,8 @@ export default function GuidesPage() {
                   style={{
                     flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6,
                     padding: '6px 10px', borderRadius: 20,
-                    background: 'var(--bg2)', border: '1px solid var(--sep)',
-                    fontSize: '0.8rem', color: 'var(--t1)', cursor: 'pointer', whiteSpace: 'nowrap',
+                    background: 'var(--bg2)', border: '1px solid var(--bd)',
+                    fontSize: '0.8rem', color: 'var(--tx)', cursor: 'pointer', whiteSpace: 'nowrap',
                   }}
                 >
                   <span>{g.icon}</span>
@@ -154,27 +154,6 @@ export default function GuidesPage() {
           </div>
         </div>
       )}
-
-      {/* Document Scanner quick-action */}
-      {!search && (
-        <Link
-          to="/scan"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 12,
-            margin: '0 var(--gutter) 12px', padding: '10px 14px',
-            borderRadius: 12, background: 'var(--bg2)', border: '1px solid var(--sep)',
-            textDecoration: 'none', color: 'var(--t1)',
-          }}
-        >
-          <span style={{ fontSize: '1.5rem' }}>📷</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Scan a Document</div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--t3)' }}>Photograph a letter or form to read and translate it — nothing uploaded</div>
-          </div>
-          <span style={{ color: 'var(--ac3)', fontWeight: 600 }}>›</span>
-        </Link>
-      )}
-
       <div className="search-bar">
         <Search size={18} strokeWidth={2} className={styles.searchIcon} />
         <input className="search-input" placeholder={ui.search} value={search}
@@ -240,12 +219,12 @@ export default function GuidesPage() {
       )}
 
       {/* For You — pinned guides for this status, shown when not searching and viewing all categories */}
-      {!search && catFilter === 'All' && userStatus && STATUS_GUIDES[userStatus] && (
+      {!search && catFilter === 'All' && forYou.length > 0 && (
         <div>
           <div className={`cat-header ${styles.forYouHeader}`}>⭐ {ui.forYou}</div>
           <div className={`card card-flush ${styles.cardGutter}`}
                style={{ border: '2px solid var(--ac)', backgroundColor: 'var(--ac2)' }}>
-            {STATUS_GUIDES[userStatus]
+            {forYou
               .map(id => GUIDE_MAP[id])
               .filter(Boolean)
               .map(g => {

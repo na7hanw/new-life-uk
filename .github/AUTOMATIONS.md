@@ -104,7 +104,7 @@ These are the external services the app calls at runtime. All degrade gracefully
 | [Companies House](https://developer.company-information.service.gov.uk/) | `VITE_CH_API_KEY` | For in-app search | Employer verification (anti-scam) | Shows link to public CH website |
 | [LibreTranslate / Argos](https://libretranslate.com) | `VITE_LIBRE_ENDPOINT` | No | Auto-translation pipeline | Falls back to Bergamot (browser) |
 | [NLLB-200](https://ai.meta.com/research/no-language-left-behind/) | `VITE_NLLB_ENDPOINT` | No | Low-resource languages (am, ti, so, om) | Falls back to LibreTranslate |
-| [MediaWiki REST API](https://en.wikipedia.org/api/rest_v1) | — | No | Glossary term popups in guide steps | Silently omitted |
+| [MediaWiki REST API](https://www.mediawiki.org/wiki/Wikimedia_REST_API) | — | No | Glossary term popups in guide steps | Silently omitted |
 | [Sentry](https://sentry.io) | `VITE_SENTRY_DSN` | No | Production error monitoring | App works without it |
 
 > **No MyMemory, no Google Cloud Translation, no paid translation APIs.** All translation uses LibreTranslate/Argos (open-source, self-hostable) with optional NLLB-200 for Amharic, Tigrinya, Somali, and Oromo.

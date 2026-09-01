@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { areaOf, SUPERSEDED_AREA_KEY } from '../lib/area.ts'
 import { LANGS, UI } from '../data/ui-strings.ts'
 import { ls, lsSet } from '../lib/utils.ts'
+import { VALID_STATUSES } from '../types'
 import type { AppContextValue, UserStatus, UserAmbition, UserSector, TargetLane, EcctisStatus } from '../types'
 
 const AppContext = createContext<AppContextValue | null>(null)
@@ -26,15 +28,38 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState<boolean>(() => ls('nluk_dark', '') === 'true')
   const [showSOS, setSOS] = useState<boolean>(false)
   const [showLang, setShowLang] = useState<boolean>(() => !ls('nluk_lang', ''))
-  const [userStatus, setUserStatus] = useState<UserStatus>(() => ls('nluk_status', '') as UserStatus)
+  // Validate against the known set: a stale or corrupted key would otherwise be
+  // truthy, match no status map, and silently render empty personalised sections.
+  const [userStatus, setUserStatus] = useState<UserStatus>(() => {
+    const stored = ls('nluk_status', '')
+    return (VALID_STATUSES as readonly string[]).includes(stored) ? (stored as UserStatus) : ''
+  })
   const [statusDate, setStatusDate] = useState<string>(() => ls('nluk_status_date', ''))
   const [claimDate, setClaimDate] = useState<string>(() => ls('nluk_claim_date', ''))
+  const [discontinuationDate, setDiscontinuationDate] = useState<string>(() => ls('nluk_disc_date', ''))
+  // The provider's Notice to Quit date — the operative "leave by" date.
+  const [noticeToQuitDate, setNoticeToQuitDate] = useState<string>(() => ls('nluk_ntq_date', ''))
   const [userAmbition, setUserAmbition] = useState<UserAmbition>(() => ls('nluk_ambition', '') as UserAmbition)
   const [userSector, setUserSector] = useState<UserSector>(() => ls('nluk_sector', '') as UserSector)
   const [documentsHeld, setDocumentsHeld] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_docs', '[]')) } catch { return [] }
   })
-  const [userPostcode, setUserPostcode] = useState<string>(() => ls('nluk_postcode', 'BL5 3SB'))
+  // Only the postcode AREA is ever held — see lib/area.ts. Named userArea
+  // rather than userPostcode because that is what it is: "BL", not "BL5 3SB".
+  // Reduced on read as well as write, and migrated from the old nluk_postcode
+  // key, so anyone who stored a full postcode under an earlier version has it
+  // cut down the next time the app starts without having to know it was there.
+  const [userArea, setUserAreaRaw] = useState<string>(() => {
+    const current = ls('nluk_area', '')
+    if (current) return areaOf(current)
+    return areaOf(ls(SUPERSEDED_AREA_KEY, ''))
+  })
+  const setUserArea = (v: string) => setUserAreaRaw(areaOf(v))
+  // Separate from documentsHeld, which is identity documents. These are the
+  // practical assets that gate each other — see lib/blockers.ts.
+  const [assetsHeld, setAssetsHeld] = useState<string[]>(() => {
+    try { return JSON.parse(ls('nluk_assets', '[]')) } catch { return [] }
+  })
   const [bookmarks, setBookmarks] = useState<string[]>(() => {
     try { return JSON.parse(ls('nluk_bookmarks', '[]')) } catch { return [] }
   })
@@ -55,10 +80,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => { lsSet('nluk_status', userStatus) }, [userStatus])
   useEffect(() => { lsSet('nluk_status_date', statusDate) }, [statusDate])
   useEffect(() => { lsSet('nluk_claim_date', claimDate) }, [claimDate])
+  useEffect(() => { lsSet('nluk_disc_date', discontinuationDate) }, [discontinuationDate])
+  useEffect(() => { lsSet('nluk_ntq_date', noticeToQuitDate) }, [noticeToQuitDate])
   useEffect(() => { lsSet('nluk_ambition', userAmbition) }, [userAmbition])
   useEffect(() => { lsSet('nluk_sector', userSector) }, [userSector])
   useEffect(() => { lsSet('nluk_docs', JSON.stringify(documentsHeld)) }, [documentsHeld])
-  useEffect(() => { lsSet('nluk_postcode', userPostcode) }, [userPostcode])
+  useEffect(() => { lsSet('nluk_assets', JSON.stringify(assetsHeld)) }, [assetsHeld])
+  useEffect(() => {
+    lsSet('nluk_area', userArea)
+    // Drop the legacy key once its value has been carried over, so a full
+    // postcode written by an earlier version does not linger on the device.
+    try { localStorage.removeItem(SUPERSEDED_AREA_KEY) } catch { /* private mode */ }
+  }, [userArea])
   useEffect(() => { lsSet('nluk_bookmarks', JSON.stringify(bookmarks)) }, [bookmarks])
   useEffect(() => { lsSet('nluk_target_lane', targetLane) }, [targetLane])
   useEffect(() => { lsSet('nluk_credentials', JSON.stringify(credentialsHeld)) }, [credentialsHeld])
@@ -67,6 +100,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const toggleDocument = (docId: string) => {
     setDocumentsHeld(prev =>
       prev.includes(docId) ? prev.filter(d => d !== docId) : [...prev, docId]
+    )
+  }
+
+  const toggleAsset = (assetId: string) => {
+    setAssetsHeld(prev =>
+      prev.includes(assetId) ? prev.filter(a => a !== assetId) : [...prev, assetId]
     )
   }
 
@@ -98,7 +137,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const af = L.rtl ? '‹' : '›'
 
   return (
-    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, userPostcode, setUserPostcode, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
+    <AppContext.Provider value={{ lang, setLang, dark, setDark, showSOS, setSOS, showLang, setShowLang, userStatus, setUserStatus, statusDate, setStatusDate, claimDate, setClaimDate, discontinuationDate, setDiscontinuationDate, noticeToQuitDate, setNoticeToQuitDate, userAmbition, setUserAmbition, userSector, setUserSector, documentsHeld, toggleDocument, assetsHeld, toggleAsset, userArea, setUserArea, bookmarks, toggleBookmark, targetLane, setTargetLane, credentialsHeld, toggleCredential, ecctisStatus, setEcctisStatus, nextLiftingCredential, ui, L, dir, fontClass, ab, af }}>
       {children}
     </AppContext.Provider>
   )

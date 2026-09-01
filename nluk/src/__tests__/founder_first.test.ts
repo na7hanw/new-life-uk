@@ -118,7 +118,6 @@ describe('Founder-first careers — sort order', () => {
     expect(firstUntaggedIdx, 'An untagged career appears before a tagged career').toBeGreaterThan(lastTaggedIdx)
   })
 
-  // Note: CAREER_IDS.forEach assigns final IDs — use CAREER_MAP for reliable lookups.
   it('translation is the top career by founderOrder', () => {
     const sorted = byFounderOrder(careersTyped)
     const idx = sorted.findIndex(c => c.id === 'translation')

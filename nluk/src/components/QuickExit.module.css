@@ -1,0 +1,47 @@
+/* Always reachable on every route, including detail pages and the first-run
+   language overlay. Bottom-left keeps it clear of the back button, the app
+   header brand, and the back-to-top FAB at bottom-right. */
+.quickExit {
+  position: fixed;
+  /* Bottom-left, above the tab bar. Top-left collided with the detail page's
+     back button and the app header's brand; bottom is also the easier
+     one-handed reach, which matters more for this control than for most. */
+  bottom: calc(76px + env(safe-area-inset-bottom));
+  inset-inline-start: 12px;
+  z-index: 400; /* above the sticky detail header (100) and overlays (300) */
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  /* WCAG 2.2 target size — this is the last control a user in danger reaches for. */
+  min-height: 44px;
+  padding: 0 14px;
+
+  border: 1.5px solid var(--bd);
+  border-radius: 22px;
+  background: var(--bg2);
+  color: var(--tx);
+
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow2);
+}
+
+.quickExit:hover {
+  background: var(--bg3);
+}
+
+/* Do not remove the focus ring; this must be keyboard reachable. */
+.quickExit:focus-visible {
+  outline: 3px solid var(--ac);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .quickExit {
+    transition: background 0.15s ease;
+  }
+}

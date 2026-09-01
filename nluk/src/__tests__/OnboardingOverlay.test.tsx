@@ -2,8 +2,9 @@
  * @vitest-environment jsdom
  *
  * Tests for src/components/OnboardingOverlay.tsx
- * Covers: single-step rendering, "Get started" behaviour,
- *         shouldShowOnboarding(), markOnboardingDone().
+ * Covers: the two-step flow (welcome -> status), the status picker that gates
+ *         the whole personalisation layer, shouldShowOnboarding(),
+ *         markOnboardingDone(), and focus restoration on close.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'
@@ -58,38 +59,88 @@ describe('OnboardingOverlay — initial step', () => {
 
   it('shows the title of the first step on mount', () => {
     render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    expect(screen.getByText('Your guides are ready')).not.toBeNull()
+    expect(screen.getByText('Start with what is blocking you')).not.toBeNull()
   })
 
-  it('shows "Get started" on the single (last) step', () => {
-    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    expect(screen.getByRole('button', { name: 'Get started' })).not.toBeNull()
-  })
 
-  it('does not show a Skip button on the single step', () => {
-    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    expect(screen.queryByRole('button', { name: 'Skip' })).toBeNull()
-  })
 
-  it('does not show a Next button on the single step', () => {
-    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    expect(screen.queryByRole('button', { name: 'Next' })).toBeNull()
-  })
 })
 
 // ─── Completion callbacks ─────────────────────────────────────────────────────
 
-describe('OnboardingOverlay — completion', () => {
-  it('calls onDone when "Get started" is clicked', () => {
-    const onDone = vi.fn()
-    render(<OnboardingOverlay ui={UI} onDone={onDone} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Get started' }))
-    expect(onDone).toHaveBeenCalledOnce()
+// ── The status step ──────────────────────────────────────────────────────────
+// Status was removed from the home screen in March 2026 and never replaced, so
+// userStatus stayed '' for most users. With '' the "For You" card, Next Steps,
+// update alerts, the WorkHub banners and status-aware ordering all render
+// nothing — the entire personalisation layer was gated on an unasked question.
+
+describe('OnboardingOverlay — the two-step flow', () => {
+  it('shows Next, not Get started, on the first step', () => {
+    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
+    expect(screen.getByRole('button', { name: 'Next' })).toBeTruthy()
   })
 
-  it('marks onboarding as done in localStorage when Get started is clicked', () => {
+  it('advances to the status question', () => {
     render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Get started' }))
-    expect(localStorage.getItem('nluk_onboarded')).toBe('true')
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+    expect(screen.getByText(/what's your situation in the UK/i)).toBeTruthy()
+  })
+
+  it('offers all four statuses', () => {
+    render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+    for (const label of [/asylum seeker/i, /recognised refugee/i, /another visa/i, /settled/i]) {
+      expect(screen.getByRole('button', { name: label })).toBeTruthy()
+    }
+  })
+
+  it('sets the status and finishes in one tap', () => {
+    const setUserStatus = vi.fn()
+    const onDone = vi.fn()
+    render(<OnboardingOverlay ui={UI} onDone={onDone} setUserStatus={setUserStatus} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+    fireEvent.click(screen.getByRole('button', { name: /recognised refugee/i }))
+    expect(setUserStatus).toHaveBeenCalledWith('refugee')
+    expect(onDone).toHaveBeenCalled()
+    expect(shouldShowOnboarding()).toBe(false)
+  })
+
+  it('lets the user skip without setting a status', () => {
+    const setUserStatus = vi.fn()
+    const onDone = vi.fn()
+    render(<OnboardingOverlay ui={UI} onDone={onDone} setUserStatus={setUserStatus} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+    fireEvent.click(screen.getByRole('button', { name: /skip for now/i }))
+    expect(setUserStatus).not.toHaveBeenCalled()
+    expect(onDone).toHaveBeenCalled()
+    // Skipping must still count as onboarded, or the overlay reappears forever.
+    expect(shouldShowOnboarding()).toBe(false)
+  })
+
+  it('works without a setUserStatus prop', () => {
+    const onDone = vi.fn()
+    render(<OnboardingOverlay ui={UI} onDone={onDone} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+    fireEvent.click(screen.getByRole('button', { name: /recognised refugee/i }))
+    expect(onDone).toHaveBeenCalled()
+  })
+})
+
+describe('OnboardingOverlay — dialog behaviour', () => {
+  it('closes on Escape, as a dialog must', () => {
+    const onDone = vi.fn()
+    render(<OnboardingOverlay ui={UI} onDone={onDone} />)
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(onDone).toHaveBeenCalled()
+  })
+
+  it('restores focus to the previously focused element on unmount', () => {
+    const trigger = document.createElement('button')
+    document.body.appendChild(trigger)
+    trigger.focus()
+    const { unmount } = render(<OnboardingOverlay ui={UI} onDone={vi.fn()} />)
+    unmount()
+    expect(document.activeElement).toBe(trigger)
+    trigger.remove()
   })
 })

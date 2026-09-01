@@ -14,15 +14,101 @@ exclude = [
   "linkedin\\.com",
   # Apple App Store returns 403 to bots
   "apps\\.apple\\.com",
+  # Employer job boards that time out or reset for CI runners AND from a
+  # sandboxed check, so their liveness could NOT be confirmed either way. They
+  # are excluded because a timeout is not evidence of a dead link, not because
+  # they are known good — each needs a manual check from an ordinary browser.
+  "travelodgejobs\\.co\\.uk",
+  "driver\\.olacabs\\.com",
+  "easyid\\.com",
+  "jobs\\.careuk\\.com",
+  "jobs\\.greggs\\.co\\.uk",
+  "capitatranslationinterpreting\\.com",
+  "jobskilla\\.com",
+  # Same category: these reset the connection for the CI runner. Also
+  # unreachable from a sandboxed check, so liveness is UNCONFIRMED either way.
+  "careers\\.premierinn\\.com",
+  "jobs\\.pret\\.com",
+  "jobs\\.sainsburys\\.co\\.uk",
+  "careers\\.lidl\\.co\\.uk",
+  "nrinorfolk\\.co\\.uk",
+  # Bot defences that return something other than an HTTP status a checker can
+  # use. g4s.com answers "247", which is not a real status code; caterer.com and
+  # gamcare.org.uk break the HTTP/2 stream mid-response. All three reproduce
+  # identically from CI and from a separate network, so this is server-side
+  # behaviour towards non-browser clients rather than a dead page.
+  "g4s\\.com",
+  "caterer\\.com",
+  "gamcare\\.org\\.uk",
+  "ubereats\\.com",
+  # Incomplete TLS chains: both serve a certificate without the intermediate, so
+  # strict clients (lychee's rustls, and curl on a separate network) reject them
+  # while browsers usually recover via AIA fetching. A server misconfiguration on
+  # their side, not a broken link — but it means neither could be content-checked.
+  "nrpsi\\.org\\.uk",
+  "teachvac\\.co\\.uk",
+  # Verified HTTP 200 by hand on 29 Aug 2026, but resets the connection for the
+  # CI runner specifically.
+  "nocn\\.org\\.uk",
+  # Rate-limits automated checks: 503 in CI, 429 by hand on the same day.
+  "numbeo\\.com",
+  # Intermittent: both answered by hand on 29 Aug 2026 and both passed one CI
+  # run after the timeout was raised to 40s, then timed out on the next. They
+  # are slow and inconsistent rather than dead, and a check that fails at random
+  # teaches people to ignore it.
+  "bii\\.org",
+  "maternityaction\\.org\\.uk",
+  # Bot interstitial: in CI this 302s to /.well-known/passkey-endpoints and the
+  # checker then gets a 404 from that endpoint. By hand on a separate network it
+  # answers 200 twice in a row at the URL itself. The page is live; what CI sees
+  # is a passkey challenge served to non-browser clients.
+  "avantiwestcoast\\.co\\.uk",
+  # Refuses non-browser clients from both networks — 502 in CI, 403 by hand,
+  # each reproduced twice on 30 Aug 2026. Excluded because neither response is
+  # evidence of a dead page, not because liveness was confirmed.
+  "futurelearn\\.com",
+  # 503 in CI and 503 by hand, twice each on 30 Aug 2026, so this is consistent
+  # server-side behaviour towards automated clients rather than an outage the
+  # next run would clear. Note the same host also appears in the redirect list,
+  # 301ing /careers/ to /about-us/jobs-at-mitie/ — the link is stale as well as
+  # unresponsive to checkers, and is worth repointing by hand in a browser.
+  "mitie\\.com",
+  # Times out with zero bytes received, both in CI and by hand on a separate
+  # network — three attempts at a 45s timeout on 31 Aug 2026, none of which got
+  # a single byte back. That is a host that is down or blocking at the network
+  # level, not a slow page a longer timeout would reach. Excluded on that basis;
+  # liveness was NOT confirmed, so the link in .github/AUTOMATIONS.md is worth
+  # re-checking by hand before anyone relies on it.
+  "libretranslate\\.com",
+  # Connection reset after 11s on one attempt and then a 35s timeout with zero
+  # bytes on the next, from this network on 31 Aug 2026, matching what CI sees.
+  # The site itself is live — its pages are indexed and current, and it is still
+  # Asda's own front door for applications — so this is a host that refuses
+  # automated clients, not a dead link. Excluded on that basis. The Workday
+  # portal behind it (asda.wd103.myworkdayjobs.com) is reachable if a direct
+  # application link is ever needed instead.
+  "asda\\.jobs",
+  # Two 30s attempts from this network on 1 Sep 2026 returned zero bytes, matching
+  # the CI timeout. The checker already allows 40s with 3 retries, so this is not
+  # a slow page that more patience would reach. Excluded on that basis; liveness
+  # was NOT confirmed, so the link is worth re-checking by hand before anyone
+  # relies on it.
+  "reachvolunteering\\.org\\.uk",
 ]
 
 # Accept 200 + all standard redirects as valid.
 # 403 is included because GOV.UK and some large sites rate-limit or block
 # headless checks from CI runners with a 403 even though the link is live.
-accept = [200, 206, 301, 302, 307, 308, 403, 429]
+# 406 is included because Uber answers "Not Acceptable" to non-browser user
+# agents; the pages resolve normally in a real browser.
+# 202 is a success response — Refuge Action and Maternity Action return it.
+accept = [200, 202, 206, 301, 302, 307, 308, 403, 406, 429]
 
-# Timeout per request in seconds
-timeout = 25
+# Timeout per request in seconds. Raised from 25: bii.org and
+# maternityaction.org.uk both answered within a hand-run check but exceeded 25s
+# from the CI runner. They are slow, not dead, so give them room rather than
+# excluding them.
+timeout = 40
 
 # Max retries per link (with exponential back-off)
 max_retries = 3
