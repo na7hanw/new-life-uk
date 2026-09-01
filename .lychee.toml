@@ -88,6 +88,12 @@ exclude = [
   # portal behind it (asda.wd103.myworkdayjobs.com) is reachable if a direct
   # application link is ever needed instead.
   "asda\\.jobs",
+  # Two 30s attempts from this network on 1 Sep 2026 returned zero bytes, matching
+  # the CI timeout. The checker already allows 40s with 3 retries, so this is not
+  # a slow page that more patience would reach. Excluded on that basis; liveness
+  # was NOT confirmed, so the link is worth re-checking by hand before anyone
+  # relies on it.
+  "reachvolunteering\\.org\\.uk",
 ]
 
 # Accept 200 + all standard redirects as valid.
