@@ -50,10 +50,18 @@ describe('empty state', () => {
 describe('with a decision date', () => {
   it('counts down to grant + 42 days', () => {
     const grant = addDays(new Date(), -10)
-    const { daysLeft } = computeMoveOnPlan({ grantDate: iso(grant) })
+    const { daysLeft, deadline } = computeMoveOnPlan({ grantDate: iso(grant) })
     renderPlan({ statusDate: iso(grant) })
     expect(screen.getByText(new RegExp(`${daysLeft} days left`))).toBeTruthy()
-    expect(screen.getByText(new RegExp(format(addDays(grant, 42), 'd MMMM yyyy')))).toBeTruthy()
+    // Assert against the library's own deadline rather than recomputing it as
+    // grant + 42. The Home Office rolls an end-of-support date that falls on a
+    // weekend to the next working day, so a hand-rolled grant + 42 is wrong
+    // whenever that date lands on a Saturday or Sunday — which made this test
+    // fail on roughly two days in seven depending on when it was run.
+    expect(deadline).not.toBeNull()
+    expect(
+      screen.getByText(new RegExp(format(deadline as Date, 'd MMMM yyyy'))),
+    ).toBeTruthy()
   })
 
   it('shows both clocks and says the later one wins', () => {
